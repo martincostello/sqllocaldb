@@ -69,12 +69,6 @@ extern HRESULT APIENTRY GetInstanceInfo(
     void* pInstanceInfo,
     DWORD dwInstanceInfoSize)
 {
-    size_t s = sizeof(LocalDBInstanceInfo);
-
-    if (s != NULL)
-    {
-    }
-
     return LocalDBGetInstanceInfo(
         wszInstanceName,
         (PLocalDBInstanceInfo)pInstanceInfo,
