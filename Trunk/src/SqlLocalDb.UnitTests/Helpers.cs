@@ -14,7 +14,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
+using System.Security.Principal;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace System.Data.SqlLocalDb
@@ -25,6 +26,24 @@ namespace System.Data.SqlLocalDb
     internal static class Helpers
     {
         #region Methods
+
+        /// <summary>
+        /// Ensures that the current user has Administrative privileges.
+        /// </summary>
+        /// <remarks>
+        /// Any unit test calling this method is marked as Inconclusive if
+        /// the current user does not have administrative privileges.
+        /// </remarks>
+        public static void EnsureUserIsAdmin()
+        {
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                if (!new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    Assert.Inconclusive("The current user '{0}' does not have Administrator privileges.", identity.Name);
+                }
+            }
+        }
 
         /// <summary>
         /// Ensures that SQL Server LocalDB is installed on the current machine.

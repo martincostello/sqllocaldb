@@ -328,6 +328,7 @@ namespace System.Data.SqlLocalDb
         public void ShareInstance()
         {
             Helpers.EnsureLocalDBInstalled();
+            Helpers.EnsureUserIsAdmin();
 
             string instanceName = Guid.NewGuid().ToString();
             string sharedName = Guid.NewGuid().ToString();
@@ -681,6 +682,7 @@ namespace System.Data.SqlLocalDb
         public void UnshareInstance()
         {
             Helpers.EnsureLocalDBInstalled();
+            Helpers.EnsureUserIsAdmin();
 
             string instanceName = Guid.NewGuid().ToString();
             string sharedName = Guid.NewGuid().ToString();
