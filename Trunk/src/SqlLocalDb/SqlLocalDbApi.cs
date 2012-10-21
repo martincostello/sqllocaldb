@@ -734,7 +734,7 @@ namespace System.Data.SqlLocalDb
         /// Returns an <see cref="Exception"/> representing the specified LocalDB HRESULT.
         /// </summary>
         /// <param name="hr">The HRESULT returned by the LocalDB API.</param>
-        /// <param name="traceEventId">The trace event Id associated with the error, if any.</param>
+        /// <param name="traceEventId">The trace event Id associated with the error.</param>
         /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
         /// <returns>
         /// An <see cref="Exception"/> representing <paramref name="hr"/>.
