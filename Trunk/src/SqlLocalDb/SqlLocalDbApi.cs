@@ -485,7 +485,7 @@ namespace System.Data.SqlLocalDb
             {
                 // There is a bug in the SQL LocalDB native API that
                 // lets you share out an instance with no name, which
-                // the causes "interesting" results when using the other
+                // then causes "interesting" results when using the other
                 // API functions on it.  Block this explicitly to stop
                 // callers messing up their LocalDB instance.
                 throw new ArgumentException(SR.SqlLocalDbApi_NoInstanceName, "instanceName");

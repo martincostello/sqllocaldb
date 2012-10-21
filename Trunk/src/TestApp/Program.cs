@@ -14,9 +14,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Principal;
 
 namespace System.Data.SqlLocalDb
 {
@@ -76,7 +76,13 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                localDb.Share(Guid.NewGuid().ToString());
+                // SQL LocalDB will let you call Share() successfully if the process
+                // is not running elevated, but won't actually share the instance, causing
+                // the complementary call to Unshare() to fail.
+                if (IsCurrentUserAdmin())
+                {
+                    localDb.Share(Guid.NewGuid().ToString());
+                }
 
                 try
                 {
@@ -104,7 +110,10 @@ namespace System.Data.SqlLocalDb
                 }
                 finally
                 {
-                    localDb.Unshare();
+                    if (IsCurrentUserAdmin())
+                    {
+                        localDb.Unshare();
+                    }
                 }
             }
             finally
@@ -116,6 +125,22 @@ namespace System.Data.SqlLocalDb
             Console.WriteLine();
             Console.Write(Strings.Program_ExitPrompt);
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Returns whether the current user is in the administrators group on the local machine.
+        /// </summary>
+        /// <returns>
+        /// <see langword="true"/> if the current user is in the administrators
+        /// group on the local machine; otherwise <see langword="false"/>.
+        /// </returns>
+        private static bool IsCurrentUserAdmin()
+        {
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
         }
 
         #endregion
