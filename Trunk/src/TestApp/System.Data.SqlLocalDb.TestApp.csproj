@@ -88,6 +88,7 @@
     <None Include="..\SqlLocalDb.Common.targets">
       <Link>SqlLocalDb.Common.targets</Link>
     </None>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CommonVersionInfo.h">

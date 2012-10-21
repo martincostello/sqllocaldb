@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -175,14 +176,18 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("version");
             }
 
+            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatingFormat, instanceName, version);
+
             int hr = NativeMethods.CreateInstance(
                 version,
                 instanceName);
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr, instanceName);
+                throw GetLocalDbError(hr, Logger.TraceEvent.CreateInstance, instanceName);
             }
+
+            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatedFormat, instanceName, version);
         }
 
         /// <summary>
@@ -207,12 +212,16 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("instanceName");
             }
 
+            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);
+
             int hr = NativeMethods.DeleteInstance(instanceName);
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr, instanceName);
+                throw GetLocalDbError(hr, Logger.TraceEvent.DeleteInstance, instanceName);
             }
+
+            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogDeletedFormat, instanceName);
         }
 
         /// <summary>
@@ -240,7 +249,9 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("instanceName");
             }
 
-            int size = Marshal.SizeOf(typeof(LocalDBInstanceInfo));
+            Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGettingInfoFormat, instanceName);
+
+            int size = LocalDBInstanceInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
 
             try
@@ -252,12 +263,12 @@ namespace System.Data.SqlLocalDb
 
                 if (hr != 0)
                 {
-                    throw GetLocalDbError(hr, instanceName);
+                    throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceInfo, instanceName);
                 }
 
-                LocalDBInstanceInfo info = (LocalDBInstanceInfo)Marshal.PtrToStructure(
-                    ptrInfo,
-                    typeof(LocalDBInstanceInfo));
+                LocalDBInstanceInfo info = MarshalStruct<LocalDBInstanceInfo>(ptrInfo);
+
+                Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGotInfoFormat, instanceName);
 
                 return info;
             }
@@ -285,6 +296,8 @@ namespace System.Data.SqlLocalDb
             Justification = "Requires enumeration of native API and allocating unmanaged memory.")]
         public static IList<string> GetInstanceNames()
         {
+            Logger.Verbose(Logger.TraceEvent.GetInstanceNames, SR.SqlLocalDbApi_LogGetInstances);
+
             // Query the LocalDB API to get the number of instances
             int count = 0;
             int hr = NativeMethods.GetInstanceNames(IntPtr.Zero, ref count);
@@ -292,7 +305,7 @@ namespace System.Data.SqlLocalDb
             if (hr != 0 &&
                 hr != SqlLocalDbErrors.InsufficientBuffer)
             {
-                throw GetLocalDbError(hr);
+                throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceNames);
             }
 
             if (count == 0)
@@ -311,7 +324,7 @@ namespace System.Data.SqlLocalDb
 
                 if (hr != 0)
                 {
-                    throw GetLocalDbError(hr);
+                    throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceNames);
                 }
 
                 // Read the instance names back from unmanaged memory
@@ -323,6 +336,8 @@ namespace System.Data.SqlLocalDb
                     IntPtr offset = new IntPtr(ptrNames.ToInt64() + (nameLength * i));
                     names[i] = Marshal.PtrToStringAuto(offset);
                 }
+
+                Logger.Verbose(Logger.TraceEvent.GetInstanceNames, SR.SqlLocalDbApi_LogGotInstancesFormat, names.Length);
 
                 return names;
             }
@@ -357,7 +372,9 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("version");
             }
 
-            int size = Marshal.SizeOf(typeof(LocalDBVersionInfo));
+            Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGetVersionInfoFormat, version);
+
+            int size = LocalDBVersionInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
 
             try
@@ -369,12 +386,12 @@ namespace System.Data.SqlLocalDb
 
                 if (hr != 0)
                 {
-                    throw GetLocalDbError(hr);
+                    throw GetLocalDbError(hr, Logger.TraceEvent.GetVersionInfo);
                 }
 
-                LocalDBVersionInfo info = (LocalDBVersionInfo)Marshal.PtrToStructure(
-                    ptrInfo,
-                    typeof(LocalDBVersionInfo));
+                LocalDBVersionInfo info = MarshalStruct<LocalDBVersionInfo>(ptrInfo);
+
+                Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGotVersionInfoFormat, version);
 
                 return info;
             }
@@ -474,6 +491,8 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentException(SR.SqlLocalDbApi_NoInstanceName, "instanceName");
             }
 
+            Logger.Verbose(Logger.TraceEvent.ShareInstance, SR.SqlLocalDbApi_LogSharingInstanceFormat, instanceName, ownerSid, sharedInstanceName);
+
             // Get the binary version of the SID from its string
             SecurityIdentifier sid = new SecurityIdentifier(ownerSid);
             byte[] binaryForm = new byte[SecurityIdentifier.MaxBinaryLength];
@@ -493,8 +512,10 @@ namespace System.Data.SqlLocalDb
 
                 if (hr != 0)
                 {
-                    throw GetLocalDbError(hr, instanceName);
+                    throw GetLocalDbError(hr, Logger.TraceEvent.ShareInstance, instanceName);
                 }
+
+                Logger.Verbose(Logger.TraceEvent.ShareInstance, SR.SqlLocalDbApi_LogSharedInstanceFormat, instanceName, ownerSid, sharedInstanceName);
             }
             finally
             {
@@ -525,6 +546,8 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("instanceName");
             }
 
+            Logger.Verbose(Logger.TraceEvent.StartInstance, SR.SqlLocalDbApi_LogStartingFormat, instanceName);
+
             StringBuilder buffer = new StringBuilder(NativeMethods.LOCALDB_MAX_SQLCONNECTION_BUFFER_SIZE + 1);
             int size = buffer.Capacity;
 
@@ -535,10 +558,14 @@ namespace System.Data.SqlLocalDb
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr, instanceName);
+                throw GetLocalDbError(hr, Logger.TraceEvent.StartInstance, instanceName);
             }
 
-            return buffer.ToString();
+            string namedPipe = buffer.ToString();
+
+            Logger.Verbose(Logger.TraceEvent.StartInstance, SR.SqlLocalDbApi_LogStartedFormat, instanceName, namedPipe);
+
+            return namedPipe;
         }
 
         /// <summary>
@@ -550,12 +577,16 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void StartTracing()
         {
+            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStartTracing);
+
             int hr = NativeMethods.StartTracing();
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr);
+                throw GetLocalDbError(hr, Logger.TraceEvent.StartTracing);
             }
+
+            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStartedTracing);
         }
 
         /// <summary>
@@ -621,14 +652,21 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentOutOfRangeException("timeout", timeout, message);
             }
 
+            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppingFormat, instanceName, timeout);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             int hr = NativeMethods.StopInstance(
                 instanceName,
                 (int)timeout.TotalSeconds);
 
+            stopwatch.Stop();
+
             if (hr != 0)
             {
-                throw GetLocalDbError(hr, instanceName);
+                throw GetLocalDbError(hr, Logger.TraceEvent.StopInstance, instanceName);
             }
+
+            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppedFormat, instanceName, stopwatch.Elapsed);
         }
 
         /// <summary>
@@ -640,12 +678,16 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void StopTracing()
         {
+            Logger.Verbose(Logger.TraceEvent.StopTracing, SR.SqlLocalDbApi_LogStoppingTracing);
+
             int hr = NativeMethods.StopTracing();
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr);
+                throw GetLocalDbError(hr, Logger.TraceEvent.StopTracing);
             }
+
+            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStoppedTracing);
         }
 
         /// <summary>
@@ -676,30 +718,40 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException("instanceName");
             }
 
+            Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppingSharingFormat, instanceName);
+
             int hr = NativeMethods.UnshareInstance(instanceName);
 
             if (hr != 0)
             {
-                throw GetLocalDbError(hr, instanceName);
+                throw GetLocalDbError(hr, Logger.TraceEvent.UnshareInstance, instanceName);
             }
+
+            Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppedSharingFormat, instanceName);
         }
 
         /// <summary>
         /// Returns an <see cref="Exception"/> representing the specified LocalDB HRESULT.
         /// </summary>
         /// <param name="hr">The HRESULT returned by the LocalDB API.</param>
+        /// <param name="traceEventId">The trace event Id associated with the error, if any.</param>
         /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
         /// <returns>
         /// An <see cref="Exception"/> representing <paramref name="hr"/>.
         /// </returns>
-        private static Exception GetLocalDbError(int hr, string instanceName = "")
+        private static Exception GetLocalDbError(int hr, int traceEventId, string instanceName = "")
         {
+            string message;
+
+            Logger.Error(traceEventId, SR.SqlLocalDbApi_LogNativeResultFormat, hr);
+
             if (hr == SqlLocalDbErrors.NotInstalled)
             {
-                string message = SRHelper.Format(
+                message = SRHelper.Format(
                     SR.SqlLocalDbApi_NotInstalledFormat,
                     Environment.MachineName);
 
+                Logger.Error(traceEventId, message);
                 throw new InvalidOperationException(message);
             }
 
@@ -716,20 +768,28 @@ namespace System.Data.SqlLocalDb
             if (hr2 != 0)
             {
                 // Use a generic message if getting the message from the API failed
-                string message = SRHelper.Format(
+                message = SRHelper.Format(
                     SR.SqlLocalDbApi_GenericFailureFormat,
                     hr2);
+
+                Logger.Error(traceEventId, message);
 
                 return new SqlLocalDbException(
                     message,
                     hr2,
                     instanceName);
             }
+            else
+            {
+                message = buffer.ToString();
 
-            return new SqlLocalDbException(
-                buffer.ToString(),
-                hr,
-                instanceName);
+                Logger.Error(traceEventId, message);
+
+                return new SqlLocalDbException(
+                    message,
+                    hr,
+                    instanceName);
+            }
         }
 
         /// <summary>
@@ -755,7 +815,7 @@ namespace System.Data.SqlLocalDb
                 if (hr != 0 &&
                     hr != SqlLocalDbErrors.InsufficientBuffer)
                 {
-                    throw GetLocalDbError(hr);
+                    throw GetLocalDbError(hr, Logger.TraceEvent.GetVersions);
                 }
 
                 // Allocate enough memory to receive the version name array
@@ -768,7 +828,7 @@ namespace System.Data.SqlLocalDb
 
                     if (hr != 0)
                     {
-                        throw GetLocalDbError(hr);
+                        throw GetLocalDbError(hr, Logger.TraceEvent.GetVersions);
                     }
 
                     // Read the version strings back from unmanaged memory
@@ -796,6 +856,20 @@ namespace System.Data.SqlLocalDb
                     e.InstanceName,
                     e);
             }
+        }
+
+        /// <summary>
+        /// Convenience method to marshal structures from unmanaged memory.
+        /// </summary>
+        /// <typeparam name="T">The type of structure to marshal from unmanaged memory.</typeparam>
+        /// <param name="ptr">A pointer to an unmanaged block of memory.</param>
+        /// <returns>
+        /// The instance of <typeparamref name="T"/> read from <paramref name="ptr"/>.
+        /// </returns>
+        private static T MarshalStruct<T>(IntPtr ptr)
+            where T : struct
+        {
+            return (T)Marshal.PtrToStructure(ptr, typeof(T));
         }
 
         #endregion

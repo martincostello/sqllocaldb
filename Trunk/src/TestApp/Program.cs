@@ -76,26 +76,35 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                using (SqlConnection connection = localDb.CreateConnection())
+                localDb.Share(Guid.NewGuid().ToString());
+
+                try
                 {
-                    connection.Open();
-
-                    try
+                    using (SqlConnection connection = localDb.CreateConnection())
                     {
-                        using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
-                        {
-                            command.ExecuteNonQuery();
-                        }
+                        connection.Open();
 
-                        using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
+                        try
                         {
-                            command.ExecuteNonQuery();
+                            using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+
+                            using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        finally
+                        {
+                            connection.Close();
                         }
                     }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                }
+                finally
+                {
+                    localDb.Unshare();
                 }
             }
             finally
@@ -103,6 +112,10 @@ namespace System.Data.SqlLocalDb
                 localDb.Stop();
                 SqlLocalDbInstance.Delete(localDb);
             }
+
+            Console.WriteLine();
+            Console.Write(Strings.Program_ExitPrompt);
+            Console.ReadKey();
         }
 
         #endregion

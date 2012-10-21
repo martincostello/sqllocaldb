@@ -59,6 +59,7 @@
     <Compile Include="ISqlLocalDbVersionInfo.cs" />
     <Compile Include="LocalDBInstanceInfo.cs" />
     <Compile Include="LocalDBVersionInfo.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlLocalDbErrors.cs" />

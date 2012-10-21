@@ -162,4 +162,73 @@
   <data name="SqlLocalDbApi_NoInstanceName" xml:space="preserve">
     <value>No SQL LocalDB instance name specified.</value>
   </data>
+  <data name="SqlLocalDbApi_LogCreatedFormat" xml:space="preserve">
+    <value>Created named instance of SQL LocalDB.  Instance name: '{0}'; version: '{1}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogCreatingFormat" xml:space="preserve">
+    <value>Creating named instance of SQL LocalDB.  Instance name: '{0}'; version: '{1}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogDeletedFormat" xml:space="preserve">
+    <value>Deleted named instance of SQL LocalDB '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogDeletingFormat" xml:space="preserve">
+    <value>Deleting named instance of SQL LocalDB '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGetInstances" xml:space="preserve">
+    <value>Getting instance names for SQL LocalDB.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGettingInfoFormat" xml:space="preserve">
+    <value>Getting information for SQL LocalDB instance '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGetVersionInfoFormat" xml:space="preserve">
+    <value>Getting version information for SQL LocalDB version '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGotInfoFormat" xml:space="preserve">
+    <value>Obtained information for SQL LocalDB instance '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGotInstancesFormat" xml:space="preserve">
+    <value>Obtained {0} instance names for SQL LocalDB.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGotVersionInfoFormat" xml:space="preserve">
+    <value>Obtained version information for SQL LocalDB version '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogNativeResultFormat" xml:space="preserve">
+    <value>SQL LocalDB returned HRESULT {0}.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogSharedInstanceFormat" xml:space="preserve">
+    <value>Shared SQL LocalDB instance '{0}' for owner SID '{1} as '{2}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogSharingInstanceFormat" xml:space="preserve">
+    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}.  Shared instance name: '{2}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStartedFormat" xml:space="preserve">
+    <value>Started SQL LocalDB instance '{0}' using named pipe '{1}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStartedTracing" xml:space="preserve">
+    <value>Tracing started for SQL LocalDB.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStartingFormat" xml:space="preserve">
+    <value>Starting SQL LocalDB instance '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStartTracing" xml:space="preserve">
+    <value>Starting tracing for SQL LocalDB.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppedFormat" xml:space="preserve">
+    <value>Stopped SQL LocalDB instance '{0}' after {1}.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppedSharingFormat" xml:space="preserve">
+    <value>Stopped sharing SQL LocalDB instance '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppedTracing" xml:space="preserve">
+    <value>Tracing stopped for SQL LocalDB.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppingFormat" xml:space="preserve">
+    <value>Stopping SQL LocalDB instance '{0}'.  Timeout: {1}.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppingSharingFormat" xml:space="preserve">
+    <value>Stopping sharing SQL LocalDB instance '{0}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogStoppingTracing" xml:space="preserve">
+    <value>Stopping tracing for SQL LocalDB.</value>
+  </data>
 </root>

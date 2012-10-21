@@ -78,6 +78,8 @@ namespace System.Data.SqlLocalDb
                     SR.SqlLocalDbFactory_InstanceExistsFormat,
                     instanceName);
 
+                Logger.Error(Logger.TraceEvent.CreateInstance, message);
+
                 throw new InvalidOperationException(message);
             }
 

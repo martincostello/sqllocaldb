@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
@@ -70,6 +69,8 @@ namespace System.Data.SqlLocalDb
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_InstanceNotFoundFormat,
                     instanceName);
+
+                Logger.Error(Logger.TraceEvent.General, message);
 
                 throw new InvalidOperationException(message);
             }
@@ -137,6 +138,8 @@ namespace System.Data.SqlLocalDb
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_DeleteFailedFormat,
                     instance.Name);
+
+                Logger.Error(Logger.TraceEvent.DeleteInstance, message);
 
                 throw new SqlLocalDbException(
                     message,
@@ -237,6 +240,8 @@ namespace System.Data.SqlLocalDb
                     SR.SqlLocalDbInstance_ShareFailedFormat,
                     _instanceName);
 
+                Logger.Error(Logger.TraceEvent.ShareInstance, message);
+
                 throw new SqlLocalDbException(
                     message,
                     e.ErrorCode,
@@ -263,6 +268,8 @@ namespace System.Data.SqlLocalDb
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_StartFailedFormat,
                     _instanceName);
+
+                Logger.Error(Logger.TraceEvent.StartInstance, message);
 
                 throw new SqlLocalDbException(
                     message,
@@ -291,6 +298,8 @@ namespace System.Data.SqlLocalDb
                     SR.SqlLocalDbInstance_StopFailedFormat,
                     _instanceName);
 
+                Logger.Error(Logger.TraceEvent.StopInstance, message);
+
                 throw new SqlLocalDbException(
                     message,
                     e.ErrorCode,
@@ -316,6 +325,8 @@ namespace System.Data.SqlLocalDb
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_UnshareFailedFormat,
                     _instanceName);
+
+                Logger.Error(Logger.TraceEvent.UnshareInstance, message);
 
                 throw new SqlLocalDbException(
                     message,
