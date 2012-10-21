@@ -124,7 +124,7 @@
     <value>SQL Server LocalDB is not installed on {0}.</value>
   </data>
   <data name="SqlLocalDbApi_NoVersionsFormat" xml:space="preserve">
-    <value>No versions of SQL Server LocalDB are not installed on {0}.</value>
+    <value>No versions of SQL Server LocalDB are installed on {0}.</value>
   </data>
   <data name="SqlLocalDbApi_TimeoutTooSmallFormat" xml:space="preserve">
     <value>{0} cannot be less than TimeSpan.Zero.</value>
