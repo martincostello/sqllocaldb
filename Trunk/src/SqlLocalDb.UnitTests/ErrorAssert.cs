@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -102,7 +101,7 @@ namespace System.Data.SqlLocalDb
         /// type derived from <see cref="ArgumentException"/>.
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="ArgumentException"/> expected to be thrown.</typeparam>
-        /// <param name="testCode">An <see cref="Func&lt;object&gt;"/> representing the code that should throw the exception.</param>
+        /// <param name="testCode">An <see cref="Func&lt;Object&gt;"/> representing the code that should throw the exception.</param>
         /// <param name="paramName">The expected name of the exception parameter.</param>
         /// <returns>
         /// The exception thrown by invoking <paramref name="testCode"/>.
@@ -125,7 +124,7 @@ namespace System.Data.SqlLocalDb
         /// Verifies that the specified delegate throws an exception of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="Exception"/> expected to be thrown.</typeparam>
-        /// <param name="testCode">An <see cref="Func&lt;object&gt;"/> representing the code that should throw the exception.</param>
+        /// <param name="testCode">An <see cref="Func&lt;Object&gt;"/> representing the code that should throw the exception.</param>
         /// <returns>
         /// The exception thrown by invoking <paramref name="testCode"/>.
         /// </returns>
@@ -188,11 +187,11 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Invokes the specified <see cref="Func&lt;object&gt;"/> delegate and
+        /// Invokes the specified <see cref="Func&lt;Object&gt;"/> delegate and
         /// returns any <see cref="Exception"/> thrown.
         /// </summary>
         /// <typeparam name="T">The type of exception expected to be thrown.</typeparam>
-        /// <param name="testCode">An <see cref="Func&lt;object&gt;"/> representing the code that should throw the exception.</param>
+        /// <param name="testCode">An <see cref="Func&lt;Object&gt;"/> representing the code that should throw the exception.</param>
         /// <returns>
         /// The <typeparamref name="T"/> exception thrown by invoking <paramref name="testCode"/>,
         /// if any was thrown; otherwise <see langword="null"/>.

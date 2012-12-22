@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalDBVersionInfo.cs" company="http://sqllocaldb.codeplex.com">
+// <copyright file="LocalDbVersionInfo.cs" company="http://sqllocaldb.codeplex.com">
 //   New BSD License (BSD)
 // </copyright>
 // <license>
@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -29,17 +28,17 @@ namespace System.Data.SqlLocalDb
     [DebuggerDisplay("{DebuggerDisplayName}")]
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    internal struct LocalDBVersionInfo : ISqlLocalDbVersionInfo
+    internal struct LocalDbVersionInfo : ISqlLocalDbVersionInfo
     {
         #region Fields
 
         /// <summary>
         /// The size of an unmanaged type in bytes.  This field is read-only.
         /// </summary>
-        internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDBVersionInfo));
+        internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDbVersionInfo));
 
         /// <summary>
-        /// The size of the <see cref="LocalDBVersionInfo"/> structure.
+        /// The size of the <see cref="LocalDbVersionInfo"/> structure.
         /// </summary>
         /// <remarks>
         /// Maps to the <c>cbLocalDBVersionInfoSize</c> member.
@@ -112,7 +111,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbVersionInfo.Name
         {
-            get { return System.Text.Encoding.Unicode.GetString(this.Name).TrimEnd(new char[] { '\0' }); }
+            get { return Text.Encoding.Unicode.GetString(this.Name).TrimEnd(new char[] { '\0' }); }
         }
 
         /// <summary>

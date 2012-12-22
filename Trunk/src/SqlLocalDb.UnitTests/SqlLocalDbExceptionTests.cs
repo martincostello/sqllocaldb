@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -83,12 +82,12 @@ namespace System.Data.SqlLocalDb
         [Description("Tests .ctor(string, int).")]
         public void Constructor_MessageErrorCode()
         {
-            int errorCode = 337519;
+            const int ErrorCode = 337519;
             string message = Guid.NewGuid().ToString();
 
-            SqlLocalDbException target = new SqlLocalDbException(message, errorCode);
+            SqlLocalDbException target = new SqlLocalDbException(message, ErrorCode);
 
-            Assert.AreEqual(errorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
+            Assert.AreEqual(ErrorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
             Assert.AreEqual(null, target.InstanceName, "The InstanceName property is incorrect.");
             Assert.AreEqual(message, target.Message, "The Message property is incorrect.");
         }
@@ -97,13 +96,13 @@ namespace System.Data.SqlLocalDb
         [Description("Tests .ctor(string, int, string).")]
         public void Constructor_MessageErrorCodeInstanceName()
         {
-            int errorCode = 337519;
+            const int ErrorCode = 337519;
             string instanceName = Guid.NewGuid().ToString();
             string message = Guid.NewGuid().ToString();
 
-            SqlLocalDbException target = new SqlLocalDbException(message, errorCode, instanceName);
+            SqlLocalDbException target = new SqlLocalDbException(message, ErrorCode, instanceName);
 
-            Assert.AreEqual(errorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
+            Assert.AreEqual(ErrorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
             Assert.AreEqual(instanceName, target.InstanceName, "The InstanceName property is incorrect.");
             Assert.AreEqual(message, target.Message, "The Message property is incorrect.");
         }
@@ -113,13 +112,13 @@ namespace System.Data.SqlLocalDb
         public void Constructor_MessageErrorCodeInstanceNameInnerException()
         {
             InvalidOperationException innerException = new InvalidOperationException();
-            int errorCode = 337519;
+            const int ErrorCode = 337519;
             string instanceName = Guid.NewGuid().ToString();
             string message = Guid.NewGuid().ToString();
 
-            SqlLocalDbException target = new SqlLocalDbException(message, errorCode, instanceName, innerException);
+            SqlLocalDbException target = new SqlLocalDbException(message, ErrorCode, instanceName, innerException);
 
-            Assert.AreEqual(errorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
+            Assert.AreEqual(ErrorCode, target.ErrorCode, "The ErrorCode property is incorrect.");
             Assert.AreSame(innerException, target.InnerException, "The InnerException property is incorrect.");
             Assert.AreEqual(instanceName, target.InstanceName, "The InstanceName property is incorrect.");
             Assert.AreEqual(message, target.Message, "The Message property is incorrect.");
@@ -130,11 +129,11 @@ namespace System.Data.SqlLocalDb
         public void Constructor_Serialization()
         {
             InvalidOperationException innerException = new InvalidOperationException();
-            int errorCode = 337519;
+            const int ErrorCode = 337519;
             string instanceName = Guid.NewGuid().ToString();
             string message = Guid.NewGuid().ToString();
 
-            SqlLocalDbException target = new SqlLocalDbException(message, errorCode, instanceName, innerException);
+            SqlLocalDbException target = new SqlLocalDbException(message, ErrorCode, instanceName, innerException);
 
             BinaryFormatter formatter = new BinaryFormatter();
 
@@ -161,7 +160,7 @@ namespace System.Data.SqlLocalDb
             SqlLocalDbException target = new SqlLocalDbException();
 
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => target.GetObjectData(null, new System.Runtime.Serialization.StreamingContext()),
+                () => target.GetObjectData(null, new Runtime.Serialization.StreamingContext()),
                 "info");
         }
 

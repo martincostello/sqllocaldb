@@ -64,7 +64,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the LOCALDB_ERROR_INSTANCE_FOLDER_PATH_TOO_LONG error.
         /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
         public static readonly int InstanceFolderPathTooLong = unchecked((int)0x89c50104);
         
         /// <summary>
@@ -329,7 +329,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the LOCALDB_EDETAIL_DATADIRECTORY_IS_TOO_LONG error.
         /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
         public static readonly int DataDirectoryIsTooLong = unchecked((int)0x89c50202);
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the LOCALDB_EDETAIL_PARENT_INSTANCE_IS_TOO_LONG error.
         /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
         public static readonly int ParentInstanceIsTooLong = unchecked((int)0x89c50204);
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the LOCALDB_EDETAIL_XEVENT_CONF_FILE_NAME_TOO_LONG error.
         /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
         public static readonly int XEventConfigFileTooLong = unchecked((int)0x89c5020d);
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the LOCALDB_EDETAIL_COINITIALIZEEX_FAILED error.
         /// </remarks>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Co", Justification = "Is part of a function name.")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Co", Justification = "Is part of a function name.")]
         public static readonly int CoInitializeExFailed = unchecked((int)0x89c5020e);
 
         /// <summary>

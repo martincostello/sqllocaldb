@@ -50,7 +50,7 @@ namespace System.Data.SqlLocalDb
         /// An <see cref="IList&lt;ISqlLocalDbInstanceInfo&gt;"/> containing information
         /// about the available SQL Server LocalDB instances on the current machine.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Design",
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires querying the native LocalDB API.")]
@@ -63,7 +63,7 @@ namespace System.Data.SqlLocalDb
         /// An <see cref="IList&lt;ISqlLocalDbVersionInfo&gt;"/> containing information
         /// about the SQL Server LocalDB versions installed on the current machine.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Design",
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires querying the native LocalDB API.")]

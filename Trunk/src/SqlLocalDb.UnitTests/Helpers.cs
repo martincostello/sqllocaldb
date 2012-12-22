@@ -15,7 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Security.Principal;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace System.Data.SqlLocalDb

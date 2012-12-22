@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -29,17 +28,17 @@ namespace System.Data.SqlLocalDb
     /// </remarks>
     [DebuggerDisplay("{DebuggerDisplayName}")]
     [StructLayout(LayoutKind.Sequential)]
-    internal struct LocalDBInstanceInfo : ISqlLocalDbInstanceInfo
+    internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     {
         #region Fields
 
         /// <summary>
         /// The size of an unmanaged type in bytes.  This field is read-only.
         /// </summary>
-        internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDBInstanceInfo));
+        internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDbInstanceInfo));
 
         /// <summary>
-        /// Contains the size of the <see cref="LocalDBInstanceInfo"/> struct.
+        /// Contains the size of the <see cref="LocalDbInstanceInfo"/> struct.
         /// </summary>
         /// <remarks>
         /// Maps to the <c>cbLocalDBInstanceInfoSize</c> member.
@@ -119,7 +118,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>ftLastStartUTC</c> member.
         /// </remarks>
-        internal System.Runtime.InteropServices.ComTypes.FILETIME LastStartUtc;
+        internal Runtime.InteropServices.ComTypes.FILETIME LastStartUtc;
 
         /// <summary>
         /// The named pipe that should be used to communicate with the instance.

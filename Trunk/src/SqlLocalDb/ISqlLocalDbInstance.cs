@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Data.SqlClient;
 
 namespace System.Data.SqlLocalDb
@@ -63,7 +62,7 @@ namespace System.Data.SqlLocalDb
         /// An instance of <see cref="ISqlLocalDbInstanceInfo"/> containing
         /// information about the LocalDB instance.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Design",
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires querying the LocalDB native API.")]
@@ -83,7 +82,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Stops the LocalDB instance.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1716:IdentifiersShouldNotMatchKeywords",
             MessageId = "Stop",
@@ -93,7 +92,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Stops sharing the LocalDB instance.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",

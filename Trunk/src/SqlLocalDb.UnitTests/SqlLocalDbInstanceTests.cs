@@ -14,8 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Data;
 using System.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -279,16 +277,16 @@ namespace System.Data.SqlLocalDb
         {
             Helpers.EnsureLocalDBInstalled();
 
-            string instanceName = "\0";
+            const string InstanceName = "\0";
 
             Mock<ISqlLocalDbInstance> instance = new Mock<ISqlLocalDbInstance>();
-            instance.Setup((i) => i.Name).Returns(instanceName);
+            instance.Setup((i) => i.Name).Returns(InstanceName);
 
             SqlLocalDbException error = ErrorAssert.Throws<SqlLocalDbException>(
                 () => SqlLocalDbInstance.Delete(instance.Object));
 
             Assert.AreEqual(SqlLocalDbErrors.InvalidParameter, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
-            Assert.AreEqual(instanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
+            Assert.AreEqual(InstanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
 
             throw error;
         }
@@ -590,7 +588,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Unshare() if the instance is started.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -641,7 +639,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Unshare() if an error occurs.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",

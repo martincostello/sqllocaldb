@@ -28,7 +28,17 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public static class SqlLocalDbApi
     {
-        #region Fields
+        #region Constants and Fields
+
+        /// <summary>
+        /// The maximum length of an SQL LocalDB instance name, in bytes.
+        /// </summary>
+        private const int MaxInstanceNameLength = (NativeMethods.MAX_LOCALDB_INSTANCE_NAME_LENGTH + 1) * sizeof(char);
+
+        /// <summary>
+        /// The maximum length of an SQL LocalDB version string, in bytes.
+        /// </summary>
+        private const int MaxVersionLength = (NativeMethods.MAX_LOCALDB_VERSION_LENGTH + 1) * sizeof(char);
 
         /// <summary>
         /// The available versions of SQL Server LocalDB installed on the local machine.
@@ -55,7 +65,7 @@ namespace System.Data.SqlLocalDb
             get
             {
                 // Access through property to ensure initialized
-                IList<string> versions = SqlLocalDbApi.Versions;
+                IList<string> versions = Versions;
 
                 if (versions.Count < 1)
                 {
@@ -146,7 +156,7 @@ namespace System.Data.SqlLocalDb
         public static void CreateInstance(string instanceName)
         {
             // Use the latest version
-            CreateInstance(instanceName, SqlLocalDbApi.LatestVersion);
+            CreateInstance(instanceName, LatestVersion);
         }
 
         /// <summary>
@@ -251,7 +261,7 @@ namespace System.Data.SqlLocalDb
 
             Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGettingInfoFormat, instanceName);
 
-            int size = LocalDBInstanceInfo.MarshalSize;
+            int size = LocalDbInstanceInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
 
             try
@@ -266,7 +276,7 @@ namespace System.Data.SqlLocalDb
                     throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceInfo, instanceName);
                 }
 
-                LocalDBInstanceInfo info = MarshalStruct<LocalDBInstanceInfo>(ptrInfo);
+                LocalDbInstanceInfo info = MarshalStruct<LocalDbInstanceInfo>(ptrInfo);
 
                 Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGotInfoFormat, instanceName);
 
@@ -290,7 +300,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance names could not be determined.
         /// </exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Design",
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires enumeration of native API and allocating unmanaged memory.")]
@@ -315,7 +325,7 @@ namespace System.Data.SqlLocalDb
             }
 
             // Allocate enough memory to receive the instance name array
-            int nameLength = (NativeMethods.MAX_LOCALDB_INSTANCE_NAME_LENGTH + 1) * sizeof(char);
+            int nameLength = MaxInstanceNameLength;
             IntPtr ptrNames = Marshal.AllocHGlobal(nameLength * count);
 
             try
@@ -374,7 +384,7 @@ namespace System.Data.SqlLocalDb
 
             Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGetVersionInfoFormat, version);
 
-            int size = LocalDBVersionInfo.MarshalSize;
+            int size = LocalDbVersionInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
 
             try
@@ -389,7 +399,7 @@ namespace System.Data.SqlLocalDb
                     throw GetLocalDbError(hr, Logger.TraceEvent.GetVersionInfo);
                 }
 
-                LocalDBVersionInfo info = MarshalStruct<LocalDBVersionInfo>(ptrInfo);
+                LocalDbVersionInfo info = MarshalStruct<LocalDbVersionInfo>(ptrInfo);
 
                 Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGotVersionInfoFormat, version);
 
@@ -706,7 +716,7 @@ namespace System.Data.SqlLocalDb
         /// The SQL Server LocalDB instance specified by
         /// <paramref name="instanceName"/> could not be unshared.
         /// </exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -779,17 +789,15 @@ namespace System.Data.SqlLocalDb
                     hr2,
                     instanceName);
             }
-            else
-            {
-                message = buffer.ToString();
 
-                Logger.Error(traceEventId, message);
+            message = buffer.ToString();
 
-                return new SqlLocalDbException(
-                    message,
-                    hr,
-                    instanceName);
-            }
+            Logger.Error(traceEventId, message);
+
+            return new SqlLocalDbException(
+                message,
+                hr,
+                instanceName);
         }
 
         /// <summary>
@@ -819,7 +827,7 @@ namespace System.Data.SqlLocalDb
                 }
 
                 // Allocate enough memory to receive the version name array
-                int versionLength = (NativeMethods.MAX_LOCALDB_VERSION_LENGTH + 1) * sizeof(char);
+                int versionLength = MaxVersionLength;
                 IntPtr ptrVersions = Marshal.AllocHGlobal(versionLength * count);
 
                 try

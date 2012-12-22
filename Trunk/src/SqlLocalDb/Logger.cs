@@ -248,13 +248,13 @@ namespace System.Data.SqlLocalDb
         [SecurityCritical]
         private static void Initialize()
         {
-            lock (Logger.SyncRoot)
+            lock (SyncRoot)
             {
                 if (!_initialized)
                 {
                     _traceSource = new TraceSource(TraceSourceName);
 
-                    bool loggingEnabled = false;
+                    bool loggingEnabled;
 
                     try
                     {
@@ -269,8 +269,8 @@ namespace System.Data.SqlLocalDb
                     if (loggingEnabled)
                     {
                         AppDomain currentDomain = AppDomain.CurrentDomain;
-                        currentDomain.DomainUnload += new EventHandler(DomainUnloadOrProcessExit);
-                        currentDomain.ProcessExit += new EventHandler(DomainUnloadOrProcessExit);
+                        currentDomain.DomainUnload += DomainUnloadOrProcessExit;
+                        currentDomain.ProcessExit += DomainUnloadOrProcessExit;
                     }
 
                     _enabled = loggingEnabled;

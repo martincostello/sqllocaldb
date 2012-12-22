@@ -30,7 +30,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// The main entry point to the application.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
             Justification = "It isn't.")]

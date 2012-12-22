@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -66,7 +65,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -83,7 +82,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -102,7 +101,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -127,7 +126,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -150,7 +149,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -172,7 +171,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -193,7 +192,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -211,7 +210,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -235,7 +234,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -253,7 +252,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -270,7 +269,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -286,7 +285,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
@@ -301,7 +300,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         [DllImport(InteropLibName, CharSet = CharSet.Auto)]
         [SecurityCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]

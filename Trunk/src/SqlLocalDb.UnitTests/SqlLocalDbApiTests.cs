@@ -14,7 +14,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -214,7 +213,7 @@ namespace System.Data.SqlLocalDb
             ISqlLocalDbInstanceInfo result = SqlLocalDbApi.GetInstanceInfo(instanceName);
 
             Assert.IsNotNull(result, "GetInstanceInfo() returned null.");
-            Assert.IsInstanceOfType(result, typeof(LocalDBInstanceInfo), "GetInstanceInfo() returned incorrect type.");
+            Assert.IsInstanceOfType(result, typeof(LocalDbInstanceInfo), "GetInstanceInfo() returned incorrect type.");
             Assert.AreEqual(instanceName, result.Name, "ISqlLocalDbInstanceInfo.Name is incorrect.");
 
             Assert.IsFalse(result.ConfigurationCorrupt, "ISqlLocalDbInstanceInfo.ConfigurationCorrupt is incorrect.");
@@ -280,7 +279,7 @@ namespace System.Data.SqlLocalDb
             ISqlLocalDbVersionInfo result = SqlLocalDbApi.GetVersionInfo(version);
 
             Assert.IsNotNull(result, "GetVersionInfo() returned null.");
-            Assert.IsInstanceOfType(result, typeof(LocalDBVersionInfo), "GetVersionInfo() returned incorrect type.");
+            Assert.IsInstanceOfType(result, typeof(LocalDbVersionInfo), "GetVersionInfo() returned incorrect type.");
             Assert.IsTrue(result.Exists, "ISqlLocalDbVersionInfo.Exists is incorrect.");
             Assert.IsNotNull(result.Name, "ISqlLocalDbVersionInfo.Name is null.");
             Assert.IsNotNull(result.Version, "ISqlLocalDbVersionInfo.Version is null.");
@@ -637,7 +636,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests UnshareInstance() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -652,7 +651,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests UnshareInstance() if instanceName does not exist.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -674,7 +673,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests UnshareInstance().")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",

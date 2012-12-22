@@ -168,10 +168,8 @@ namespace System.Data.SqlLocalDb
             {
                 return new SqlConnection();
             }
-            else
-            {
-                return new SqlConnection(builder.ConnectionString);
-            }
+            
+            return new SqlConnection(builder.ConnectionString);
         }
 
         /// <summary>
