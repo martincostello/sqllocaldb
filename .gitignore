@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+.metadata
+.settings
+_ReSharper*
+bin
+Bin
+BuildOutput
+obj
+packages
+StyleCop.Cache
+*.DotSettings
+*.sln.cache
+*.suo
+*.user

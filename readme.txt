@@ -1,0 +1,1 @@
+This Git repository contains the code for the SQL LocalDB Wrapper assembly.
