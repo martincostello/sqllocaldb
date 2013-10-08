@@ -231,4 +231,7 @@
   <data name="SqlLocalDbApi_LogStoppingTracing" xml:space="preserve">
     <value>Stopping tracing for SQL LocalDB.</value>
   </data>
+  <data name="Extensions_NoConnectionStringFormat" xml:space="preserve">
+    <value>No connection string named '{0}' can be found in the application configuration file.</value>
+  </data>
 </root>

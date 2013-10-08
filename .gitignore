@@ -8,10 +8,14 @@ _ReSharper*
 bin
 Bin
 BuildOutput
+InternalAssemblies
 obj
 packages
 StyleCop.Cache
+TestResults
 *.DotSettings
+*.opensdf
+*.sdf
 *.sln.cache
 *.suo
 *.user

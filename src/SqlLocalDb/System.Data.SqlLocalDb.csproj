@@ -39,7 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +55,8 @@
       <Link>AssemblyVersion.targets</Link>
     </None>
     <None Include="ErrorHelper.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ISqlLocalDbInstance.cs" />
     <Compile Include="ISqlLocalDbProvider.cs" />
     <Compile Include="ISqlLocalDbInstanceInfo.cs" />
