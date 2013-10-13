@@ -191,7 +191,7 @@ namespace System.Data.SqlLocalDb
             }
 
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder["Server"] = _namedPipe;
+            builder.DataSource = _namedPipe;
             return builder;
         }
 
