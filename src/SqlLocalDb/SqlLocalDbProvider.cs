@@ -20,13 +20,52 @@ namespace System.Data.SqlLocalDb
     [Serializable]
     public class SqlLocalDbProvider : ISqlLocalDbProvider
     {
-        #region Constructor
+        #region Fields
+
+        /// <summary>
+        /// The instance of <see cref="ISqlLocalDbApi"/> in use by the provider.
+        /// </summary>
+        private readonly ISqlLocalDbApi _localDB;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbProvider"/> class.
         /// </summary>
         public SqlLocalDbProvider()
         {
+            _localDB = SqlLocalDbApiWrapper.Instance;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbProvider"/> class.
+        /// </summary>
+        /// <param name="localDB">The instance of <see cref="ISqlLocalDbApi"/> to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="localDB"/> is <see langword="null"/>.
+        /// </exception>
+        public SqlLocalDbProvider(ISqlLocalDbApi localDB)
+        {
+            if (localDB == null)
+            {
+                throw new ArgumentNullException("localDB");
+            }
+
+            _localDB = localDB;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the <see cref="ISqlLocalDbApi"/> in use by the instance.
+        /// </summary>
+        internal ISqlLocalDbApi LocalDB
+        {
+            get { return _localDB; }
         }
 
         #endregion
@@ -58,14 +97,20 @@ namespace System.Data.SqlLocalDb
         /// <paramref name="instanceName"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// The LocalDB instance specified by <paramref name="instanceName"/> already exists.
+        /// The LocalDB instance specified by <paramref name="instanceName"/> already exists or
+        /// no LocalDB instance information was returned by the underlying SQL LocalDB API.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The LocalDB instance specified by <paramref name="instanceName"/> could not be created.
         /// </exception>
         public virtual SqlLocalDbInstance CreateInstance(string instanceName)
         {
-            ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
+            ISqlLocalDbInstanceInfo info = _localDB.GetInstanceInfo(instanceName);
+
+            if (info == null)
+            {
+                throw new InvalidOperationException(SR.SqlLocalDbProvider_NoInstance);
+            }
 
             if (info.Exists)
             {
@@ -78,7 +123,7 @@ namespace System.Data.SqlLocalDb
                 throw new InvalidOperationException(message);
             }
 
-            SqlLocalDbApi.CreateInstance(instanceName);
+            _localDB.CreateInstance(instanceName, _localDB.LatestVersion);
             return GetInstance(instanceName);
         }
 
@@ -100,7 +145,7 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public virtual SqlLocalDbInstance GetInstance(string instanceName)
         {
-            return new SqlLocalDbInstance(instanceName);
+            return new SqlLocalDbInstance(instanceName, _localDB);
         }
 
         /// <summary>
@@ -112,14 +157,17 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         public virtual IList<ISqlLocalDbInstanceInfo> GetInstances()
         {
-            IList<string> instanceNames = SqlLocalDbApi.Versions;
+            IList<string> instanceNames = _localDB.Versions;
 
             List<ISqlLocalDbInstanceInfo> instances = new List<ISqlLocalDbInstanceInfo>();
 
-            foreach (string name in instanceNames)
+            if (instanceNames != null)
             {
-                ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(name);
-                instances.Add(info);
+                foreach (string name in instanceNames)
+                {
+                    ISqlLocalDbInstanceInfo info = _localDB.GetInstanceInfo(name);
+                    instances.Add(info);
+                }
             }
 
             return instances;
@@ -134,14 +182,17 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         public virtual IList<ISqlLocalDbVersionInfo> GetVersions()
         {
-            IList<string> versionNames = SqlLocalDbApi.Versions;
+            IList<string> versionNames = _localDB.Versions;
 
             List<ISqlLocalDbVersionInfo> versions = new List<ISqlLocalDbVersionInfo>();
 
-            foreach (string version in versionNames)
+            if (versionNames != null)
             {
-                ISqlLocalDbVersionInfo info = SqlLocalDbApi.GetVersionInfo(version);
-                versions.Add(info);
+                foreach (string version in versionNames)
+                {
+                    ISqlLocalDbVersionInfo info = _localDB.GetVersionInfo(version);
+                    versions.Add(info);
+                }
             }
 
             return versions;

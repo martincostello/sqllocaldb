@@ -410,5 +410,14 @@ namespace System.Data.SqlLocalDb {
                 return ResourceManager.GetString("SqlLocalDbInstance_UnshareFailedFormat", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No SQL LocalDB instance returned by underlying SQL LocalDB API..
+        /// </summary>
+        internal static string SqlLocalDbProvider_NoInstance {
+            get {
+                return ResourceManager.GetString("SqlLocalDbProvider_NoInstance", resourceCulture);
+            }
+        }
     }
 }

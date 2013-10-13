@@ -52,15 +52,36 @@ namespace System.Data.SqlLocalDb
         /// The LocalDB instance specified by <paramref name="instanceName"/> could not be obtained.
         /// </exception>
         public SqlLocalDbInstance(string instanceName)
+            : this(instanceName, SqlLocalDbApiWrapper.Instance)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbInstance"/> class.
+        /// </summary>
+        /// <param name="instanceName">The name of the SQL Server LocalDB instance.</param>
+        /// <param name="localDB">The <see cref="ISqlLocalDbApi"/> instance to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The LocalDB instance specified by <paramref name="instanceName"/> does not exist.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The LocalDB instance specified by <paramref name="instanceName"/> could not be obtained.
+        /// </exception>
+        internal SqlLocalDbInstance(string instanceName, ISqlLocalDbApi localDB)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException("instanceName");
             }
 
-            ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
+            Debug.Assert(localDB != null, "localDB cannot be  null.");
 
-            if (!info.Exists)
+            ISqlLocalDbInstanceInfo info = localDB.GetInstanceInfo(instanceName);
+
+            if (info == null || !info.Exists)
             {
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_InstanceNotFoundFormat,

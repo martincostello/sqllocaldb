@@ -32,7 +32,9 @@ namespace System.Data.SqlLocalDb
             Justification = "It isn't.")]
         internal static void Main()
         {
-            if (!SqlLocalDbApi.IsLocalDBInstalled())
+            ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
+
+            if (!localDB.IsLocalDBInstalled())
             {
                 Console.WriteLine(SR.SqlLocalDbApi_NotInstalledFormat, Environment.MachineName);
                 return;
@@ -57,18 +59,18 @@ namespace System.Data.SqlLocalDb
             Console.WriteLine(Strings.Program_InstancesListHeader);
             Console.WriteLine();
 
-            foreach (ISqlLocalDbInstanceInfo instance in instances)
+            foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
             {
-                Console.WriteLine(instance.Name);
+                Console.WriteLine(instanceInfo.Name);
             }
 
             Console.WriteLine();
 
             string instanceName = Guid.NewGuid().ToString();
 
-            ISqlLocalDbInstance localDb = factory.CreateInstance(instanceName);
+            ISqlLocalDbInstance instance = factory.CreateInstance(instanceName);
 
-            localDb.Start();
+            instance.Start();
 
             try
             {
@@ -77,12 +79,12 @@ namespace System.Data.SqlLocalDb
                 // the complementary call to Unshare() to fail.
                 if (IsCurrentUserAdmin())
                 {
-                    localDb.Share(Guid.NewGuid().ToString());
+                    instance.Share(Guid.NewGuid().ToString());
                 }
 
                 try
                 {
-                    using (SqlConnection connection = localDb.CreateConnection())
+                    using (SqlConnection connection = instance.CreateConnection())
                     {
                         connection.Open();
 
@@ -108,14 +110,14 @@ namespace System.Data.SqlLocalDb
                 {
                     if (IsCurrentUserAdmin())
                     {
-                        localDb.Unshare();
+                        instance.Unshare();
                     }
                 }
             }
             finally
             {
-                localDb.Stop();
-                SqlLocalDbInstance.Delete(localDb);
+                instance.Stop();
+                localDB.DeleteInstance(instance.Name);
             }
 
             Console.WriteLine();
