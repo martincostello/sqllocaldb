@@ -71,6 +71,85 @@ namespace System.Data.SqlLocalDb
                 Assert.IsNotNull(result, "GetConnectionForModel() returned null.");
                 Assert.IsInstanceOfType(result, typeof(EntityConnection), "GetConnectionForModel() returned incorrect type.");
                 StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+                StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+                Assert.AreEqual(ConnectionState.Closed, result.State, "DbConnection.State is incorrect.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionForModel() returns a connection if initialCatalog is null.")]
+        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Null()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = string.Empty;
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            using (DbConnection result = instance.GetConnectionForModel(modelConnectionStringName, initialCatalog))
+            {
+                // Assert
+                Assert.IsNotNull(result, "GetConnectionForModel() returned null.");
+                Assert.IsInstanceOfType(result, typeof(EntityConnection), "GetConnectionForModel() returned incorrect type.");
+                StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+                StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+                Assert.AreEqual(ConnectionState.Closed, result.State, "DbConnection.State is incorrect.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionForModel() returns a connection if initialCatalog is the empty string.")]
+        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Empty()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = string.Empty;
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            using (DbConnection result = instance.GetConnectionForModel(modelConnectionStringName, initialCatalog))
+            {
+                // Assert
+                Assert.IsNotNull(result, "GetConnectionForModel() returned null.");
+                Assert.IsInstanceOfType(result, typeof(EntityConnection), "GetConnectionForModel() returned incorrect type.");
+                StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+                StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+                Assert.AreEqual(ConnectionState.Closed, result.State, "DbConnection.State is incorrect.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionForModel() returns a connection if an Initial Catalog is specified.")]
+        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Specified()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = "MyOtherDatabase";
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            using (DbConnection result = instance.GetConnectionForModel(modelConnectionStringName, initialCatalog))
+            {
+                // Assert
+                Assert.IsNotNull(result, "GetConnectionForModel() returned null.");
+                Assert.IsInstanceOfType(result, typeof(EntityConnection), "GetConnectionForModel() returned incorrect type.");
+                StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+                StringAssert.Contains(result.ConnectionString, initialCatalog, "The Initial Catalog in the connection string was not changed.");
                 Assert.AreEqual(ConnectionState.Closed, result.State, "DbConnection.State is incorrect.");
             }
         }
@@ -125,6 +204,79 @@ namespace System.Data.SqlLocalDb
             Assert.IsNotNull(result, "GetConnectionStringForModel() returned null.");
             Assert.IsInstanceOfType(result, typeof(EntityConnectionStringBuilder), "GetConnectionStringForModel() returned incorrect type.");
             StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+            StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionStringForModel() returns a connection string if initialCatalog is null.")]
+        public void GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Null()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = null;
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            DbConnectionStringBuilder result = instance.GetConnectionStringForModel(modelConnectionStringName, initialCatalog);
+
+            // Assert
+            Assert.IsNotNull(result, "GetConnectionStringForModel() returned null.");
+            Assert.IsInstanceOfType(result, typeof(EntityConnectionStringBuilder), "GetConnectionStringForModel() returned incorrect type.");
+            StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+            StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionStringForModel() returns a connection string if initialCatalog is the empty string.")]
+        public void GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Empty()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = string.Empty;
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            DbConnectionStringBuilder result = instance.GetConnectionStringForModel(modelConnectionStringName, initialCatalog);
+
+            // Assert
+            Assert.IsNotNull(result, "GetConnectionStringForModel() returned null.");
+            Assert.IsInstanceOfType(result, typeof(EntityConnectionStringBuilder), "GetConnectionStringForModel() returned incorrect type.");
+            StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+            StringAssert.Contains(result.ConnectionString, "MyDatabase", "The Initial Catalog in the connection string was changed.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionStringForModel() returns a connection string if a different Initial Catalog is specified.")]
+        public void GetConnectionStringForModel_Returns_Connection_String_If_Initial_Catalog_Specified()
+        {
+            // Arrange
+            string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
+            string initialCatalog = "MyOtherDatabase";
+
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.NamedPipe).Returns(namedPipe);
+
+            ISqlLocalDbInstance instance = mock.Object;
+            string modelConnectionStringName = "MyDataContext";
+
+            // Act
+            DbConnectionStringBuilder result = instance.GetConnectionStringForModel(modelConnectionStringName, initialCatalog);
+
+            // Assert
+            Assert.IsNotNull(result, "GetConnectionStringForModel() returned null.");
+            Assert.IsInstanceOfType(result, typeof(EntityConnectionStringBuilder), "GetConnectionStringForModel() returned incorrect type.");
+            StringAssert.Contains(result.ConnectionString, namedPipe, "The named pipe is not present in the connection string.");
+            StringAssert.Contains(result.ConnectionString, initialCatalog, "The Initial Catalog in the connection string was not changed.");
         }
 
         #endregion

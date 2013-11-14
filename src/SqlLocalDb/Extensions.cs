@@ -47,6 +47,27 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Creates an instance of <see cref="DbConnection"/> that can be used to connect to the SQL LocalDB instance.
+        /// </summary>
+        /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> to get the connection string builder for.</param>
+        /// <param name="modelConnectionStringName">The name of the connection string for the model in the application configuration file.</param>
+        /// <param name="initialCatalog">The optional name to use for the Initial Catalog in the provider connection string to override the default, if present.</param>
+        /// <returns>
+        /// The created instance of <see cref="DbConnectionStringBuilder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// No connection string with the name specified by <paramref name="modelConnectionStringName"/> can be found in the application configuration file.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        public static DbConnection GetConnectionForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName, string initialCatalog)
+        {
+            DbConnectionStringBuilder builder = instance.GetConnectionStringForModel(modelConnectionStringName, initialCatalog);
+            return new EntityConnection(builder.ConnectionString);
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="DbConnectionStringBuilder"/> that can be used to connect to the SQL LocalDB instance.
         /// </summary>
         /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> to get the connection string builder for.</param>
@@ -61,6 +82,26 @@ namespace System.Data.SqlLocalDb
         /// <paramref name="instance"/> is <see langword="null"/>.
         /// </exception>
         public static DbConnectionStringBuilder GetConnectionStringForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName)
+        {
+            return instance.GetConnectionStringForModel(modelConnectionStringName, null);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="DbConnectionStringBuilder"/> that can be used to connect to the SQL LocalDB instance.
+        /// </summary>
+        /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> to get the connection string builder for.</param>
+        /// <param name="modelConnectionStringName">The name of the connection string for the model in the application configuration file.</param>
+        /// <param name="initialCatalog">The optional name to use for the Initial Catalog in the provider connection string to override the default, if present.</param>
+        /// <returns>
+        /// The created instance of <see cref="DbConnectionStringBuilder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// No connection string with the name specified by <paramref name="modelConnectionStringName"/> can be found in the application configuration file.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        public static DbConnectionStringBuilder GetConnectionStringForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName, string initialCatalog)
         {
             if (instance == null)
             {
@@ -83,6 +124,11 @@ namespace System.Data.SqlLocalDb
             {
                 DataSource = instance.NamedPipe,
             };
+
+            if (!string.IsNullOrEmpty(initialCatalog))
+            {
+                providerBuilder.InitialCatalog = initialCatalog;
+            }
 
             entityBuilder.ProviderConnectionString = providerBuilder.ConnectionString;
             return entityBuilder;
