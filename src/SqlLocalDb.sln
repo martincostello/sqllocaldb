@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb", "SqlLocalDb\System.Data.SqlLocalDb.csproj", "{B235F2A6-A8A2-4CE6-B3B0-54FFB89DE7DD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36} = {09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36}
@@ -12,14 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		AssemblyVersion.cs = AssemblyVersion.cs
 		AssemblyVersion.targets = AssemblyVersion.targets
-		Build.targets = Build.targets
+		Build.cmd = Build.cmd
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		CommonVersionInfo.h = CommonVersionInfo.h
 		FxCopDictionary.xml = FxCopDictionary.xml
 		license.txt = license.txt
-		Local.testsettings = Local.testsettings
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
+		SqlLocalDb.msbuild = SqlLocalDb.msbuild
 		SqlLocalDb.ruleset = SqlLocalDb.ruleset
+		SqlLocalDb.runsettings = SqlLocalDb.runsettings
 		SqlLocalDb.snk = SqlLocalDb.snk
 	EndProjectSection
 EndProject
