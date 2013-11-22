@@ -11,7 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #define VER_MAJOR          1
-#define VER_MINOR          2
-#define PRODUCT_VER_STRING "1.02"
+#define VER_MINOR          3
+#define PRODUCT_VER_STRING "1.03"
 #define COMMENTS           ""
 #include "sqllocaldb.rc"
