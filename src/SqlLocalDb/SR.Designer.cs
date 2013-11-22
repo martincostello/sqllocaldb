@@ -70,6 +70,24 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No connection strings are configured in the application configuration file..
+        /// </summary>
+        internal static string Extensions_NoConnectionStrings {
+            get {
+                return ResourceManager.GetString("Extensions_NoConnectionStrings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than one connection string is configured in the application configuration file.  The connection string name be be explicitly specified.  Other connection strings may be inherited from higher level configuration files such as machine.config..
+        /// </summary>
+        internal static string Extensions_NoSingleConnectionString {
+            get {
+                return ResourceManager.GetString("Extensions_NoSingleConnectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB.  HRESULT = {0}.
         /// </summary>
         internal static string SqlLocalDbApi_GenericFailureFormat {

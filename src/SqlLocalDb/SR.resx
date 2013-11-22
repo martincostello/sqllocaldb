@@ -237,4 +237,10 @@
   <data name="SqlLocalDbProvider_NoInstance" xml:space="preserve">
     <value>No SQL LocalDB instance returned by underlying SQL LocalDB API.</value>
   </data>
+  <data name="Extensions_NoConnectionStrings" xml:space="preserve">
+    <value>No connection strings are configured in the application configuration file.</value>
+  </data>
+  <data name="Extensions_NoSingleConnectionString" xml:space="preserve">
+    <value>More than one connection string is configured in the application configuration file.  The connection string name be be explicitly specified.  Other connection strings may be inherited from higher level configuration files such as machine.config.</value>
+  </data>
 </root>
