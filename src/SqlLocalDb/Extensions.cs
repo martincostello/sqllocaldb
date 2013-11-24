@@ -10,6 +10,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Common;
 using System.Data.EntityClient;
@@ -324,6 +325,54 @@ namespace System.Data.SqlLocalDb
             }
 
             return initialCatalog;
+        }
+
+        /// <summary>
+        /// Gets an SQL Local DB instance with the specified name if it exists, otherwise a new instance with the specified name is created.
+        /// </summary>
+        /// <param name="value">The <see cref="ISqlLocalDbProvider"/> to use to get or create the instance.</param>
+        /// <param name="instanceName">The name of the SQL Server LocalDB instance to get or create.</param>
+        /// <returns>
+        /// An SQL Local DB instance with the name specified by <paramref name="instanceName"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> or <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="value"/> returns <see langword="null"/> when queried for instances.
+        /// </exception>
+        public static ISqlLocalDbInstance GetOrCreateInstance(this ISqlLocalDbProvider value, string instanceName)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            if (instanceName == null)
+            {
+                throw new ArgumentNullException("instanceName");
+            }
+
+            bool instanceExists = false;
+            IList<ISqlLocalDbInstanceInfo> instances = value.GetInstances();
+
+            if (instances != null)
+            {
+                // Instance names in SQL Local DB are case-insensitive
+                instanceExists = instances
+                    .Where((p) => p != null)
+                    .Where((p) => string.Equals(p.Name, instanceName, StringComparison.OrdinalIgnoreCase))
+                    .Any();
+            }
+
+            if (instanceExists)
+            {
+                return value.GetInstance(instanceName);
+            }
+            else
+            {
+                return value.CreateInstance(instanceName);
+            }
         }
 
         /// <summary>

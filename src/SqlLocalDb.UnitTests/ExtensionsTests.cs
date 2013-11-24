@@ -626,6 +626,82 @@ namespace System.Data.SqlLocalDb
             Assert.IsNull(actual, "GetInitialCatalogName() returned incorrect value.  Value: {0}", actual);
         }
 
+        [TestMethod]
+        [Description("Tests GetOrCreateInstance() if value is null.")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetOrCreateInstance_Throws_If_Value_Is_Null()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = null;
+            string instanceName = Guid.NewGuid().ToString();
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentNullException>(
+                () => value.GetOrCreateInstance(instanceName),
+                "value");
+        }
+
+        [TestMethod]
+        [Description("Tests GetOrCreateInstance() if instanceName is null.")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetOrCreateInstance_Throws_If_InstanceName_Is_Null()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = Mock.Of<ISqlLocalDbProvider>();
+            string instanceName = null;
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentNullException>(
+                () => value.GetOrCreateInstance(instanceName),
+                "instanceName");
+        }
+
+        [TestMethod]
+        [Description("Tests GetOrCreateInstance() if instanceName does not exist.")]
+        public void GetOrCreateInstance_If_InstanceName_Does_Not_Exist()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = new SqlLocalDbProvider();
+            string instanceName = Guid.NewGuid().ToString();
+
+            // Act
+            ISqlLocalDbInstance result = value.GetOrCreateInstance(instanceName);
+
+            try
+            {
+                // Assert
+                Assert.IsNotNull(result, "GetOrCreateInstance() returned null.");
+                Assert.AreEqual(instanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName);
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests GetOrCreateInstance() if instanceName exists.")]
+        public void GetOrCreateInstance_If_InstanceName_Exists()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = new SqlLocalDbProvider();
+            string instanceName = Guid.NewGuid().ToString();
+
+            // Act
+            ISqlLocalDbInstance result = value.GetOrCreateInstance(instanceName);
+
+            try
+            {
+                // Assert
+                Assert.IsNotNull(result, "GetOrCreateInstance() returned null.");
+                Assert.AreEqual(instanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName);
+            }
+        }
+
         #endregion
     }
 }
