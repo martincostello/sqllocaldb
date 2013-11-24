@@ -702,6 +702,48 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        [TestMethod]
+        [Description("Tests SetInitialCatalogName() if value is null.")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SetInitialCatalogName_Throws_If_Value_Is_Null()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = null;
+            string initialCatalog = "MyCatalog";
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentNullException>(
+                () => value.SetInitialCatalogName(initialCatalog),
+                "value");
+        }
+
+        [TestMethod]
+        [Description("Tests SetInitialCatalogName() set the correct Initial Catalog name.")]
+        [DataSource(
+            "Microsoft.VisualStudio.TestTools.DataSource.XML",
+            @"|DataDirectory|\SetInitialCatalogNameTestCases.xml",
+            "testCase",
+            DataAccessMethod.Sequential)]
+        public void SetInitialCatalogName_Returns_Correct_Initial_Catalog()
+        {
+            // Arrange
+            string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
+            string initialCatalog = Convert.ToString(this.TestContext.DataRow["initialCatalog"], CultureInfo.InvariantCulture);
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act
+            value.SetInitialCatalogName(initialCatalog);
+
+            // Assert
+            string result = value.GetInitialCatalogName();
+            Assert.AreEqual(initialCatalog, result, "SetInitialCatalogName() did not set the correct value.");
+        }
+
         #endregion
     }
 }

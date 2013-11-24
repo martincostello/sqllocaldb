@@ -26,6 +26,20 @@ namespace System.Data.SqlLocalDb
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class Extensions
     {
+        #region Constants
+
+        /// <summary>
+        /// The connection string keyword for the Initial Catalog.
+        /// </summary>
+        private const string InitialCatalogKeywordName = "Initial Catalog";
+
+        /// <summary>
+        /// The connection string keyword for the Provider Connection String.
+        /// </summary>
+        private const string ProviderConnectionStringKeywordName = "Provider Connection String";
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -272,14 +286,12 @@ namespace System.Data.SqlLocalDb
             // can be used without using reflection and hard-coded type names:
             // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
             // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
-            const string InitialCatalogParameterName = "Initial Catalog";
-            const string ProviderConnectionStringParameterName = "Provider Connection String";
 
             // First assume it's an SQL connection string
             object initialCatalogAsObject;
             string initialCatalog = null;
 
-            if (value.TryGetValue(InitialCatalogParameterName, out initialCatalogAsObject))
+            if (value.TryGetValue(InitialCatalogKeywordName, out initialCatalogAsObject))
             {
                 initialCatalog = initialCatalogAsObject as string;
             }
@@ -294,7 +306,7 @@ namespace System.Data.SqlLocalDb
 
             // If it wasn't SQL, see if it's an entity connection string
             // by trying to extract the provider connection string
-            if (value.TryGetValue(ProviderConnectionStringParameterName, out providerConnectionStringAsObject))
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
             {
                 // It wasn't an entity connection string, nothing further to try
                 providerConnectionString = providerConnectionStringAsObject as string;
@@ -311,7 +323,7 @@ namespace System.Data.SqlLocalDb
                 object initialCatalogFromProviderAsObject;
 
                 // Try and extract the initial catalog from the provider's connection string
-                if (builder.TryGetValue(InitialCatalogParameterName, out initialCatalogFromProviderAsObject))
+                if (builder.TryGetValue(InitialCatalogKeywordName, out initialCatalogFromProviderAsObject))
                 {
                     initialCatalog = initialCatalogFromProviderAsObject as string;
                 }
@@ -372,6 +384,53 @@ namespace System.Data.SqlLocalDb
             else
             {
                 return value.CreateInstance(instanceName);
+            }
+        }
+
+        /// <summary>
+        /// Sets the Initial Catalog name in the specified <see cref="DbConnectionStringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the Initial Catalog name for.</param>
+        /// <param name="initialCatalog">The name of the Initial Catalog to set.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        public static void SetInitialCatalogName(this DbConnectionStringBuilder value, string initialCatalog)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            // N.B. Keywords are used here rather than the strongly-typed derived classes
+            // of DbConnectionStringBuilder.  This is so that custom derived classes can be
+            // used and also so that both of the following entity connection string builders
+            // can be used without using reflection and hard-coded type names:
+            // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
+            // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
+            object providerConnectionStringAsObject;
+
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
+            {
+                string providerConnectionString = providerConnectionStringAsObject as string;
+
+                if (!string.IsNullOrEmpty(providerConnectionString))
+                {
+                    // Build a connection string from the provider connection string
+                    DbConnectionStringBuilder builder = new DbConnectionStringBuilder()
+                    {
+                        ConnectionString = providerConnectionString,
+                    };
+
+                    // Set the Initial Catalog in the Provider Connection String and replace
+                    // the initial Provider Connection String with the updated one
+                    builder[InitialCatalogKeywordName] = initialCatalog;
+                    value[ProviderConnectionStringKeywordName] = builder.ConnectionString;
+                }
+            }
+            else
+            {
+                value[InitialCatalogKeywordName] = initialCatalog;
             }
         }
 
