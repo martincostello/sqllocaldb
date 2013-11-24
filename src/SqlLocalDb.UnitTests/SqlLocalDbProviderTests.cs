@@ -229,9 +229,36 @@ namespace System.Data.SqlLocalDb
             // Act
             IList<ISqlLocalDbInstanceInfo> result = target.GetInstances();
 
+            int initialCount = result.Count;
+
             // Assert
             Assert.IsNotNull(result, "GetInstances() returned null.");
             Assert.IsTrue(result.Count > 0, "No instances were returned by GetInstances().");
+            CollectionAssert.AllItemsAreNotNull(result.ToList(), "GetInstances() returned a null instance.");
+
+            string instanceName = Guid.NewGuid().ToString();
+            target.CreateInstance(instanceName);
+
+            try
+            {
+                result = target.GetInstances();
+
+                // Assert
+                Assert.IsNotNull(result, "GetInstances() returned null.");
+                Assert.AreEqual(initialCount + 1, result.Count, "An incorrect number instances were returned by GetInstances().");
+                CollectionAssert.AllItemsAreNotNull(result.ToList(), "GetInstances() returned a null instance.");
+                Assert.IsTrue(result.Where((p) => p.Name == instanceName).Any(), "The new instance was not returned in the created set of instances.");
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName);
+            }
+
+            result = target.GetInstances();
+
+            // Assert
+            Assert.IsNotNull(result, "GetInstances() returned null.");
+            Assert.AreEqual(initialCount, result.Count, "An incorrect number instances were returned by GetInstances().");
             CollectionAssert.AllItemsAreNotNull(result.ToList(), "GetInstances() returned a null instance.");
         }
 

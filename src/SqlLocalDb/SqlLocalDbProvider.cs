@@ -157,7 +157,7 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         public virtual IList<ISqlLocalDbInstanceInfo> GetInstances()
         {
-            IList<string> instanceNames = _localDB.Versions;
+            IList<string> instanceNames = _localDB.GetInstanceNames();
 
             List<ISqlLocalDbInstanceInfo> instances = new List<ISqlLocalDbInstanceInfo>();
 
