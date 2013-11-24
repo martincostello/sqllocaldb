@@ -17,7 +17,7 @@ using System.Security.Principal;
 namespace System.Data.SqlLocalDb
 {
     /// <summary>
-    /// An application that acts as a test harness for the <c>System.Data.SqlLocalDb</c> assembly.
+    /// An application that acts as a test harness for the <c>System.Data.SqlLocalDb</c> assembly.  This class cannot be inherited.
     /// </summary>
     internal static class Program
     {
