@@ -52,6 +52,16 @@ namespace System.Data.SqlLocalDb
         SqlConnection CreateConnection();
 
         /// <summary>
+        /// Creates an instance of <see cref="SqlConnectionStringBuilder"/> containing
+        /// the default SQL connection string to connect to the LocalDB instance.
+        /// </summary>
+        /// <returns>
+        /// An instance of <see cref="SqlConnectionStringBuilder"/> containing
+        /// the default SQL connection string to connect to the LocalDB instance.
+        /// </returns>
+        SqlConnectionStringBuilder CreateConnectionStringBuilder();
+
+        /// <summary>
         /// Returns information about the LocalDB instance.
         /// </summary>
         /// <returns>
