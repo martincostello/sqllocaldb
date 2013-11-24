@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "System.Data.SqlLocalDb.Interop", "SqlLocalDb.Interop\System.Data.SqlLocalDb.Interop.vcxproj", "{09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb.EFSample", "System.Data.SqlLocalDb.EFSample\System.Data.SqlLocalDb.EFSample.csproj", "{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -85,6 +87,14 @@ Global
 		{09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36}.Release|x64.Build.0 = Release|x64
 		{09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36}.Release|x86.ActiveCfg = Release|Win32
 		{09F3F3B0-F4C2-4EE0-BBB0-CE397F235D36}.Release|x86.Build.0 = Release|Win32
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|x64.Build.0 = Release|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
