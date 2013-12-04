@@ -540,7 +540,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Sets the Initial Catalog name in the specified <see cref="DbConnectionStringBuilder"/>.
+        /// Sets the specified keyword's value to the specified <see cref="String"/> value in the specified <see cref="DbConnectionStringBuilder"/>.
         /// </summary>
         /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the keyword value for.</param>
         /// <param name="keyword">The keyword to set the value for.</param>
