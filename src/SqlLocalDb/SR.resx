@@ -243,4 +243,10 @@
   <data name="Extensions_NoSingleConnectionString" xml:space="preserve">
     <value>More than one connection string is configured in the application configuration file.  The connection string name be be explicitly specified.  Other connection strings may be inherited from higher level configuration files such as machine.config.</value>
   </data>
+  <data name="Extensions_InvalidPathFormat" xml:space="preserve">
+    <value>The specified database file name is invalid: {0}</value>
+  </data>
+  <data name="Extensions_NoAppDomainDataDirectory" xml:space="preserve">
+    <value>The current AppDomain has no value set for the Data Directory.</value>
+  </data>
 </root>

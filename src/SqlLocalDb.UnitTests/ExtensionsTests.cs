@@ -13,6 +13,7 @@
 using System.Data.Common;
 using System.Data.EntityClient;
 using System.Globalization;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -627,6 +628,120 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests GetPhysicalFileName() throws an exception if value is null.")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetPhysicalFileName_Throws_If_Value_Is_Null()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = null;
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentNullException>(
+                () => value.GetPhysicalFileName(),
+                "value");
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() if the file name cannot be found.")]
+        public void GetPhysicalFileName_Returns_Null_If_Not_Found()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder();
+
+            // Act
+            string result = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.IsNull(result, "GetPhysicalFileName() returned incorrect value.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() returns the correct file name.")]
+        [DataSource(
+            "Microsoft.VisualStudio.TestTools.DataSource.XML",
+            @"|DataDirectory|\GetPhysicalFileNameTestCases.xml",
+            "testCase",
+            DataAccessMethod.Sequential)]
+        public void GetPhysicalFileName_Returns_Correct_FileName()
+        {
+            // Arrange
+            string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
+            string expected = Convert.ToString(this.TestContext.DataRow["expected"], CultureInfo.InvariantCulture);
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act
+            string actual = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.AreEqual(expected, actual, "GetPhysicalFileName() returned incorrect value.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() if the connection string is an entity connection string.")]
+        public void GetPhysicalFileName_Returns_FileName_If_Entity_Connection_String()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
+                @"metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;provider connection string="";data source=.;AttachDBFilename=C:\MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True""");
+
+            // Act
+            string actual = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.AreEqual(@"C:\MyDatabase.mdf", actual, "GetPhysicalFileName() returned incorrect value.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() if the connection string is an entity connection string with no file name.")]
+        public void GetPhysicalFileName_Returns_Null_If_No_FileName_In_Entity_Connection_String()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
+                @"metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;provider connection string="";data source=.;integrated security=True;MultipleActiveResultSets=True""");
+
+            // Act
+            string actual = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.IsNull(actual, "GetPhysicalFileName() returned incorrect value.  Value: {0}", actual);
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() if the connection string is an SQL connection string.")]
+        public void GetPhysicalFileName_Returns_FileName_If_Sql_Connection_String()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
+                @"data source=.;AttachDBFilename=""C:\MyDatabase.mdf"";integrated security=True;MultipleActiveResultSets=True");
+
+            // Act
+            string actual = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.AreEqual(@"C:\MyDatabase.mdf", actual, "GetPhysicalFileName() returned incorrect value.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetPhysicalFileName() if the connection string is an SQL connection string with no file name.")]
+        public void GetPhysicalFileName_Returns_Null_If_No_FileName_In_Sql_Connection_String()
+        {
+            // Arrange
+            DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
+                "data source=.;integrated security=True;MultipleActiveResultSets=True");
+
+            // Act
+            string actual = value.GetPhysicalFileName();
+
+            // Assert
+            Assert.IsNull(actual, "GetPhysicalFileName() returned incorrect value.  Value: {0}", actual);
+        }
+
+        [TestMethod]
         [Description("Tests GetOrCreateInstance() if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetOrCreateInstance_Throws_If_Value_Is_Null()
@@ -718,7 +833,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
-        [Description("Tests SetInitialCatalogName() set the correct Initial Catalog name.")]
+        [Description("Tests SetInitialCatalogName() sets the correct Initial Catalog name.")]
         [DataSource(
             "Microsoft.VisualStudio.TestTools.DataSource.XML",
             @"|DataDirectory|\SetInitialCatalogNameTestCases.xml",
@@ -742,6 +857,148 @@ namespace System.Data.SqlLocalDb
             // Assert
             string result = value.GetInitialCatalogName();
             Assert.AreEqual(initialCatalog, result, "SetInitialCatalogName() did not set the correct value.");
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() sets the correct physical file name.")]
+        [DataSource(
+            "Microsoft.VisualStudio.TestTools.DataSource.XML",
+            @"|DataDirectory|\SetPhysicalFileNameTestCases.xml",
+            "testCase",
+            DataAccessMethod.Sequential)]
+        public void SetPhysicalFileName_Returns_Correct_File_Name()
+        {
+            // Arrange
+            string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
+            string fileName = Convert.ToString(this.TestContext.DataRow["physicalFileName"], CultureInfo.InvariantCulture);
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act
+            value.SetPhysicalFileName(fileName);
+
+            // Assert
+            string result = value.GetPhysicalFileName();
+            Assert.AreEqual(fileName, result, "SetPhysicalFileName() did not set the correct value.");
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() sets the correct physical file name if a relative path is used.")]
+        public void SetPhysicalFileName_Sets_Correct_Value_If_Relative_Path_Used()
+        {
+            // Arrange
+            string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+            string fileName = @".\MyDatabase.mdf";
+            string expected = Path.GetFullPath(fileName);
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act
+            value.SetPhysicalFileName(fileName);
+
+            // Assert
+            string result = value.GetPhysicalFileName();
+            Assert.AreEqual(expected, result, "SetPhysicalFileName() did not set the correct value.");
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() sets the correct physical file name if the |DataDirectory| AppDomain value is set.")]
+        public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Set()
+        {
+            // Arrange
+            AppDomain appDomain = AppDomain.CreateDomain("TestAppDomain", null, AppDomain.CurrentDomain.SetupInformation);
+            appDomain.SetData("DataDirectory", @"C:\MyDatabases");
+
+            try
+            {
+                appDomain.DoCallBack(
+                    () =>
+                    {
+                        string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+                        string fileName = @"|DataDirectory|\MyDatabase.mdf";
+                        string expected = @"C:\MyDatabases\MyDatabase.mdf";
+
+                        // Arrange
+                        DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+                        {
+                            ConnectionString = connectionString,
+                        };
+
+                        // Act
+                        value.SetPhysicalFileName(fileName);
+
+                        // Assert
+                        string result = value.GetPhysicalFileName();
+                        Assert.AreEqual(expected, result, "SetPhysicalFileName() did not set the correct value.");
+                    });
+            }
+            finally
+            {
+                AppDomain.Unload(appDomain);
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() sets the correct physical file name if the |DataDirectory| AppDomain value is not set.")]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Not_Set()
+        {
+            // Arrange
+            AppDomain appDomain = AppDomain.CreateDomain("TestAppDomain", null, AppDomain.CurrentDomain.SetupInformation);
+
+            try
+            {
+                appDomain.DoCallBack(
+                    () =>
+                    {
+                        string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+                        string fileName = @"|DataDirectory|\MyDatabase.mdf";
+
+                        // Arrange
+                        DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+                        {
+                            ConnectionString = connectionString,
+                        };
+
+                        // Act and Assert
+                        throw ErrorAssert.Throws<NotSupportedException>(
+                            () => value.SetPhysicalFileName(fileName));
+                    });
+            }
+            finally
+            {
+                AppDomain.Unload(appDomain);
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() clears the physical file name if null is specified.")]
+        public void SetPhysicalFileName_Sets_Correct_Value_If_Null_Specified()
+        {
+            // Arrange
+            string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+            string fileName = null;
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act
+            value.SetPhysicalFileName(fileName);
+
+            // Assert
+            string result = value.GetPhysicalFileName();
+            Assert.IsNull(result, "SetPhysicalFileName() did not set the correct value.");
         }
 
         #endregion

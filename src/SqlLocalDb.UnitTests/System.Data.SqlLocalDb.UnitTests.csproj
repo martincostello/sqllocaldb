@@ -97,6 +97,13 @@
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">
       <Link>FxCopDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <None Include="GetPhysicalFileNameTestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SetPhysicalFileNameTestCases.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SetInitialCatalogNameTestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

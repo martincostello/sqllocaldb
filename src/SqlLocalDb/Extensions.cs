@@ -16,6 +16,7 @@ using System.Data.Common;
 using System.Data.EntityClient;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace System.Data.SqlLocalDb
@@ -27,6 +28,11 @@ namespace System.Data.SqlLocalDb
     public static class Extensions
     {
         #region Constants
+
+        /// <summary>
+        /// The connection string keyword for the attached database file name.
+        /// </summary>
+        private const string AttachDBFilenameKeywordName = "AttachDBFilename";
 
         /// <summary>
         /// The connection string keyword for the Initial Catalog.
@@ -275,68 +281,22 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static string GetInitialCatalogName(this DbConnectionStringBuilder value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
+            return value.ExtractStringValueFromConnectionString(InitialCatalogKeywordName);
+        }
 
-            // N.B. Keywords are used here rather than the strongly-typed derived classes
-            // of DbConnectionStringBuilder.  This is so that custom derived classes can be
-            // used and also so that both of the following entity connection string builders
-            // can be used without using reflection and hard-coded type names:
-            // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
-            // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
-
-            // First assume it's an SQL connection string
-            object initialCatalogAsObject;
-            string initialCatalog = null;
-
-            if (value.TryGetValue(InitialCatalogKeywordName, out initialCatalogAsObject))
-            {
-                initialCatalog = initialCatalogAsObject as string;
-            }
-
-            if (!string.IsNullOrEmpty(initialCatalog))
-            {
-                return initialCatalog;
-            }
-
-            object providerConnectionStringAsObject;
-            string providerConnectionString = null;
-
-            // If it wasn't SQL, see if it's an entity connection string
-            // by trying to extract the provider connection string
-            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
-            {
-                // It wasn't an entity connection string, nothing further to try
-                providerConnectionString = providerConnectionStringAsObject as string;
-            }
-
-            if (!string.IsNullOrEmpty(providerConnectionString))
-            {
-                // Build a connection string from the provider connection string
-                DbConnectionStringBuilder builder = new DbConnectionStringBuilder()
-                {
-                    ConnectionString = providerConnectionString,
-                };
-
-                object initialCatalogFromProviderAsObject;
-
-                // Try and extract the initial catalog from the provider's connection string
-                if (builder.TryGetValue(InitialCatalogKeywordName, out initialCatalogFromProviderAsObject))
-                {
-                    initialCatalog = initialCatalogFromProviderAsObject as string;
-                }
-            }
-
-            // Derived types of DbConnectionStringBuilder may return the empty string instead of null
-            // if they key is missing/not set, so in those cases explicitly return null instead.
-            if (string.IsNullOrEmpty(initialCatalog))
-            {
-                return null;
-            }
-
-            return initialCatalog;
+        /// <summary>
+        /// Gets the physical file name from the specified <see cref="DbConnectionStringBuilder"/>, if present.
+        /// </summary>
+        /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to extract the physical file name from.</param>
+        /// <returns>
+        /// The name of the physical file name present in <paramref name="value"/>, if any; otherwise <see langword="null"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        public static string GetPhysicalFileName(this DbConnectionStringBuilder value)
+        {
+            return value.ExtractStringValueFromConnectionString(AttachDBFilenameKeywordName);
         }
 
         /// <summary>
@@ -397,41 +357,45 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void SetInitialCatalogName(this DbConnectionStringBuilder value, string initialCatalog)
         {
-            if (value == null)
+            value.SetKeywordValueAsString(InitialCatalogKeywordName, initialCatalog);
+        }
+
+        /// <summary>
+        /// Sets the physical database file name in the specified <see cref="DbConnectionStringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the physical database file name for.</param>
+        /// <param name="fileName">The physical file name to set.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/> or invalid.
+        /// </exception>
+        /// <exception cref="NotSupportedException">
+        /// <paramref name="fileName"/> references the Data Directory for the current <see cref="AppDomain"/>
+        /// but the Data Directory for the current <see cref="AppDomain"/> has not value set.
+        /// </exception>
+        public static void SetPhysicalFileName(this DbConnectionStringBuilder value, string fileName)
+        {
+            string fullPath = null;
+
+            if (fileName != null)
             {
-                throw new ArgumentNullException("value");
-            }
+                fullPath = ExpandDataDirectoryIfPresent(fileName);
 
-            // N.B. Keywords are used here rather than the strongly-typed derived classes
-            // of DbConnectionStringBuilder.  This is so that custom derived classes can be
-            // used and also so that both of the following entity connection string builders
-            // can be used without using reflection and hard-coded type names:
-            // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
-            // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
-            object providerConnectionStringAsObject;
-
-            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
-            {
-                string providerConnectionString = providerConnectionStringAsObject as string;
-
-                if (!string.IsNullOrEmpty(providerConnectionString))
+                try
                 {
-                    // Build a connection string from the provider connection string
-                    DbConnectionStringBuilder builder = new DbConnectionStringBuilder()
-                    {
-                        ConnectionString = providerConnectionString,
-                    };
-
-                    // Set the Initial Catalog in the Provider Connection String and replace
-                    // the initial Provider Connection String with the updated one
-                    builder[InitialCatalogKeywordName] = initialCatalog;
-                    value[ProviderConnectionStringKeywordName] = builder.ConnectionString;
+                    // Only full file paths are supported, so ensure that the path is fully qualified before it is set
+                    fullPath = Path.GetFullPath(fullPath);
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), "fileName", ex);
+                }
+                catch (NotSupportedException ex)
+                {
+                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), "fileName", ex);
                 }
             }
-            else
-            {
-                value[InitialCatalogKeywordName] = initialCatalog;
-            }
+
+            value.SetKeywordValueAsString(AttachDBFilenameKeywordName, fullPath);
         }
 
         /// <summary>
@@ -466,6 +430,161 @@ namespace System.Data.SqlLocalDb
 
             entityBuilder.ProviderConnectionString = providerBuilder.ConnectionString;
             return entityBuilder;
+        }
+
+        /// <summary>
+        /// Expands any reference to the Data Directory for the current <see cref="AppDomain"/>.
+        /// </summary>
+        /// <param name="fileName">The file name to expand.</param>
+        /// <returns>
+        /// The expanded representation of <paramref name="fileName"/> if the Data Directory for
+        /// the current <see cref="AppDomain"/> is referenced and set; otherwise <paramref name="fileName"/>.
+        /// </returns>
+        /// <exception cref="NotSupportedException">
+        /// The Data Directory is not set for the current <see cref="AppDomain"/>.
+        /// </exception>
+        private static string ExpandDataDirectoryIfPresent(string fileName)
+        {
+            const string DataDirectorySubstitution = "|DataDirectory|";
+
+            if (fileName.Contains(DataDirectorySubstitution))
+            {
+                string dataDirectoryPath = AppDomain.CurrentDomain.GetData("DataDirectory") as string;
+
+                if (dataDirectoryPath == null)
+                {
+                    throw new NotSupportedException(SR.Extensions_NoAppDomainDataDirectory);
+                }
+
+                fileName = fileName.Replace(DataDirectorySubstitution, dataDirectoryPath);
+            }
+
+            return fileName;
+        }
+
+        /// <summary>
+        /// Extracts the <see cref="String"/> value of the specified keyword from the specified <see cref="DbConnectionStringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to extract the value from.</param>
+        /// <param name="keyword">The keyword to extract the value of.</param>
+        /// <returns>
+        /// The <see cref="String"/> value of the keyword specified by <paramref name="keyword"/> present in <paramref name="value"/>, if any; otherwise <see langword="null"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        private static string ExtractStringValueFromConnectionString(this DbConnectionStringBuilder value, string keyword)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            // N.B. Keywords are used here rather than the strongly-typed derived classes
+            // of DbConnectionStringBuilder.  This is so that custom derived classes can be
+            // used and also so that both of the following entity connection string builders
+            // can be used without using reflection and hard-coded type names:
+            // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
+            // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
+
+            // First assume it's an SQL connection string
+            object resultAsObject;
+            string result = null;
+
+            if (value.TryGetValue(keyword, out resultAsObject))
+            {
+                result = resultAsObject as string;
+            }
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                return result;
+            }
+
+            object providerConnectionStringAsObject;
+            string providerConnectionString = null;
+
+            // If it wasn't SQL, see if it's an entity connection string
+            // by trying to extract the provider connection string
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
+            {
+                // It wasn't an entity connection string, nothing further to try
+                providerConnectionString = providerConnectionStringAsObject as string;
+            }
+
+            if (!string.IsNullOrEmpty(providerConnectionString))
+            {
+                // Build a connection string from the provider connection string
+                DbConnectionStringBuilder builder = new DbConnectionStringBuilder()
+                {
+                    ConnectionString = providerConnectionString,
+                };
+
+                object resultFromProviderAsObject;
+
+                // Try and extract the initial catalog from the provider's connection string
+                if (builder.TryGetValue(keyword, out resultFromProviderAsObject))
+                {
+                    result = resultFromProviderAsObject as string;
+                }
+            }
+
+            // Derived types of DbConnectionStringBuilder may return the empty string instead of null
+            // if they key is missing/not set, so in those cases explicitly return null instead.
+            if (string.IsNullOrEmpty(result))
+            {
+                return null;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the Initial Catalog name in the specified <see cref="DbConnectionStringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the keyword value for.</param>
+        /// <param name="keyword">The keyword to set the value for.</param>
+        /// <param name="keywordValue">The value to set the keyword to.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        private static void SetKeywordValueAsString(this DbConnectionStringBuilder value, string keyword, string keywordValue)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            // N.B. Keywords are used here rather than the strongly-typed derived classes
+            // of DbConnectionStringBuilder.  This is so that custom derived classes can be
+            // used and also so that both of the following entity connection string builders
+            // can be used without using reflection and hard-coded type names:
+            // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
+            // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
+            object providerConnectionStringAsObject;
+
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
+            {
+                string providerConnectionString = providerConnectionStringAsObject as string;
+
+                if (!string.IsNullOrEmpty(providerConnectionString))
+                {
+                    // Build a connection string from the provider connection string
+                    DbConnectionStringBuilder builder = new DbConnectionStringBuilder()
+                    {
+                        ConnectionString = providerConnectionString,
+                    };
+
+                    // Set the keyword value in the Provider Connection String and replace
+                    // the initial Provider Connection String with the updated one
+                    builder[keyword] = keywordValue;
+                    value[ProviderConnectionStringKeywordName] = builder.ConnectionString;
+                }
+            }
+            else
+            {
+                value[keyword] = keywordValue;
+            }
         }
 
         #endregion
