@@ -42,7 +42,7 @@ namespace System.Data.SqlLocalDb.EFSample
                     DbConnectionStringBuilder builder = instance.CreateConnectionStringBuilder();
 
                     // Update the connection string to specify the name of the database
-                    // and it's physical location to the current application directory
+                    // and its physical location to the current application directory
                     builder.SetInitialCatalogName("Blog");
                     builder.SetPhysicalFileName(@".\Blog.mdf");
 

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<testCases>
+  <testCase>
+    <connectionString>data source=.;integrated security=True;MultipleActiveResultSets=True</connectionString>
+    <physicalFileName>C:\MyFirstDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>data source=.;attachdbfilename=C:\MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True</connectionString>
+    <physicalFileName>C:\MyDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>data source=.;AttachDBFilename=C:\MyOtherDatabase.mdf;integrated security=True;MultipleActiveResultSets=True</connectionString>
+    <physicalFileName>C:\MyOtherDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>data source=.;ATTACHDBFILENAME=C:\YetAnotherDatabase.mdf;integrated security=True;MultipleActiveResultSets=True</connectionString>
+    <physicalFileName>C:\YetAnotherDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;integrated security=True;MultipleActiveResultSets=True&quot;</connectionString>
+    <physicalFileName>C:\MyFirstEntityDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;attachdbfilename=C:\MyEntityDatabase.mdf;integrated security=True;MultipleActiveResultSets=True&quot;</connectionString>
+    <physicalFileName>C:\MyEntityDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;Provider Connection String=&quot;data source=.;AttachDBFilename=C:\MyOtherEntityDatabase.mdf;integrated security=True;MultipleActiveResultSets=True&quot;</connectionString>
+    <physicalFileName>C:\MyOtherEntityDatabase.mdf</physicalFileName>
+  </testCase>
+  <testCase>
+    <connectionString>metadata=res://*/MyData.csdl|res://*/MyData.ssdl|res://*/MyData.msl;provider=System.Data.SqlClient;PROVIDER CONNECTION STRING=&quot;data source=.;ATTACHDBFILENAME=C:\YetAnotherEntityDatabase.mdf;integrated security=True;MultipleActiveResultSets=True&quot;</connectionString>
+    <physicalFileName>C:\YetAnotherEntityDatabase.mdf</physicalFileName>
+  </testCase>
+</testCases>
