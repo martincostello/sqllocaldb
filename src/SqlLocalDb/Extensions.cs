@@ -370,7 +370,7 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         /// <exception cref="NotSupportedException">
         /// <paramref name="fileName"/> references the Data Directory for the current <see cref="AppDomain"/>
-        /// but the Data Directory for the current <see cref="AppDomain"/> has not value set.
+        /// but the Data Directory for the current <see cref="AppDomain"/> has no value set.
         /// </exception>
         public static void SetPhysicalFileName(this DbConnectionStringBuilder value, string fileName)
         {
