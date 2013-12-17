@@ -9,6 +9,8 @@
     <OutDir64>$(SqlLocalDbOutDir)x64\</OutDir64>
     <SolutionFile>SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
+    <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
+    <BuildNuGetPackage Condition="'$(BuildNuGetPackage)' == ''">false</BuildNuGetPackage>
   </PropertyGroup>
   <Target Name="Clean">
     <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="Configuration=$(Configuration);Platform=x86;OutDir=$(OutDir32)"/>
@@ -22,10 +24,9 @@
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="Configuration=$(Configuration);Platform=x86;OutDir=$(OutDir32)"/>
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="Configuration=$(Configuration);Platform=x64;OutDir=$(OutDir64)"/>
   </Target>
-  <Target Name="ReleaseBuild">
-    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="Configuration=$(Configuration);Platform=x86;OutDir=$(OutDir32)"/>
-    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64;OutDir=$(OutDir64)"/>
-    <CallTarget Targets="CreateNuGetPackage" />
+  <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
+    <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
+    <CallTarget Targets="CreateNuGetPackage" Condition="'$(BuildNuGetPackage)' == 'true'" />
   </Target>
   <Target Name="CreateNuGetPackage">
     <PropertyGroup>
@@ -53,5 +54,18 @@
     <Exec Command="%22$(SqlLocalDbRoot)Tools\NuGet\nuget.exe%22 pack %22$(NuGetSpecPath)%22" WorkingDirectory="$(NuGetPackageDir)" />
     <RemoveDir Directories="$(NuGetPackageLibDir)" />
     <Delete Files="$(NuGetSpecPath)" />
+  </Target>
+  <Target Name="Test">
+    <ItemGroup>
+      <TestContainer Include="$(OutDir)\*test*.dll" />
+    </ItemGroup>
+    <PropertyGroup>
+      <TestToolDir>$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow</TestToolDir>
+      <TestToolName>vstest.console.exe</TestToolName>
+      <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
+      <TestPlatform Condition="'$(TestPlatform)' == ''">x86</TestPlatform>
+      <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
+    </PropertyGroup>
+    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:$(TestPlatform)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
   </Target>
 </Project>
