@@ -11,6 +11,7 @@
     <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)' == ''">true</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings Condition="'$(SourceAnalysisTreatErrorsAsWarnings)' == ''">false</SourceAnalysisTreatErrorsAsWarnings>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
+    <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
   </PropertyGroup>
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
@@ -30,6 +31,7 @@
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
+    <CallTarget Targets="CreateZip" Condition="'$(CreateZip)' == 'true'" />
   </Target>
   <Target Name="Test">
     <PropertyGroup>
@@ -42,5 +44,15 @@
       <TestContainer Include="$(OutDir)\%(PlatformsToBuild.Identity)\*test*.dll" />
     </ItemGroup>
     <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToBuild.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
+  </Target>
+  <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
+  <Import Condition="'$(CreateZip)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />
+  <Target Name="CreateZip">
+    <ItemGroup>
+      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.dll" />
+      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.Interop.dll" />
+      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.xml" />
+    </ItemGroup>
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip"/>
   </Target>
 </Project>
