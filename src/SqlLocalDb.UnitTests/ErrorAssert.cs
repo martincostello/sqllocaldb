@@ -127,33 +127,7 @@ namespace System.Data.SqlLocalDb
         public static T Throws<T>(Func<object> testCode)
             where T : Exception
         {
-            T exception = Invoke<T>(testCode);
-
-            if (exception == null)
-            {
-                string message = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "An exception of type {0} was not thrown.",
-                    typeof(T).FullName);
-
-                Assert.Fail(message);
-            }
-
-            Type thrownType = exception.GetType();
-            Type expectedType = typeof(T);
-
-            if (thrownType != expectedType)
-            {
-                string message = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "An exception of type {0} was thrown, but an exception of type {1} was expected.",
-                    thrownType.FullName,
-                    expectedType.FullName);
-
-                Assert.Fail(message);
-            }
-
-            return exception;
+            return Throws<T>(new Action(() => testCode()));
         }
 
         /// <summary>
@@ -167,32 +141,6 @@ namespace System.Data.SqlLocalDb
         /// if any was thrown; otherwise <see langword="null"/>.
         /// </returns>
         private static T Invoke<T>(Action testCode)
-            where T : Exception
-        {
-            Contract.Requires(testCode != null);
-
-            try
-            {
-                testCode();
-                return null;
-            }
-            catch (T e)
-            {
-                return e;
-            }
-        }
-
-        /// <summary>
-        /// Invokes the specified <see cref="Func&lt;Object&gt;"/> delegate and
-        /// returns any <see cref="Exception"/> thrown.
-        /// </summary>
-        /// <typeparam name="T">The type of exception expected to be thrown.</typeparam>
-        /// <param name="testCode">An <see cref="Func&lt;Object&gt;"/> representing the code that should throw the exception.</param>
-        /// <returns>
-        /// The <typeparamref name="T"/> exception thrown by invoking <paramref name="testCode"/>,
-        /// if any was thrown; otherwise <see langword="null"/>.
-        /// </returns>
-        private static T Invoke<T>(Func<object> testCode)
             where T : Exception
         {
             Contract.Requires(testCode != null);
