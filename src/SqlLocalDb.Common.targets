@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- MSBuild targets file containing common MSBuild properties for the SqlLocalDb solution -->
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' or '$(RunCodeAnalysis)' == 'true' ">
     <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
