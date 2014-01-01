@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SRHelperTests.cs" company="http://sqllocaldb.codeplex.com">
-//   Martin Costello (c) 2012-2013
+//   Martin Costello (c) 2012-2014
 // </copyright>
 // <license>
 //   See license.txt in the project root for license information.
