@@ -12,7 +12,9 @@
 
 using System.Data.Common;
 using System.Runtime.Serialization;
+#if !NET40
 using System.Security.Permissions;
+#endif
 
 namespace System.Data.SqlLocalDb
 {
@@ -174,7 +176,11 @@ namespace System.Data.SqlLocalDb
         /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
         /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
+#if NET40
+        [System.Security.SecurityCritical]
+#else
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+#endif
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
