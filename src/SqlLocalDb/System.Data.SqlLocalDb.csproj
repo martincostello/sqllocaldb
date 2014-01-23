@@ -103,7 +103,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)SqlLocalDb.Common.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(SolutionDir)InternalAssemblies\System.Data.SqlLocalDb.Interop.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)InternalAssemblies\System.Data.SqlLocalDb.Interop.x86.dll" "$(TargetDir)"
+copy /Y "$(SolutionDir)InternalAssemblies\System.Data.SqlLocalDb.Interop.x64.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -74,15 +74,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\InternalAssemblies\System.Data.SqlLocalDb.Interop.dll">
-      <Link>System.Data.SqlLocalDb.Interop.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">
       <Link>FxCopDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\InternalAssemblies\System.Data.SqlLocalDb.Interop.x64.dll">
+      <Link>System.Data.SqlLocalDb.Interop.x64.dll</Link>
+    </Content>
+    <Content Include="..\InternalAssemblies\System.Data.SqlLocalDb.Interop.x86.dll">
+      <Link>System.Data.SqlLocalDb.Interop.x86.dll</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)SqlLocalDb.Common.targets" />

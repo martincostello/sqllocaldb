@@ -17,17 +17,16 @@
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
   </PropertyGroup>
   <ItemGroup>
-    <PlatformsToBuild Include="x86" />
-    <PlatformsToBuild Include="x64" />
+    <PlatformsToBuild Include="Mixed Platforms" />
   </ItemGroup>
   <Target Name="Clean">
-    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)%(PlatformsToBuild.Identity)\"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
   <Target Name="Build">
-    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)%(PlatformsToBuild.Identity)\"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
   <Target Name="Rebuild">
-    <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)%(PlatformsToBuild.Identity)\"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
@@ -38,20 +37,22 @@
       <TestToolDir>$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow</TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
+      <TestPlatform Condition="'$(TestPlatform)' == ''">x86</TestPlatform>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
     </PropertyGroup>
     <ItemGroup>
-      <TestContainer Include="$(OutDir)\%(PlatformsToBuild.Identity)\*test*.dll" />
+      <TestContainer Include="$(OutDir)\*test*.dll" />
     </ItemGroup>
-    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToBuild.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
+    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:$(TestPlatform)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
   </Target>
   <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Import Condition="'$(CreateZip)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />
   <Target Name="CreateZip">
     <ItemGroup>
-      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.dll" />
-      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.Interop.dll" />
-      <FilesToZip Include="$(OutDir)\%(PlatformsToBuild.Identity)\System.Data.SqlLocalDb.xml" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.Interop.x86.dll" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.Interop.x64.dll" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip"/>
   </Target>
