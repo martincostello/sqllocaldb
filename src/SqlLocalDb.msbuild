@@ -11,6 +11,11 @@
     <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)' == ''">true</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings Condition="'$(SourceAnalysisTreatErrorsAsWarnings)' == ''">false</SourceAnalysisTreatErrorsAsWarnings>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
+    <SignOff Condition="'$(SignOff)' == ''">false</SignOff>
+    <CreatePackage Condition="'$(SignOff)' == 'true'">true</CreatePackage>
+    <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
+    <CreatePackage Condition="'$(SignOff)' == 'true'">true</CreatePackage>
+    <CreateZip Condition="'$(SignOff)' == 'true'">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
   </PropertyGroup>
   <PropertyGroup>
@@ -30,7 +35,8 @@
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
-    <CallTarget Targets="CreateZip" Condition="'$(CreateZip)' == 'true'" />
+    <CallTarget Targets="CreateZipFile" Condition="'$(CreateZip)' == 'true'" />
+    <CallTarget Targets="CreateNuGetPackage" Condition="'$(CreatePackage)' == 'true'" />
   </Target>
   <Target Name="Test">
     <PropertyGroup>
@@ -46,9 +52,9 @@
     </ItemGroup>
     <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
   </Target>
+  <Import Condition="'$(CreateZip)' == 'true' or '$(CreatePackage)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />
   <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
-  <Import Condition="'$(CreateZip)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />
-  <Target Name="CreateZip">
+  <Target Name="CreateZipFile">
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.Interop.x86.dll" />
@@ -56,5 +62,12 @@
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip"/>
+  </Target>
+  <Target Name="CreateNuGetPackage">
+    <PropertyGroup>
+      <NuGetTool>$(SolutionDir)\Tools\NuGet\NuGet.exe</NuGetTool>
+      <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
+    </PropertyGroup>
+    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(AssemblyVersion) -OutputDirectory $(OutDir)" />
   </Target>
 </Project>

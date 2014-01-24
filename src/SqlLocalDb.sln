@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		license.txt = license.txt
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
 		SqlLocalDb.msbuild = SqlLocalDb.msbuild
+		SqlLocalDb.nuspec = SqlLocalDb.nuspec
+		SqlLocalDb.props = SqlLocalDb.props
 		SqlLocalDb.ruleset = SqlLocalDb.ruleset
 		SqlLocalDb.runsettings = SqlLocalDb.runsettings
 		SqlLocalDb.snk = SqlLocalDb.snk
@@ -35,7 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B415E9C5
 		Tools\NuGet\NuGet.exe = Tools\NuGet\NuGet.exe
 		Tools\NuGet\NuGet.targets = Tools\NuGet\NuGet.targets
 		packages\repositories.config = packages\repositories.config
-		Tools\NuGet\SqlLocalDb.nuspec = Tools\NuGet\SqlLocalDb.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F16D00C-39D3-45C2-A7A9-18A01E323809}"

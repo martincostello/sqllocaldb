@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5" schemaVersion="2">
+    <id>System.Data.SqlLocalDb</id>
+    <version>$AssemblyVersion$</version>
+    <title>SQL LocalDB Wrapper</title>
+    <authors>Martin Costello</authors>
+    <owners>Martin Costello</owners>
+    <tags>SQL LocalDB ADO.NET Data</tags>
+    <projectUrl>https://sqllocaldb.codeplex.com</projectUrl>
+    <licenseUrl>https://sqllocaldb.codeplex.com/license</licenseUrl>
+    <releaseNotes>See https://sqllocaldb.codeplex.com/releases for details.</releaseNotes>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</description>
+    <summary>The SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</summary>
+    <language>en-US</language>
+    <copyright>Copyright © Martin Costello 2012-2014</copyright>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Data" />
+    </frameworkAssemblies>
+    <references>
+      <group targetFramework="net20">
+        <reference file="System.Data.SqlLocalDb.dll" />  
+      </group>
+    </references>
+  </metadata>
+  <files>
+    <file src="System.Data.SqlLocalDb.dll" target="lib\net20" />
+    <file src="System.Data.SqlLocalDb.xml" target="lib\net20" />
+    <file src="System.Data.SqlLocalDb.Interop.x86.dll" target="lib\net20" />
+    <file src="System.Data.SqlLocalDb.Interop.x64.dll" target="lib\net20" />
+    <file src="SqlLocalDb.props" target="build\net20\System.Data.SqlLocalDb.props" />
+  </files>
+</package>
