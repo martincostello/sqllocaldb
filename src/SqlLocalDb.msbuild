@@ -37,13 +37,14 @@
       <TestToolDir>$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow</TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
-      <TestPlatform Condition="'$(TestPlatform)' == ''">x86</TestPlatform>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
     </PropertyGroup>
     <ItemGroup>
       <TestContainer Include="$(OutDir)\*test*.dll" />
+      <PlatformsToTest Include="x86" />
+      <PlatformsToTest Include="x64" />
     </ItemGroup>
-    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:$(TestPlatform)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
+    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
   </Target>
   <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Import Condition="'$(CreateZip)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />

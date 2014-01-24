@@ -2,8 +2,6 @@
 <RunSettings>
   <RunConfiguration>
     <ResultsDirectory>.\TestResults</ResultsDirectory>
-    <TargetPlatform>x86</TargetPlatform>
-    <TargetFrameworkVersion>Framework40</TargetFrameworkVersion>
   </RunConfiguration>
   <DataCollectionRunSettings>
     <DataCollectors>
