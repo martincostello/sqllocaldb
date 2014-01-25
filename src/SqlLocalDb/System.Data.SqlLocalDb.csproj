@@ -51,6 +51,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="StopInstanceOptions.cs" />
     <None Include="..\AssemblyVersion.targets">
       <Link>AssemblyVersion.targets</Link>
     </None>

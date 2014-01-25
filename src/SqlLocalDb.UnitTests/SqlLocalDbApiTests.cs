@@ -571,6 +571,42 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests StopInstance(string, StopInstanceOptions, TimeSpan).")]
+        public void StopInstance_When_All_Parameters_Specified()
+        {
+            Helpers.EnsureLocalDBInstalled();
+
+            string instanceName = Guid.NewGuid().ToString();
+            StopInstanceOptions options = StopInstanceOptions.KillProcess;
+            TimeSpan timeout = TimeSpan.FromSeconds(30);
+
+            IList<string> instanceNames = SqlLocalDbApi.GetInstanceNames();
+            CollectionAssert.DoesNotContain(instanceNames.ToArray(), instanceName, "The specified instance name already exists.");
+
+            SqlLocalDbApi.CreateInstance(instanceName);
+
+            instanceNames = SqlLocalDbApi.GetInstanceNames();
+            CollectionAssert.Contains(instanceNames.ToArray(), instanceName, "The specified instance was not created.");
+
+            try
+            {
+                SqlLocalDbApi.StartInstance(instanceName);
+                SqlLocalDbApi.StopInstance(instanceName, options, timeout);
+
+                ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
+
+                Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
+
+                Assert.AreEqual(string.Empty, info.NamedPipe, "ISqlLocalDbInstanceInfo.NamedPipe is incorrect.");
+                Assert.IsFalse(info.IsRunning, "The LocalDB instance has not been started");
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName);
+            }
+        }
+
+        [TestMethod]
         [Description("Tests the default value of the StopTimeout property.")]
         public void StopTimeout_DefaultValue()
         {

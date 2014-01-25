@@ -426,6 +426,7 @@ namespace System.Data.SqlLocalDb
         /// Stops the specified SQL Server Express LocalDB instance from running.
         /// </summary>
         /// <param name="pInstanceName">The name of the LocalDB instance to stop.</param>
+        /// <param name="options">One or a combination of the flag values specifying the way to stop the instance.</param>
         /// <param name="ulTimeout">
         /// The time in seconds to wait for this operation to complete. If this
         /// value is 0, this function will return immediately without waiting for the LocalDB instance to stop.
@@ -437,7 +438,7 @@ namespace System.Data.SqlLocalDb
             "CA1903:UseOnlyApiFromTargetedFramework",
             MessageId = "System.Security.SecuritySafeCriticalAttribute",
             Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
-        internal static int StopInstance(string pInstanceName, int ulTimeout)
+        internal static int StopInstance(string pInstanceName, StopInstanceOptions options, int ulTimeout)
         {
             var function = EnsureFunction("LocalDBStopInstance", ref _localDBStopInstance);
 
@@ -446,7 +447,7 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(pInstanceName, 0, ulTimeout);
+            return function(pInstanceName, (int)options, ulTimeout);
         }
 
         /// <summary>

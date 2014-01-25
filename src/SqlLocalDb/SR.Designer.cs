@@ -367,7 +367,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;.  Timeout: {1}..
+        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;.  Timeout: {1}; Option(s): {2}..
         /// </summary>
         internal static string SqlLocalDbApi_LogStoppingFormat {
             get {

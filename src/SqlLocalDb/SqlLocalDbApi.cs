@@ -78,6 +78,15 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets or sets the options to use when stopping instances of SQL LocalDB.
+        /// </summary>
+        public static StopInstanceOptions StopOptions
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the default timeout to use when
         /// stopping instances of SQL LocalDB.
         /// </summary>
@@ -644,6 +653,40 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         public static void StopInstance(string instanceName, TimeSpan timeout)
         {
+            StopInstance(instanceName, StopOptions, timeout);
+        }
+
+        /// <summary>
+        /// Stops the specified instance of SQL Server LocalDB.
+        /// </summary>
+        /// <param name="instanceName">
+        /// The name of the LocalDB instance to stop.
+        /// </param>
+        /// <param name="options">
+        /// The options specifying the way to stop the instance.
+        /// </param>
+        /// <param name="timeout">
+        /// The amount of time to give the LocalDB instance to stop.
+        /// If the value is <see cref="TimeSpan.Zero"/>, the method will
+        /// return immediately and not wait for the instance to stop.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="timeout"/> is less than <see cref="TimeSpan.Zero"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
+        /// </exception>
+        /// <remarks>
+        /// The <paramref name="timeout"/> parameter is rounded to the nearest second.
+        /// </remarks>
+        public static void StopInstance(string instanceName, StopInstanceOptions options, TimeSpan timeout)
+        {
             if (instanceName == null)
             {
                 throw new ArgumentNullException("instanceName");
@@ -658,11 +701,12 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentOutOfRangeException("timeout", timeout, message);
             }
 
-            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppingFormat, instanceName, timeout);
+            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppingFormat, instanceName, timeout, options);
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             int hr = NativeMethods.StopInstance(
                 instanceName,
+                options,
                 (int)timeout.TotalSeconds);
 
             stopwatch.Stop();

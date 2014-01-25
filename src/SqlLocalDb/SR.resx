@@ -223,7 +223,7 @@
     <value>Tracing stopped for SQL LocalDB.</value>
   </data>
   <data name="SqlLocalDbApi_LogStoppingFormat" xml:space="preserve">
-    <value>Stopping SQL LocalDB instance '{0}'.  Timeout: {1}.</value>
+    <value>Stopping SQL LocalDB instance '{0}'.  Timeout: {1}; Option(s): {2}.</value>
   </data>
   <data name="SqlLocalDbApi_LogStoppingSharingFormat" xml:space="preserve">
     <value>Stopping sharing SQL LocalDB instance '{0}'.</value>
