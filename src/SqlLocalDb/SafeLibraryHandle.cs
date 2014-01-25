@@ -6,7 +6,7 @@
 //   See license.txt in the project root for license information.
 // </license>
 // <summary>
-//   NativeMethods.cs
+//   SafeLibraryHandle.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
