@@ -100,14 +100,6 @@
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">
       <Link>FxCopDictionary.xml</Link>
     </CodeAnalysisDictionary>
-    <None Include="..\InternalAssemblies\System.Data.SqlLocalDb.Interop.x64.dll">
-      <Link>System.Data.SqlLocalDb.Interop.x64.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\InternalAssemblies\System.Data.SqlLocalDb.Interop.x86.dll">
-      <Link>System.Data.SqlLocalDb.Interop.x86.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="GetPhysicalFileNameTestCases.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -27,8 +27,5 @@
   <files>
     <file src="System.Data.SqlLocalDb.dll" target="lib\net20" />
     <file src="System.Data.SqlLocalDb.xml" target="lib\net20" />
-    <file src="System.Data.SqlLocalDb.Interop.x86.dll" target="lib\net20" />
-    <file src="System.Data.SqlLocalDb.Interop.x64.dll" target="lib\net20" />
-    <file src="SqlLocalDb.props" target="build\net20\System.Data.SqlLocalDb.props" />
   </files>
 </package>

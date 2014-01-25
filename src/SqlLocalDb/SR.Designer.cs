@@ -106,6 +106,78 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The SQL LocalDB function {0} could not be found..
+        /// </summary>
+        internal static string NativeMethods_FunctionNotFoundFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_FunctionNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignoring invalid registry key name &apos;{0}&apos;..
+        /// </summary>
+        internal static string NativeMethods_InvalidRegistryKeyNameFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_InvalidRegistryKeyNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded SQL LocalDB API from &apos;{0}&apos;..
+        /// </summary>
+        internal static string NativeMethods_NativeApiLoadedFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_NativeApiLoadedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load SQL LocalDB API from &apos;{0}&apos;. Error: {1}..
+        /// </summary>
+        internal static string NativeMethods_NativeApiLoadFailedFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_NativeApiLoadFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find SQL LocalDB API DLL &apos;{0}&apos;..
+        /// </summary>
+        internal static string NativeMethods_NativeApiNotFoundFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_NativeApiNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SQL LocalDB API was not loaded..
+        /// </summary>
+        internal static string NativeMethods_NativeApiNotLoaded {
+            get {
+                return ResourceManager.GetString("NativeMethods_NativeApiNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No SQL LocalDB API DLL path could be found..
+        /// </summary>
+        internal static string NativeMethods_NoNativeApiFound {
+            get {
+                return ResourceManager.GetString("NativeMethods_NoNativeApiFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not open registry key &apos;{0}&apos;..
+        /// </summary>
+        internal static string NativeMethods_RegistryKeyNotFoundFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_RegistryKeyNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB.  HRESULT = {0}.
         /// </summary>
         internal static string SqlLocalDbApi_GenericFailureFormat {

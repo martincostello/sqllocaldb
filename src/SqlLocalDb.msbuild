@@ -22,7 +22,7 @@
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
   </PropertyGroup>
   <ItemGroup>
-    <PlatformsToBuild Include="Mixed Platforms" />
+    <PlatformsToBuild Include="Any CPU" />
   </ItemGroup>
   <Target Name="Clean">
     <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
@@ -57,8 +57,6 @@
   <Target Name="CreateZipFile">
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
-      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.Interop.x86.dll" />
-      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.Interop.x64.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip"/>

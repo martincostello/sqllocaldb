@@ -385,6 +385,46 @@ namespace System.Data.SqlLocalDb
             /// </summary>
             internal static readonly int UnshareInstance = 12;
 
+            /// <summary>
+            /// The SQL LocalDB registry key could not be found or opened.
+            /// </summary>
+            internal static readonly int RegistryKeyNotFound = 13;
+
+            /// <summary>
+            /// An invalid registry key was processed.
+            /// </summary>
+            internal static readonly int InvalidRegistryKey = 14;
+
+            /// <summary>
+            /// An invalid registry key was processed.
+            /// </summary>
+            internal static readonly int NoNativeApiFound = 15;
+
+            /// <summary>
+            /// The native SQL LocalDB API DLL could not be found.
+            /// </summary>
+            internal static readonly int NativeApiPathNotFound = 16;
+
+            /// <summary>
+            /// The native SQL LocalDB API DLL failed to load.
+            /// </summary>
+            internal static readonly int NativeApiLoadFailed = 17;
+
+            /// <summary>
+            /// The native SQL LocalDB API DLL was not loaded.
+            /// </summary>
+            internal static readonly int NativeApiNotLoaded = 18;
+
+            /// <summary>
+            /// The native SQL LocalDB API function could not be found.
+            /// </summary>
+            internal static readonly int FunctionNotFound = 19;
+
+            /// <summary>
+            /// The native SQL LocalDB API was loaded.
+            /// </summary>
+            internal static readonly int NativeApiLoaded = 20;
+
             #endregion
         }
 

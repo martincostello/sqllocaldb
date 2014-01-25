@@ -249,4 +249,28 @@
   <data name="Extensions_NoAppDomainDataDirectory" xml:space="preserve">
     <value>The current AppDomain has no value set for the Data Directory.</value>
   </data>
+  <data name="NativeMethods_FunctionNotFoundFormat" xml:space="preserve">
+    <value>The SQL LocalDB function {0} could not be found.</value>
+  </data>
+  <data name="NativeMethods_InvalidRegistryKeyNameFormat" xml:space="preserve">
+    <value>Ignoring invalid registry key name '{0}'.</value>
+  </data>
+  <data name="NativeMethods_NativeApiLoadFailedFormat" xml:space="preserve">
+    <value>Failed to load SQL LocalDB API from '{0}'. Error: {1}.</value>
+  </data>
+  <data name="NativeMethods_NativeApiNotFoundFormat" xml:space="preserve">
+    <value>Could not find SQL LocalDB API DLL '{0}'.</value>
+  </data>
+  <data name="NativeMethods_NativeApiNotLoaded" xml:space="preserve">
+    <value>The SQL LocalDB API was not loaded.</value>
+  </data>
+  <data name="NativeMethods_NoNativeApiFound" xml:space="preserve">
+    <value>No SQL LocalDB API DLL path could be found.</value>
+  </data>
+  <data name="NativeMethods_RegistryKeyNotFoundFormat" xml:space="preserve">
+    <value>Could not open registry key '{0}'.</value>
+  </data>
+  <data name="NativeMethods_NativeApiLoadedFormat" xml:space="preserve">
+    <value>Loaded SQL LocalDB API from '{0}'.</value>
+  </data>
 </root>
