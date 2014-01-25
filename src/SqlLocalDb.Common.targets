@@ -10,7 +10,7 @@
     <HighEntropyVA>true</HighEntropyVA>
     <RestorePackages>true</RestorePackages>
     <SignAssembly>true</SignAssembly>
-    <SourceAnalysisOverrideSettingsFile>$(SolutionDir)Tools\StyleCop\StyleCop.settings</SourceAnalysisOverrideSettingsFile>
+    <SourceAnalysisOverrideSettingsFile>$(SolutionDir)\StyleCop.settings</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
   <Import Project="$(SolutionDir)AssemblyVersion.targets"/>
   <Import Project="$(SolutionDir)Tools\NuGet\nuget.targets" />
