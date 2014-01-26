@@ -808,10 +808,13 @@ namespace System.Data.SqlLocalDb
             StringBuilder buffer = new StringBuilder(NativeMethods.LOCALDB_MAX_SQLCONNECTION_BUFFER_SIZE + 1);
             int size = buffer.Capacity;
 
-            // Get the description of the error from the LocalDB API
+            // Get the description of the error from the LocalDB API.
+            // N.B. This doesn't currently support specifically overriding the language Id.
+            const int DefaultLanaguageId = 0;
+
             int hr2 = NativeMethods.GetLocalDbError(
                 hr,
-                SR.Culture == null ? 0 : SR.Culture.LCID,
+                DefaultLanaguageId,
                 buffer,
                 ref size);
 
