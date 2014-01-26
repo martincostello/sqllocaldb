@@ -40,9 +40,9 @@ namespace System.Data.SqlLocalDb
                 return;
             }
 
-            ISqlLocalDbProvider factory = new SqlLocalDbProvider();
+            ISqlLocalDbProvider provider = new SqlLocalDbProvider();
 
-            IList<ISqlLocalDbVersionInfo> versions = factory.GetVersions();
+            IList<ISqlLocalDbVersionInfo> versions = provider.GetVersions();
 
             Console.WriteLine(Strings.Program_VersionsListHeader);
             Console.WriteLine();
@@ -54,7 +54,7 @@ namespace System.Data.SqlLocalDb
 
             Console.WriteLine();
 
-            IList<ISqlLocalDbInstanceInfo> instances = factory.GetInstances();
+            IList<ISqlLocalDbInstanceInfo> instances = provider.GetInstances();
 
             Console.WriteLine(Strings.Program_InstancesListHeader);
             Console.WriteLine();
@@ -68,7 +68,7 @@ namespace System.Data.SqlLocalDb
 
             string instanceName = Guid.NewGuid().ToString();
 
-            ISqlLocalDbInstance instance = factory.CreateInstance(instanceName);
+            ISqlLocalDbInstance instance = provider.CreateInstance(instanceName);
 
             instance.Start();
 

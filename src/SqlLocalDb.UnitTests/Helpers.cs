@@ -31,12 +31,11 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         public static void EnsureUserIsAdmin()
         {
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            string name;
+
+            if (!IsCurrentUserAdmin(out name))
             {
-                if (!new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator))
-                {
-                    Assert.Inconclusive("The current user '{0}' does not have Administrator privileges.", identity.Name);
-                }
+                Assert.Inconclusive("The current user '{0}' does not have Administrator privileges.", name);
             }
         }
 
@@ -52,6 +51,36 @@ namespace System.Data.SqlLocalDb
             if (!SqlLocalDbApi.IsLocalDBInstalled())
             {
                 Assert.Inconclusive("SQL Server LocalDB is not installed on {0}.", Environment.MachineName);
+            }
+        }
+
+        /// <summary>
+        /// Returns whether the current user has Administrative privileges.
+        /// </summary>
+        /// <returns>
+        /// <see langword="true"/> if the current user has Administrative
+        /// privileges; otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool IsCurrentUserAdmin()
+        {
+            string name;
+            return IsCurrentUserAdmin(out name);
+        }
+
+        /// <summary>
+        /// Returns whether the current user has Administrative privileges.
+        /// </summary>
+        /// <param name="name">When the method returns, contains the name of the current user.</param>
+        /// <returns>
+        /// <see langword="true"/> if the current user has Administrative
+        /// privileges; otherwise <see langword="false"/>.
+        /// </returns>
+        private static bool IsCurrentUserAdmin(out string name)
+        {
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                name = identity.Name;
+                return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
 

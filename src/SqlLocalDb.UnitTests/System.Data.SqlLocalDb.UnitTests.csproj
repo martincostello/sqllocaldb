@@ -65,6 +65,7 @@
     <Compile Include="ErrorAssert.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlLocalDbApiTests.cs" />
     <Compile Include="SqlLocalDbExceptionTests.cs">
