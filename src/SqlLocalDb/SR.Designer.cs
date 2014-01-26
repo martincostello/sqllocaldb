@@ -178,7 +178,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB.  HRESULT = {0}.
+        ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB. HRESULT = {0}.
         /// </summary>
         internal static string SqlLocalDbApi_GenericFailureFormat {
             get {
@@ -187,7 +187,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created named instance of SQL LocalDB.  Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogCreatedFormat {
             get {
@@ -196,7 +196,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating named instance of SQL LocalDB.  Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Creating named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogCreatingFormat {
             get {
@@ -295,7 +295,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}.  Shared instance name: &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}. Shared instance name: &apos;{2}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogSharingInstanceFormat {
             get {
@@ -367,7 +367,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;.  Timeout: {1}; Option(s): {2}..
+        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;. Timeout: {1}; Option(s): {2}..
         /// </summary>
         internal static string SqlLocalDbApi_LogStoppingFormat {
             get {

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SqlLocalDbApi_GenericFailureFormat" xml:space="preserve">
-    <value>An error occurred with SQL Server LocalDB.  HRESULT = {0}</value>
+    <value>An error occurred with SQL Server LocalDB. HRESULT = {0}</value>
   </data>
   <data name="SqlLocalDbApi_NotInstalledFormat" xml:space="preserve">
     <value>SQL Server LocalDB is not installed on {0}.</value>
@@ -163,10 +163,10 @@
     <value>No SQL LocalDB instance name specified.</value>
   </data>
   <data name="SqlLocalDbApi_LogCreatedFormat" xml:space="preserve">
-    <value>Created named instance of SQL LocalDB.  Instance name: '{0}'; version: '{1}'.</value>
+    <value>Created named instance of SQL LocalDB. Instance name: '{0}'; version: '{1}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogCreatingFormat" xml:space="preserve">
-    <value>Creating named instance of SQL LocalDB.  Instance name: '{0}'; version: '{1}'.</value>
+    <value>Creating named instance of SQL LocalDB. Instance name: '{0}'; version: '{1}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogDeletedFormat" xml:space="preserve">
     <value>Deleted named instance of SQL LocalDB '{0}'.</value>
@@ -199,7 +199,7 @@
     <value>Shared SQL LocalDB instance '{0}' for owner SID '{1} as '{2}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogSharingInstanceFormat" xml:space="preserve">
-    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}.  Shared instance name: '{2}'.</value>
+    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}. Shared instance name: '{2}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogStartedFormat" xml:space="preserve">
     <value>Started SQL LocalDB instance '{0}' using named pipe '{1}'.</value>
@@ -223,7 +223,7 @@
     <value>Tracing stopped for SQL LocalDB.</value>
   </data>
   <data name="SqlLocalDbApi_LogStoppingFormat" xml:space="preserve">
-    <value>Stopping SQL LocalDB instance '{0}'.  Timeout: {1}; Option(s): {2}.</value>
+    <value>Stopping SQL LocalDB instance '{0}'. Timeout: {1}; Option(s): {2}.</value>
   </data>
   <data name="SqlLocalDbApi_LogStoppingSharingFormat" xml:space="preserve">
     <value>Stopping sharing SQL LocalDB instance '{0}'.</value>
