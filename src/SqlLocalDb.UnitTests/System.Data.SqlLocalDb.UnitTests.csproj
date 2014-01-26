@@ -94,9 +94,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\CommonVersionInfo.h">
-      <Link>CommonVersionInfo.h</Link>
-    </Content>
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">
       <Link>FxCopDictionary.xml</Link>
     </CodeAnalysisDictionary>

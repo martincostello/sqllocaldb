@@ -75,9 +75,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\CommonVersionInfo.h">
-      <Link>CommonVersionInfo.h</Link>
-    </None>
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">
       <Link>FxCopDictionary.xml</Link>
     </CodeAnalysisDictionary>
