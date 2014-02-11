@@ -273,4 +273,7 @@
   <data name="NativeMethods_NativeApiLoadedFormat" xml:space="preserve">
     <value>Loaded SQL LocalDB API from '{0}'.</value>
   </data>
+  <data name="SqlLocalDbApi_InstanceDoesNotExistFormat" xml:space="preserve">
+    <value>SQL LocalDB instance '{0}' cannot be found so was not deleted.</value>
+  </data>
 </root>

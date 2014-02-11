@@ -65,11 +65,11 @@ namespace System.Data.SqlLocalDb
 
             foreach (ISqlLocalDbVersionInfo version in versions)
             {
-                Assert.IsTrue(version.Exists, "ISqlLocalDbVersionInfo.Exists is incorrect.");
                 Assert.IsNotNull(version.Name, "ISqlLocalDbVersionInfo.Name is null.");
                 Assert.AreNotEqual(string.Empty, version.Name, "ISqlLocalDbVersionInfo.Name is incorrect.");
-                Assert.IsNotNull(version.Version, "ISqlLocalDbVersionInfo.Version is null.");
-                Assert.AreNotEqual(string.Empty, version.Version, "ISqlLocalDbVersionInfo.Version is incorrect.");
+                Assert.IsTrue(version.Exists, "ISqlLocalDbVersionInfo.Exists is incorrect for version '{0}'.", version.Name);
+                Assert.IsNotNull(version.Version, "ISqlLocalDbVersionInfo.Version is null for version '{0}'.", version.Name);
+                Assert.AreNotEqual(string.Empty, version.Version, "ISqlLocalDbVersionInfo.Version is incorrect for version '{0}'.", version.Name);
             }
 
             IList<ISqlLocalDbInstanceInfo> instances = provider.GetInstances();
@@ -79,14 +79,14 @@ namespace System.Data.SqlLocalDb
 
             foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
             {
-                Assert.IsFalse(instanceInfo.ConfigurationCorrupt, "ISqlLocalDbInstanceInfo.ConfigurationCorrupt is incorrect.");
-                Assert.IsTrue(instanceInfo.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
-                Assert.IsNotNull(instanceInfo.LocalDbVersion, "ISqlLocalDbInstanceInfo.LocalDbVersion is null.");
-                Assert.AreNotEqual(string.Empty, instanceInfo.LocalDbVersion, "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
-                Assert.IsNotNull(instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is null.");
-                Assert.AreNotEqual(string.Empty, instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is incorrect.");
-                Assert.IsNotNull(instanceInfo.OwnerSid, "ISqlLocalDbInstanceInfo.OwnerSid is null.");
-                Assert.AreNotEqual(string.Empty, instanceInfo.OwnerSid, "ISqlLocalDbInstanceInfo.OwnerSid is incorrect.");
+                Assert.IsNotNull(instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is null.", instanceInfo.Name);
+                Assert.AreNotEqual(string.Empty, instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is incorrect.", instanceInfo.Name);
+                Assert.IsFalse(instanceInfo.ConfigurationCorrupt, "ISqlLocalDbInstanceInfo.ConfigurationCorrupt is incorrect for instance '{0}'.", instanceInfo.Name);
+                Assert.IsTrue(instanceInfo.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect for instance '{0}'.", instanceInfo.Name);
+                Assert.IsNotNull(instanceInfo.LocalDbVersion, "ISqlLocalDbInstanceInfo.LocalDbVersion is null for instance '{0}'.", instanceInfo.Name);
+                Assert.AreNotEqual(string.Empty, instanceInfo.LocalDbVersion, "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect for instance '{0}'.", instanceInfo.Name);
+                Assert.IsNotNull(instanceInfo.OwnerSid, "ISqlLocalDbInstanceInfo.OwnerSid is null for instance '{0}'.", instanceInfo.Name);
+                Assert.AreNotEqual(string.Empty, instanceInfo.OwnerSid, "ISqlLocalDbInstanceInfo.OwnerSid is incorrect for instance '{0}'.", instanceInfo.Name);
             }
 
             string instanceName = Guid.NewGuid().ToString();

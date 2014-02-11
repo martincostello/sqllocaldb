@@ -187,6 +187,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SQL LocalDB instance &apos;{0}&apos; cannot be found so was not deleted..
+        /// </summary>
+        internal static string SqlLocalDbApi_InstanceDoesNotExistFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_InstanceDoesNotExistFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogCreatedFormat {

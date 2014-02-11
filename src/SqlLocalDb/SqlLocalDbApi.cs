@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -222,21 +223,46 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void DeleteInstance(string instanceName)
         {
-            if (instanceName == null)
+            DeleteInstance(instanceName, throwIfNotFound: true);
+        }
+
+        /// <summary>
+        /// Deletes all user instances of SQL LocalDB on the current machine.
+        /// </summary>
+        /// <returns>
+        /// The number of user instances of SQL LocalDB that were deleted.
+        /// </returns>
+        /// <remarks>
+        /// The default instance(s) of any version(s) of SQL LocalDB that are
+        /// installed on the local machine are not deleted.
+        /// </remarks>
+        public static int DeleteUserInstances()
+        {
+            int instancesDeleted = 0;
+
+            IList<string> instanceNames = GetInstanceNames();
+
+            if (instanceNames != null)
             {
-                throw new ArgumentNullException("instanceName");
+                // The default instances are named as the version with the prefix of 'v'
+                instanceNames = instanceNames
+                    .Except(_versions.Select((p) => "v" + p))
+                    .ToList();
+
+                foreach (string instanceName in instanceNames)
+                {
+                    // In some cases, SQL LocalDB may report instance names in calls
+                    // to enumerate the instances that do not actually exist. Presumably
+                    // this can occur if the installation/instances become corrupted.
+                    // Such failures to delete an instance should be ignored.
+                    if (DeleteInstance(instanceName, throwIfNotFound: false))
+                    {
+                        instancesDeleted++;
+                    }
+                }
             }
 
-            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);
-
-            int hr = NativeMethods.DeleteInstance(instanceName);
-
-            if (hr != 0)
-            {
-                throw GetLocalDbError(hr, Logger.TraceEvent.DeleteInstance, instanceName);
-            }
-
-            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogDeletedFormat, instanceName);
+            return instancesDeleted;
         }
 
         /// <summary>
@@ -778,6 +804,56 @@ namespace System.Data.SqlLocalDb
             }
 
             Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppedSharingFormat, instanceName);
+        }
+
+        /// <summary>
+        /// Deletes the specified SQL Server LocalDB instance.
+        /// </summary>
+        /// <param name="instanceName">
+        /// The name of the LocalDB instance to delete.
+        /// </param>
+        /// <param name="throwIfNotFound">
+        /// Whether to throw an exception if the SQL LocalDB instance
+        /// specified by <paramref name="instanceName"/> cannot be found.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the instance specified by <paramref name="instanceName"/>
+        /// was successfully deleted; <see langword="false"/> if <paramref name="throwIfNotFound"/>
+        /// is <see langword="false"/> and the instance did not exist.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
+        /// </exception>
+        internal static bool DeleteInstance(string instanceName, bool throwIfNotFound)
+        {
+            if (instanceName == null)
+            {
+                throw new ArgumentNullException("instanceName");
+            }
+
+            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);
+
+            int hr = NativeMethods.DeleteInstance(instanceName);
+
+            if (hr != 0)
+            {
+                if (!throwIfNotFound && hr == SqlLocalDbErrors.UnknownInstance)
+                {
+                    Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_InstanceDoesNotExistFormat, instanceName);
+                    return false;
+                }
+
+                throw GetLocalDbError(hr, Logger.TraceEvent.DeleteInstance, instanceName);
+            }
+
+            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletedFormat, instanceName);
+            return true;
         }
 
         /// <summary>
