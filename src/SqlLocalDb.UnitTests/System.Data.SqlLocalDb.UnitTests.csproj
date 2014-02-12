@@ -76,6 +76,7 @@
     <Compile Include="SRHelperTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestCategories.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlLocalDb\System.Data.SqlLocalDb.csproj">

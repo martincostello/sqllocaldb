@@ -392,6 +392,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests ShareInstance().")]
         public void ShareInstance()
         {
@@ -833,6 +834,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests UnshareInstance().")]
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",

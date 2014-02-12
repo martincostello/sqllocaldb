@@ -37,7 +37,7 @@ namespace System.Data.SqlLocalDb
         #region Methods
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory(TestCategories.Integration)]
         [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Maintainability",

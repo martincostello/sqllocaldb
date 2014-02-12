@@ -35,7 +35,7 @@ namespace System.Data.SqlLocalDb
 
             if (!IsCurrentUserAdmin(out name))
             {
-                Assert.Inconclusive("The current user '{0}' does not have Administrator privileges.", name);
+                Assert.Inconclusive("The current user '{0}' does not have administrative privileges.", name);
             }
         }
 

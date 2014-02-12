@@ -348,6 +348,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests Share() if the instance is started.")]
         public void Share_InstanceIsStarted()
         {
@@ -583,6 +584,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests Unshare() if the instance is started.")]
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
