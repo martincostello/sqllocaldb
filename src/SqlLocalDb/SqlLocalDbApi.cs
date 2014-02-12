@@ -12,7 +12,6 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -244,13 +243,17 @@ namespace System.Data.SqlLocalDb
 
             if (instanceNames != null)
             {
-                // The default instances are named as the version with the prefix of 'v'
-                instanceNames = instanceNames
-                    .Except(_versions.Select((p) => "v" + p))
-                    .ToList();
-
                 foreach (string instanceName in instanceNames)
                 {
+                    ISqlLocalDbInstanceInfo info = GetInstanceInfo(instanceName);
+
+                    // Do not try to delete automatic instances.
+                    // These are the default instances created for each version.
+                    if (!info.Exists || info.IsAutomatic)
+                    {
+                        continue;
+                    }
+                                        
                     // In some cases, SQL LocalDB may report instance names in calls
                     // to enumerate the instances that do not actually exist. Presumably
                     // this can occur if the installation/instances become corrupted.
