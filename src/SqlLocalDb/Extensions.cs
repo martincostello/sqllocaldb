@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data.Common;
 using System.Data.EntityClient;
@@ -24,7 +25,7 @@ namespace System.Data.SqlLocalDb
     /// <summary>
     /// A class containing extension methods for use with SQL LocalDB instances.  This class cannot be inherited.
     /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class Extensions
     {
         #region Constants
