@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -72,8 +73,12 @@ namespace System.Data.SqlLocalDb
                     throw new InvalidOperationException(message);
                 }
 
-                // TODO Verify whether the latest value is the first or last element
-                return versions[0];
+                // Return the version with the highest number
+                return versions
+                    .Select((p) => new Version(p))
+                    .OrderBy((p) => p)
+                    .Last()
+                    .ToString();
             }
         }
 
