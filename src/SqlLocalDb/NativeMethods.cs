@@ -146,12 +146,6 @@ namespace System.Data.SqlLocalDb
         /// <param name="wszVersion">The LocalDB version, for example 11.0 or 11.0.1094.2.</param>
         /// <param name="pInstanceName">The name for the LocalDB instance to create.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int CreateInstance(string wszVersion, string pInstanceName)
         {
             var function = EnsureFunction("LocalDBCreateInstance", ref _localDBCreateInstance);
@@ -169,12 +163,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         /// <param name="pInstanceName">The name of the LocalDB instance to delete.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int DeleteInstance(string pInstanceName)
         {
             var function = EnsureFunction("LocalDBDeleteInstance", ref _localDBDeleteInstance);
@@ -195,10 +183,12 @@ namespace System.Data.SqlLocalDb
         [DllImport(KernelLibName)]
         [return: MarshalAs(UnmanagedType.Bool)]
         [SecurityCritical]
+#if !NET40
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
+#endif
         internal static extern bool FreeLibrary(IntPtr handle);
 
         /// <summary>
@@ -210,12 +200,6 @@ namespace System.Data.SqlLocalDb
         /// <param name="pInstanceInfo">The buffer to store the information about the LocalDB instance.</param>
         /// <param name="dwInstanceInfoSize">Holds the size of the InstanceInfo buffer.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int GetInstanceInfo(string wszInstanceName, IntPtr pInstanceInfo, int dwInstanceInfoSize)
         {
             var function = EnsureFunction("LocalDBGetInstanceInfo", ref _localDBGetInstanceInfo);
@@ -241,12 +225,6 @@ namespace System.Data.SqlLocalDb
         /// of LocalDB instances found on the user’s workstation.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int GetInstanceNames(IntPtr pInstanceNames, ref int lpdwNumberOfInstances)
         {
             var function = EnsureFunction("LocalDBGetInstances", ref _localDBGetInstances);
@@ -272,12 +250,6 @@ namespace System.Data.SqlLocalDb
         /// excluding any trailing nulls.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int GetLocalDbError(int hrLocalDB, int dwLanguageId, StringBuilder wszMessage, ref int lpcchMessage)
         {
             var function = EnsureFunction("LocalDBFormatMessage", ref _localDBFormatMessage);
@@ -299,12 +271,6 @@ namespace System.Data.SqlLocalDb
         /// <param name="pVersionInfo">The buffer to store the information about the LocalDB version.</param>
         /// <param name="dwVersionInfoSize">Holds the size of the VersionInfo buffer.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int GetVersionInfo(string wszVersionName, IntPtr pVersionInfo, int dwVersionInfoSize)
         {
             var function = EnsureFunction("LocalDBGetVersionInfo", ref _localDBGetVersionInfo);
@@ -326,12 +292,6 @@ namespace System.Data.SqlLocalDb
         /// buffer. On output, holds the number of existing LocalDB versions.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int GetVersions(IntPtr pVersion, ref int lpdwNumberOfVersions)
         {
             var function = EnsureFunction("LocalDBGetVersions", ref _localDBGetVersions);
@@ -352,12 +312,6 @@ namespace System.Data.SqlLocalDb
         /// <param name="pInstancePrivateName">The private name for the LocalDB instance to share.</param>
         /// <param name="pInstanceSharedName">The shared name for the LocalDB instance to share.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int ShareInstance(IntPtr pOwnerSID, string pInstancePrivateName, string pInstanceSharedName)
         {
             var function = EnsureFunction("LocalDBShareInstance", ref _localDBShareInstance);
@@ -381,12 +335,6 @@ namespace System.Data.SqlLocalDb
         /// too small, contains the required buffer size in characters, including any trailing nulls.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int StartInstance(string pInstanceName, StringBuilder wszSqlConnection, ref int lpcchSqlConnection)
         {
             var function = EnsureFunction("LocalDBStartInstance", ref _localDBStartInstance);
@@ -404,12 +352,6 @@ namespace System.Data.SqlLocalDb
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int StartTracing()
         {
             var function = EnsureFunction("LocalDBStartTracing", ref _localDBStartTracing);
@@ -432,12 +374,6 @@ namespace System.Data.SqlLocalDb
         /// value is 0, this function will return immediately without waiting for the LocalDB instance to stop.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int StopInstance(string pInstanceName, StopInstanceOptions options, int ulTimeout)
         {
             var function = EnsureFunction("LocalDBStopInstance", ref _localDBStopInstance);
@@ -455,12 +391,6 @@ namespace System.Data.SqlLocalDb
         /// instances owned by the current Windows user.
         /// </summary>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int StopTracing()
         {
             var function = EnsureFunction("LocalDBStopTracing", ref _localDBStopTracing);
@@ -480,12 +410,6 @@ namespace System.Data.SqlLocalDb
         /// The private name for the LocalDB instance to share.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        [SecuritySafeCritical]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Portability",
-            "CA1903:UseOnlyApiFromTargetedFramework",
-            MessageId = "System.Security.SecuritySafeCriticalAttribute",
-            Justification = ".NET 3.5 SP1 is required if using Entity Framework.")]
         internal static int UnshareInstance(string pInstanceName)
         {
             var function = EnsureFunction("LocalDBUnshareInstance", ref _localDBUnshareInstance);
@@ -511,10 +435,12 @@ namespace System.Data.SqlLocalDb
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
         /// </remarks>
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
+#if !NET40
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
+#endif
         private static extern IntPtr GetProcAddress(
             SafeLibraryHandle hModule,
             [MarshalAs(UnmanagedType.LPStr)]
@@ -533,10 +459,12 @@ namespace System.Data.SqlLocalDb
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx</c>.
         /// </remarks>
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
+#if !NET40
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
+#endif
         private static extern SafeLibraryHandle LoadLibrary(
             [MarshalAs(UnmanagedType.LPStr)]
             string lpFileName);
@@ -561,10 +489,12 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         [DllImport(KernelLibName, CallingConvention = CallingConvention.Winapi, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
+#if !NET40
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Security",
             "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
             Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
+#endif
         private static extern bool IsWow64Process(
             IntPtr hProcess,
             [MarshalAs(UnmanagedType.Bool)]
