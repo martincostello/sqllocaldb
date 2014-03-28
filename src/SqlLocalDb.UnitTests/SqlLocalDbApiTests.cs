@@ -359,6 +359,31 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests the LatestVersion property returns the correct value.")]
+        public void LatestVersion_Returns_Latest_Version()
+        {
+            // Arrange
+            IList<string> installedVersions = SqlLocalDbApi.Versions;
+
+            if (installedVersions.Count < 2)
+            {
+                Assert.Inconclusive("Only one version of SQL LocalDB is installed on '{0}'.", Environment.MachineName);
+            }
+
+            List<Version> versions = installedVersions
+                .Select((p) => new Version(p))
+                .ToList();
+
+            versions.Sort();
+
+            // Act
+            string result = SqlLocalDbApi.LatestVersion;
+
+            // Assert
+            Assert.AreEqual(versions.Last().ToString(), result, "SqlLocalDbApi.LatestVersion returned incorrect result.");
+        }
+
+        [TestMethod]
         [Description("Tests ShareInstance() if sharedInstanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShareInstance_ThrowsIfSharedInstanceNameIsNull()
