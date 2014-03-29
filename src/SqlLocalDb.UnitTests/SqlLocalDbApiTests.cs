@@ -376,11 +376,15 @@ namespace System.Data.SqlLocalDb
 
             versions.Sort();
 
+            string expected = versions
+                .Last()
+                .ToString();
+
             // Act
             string result = SqlLocalDbApi.LatestVersion;
 
             // Assert
-            Assert.AreEqual(versions.Last().ToString(), result, "SqlLocalDbApi.LatestVersion returned incorrect result.");
+            Assert.AreEqual(expected, result, "SqlLocalDbApi.LatestVersion returned incorrect result.");
         }
 
         [TestMethod]
