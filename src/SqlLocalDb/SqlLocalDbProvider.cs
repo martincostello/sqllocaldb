@@ -27,6 +27,14 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private readonly ISqlLocalDbApi _localDB;
 
+        /// <summary>
+        /// The version of SQL LocalDB to use to create instances, if specified.
+        /// </summary>
+        /// <remarks>
+        /// If the value is <see langword="null"/>, the latest version reported by <see cref="_localDB"/> is used.
+        /// </remarks>
+        private string _version;
+
         #endregion
 
         #region Constructors
@@ -59,6 +67,18 @@ namespace System.Data.SqlLocalDb
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the version of SQL LocalDB to use to create instances.
+        /// </summary>
+        /// <remarks>
+        /// If no value is set, the latest version of SQL LocalDB installed on the local machine is used.
+        /// </remarks>
+        public virtual string Version
+        {
+            get { return _version ?? _localDB.LatestVersion;  }
+            set { _version = value; }
+        }
 
         /// <summary>
         /// Gets the <see cref="ISqlLocalDbApi"/> in use by the instance.
@@ -123,7 +143,9 @@ namespace System.Data.SqlLocalDb
                 throw new InvalidOperationException(message);
             }
 
-            _localDB.CreateInstance(instanceName, _localDB.LatestVersion);
+            string version = _version ?? _localDB.LatestVersion;
+            _localDB.CreateInstance(instanceName, version);
+
             return GetInstance(instanceName);
         }
 

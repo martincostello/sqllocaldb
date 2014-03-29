@@ -183,6 +183,85 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests CreateInstance(string) uses the latest version of SQL LocalDB if not overridden.")]
+        public void CreateInstance_Uses_Latest_Version()
+        {
+            // Arrange
+            string instanceName = Guid.NewGuid().ToString();
+            string latestVersion = "1.2.3.4";
+
+            Mock<ISqlLocalDbInstanceInfo> mockInfo = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mockInfo
+                .SetupSequence((p) => p.Exists)
+                .Returns(false)
+                .Returns(true);
+
+            Mock<ISqlLocalDbApi> mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.LatestVersion)
+                .Returns(latestVersion)
+                .Verifiable();
+
+            mock.Setup((p) => p.CreateInstance(instanceName, latestVersion))
+                .Verifiable();
+
+            mock.Setup((p) => p.GetInstanceInfo(instanceName))
+                .Returns(mockInfo.Object)
+                .Verifiable();
+
+            ISqlLocalDbApi localDB = mock.Object;
+
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
+
+            // Act
+            target.CreateInstance(instanceName);
+
+            // Assert
+            mock.Verify();
+        }
+
+        [TestMethod]
+        [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden.")]
+        public void CreateInstance_Uses_Specified_Version()
+        {
+            // Arrange
+            string instanceName = Guid.NewGuid().ToString();
+            string latestVersion = "2.3.4.5";
+            string version = "1.2.3.4";
+
+            Mock<ISqlLocalDbInstanceInfo> mockInfo = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mockInfo
+                .SetupSequence((p) => p.Exists)
+                .Returns(false)
+                .Returns(true);
+
+            Mock<ISqlLocalDbApi> mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.LatestVersion)
+                .Returns(latestVersion);
+
+            mock.Setup((p) => p.CreateInstance(instanceName, version))
+                .Verifiable();
+
+            mock.Setup((p) => p.GetInstanceInfo(instanceName))
+                .Returns(mockInfo.Object)
+                .Verifiable();
+
+            ISqlLocalDbApi localDB = mock.Object;
+
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
+            target.Version = version;
+
+            // Act
+            target.CreateInstance(instanceName);
+
+            // Assert
+            mock.Verify();
+        }
+
+        [TestMethod]
         [Description("Tests GetInstance(string).")]
         public void GetInstance()
         {
@@ -346,6 +425,37 @@ namespace System.Data.SqlLocalDb
             {
                 SqlLocalDbApi.DeleteInstance(instanceName);
             }
+        }
+
+        [TestMethod]
+        [Description("Tests the Version property getter and setter work correctly.")]
+        public void Version_Property_Can_Be_Set_Correctly()
+        {
+            // Arrange
+            string value = "3.4.5.6";
+            string latestVersion = SqlLocalDbApi.LatestVersion;
+
+            SqlLocalDbProvider target = new SqlLocalDbProvider();
+
+            // Act
+            string result = target.Version;
+
+            // Assert
+            Assert.AreEqual(latestVersion, result, "SqlLocalDbProvider.Version returned incorrect value.");
+
+            // Act
+            target.Version = value;
+            result = target.Version;
+
+            // Assert
+            Assert.AreEqual(value, result, "SqlLocalDbProvider.Version returned incorrect value.");
+
+            // Act
+            target.Version = null;
+            result = target.Version;
+
+            // Assert
+            Assert.AreEqual(latestVersion, result, "SqlLocalDbProvider.Version returned incorrect value.");
         }
 
         #endregion
