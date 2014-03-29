@@ -486,11 +486,14 @@ namespace System.Data.SqlLocalDb
             string instanceName,
             string sharedInstanceName)
         {
+            string ownerSid;
+
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
-                string sid = identity.User.Value;
-                ShareInstance(sid, instanceName, sharedInstanceName);
+                ownerSid = identity.User.Value;                
             }
+
+            ShareInstance(ownerSid, instanceName, sharedInstanceName);
         }
 
         /// <summary>
