@@ -74,9 +74,6 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                // SQL LocalDB will let you call Share() successfully if the process
-                // is not running elevated, but won't actually share the instance, causing
-                // the complementary call to Unshare() to fail.
                 if (IsCurrentUserAdmin())
                 {
                     instance.Share(Guid.NewGuid().ToString());
@@ -113,6 +110,10 @@ namespace System.Data.SqlLocalDb
                         instance.Unshare();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
             finally
             {

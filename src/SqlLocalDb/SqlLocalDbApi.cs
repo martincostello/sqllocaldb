@@ -558,7 +558,7 @@ namespace System.Data.SqlLocalDb
                 Marshal.Copy(binaryForm, 0, ptrSid, binaryForm.Length);
 
                 int hr = NativeMethods.ShareInstance(
-                    IntPtr.Zero,
+                    ptrSid,
                     instanceName,
                     sharedInstanceName);
 
