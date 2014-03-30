@@ -96,8 +96,14 @@ namespace System.Data.SqlLocalDb
             {
                 ISqlLocalDbInstanceInfo info = result.GetInstanceInfo();
 
+                Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
                 Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
+
+                Assert.AreEqual(
+                    new Version(target.Version),
+                    new Version(info.LocalDbVersion.Major, info.LocalDbVersion.Minor),
+                    "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
 
                 Guid guid;
                 Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
@@ -129,11 +135,14 @@ namespace System.Data.SqlLocalDb
             {
                 ISqlLocalDbInstanceInfo info = result.GetInstanceInfo();
 
+                Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
                 Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
-                Guid guid;
-                Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
+                Assert.AreEqual(
+                    new Version(target.Version),
+                    new Version(info.LocalDbVersion.Major, info.LocalDbVersion.Minor),
+                    "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
             }
             finally
             {
