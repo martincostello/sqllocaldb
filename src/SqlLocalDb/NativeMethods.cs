@@ -668,6 +668,11 @@ namespace System.Data.SqlLocalDb
             }
 
             Version latestVersion = null;
+            Version overrideVersion = null;
+
+            // Is there a setting overriding the version to load?
+            string overrideVersionString = Configuration.ConfigurationManager.AppSettings["SQLLocalDB:OverrideVersion"];
+
             string path = null;
 
             try
@@ -696,6 +701,13 @@ namespace System.Data.SqlLocalDb
                         continue;
                     }
 
+                    if (!string.IsNullOrEmpty(overrideVersionString) &&
+                        overrideVersion == null &&
+                        string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        overrideVersion = version;
+                    }
+
                     if (latestVersion == null ||
                         latestVersion < version)
                     {
@@ -703,9 +715,11 @@ namespace System.Data.SqlLocalDb
                     }
                 }
 
-                if (latestVersion != null)
+                Version versionToUse = overrideVersion ?? latestVersion;
+
+                if (versionToUse != null)
                 {
-                    using (var subkey = key.OpenSubKey(latestVersion.ToString()))
+                    using (var subkey = key.OpenSubKey(versionToUse.ToString()))
                     {
                         path = subkey.GetValue("InstanceAPIPath", null, RegistryValueOptions.None) as string;
                     }
