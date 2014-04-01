@@ -254,11 +254,14 @@ namespace System.Data.SqlLocalDb
 
                     // Do not try to delete automatic instances.
                     // These are the default instances created for each version.
-                    if (!info.Exists || info.IsAutomatic)
+                    // As of SQL LocalDB 2014, the default instance is named 'MSSQLLocalDB'.
+                    if (!info.Exists ||
+                        info.IsAutomatic ||
+                        string.Equals(info.Name, "MSSQLLocalDB", StringComparison.Ordinal))
                     {
                         continue;
                     }
-                                        
+
                     // In some cases, SQL LocalDB may report instance names in calls
                     // to enumerate the instances that do not actually exist. Presumably
                     // this can occur if the installation/instances become corrupted.
