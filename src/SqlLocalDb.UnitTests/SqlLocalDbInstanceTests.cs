@@ -281,19 +281,7 @@ namespace System.Data.SqlLocalDb
             SqlLocalDbException error = ErrorAssert.Throws<SqlLocalDbException>(
                 () => SqlLocalDbInstance.Delete(instance.Object));
 
-            int expected;
-
-            if (string.Equals("11.0", SqlLocalDbApi.LatestVersion, StringComparison.Ordinal))
-            {
-                // SQL LocalDB 11.0 returned a different value in this case
-                expected = SqlLocalDbErrors.InvalidParameter;
-            }
-            else
-            {
-                expected = SqlLocalDbErrors.UnknownInstance;
-            }
-
-            Assert.AreEqual(expected, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
+            Assert.AreEqual(SqlLocalDbErrors.InvalidInstanceName, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
             Assert.AreEqual(InstanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
 
             throw error;
@@ -441,19 +429,7 @@ namespace System.Data.SqlLocalDb
                 SqlLocalDbException error = ErrorAssert.Throws<SqlLocalDbException>(
                     () => target.Share(sharedName));
 
-                int expected;
-
-                if (string.Equals("11.0", SqlLocalDbApi.LatestVersion, StringComparison.Ordinal))
-                {
-                    // SQL LocalDB 11.0 returned a different value in this case
-                    expected = SqlLocalDbErrors.InvalidParameter;
-                }
-                else
-                {
-                    expected = SqlLocalDbErrors.SharedNameTaken;
-                }
-
-                Assert.AreEqual(expected, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
+                Assert.AreEqual(SqlLocalDbErrors.InvalidInstanceName, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
                 Assert.AreEqual(instanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
 
                 throw error;
