@@ -138,6 +138,19 @@ namespace System.Data.SqlLocalDb
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the version of the SQL LocalDB native API loaded, if any.
+        /// </summary>
+        internal static Version NativeApiVersion
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -705,6 +718,7 @@ namespace System.Data.SqlLocalDb
                         overrideVersion == null &&
                         string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
                     {
+                        Logger.Verbose(Logger.TraceEvent.NativeApiVersionOverriddenByUser, SR.NativeMethods_ApiVersionOverriddenByUserFormat, version);
                         overrideVersion = version;
                     }
 
@@ -723,6 +737,8 @@ namespace System.Data.SqlLocalDb
                     {
                         path = subkey.GetValue("InstanceAPIPath", null, RegistryValueOptions.None) as string;
                     }
+
+                    NativeApiVersion = versionToUse;
                 }
             }
             finally

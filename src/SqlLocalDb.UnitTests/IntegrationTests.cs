@@ -80,6 +80,17 @@ namespace System.Data.SqlLocalDb
             foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
             {
                 Assert.IsNotNull(instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is null.", instanceInfo.Name);
+
+                if (string.Equals(instanceInfo.Name, "v12.0", StringComparison.Ordinal) &&
+                    NativeMethods.NativeApiVersion == new Version(11, 0))
+                {
+                    // The SQL LocalDB 2012 native library reports the name as v12.0 instead of MSSQLLocalDB,
+                    // which then if queried states that it does not exist (because it doesn't actually exists)
+                    // under that name.  In this case, skip this test. We could fudge this in the wrapper itself,
+                    // but that's probably not the best idea as the default instance name ma change again in SQL v13.0.
+                    continue;
+                }
+
                 Assert.AreNotEqual(string.Empty, instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is incorrect.", instanceInfo.Name);
                 Assert.IsFalse(instanceInfo.ConfigurationCorrupt, "ISqlLocalDbInstanceInfo.ConfigurationCorrupt is incorrect for instance '{0}'.", instanceInfo.Name);
                 Assert.IsTrue(instanceInfo.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect for instance '{0}'.", instanceInfo.Name);

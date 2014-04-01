@@ -210,11 +210,13 @@ namespace System.Data.SqlLocalDb
                 IList<string> namesAfter = SqlLocalDbApi.GetInstanceNames();
                 IList<string> versionsAfter = SqlLocalDbApi.Versions;
 
-                // The default instances have a name which is the version prefixed with 'v' in SQL
-                // LocalDB 2012. In SQL LocalDB 2014, the default instance is named 'MSSQLLocalDB'.
+                // The default instances have a name which is the version prefixed with 'v' when
+                // using the SQL LocalDB 2012 native API. With the SQL LocalDB 2014 native API,
+                // the default instance is named 'MSSQLLocalDB'.
                 string[] expectedNames = namesAfter
-                    .Where((p) => string.Equals(p, "v11.0", StringComparison.Ordinal) ||
-                                  string.Equals(p, "MSSQLLocalDB", StringComparison.Ordinal))
+                    .Where((p) => p.StartsWith("v", StringComparison.Ordinal) ||
+                                  string.Equals(p, "MSSQLLocalDB", StringComparison.Ordinal) ||
+                                  string.Equals(p, @".\MSSQLLocalDB", StringComparison.Ordinal))
                     .ToArray();
 
                 CollectionAssert.AreEquivalent(expectedNames, namesAfter.ToArray(), "One or more instance was not deleted.");
@@ -491,26 +493,14 @@ namespace System.Data.SqlLocalDb
             Helpers.EnsureLocalDBInstalled();
 
             string instanceName = Guid.NewGuid().ToString();
-            string sharedInstanceName = string.Empty;
+            string sharedInstanceName = "\\\\";
 
             // Act
             SqlLocalDbException error = ErrorAssert.Throws<SqlLocalDbException>(
                 () => SqlLocalDbApi.ShareInstance(instanceName, sharedInstanceName));
 
-            int expected;
-
-            if (string.Equals("11.0", SqlLocalDbApi.LatestVersion, StringComparison.Ordinal))
-            {
-                // SQL LocalDB 2012 returned a different value in this case
-                expected = SqlLocalDbErrors.InvalidParameter;
-            }
-            else
-            {
-                expected = SqlLocalDbErrors.SharedNameTaken;
-            }
-
             // Assert
-            Assert.AreEqual(expected, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
+            Assert.AreEqual(SqlLocalDbErrors.InvalidInstanceName, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
             Assert.AreEqual(instanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
 
             throw error;

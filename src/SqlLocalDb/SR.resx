@@ -276,4 +276,7 @@
   <data name="SqlLocalDbApi_InstanceDoesNotExistFormat" xml:space="preserve">
     <value>SQL LocalDB instance '{0}' cannot be found so was not deleted.</value>
   </data>
+  <data name="NativeMethods_ApiVersionOverriddenByUserFormat" xml:space="preserve">
+    <value>The SQL LocalDB native API version to load was overridden by the user to {0}.</value>
+  </data>
 </root>

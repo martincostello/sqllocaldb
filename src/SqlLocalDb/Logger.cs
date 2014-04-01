@@ -425,6 +425,11 @@ namespace System.Data.SqlLocalDb
             /// </summary>
             internal static readonly int NativeApiLoaded = 20;
 
+            /// <summary>
+            /// The version of the native SQL LocalDB API loaded was overridden by the user.
+            /// </summary>
+            internal static readonly int NativeApiVersionOverriddenByUser = 21;
+
             #endregion
         }
 
