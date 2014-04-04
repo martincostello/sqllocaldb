@@ -19,3 +19,4 @@ TestResults
 *.sln.cache
 *.suo
 *.user
+/src/Tools/NuGet/NuGet.exe.old
