@@ -380,14 +380,7 @@ namespace System.Data.SqlLocalDb
                 }
 
                 // Read the instance names back from unmanaged memory
-                string[] names = new string[count];
-
-                for (int i = 0; i < names.Length; i++)
-                {
-                    // Determine the offset of the element, and get the string from the array
-                    IntPtr offset = new IntPtr(ptrNames.ToInt64() + (nameLength * i));
-                    names[i] = Marshal.PtrToStringAuto(offset);
-                }
+                string[] names = MarshalStringArray(ptrNames, nameLength, count);
 
                 Logger.Verbose(Logger.TraceEvent.GetInstanceNames, SR.SqlLocalDbApi_LogGotInstancesFormat, names.Length);
 
@@ -973,14 +966,7 @@ namespace System.Data.SqlLocalDb
                     }
 
                     // Read the version strings back from unmanaged memory
-                    string[] versions = new string[count];
-
-                    for (int i = 0; i < versions.Length; i++)
-                    {
-                        // Determine the offset of the element, and get the string from the array
-                        IntPtr offset = new IntPtr(ptrVersions.ToInt64() + (versionLength * i));
-                        versions[i] = Marshal.PtrToStringAuto(offset);
-                    }
+                    string[] versions = MarshalStringArray(ptrVersions, versionLength, count);
 
                     return versions;
                 }
@@ -997,6 +983,33 @@ namespace System.Data.SqlLocalDb
                     e.InstanceName,
                     e);
             }
+        }
+
+        /// <summary>
+        /// Convenience method to marshal string arrays from unmanaged memory.
+        /// </summary>
+        /// <param name="ptr">A pointer to an unmanaged block of memory.</param>
+        /// <param name="length">The length of each string in the array.</param>
+        /// <param name="count">The number of elements in the array.</param>
+        /// <returns>
+        /// An <see cref="Array"/> of strings read from <paramref name="ptr"/>.
+        /// </returns>
+        private static string[] MarshalStringArray(IntPtr ptr, int length, int count)
+        {
+            Debug.Assert(ptr != IntPtr.Zero, "The unmanaged memory pointer is invalid.");
+            Debug.Assert(length > 0, "The length of the elements cannot be less than one.");
+            Debug.Assert(count > -1, "The number of elements in the array cannot be negative.");
+
+            string[] result = new string[count];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                // Determine the offset of the element, and get the string from the array
+                IntPtr offset = new IntPtr(ptr.ToInt64() + (length * i));
+                result[i] = Marshal.PtrToStringAuto(offset);
+            }
+
+            return result;
         }
 
         /// <summary>
