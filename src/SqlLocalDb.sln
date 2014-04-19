@@ -35,11 +35,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B415E9C5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F16D00C-39D3-45C2-A7A9-18A01E323809}"
 	ProjectSection(SolutionItems) = preProject
+		Tools\StyleCop\CustomDictionary.en-US.xml = Tools\StyleCop\CustomDictionary.en-US.xml
+		Tools\StyleCop\CustomDictionary.xml = Tools\StyleCop\CustomDictionary.xml
+		Tools\StyleCop\mssp7en.dll = Tools\StyleCop\mssp7en.dll
+		Tools\StyleCop\mssp7en.lex = Tools\StyleCop\mssp7en.lex
 		Settings.StyleCop = Settings.StyleCop
+		Tools\StyleCop\StyleCop.CSharp.dll = Tools\StyleCop\StyleCop.CSharp.dll
+		Tools\StyleCop\StyleCop.CSharp.Rules.dll = Tools\StyleCop\StyleCop.CSharp.Rules.dll
+		Tools\StyleCop\StyleCop.dll = Tools\StyleCop\StyleCop.dll
 		Tools\StyleCop\StyleCop.Targets = Tools\StyleCop\StyleCop.Targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb.EFSample", "SqlLocalDb.EFSample\System.Data.SqlLocalDb.EFSample.csproj", "{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{C1285F26-933A-4A35-9AF1-1F35A3CE25AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuildExtensionPack", "MSBuildExtensionPack", "{42978B8C-754C-4144-A45D-4141B22A84DF}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\MSBuildExtensionPack\Ionic.Zip.dll = Tools\MSBuildExtensionPack\Ionic.Zip.dll
+		Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll = Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,7 +83,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B415E9C5-3B98-4F05-A71A-BF8FF9A696AB} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
-		{5F16D00C-39D3-45C2-A7A9-18A01E323809} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
+		{C1285F26-933A-4A35-9AF1-1F35A3CE25AF} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
+		{B415E9C5-3B98-4F05-A71A-BF8FF9A696AB} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
+		{5F16D00C-39D3-45C2-A7A9-18A01E323809} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
+		{42978B8C-754C-4144-A45D-4141B22A84DF} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 	EndGlobalSection
 EndGlobal
