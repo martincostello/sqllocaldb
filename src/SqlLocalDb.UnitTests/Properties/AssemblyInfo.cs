@@ -10,13 +10,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("System.Data.SqlLocalDb.UnitTests")]
 [assembly: AssemblyDescription("System.Data.SqlLocalDb Unit Tests")]
 [assembly: AssemblyProduct("System.Data.SqlLocalDb.UnitTests")]
-
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(true)]

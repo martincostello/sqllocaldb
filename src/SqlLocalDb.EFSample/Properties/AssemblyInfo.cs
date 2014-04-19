@@ -12,7 +12,6 @@
 
 using System;
 using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -22,8 +21,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Sample for System.Data.SqlLocalDb using EntityFramework.")]
 [assembly: AssemblyProduct("System.Data.SqlLocalDb.EFSample")]
 
-[assembly: ComVisible(false)]
 [assembly: Guid("7c4e7936-2ce9-4da5-a5c6-5b2988f9174f")]
-
-[assembly: CLSCompliant(true)]
-[assembly: NeutralResourcesLanguage("en-US")]

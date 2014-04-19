@@ -11,14 +11,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("System.Data.SqlLocalDb.TestApp")]
 [assembly: AssemblyDescription("Test Application For System.Data.SqlLocalDb.dll")]
 [assembly: AssemblyProduct("System.Data.SqlLocalDb.TestApp")]
 
-[assembly: ComVisible(false)]
 [assembly: Guid("b6649785-36c9-46d4-8f86-85bb6ee60c7e")]
-
-[assembly: NeutralResourcesLanguage("en-US")]
