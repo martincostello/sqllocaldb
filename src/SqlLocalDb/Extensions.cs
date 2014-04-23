@@ -349,6 +349,24 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Restarts the specified <see cref="ISqlLocalDbInstance"/> instance.
+        /// </summary>
+        /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> instance to restart.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        public static void Restart(this ISqlLocalDbInstance instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            instance.Stop();
+            instance.Start();
+        }
+
+        /// <summary>
         /// Sets the Initial Catalog name in the specified <see cref="DbConnectionStringBuilder"/>.
         /// </summary>
         /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the Initial Catalog name for.</param>

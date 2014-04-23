@@ -1001,6 +1001,35 @@ namespace System.Data.SqlLocalDb
             Assert.IsNull(result, "SetPhysicalFileName() did not set the correct value.");
         }
 
+        [TestMethod]
+        [Description("Tests Restart() if instance is null.")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Restart_Throws_If_Instance_Is_Null()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = null;
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentNullException>(
+                () => instance.Restart(),
+                "instance");
+        }
+
+        [TestMethod]
+        [Description("Tests Restart().")]
+        public void Restart_Restarts_Instance()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
+
+            // Act
+            instance.Restart();
+
+            // Assert
+            Mock.Get(instance).Verify((p) => p.Stop(), Times.Once());
+            Mock.Get(instance).Verify((p) => p.Start(), Times.Once());
+        }
+
         #endregion
     }
 }

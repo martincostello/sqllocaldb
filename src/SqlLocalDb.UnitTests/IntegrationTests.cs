@@ -40,6 +40,10 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1506:AvoidExcessiveClassCoupling",
+            Justification = "The class coupling here is OK.")]
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
@@ -114,8 +118,7 @@ namespace System.Data.SqlLocalDb
                     instance.Share(sharedInstanceName);
 
                     // Restart the instance so it listens on the new shared name's pipe
-                    instance.Stop();
-                    instance.Start();
+                    instance.Restart();
                 }
 
                 try
