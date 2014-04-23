@@ -85,9 +85,9 @@ namespace System.Data.SqlLocalDb
                     NativeMethods.NativeApiVersion == new Version(11, 0))
                 {
                     // The SQL LocalDB 2012 native library reports the name as v12.0 instead of MSSQLLocalDB,
-                    // which then if queried states that it does not exist (because it doesn't actually exists)
+                    // which then if queried states that it does not exist (because it doesn't actually exist)
                     // under that name.  In this case, skip this test. We could fudge this in the wrapper itself,
-                    // but that's probably not the best idea as the default instance name ma change again in SQL v13.0.
+                    // but that's probably not the best idea as the default instance name may change again in SQL v13.0.
                     continue;
                 }
 
@@ -109,9 +109,6 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                // SQL LocalDB will let you call Share() successfully if the process
-                // is not running elevated, but won't actually share the instance, causing
-                // the complementary call to Unshare() to fail.
                 if (Helpers.IsCurrentUserAdmin())
                 {
                     sharedInstanceName = Guid.NewGuid().ToString();
