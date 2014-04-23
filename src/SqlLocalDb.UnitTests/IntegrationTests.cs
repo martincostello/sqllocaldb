@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,10 +40,6 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Maintainability",
-            "CA1506:AvoidExcessiveClassCoupling",
-            Justification = "The class coupling here is OK.")]
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
@@ -109,10 +106,16 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                if (Helpers.IsCurrentUserAdmin())
+                bool currentUserIsAdmin = Helpers.IsCurrentUserAdmin();
+
+                if (currentUserIsAdmin)
                 {
                     sharedInstanceName = Guid.NewGuid().ToString();
                     instance.Share(sharedInstanceName);
+
+                    // Restart the instance so it listens on the new shared name's pipe
+                    instance.Stop();
+                    instance.Start();
                 }
 
                 try
@@ -127,68 +130,24 @@ namespace System.Data.SqlLocalDb
                     using (SqlConnection connection = instance.CreateConnection())
                     {
                         Assert.IsNotNull(connection, "CreateConnection() returned null.");
+                        TestConnection(connection);
+                    }
 
-                        connection.Open();
+                    if (currentUserIsAdmin)
+                    {
+                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                        builder.DataSource = string.Format(CultureInfo.InvariantCulture, "(localdb)\\.\\{0}", sharedInstanceName);
+                        builder.IntegratedSecurity = true;
 
-                        try
+                        using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                         {
-                            using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
-                            {
-                                command.ExecuteNonQuery();
-                            }
-
-                            try
-                            {
-                                using (SqlCommand command = new SqlCommand("create table [MyDatabase].[dbo].[TestTable] ([Id] int not null primary key clustered, [Value] int not null);", connection))
-                                {
-                                    command.ExecuteNonQuery();
-                                }
-
-                                Random random = new Random();
-                                int id = random.Next();
-                                int value = random.Next();
-
-                                using (SqlCommand command = new SqlCommand("insert into [MyDatabase].[dbo].[TestTable] ([Id], [Value]) values (@id, @value);", connection))
-                                {
-                                    command.Parameters.Add(new SqlParameter("id", id));
-                                    command.Parameters.Add(new SqlParameter("value", value));
-
-                                    command.ExecuteNonQuery();
-                                }
-
-                                using (SqlCommand command = new SqlCommand("select top 1 [Value] from [MyDatabase].[dbo].[TestTable] where [Id] = @id;", connection))
-                                {
-                                    command.Parameters.Add(new SqlParameter("id", id));
-
-                                    using (SqlDataReader reader = command.ExecuteReader())
-                                    {
-                                        Assert.IsTrue(reader.Read(), "SqlDataReader.Read() returned incorrect result.");
-                                        Assert.AreEqual(1, reader.FieldCount, "SqlDataReader.FieldCount is incorrect.");
-
-                                        int actual = reader.GetInt32(0);
-
-                                        Assert.AreEqual(value, actual, "The read query result value is incorrect.");
-                                        Assert.IsFalse(reader.Read(), "SqlDataReader.Read() returned incorrect result.");
-                                    }
-                                }
-                            }
-                            finally
-                            {
-                                using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
-                                {
-                                    command.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            connection.Close();
+                            TestConnection(connection);
                         }
                     }
                 }
                 finally
                 {
-                    if (Helpers.IsCurrentUserAdmin())
+                    if (currentUserIsAdmin)
                     {
                         instance.Unshare();
                     }
@@ -198,6 +157,70 @@ namespace System.Data.SqlLocalDb
             {
                 instance.Stop();
                 localDB.DeleteInstance(instance.Name);
+            }
+        }
+
+        /// <summary>
+        /// Tests that the specified <see cref="SqlConnection"/> can be used to create a test database.
+        /// </summary>
+        /// <param name="connection">The <see cref="SqlConnection"/> to use to create the test database.</param>
+        private static void TestConnection(SqlConnection connection)
+        {
+            connection.Open();
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                try
+                {
+                    using (SqlCommand command = new SqlCommand("create table [MyDatabase].[dbo].[TestTable] ([Id] int not null primary key clustered, [Value] int not null);", connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    Random random = new Random();
+                    int id = random.Next();
+                    int value = random.Next();
+
+                    using (SqlCommand command = new SqlCommand("insert into [MyDatabase].[dbo].[TestTable] ([Id], [Value]) values (@id, @value);", connection))
+                    {
+                        command.Parameters.Add(new SqlParameter("id", id));
+                        command.Parameters.Add(new SqlParameter("value", value));
+
+                        command.ExecuteNonQuery();
+                    }
+
+                    using (SqlCommand command = new SqlCommand("select top 1 [Value] from [MyDatabase].[dbo].[TestTable] where [Id] = @id;", connection))
+                    {
+                        command.Parameters.Add(new SqlParameter("id", id));
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            Assert.IsTrue(reader.Read(), "SqlDataReader.Read() returned incorrect result.");
+                            Assert.AreEqual(1, reader.FieldCount, "SqlDataReader.FieldCount is incorrect.");
+
+                            int actual = reader.GetInt32(0);
+
+                            Assert.AreEqual(value, actual, "The read query result value is incorrect.");
+                            Assert.IsFalse(reader.Read(), "SqlDataReader.Read() returned incorrect result.");
+                        }
+                    }
+                }
+                finally
+                {
+                    using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
