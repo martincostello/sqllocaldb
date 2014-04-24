@@ -52,6 +52,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="StopInstanceOptions.cs" />
+    <Compile Include="TemporarySqlLocalDbInstance.cs" />
     <None Include="..\AssemblyVersion.targets">
       <Link>AssemblyVersion.targets</Link>
     </None>

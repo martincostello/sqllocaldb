@@ -76,6 +76,7 @@
     <Compile Include="SRHelperTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TemporarySqlLocalDbInstanceTests.cs" />
     <Compile Include="TestCategories.cs" />
   </ItemGroup>
   <ItemGroup>
