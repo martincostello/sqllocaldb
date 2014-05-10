@@ -54,6 +54,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Blog.cs" />
+    <Compile Include="BlogDbConfiguration.cs" />
     <Compile Include="BlogDbContext.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Post.cs" />
