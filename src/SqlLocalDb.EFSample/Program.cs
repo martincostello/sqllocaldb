@@ -109,6 +109,9 @@ namespace System.Data.SqlLocalDb.EFSample
                 // Tidy up
                 SqlLocalDbApi.DeleteInstance(instance.Name);
             }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.Read();
         }
 
         /// <summary>
