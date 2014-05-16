@@ -19,3 +19,9 @@ An example of using the API with EntityFramework can be found [here](http://sqll
 #Feedback
 
 Any feedback or issues can be added to the [CodePlex](https://sqllocaldb.codeplex.com/) project.
+
+# Repositories
+
+The primary repository is located on [CodePlex](https://sqllocaldb.codeplex.com/): [https://git01.codeplex.com/sqllocaldb](https://git01.codeplex.com/sqllocaldb)
+
+A mirror of the repository is located on [GitHub](https://github.com/martincostello/sqllocaldb): [https://github.com/martincostello/sqllocaldb.git](https://github.com/martincostello/sqllocaldb.git)
