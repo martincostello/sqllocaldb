@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb", "SqlLocalDb\System.Data.SqlLocalDb.csproj", "{B235F2A6-A8A2-4CE6-B3B0-54FFB89DE7DD}"
 EndProject
@@ -9,12 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb.Unit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E207A447-68A1-4D72-B24F-89FB7890AE12}"
 	ProjectSection(SolutionItems) = preProject
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
 		AssemblyVersion.cs = AssemblyVersion.cs
 		AssemblyVersion.targets = AssemblyVersion.targets
 		Build.cmd = Build.cmd
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		FxCopDictionary.xml = FxCopDictionary.xml
-		license.txt = license.txt
+		..\license.txt = ..\license.txt
+		..\readme.md = ..\readme.md
+		..\readme.txt = ..\readme.txt
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
 		SqlLocalDb.msbuild = SqlLocalDb.msbuild
 		SqlLocalDb.nuspec = SqlLocalDb.nuspec
@@ -83,9 +87,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C1285F26-933A-4A35-9AF1-1F35A3CE25AF} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
 		{B415E9C5-3B98-4F05-A71A-BF8FF9A696AB} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 		{5F16D00C-39D3-45C2-A7A9-18A01E323809} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
+		{C1285F26-933A-4A35-9AF1-1F35A3CE25AF} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
 		{42978B8C-754C-4144-A45D-4141B22A84DF} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 	EndGlobalSection
 EndGlobal
