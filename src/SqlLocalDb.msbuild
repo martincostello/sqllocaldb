@@ -37,6 +37,9 @@
   <Target Name="Rebuild">
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
+    <CallTarget Targets="UpdateAssemblyConfiguration" Condition="'$(APPVEYOR_REPO_COMMIT)' != ''" />
+  </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
     <CallTarget Targets="CreateZipFile" Condition="'$(CreateZip)' == 'true'" />
@@ -71,4 +74,26 @@
     </PropertyGroup>
     <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir)" />
   </Target>
+  <Target Name="UpdateAssemblyConfiguration">
+    <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" />
+  </Target>
+  <UsingTask
+    TaskName="UpdateAssemblyConfiguration"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+      <AssemblyInfoPath Required="true" />
+      <CommitId Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+string content = File.ReadAllText(AssemblyInfoPath);
+content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "\")]");
+File.WriteAllText(AssemblyInfoPath, content);
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
 </Project>
