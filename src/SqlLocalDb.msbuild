@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(SolutionDir)AssemblyVersion.targets" />
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <PlatformToolset>v120</PlatformToolset>
@@ -17,6 +18,9 @@
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
     <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
+    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == ''"></NuGetPrerelease>
+    <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion)</NuGetVersion>
+    <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion.Substring(0, $(NuGetVersion.LastIndexOf(`.`))))</NuGetVersion>
   </PropertyGroup>
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
@@ -52,7 +56,6 @@
     </ItemGroup>
     <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
   </Target>
-  <Import Condition="'$(CreateZip)' == 'true' or '$(CreatePackage)' == 'true'" Project="$(SolutionDir)AssemblyVersion.targets" />
   <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Target Name="CreateZipFile">
     <ItemGroup>
@@ -66,6 +69,6 @@
       <NuGetTool>$(SolutionDir)\Tools\NuGet\NuGet.exe</NuGetTool>
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
-    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(AssemblyVersion) -OutputDirectory $(OutDir)" />
+    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir)" />
   </Target>
 </Project>
