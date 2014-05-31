@@ -65,6 +65,8 @@ namespace System.Data.SqlLocalDb
                 {
                     // Use a non-default culture
                     var culture = CultureInfo.GetCultureInfo("en-GB");
+
+                    Thread.CurrentThread.CurrentCulture = culture;
                     Thread.CurrentThread.CurrentUICulture = culture;
 
                     // Use a date where the result is valid with the day and month either way around
