@@ -2,6 +2,7 @@ version: 1.9.{build}
 
 build:
   project: src\SqlLocalDb.msbuild
+  verbosity: minimal
 
 artifacts:
   - path: src\BuildOutput\*.nupkg
