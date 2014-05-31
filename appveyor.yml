@@ -1,0 +1,8 @@
+version: 1.9.{build}
+
+build:
+  project: src\SqlLocalDb.msbuild
+
+artifacts:
+  - path: src\BuildOutput\*.nupkg
+  - path: src\BuildOutput\*.zip
