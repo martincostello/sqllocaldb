@@ -13,9 +13,9 @@
     <SourceAnalysisTreatErrorsAsWarnings Condition="'$(SourceAnalysisTreatErrorsAsWarnings)' == ''">false</SourceAnalysisTreatErrorsAsWarnings>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
     <SignOff Condition="'$(SignOff)' == ''">false</SignOff>
-    <CreatePackage Condition="'$(SignOff)' == 'true'">true</CreatePackage>
+    <CreatePackage Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreatePackage>
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
-    <CreateZip Condition="'$(SignOff)' == 'true'">true</CreateZip>
+    <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
   </PropertyGroup>
   <PropertyGroup>
