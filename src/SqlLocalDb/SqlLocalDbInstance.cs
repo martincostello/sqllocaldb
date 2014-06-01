@@ -335,7 +335,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="instance">The LocalDB instance to delete.</param>
         /// <param name="throwIfNotFound">
         /// Whether to throw an exception if the SQL LocalDB instance
-        /// specified by <paramref name="instanceName"/> cannot be found.
+        /// associated with <paramref name="instance"/> cannot be found.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="instance"/> is <see langword="null"/>.
