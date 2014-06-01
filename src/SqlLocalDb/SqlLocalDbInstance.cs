@@ -141,29 +141,7 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void Delete(ISqlLocalDbInstance instance)
         {
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-
-            try
-            {
-                SqlLocalDbApi.DeleteInstance(instance.Name);
-            }
-            catch (SqlLocalDbException e)
-            {
-                string message = SRHelper.Format(
-                    SR.SqlLocalDbInstance_DeleteFailedFormat,
-                    instance.Name);
-
-                Logger.Error(Logger.TraceEvent.DeleteInstance, message);
-
-                throw new SqlLocalDbException(
-                    message,
-                    e.ErrorCode,
-                    e.InstanceName,
-                    e);
-            }
+            Delete(instance, throwIfNotFound: true);
         }
 
         /// <summary>
@@ -342,6 +320,47 @@ namespace System.Data.SqlLocalDb
                     _instanceName);
 
                 Logger.Error(Logger.TraceEvent.UnshareInstance, message);
+
+                throw new SqlLocalDbException(
+                    message,
+                    e.ErrorCode,
+                    e.InstanceName,
+                    e);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified <see cref="ISqlLocalDbInstance"/> instance.
+        /// </summary>
+        /// <param name="instance">The LocalDB instance to delete.</param>
+        /// <param name="throwIfNotFound">
+        /// Whether to throw an exception if the SQL LocalDB instance
+        /// specified by <paramref name="instanceName"/> cannot be found.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instance"/> could not be deleted.
+        /// </exception>
+        internal static void Delete(ISqlLocalDbInstance instance, bool throwIfNotFound)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            try
+            {
+                SqlLocalDbApi.DeleteInstance(instance.Name, throwIfNotFound);
+            }
+            catch (SqlLocalDbException e)
+            {
+                string message = SRHelper.Format(
+                    SR.SqlLocalDbInstance_DeleteFailedFormat,
+                    instance.Name);
+
+                Logger.Error(Logger.TraceEvent.DeleteInstance, message);
 
                 throw new SqlLocalDbException(
                     message,

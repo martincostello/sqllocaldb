@@ -10,6 +10,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Data.SqlClient;
+
 namespace System.Data.SqlLocalDb
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace System.Data.SqlLocalDb
     /// The temporary SQL LocalDB instances that are created by instances of this class are automatically
     /// started when they are instantiated, and are then subsequently deleted when they are disposed of.
     /// </remarks>
-    public class TemporarySqlLocalDbInstance : IDisposable
+    public class TemporarySqlLocalDbInstance : ISqlLocalDbInstance, IDisposable
     {
         #region Fields
 
@@ -87,6 +89,18 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
+        /// </summary>
+        /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> instance to use.</param>
+        /// <remarks>
+        /// Used for unit testing.
+        /// </remarks>
+        internal TemporarySqlLocalDbInstance(ISqlLocalDbInstance instance)
+        {
+            _instance = instance;
+        }
+
         #endregion
 
         #region Finalizer
@@ -104,9 +118,26 @@ namespace System.Data.SqlLocalDb
         #region Properties
 
         /// <summary>
+        /// Gets the name of the LocalDB instance.
+        /// </summary>
+        public string Name
+        {
+            get { return _instance.Name; }
+        }
+
+        /// <summary>
+        /// Gets the named pipe that should be used
+        /// to connect to the LocalDB instance.
+        /// </summary>
+        public string NamedPipe
+        {
+            get { return _instance.NamedPipe; }
+        }
+
+        /// <summary>
         /// Gets the temporary SQL LocalDB instance associated with this instance.
         /// </summary>
-        public ISqlLocalDbInstance Instance
+        internal ISqlLocalDbInstance Instance
         {
             get { return _instance; }
         }
@@ -125,6 +156,104 @@ namespace System.Data.SqlLocalDb
         {
             string instanceName = Guid.NewGuid().ToString();
             return new TemporarySqlLocalDbInstance(instanceName);
+        }
+
+        /// <summary>
+        /// Creates a connection to the LocalDB instance.
+        /// </summary>
+        /// <returns>
+        /// An instance of <see cref="SqlConnection" /> that
+        /// can be used to connect to the LocalDB instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public SqlConnection CreateConnection()
+        {
+            EnsureNotDisposed();
+            return _instance.CreateConnection();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="SqlConnectionStringBuilder" /> containing
+        /// the default SQL connection string to connect to the LocalDB instance.
+        /// </summary>
+        /// <returns>
+        /// An instance of <see cref="SqlConnectionStringBuilder" /> containing
+        /// the default SQL connection string to connect to the LocalDB instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public SqlConnectionStringBuilder CreateConnectionStringBuilder()
+        {
+            EnsureNotDisposed();
+            return _instance.CreateConnectionStringBuilder();
+        }
+
+        /// <summary>
+        /// Returns information about the LocalDB instance.
+        /// </summary>
+        /// <returns>
+        /// An instance of <see cref="ISqlLocalDbInstanceInfo" /> containing
+        /// information about the LocalDB instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public ISqlLocalDbInstanceInfo GetInstanceInfo()
+        {
+            EnsureNotDisposed();
+            return _instance.GetInstanceInfo();
+        }
+
+        /// <summary>
+        /// Shares the LocalDB instance using the specified name.
+        /// </summary>
+        /// <param name="sharedName">The name to use to share the instance.</param>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public void Share(string sharedName)
+        {
+            EnsureNotDisposed();
+            _instance.Share(sharedName);
+        }
+
+        /// <summary>
+        /// Starts the LocalDB instance.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public void Start()
+        {
+            EnsureNotDisposed();
+            _instance.Start();
+        }
+
+        /// <summary>
+        /// Stops the LocalDB instance.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public void Stop()
+        {
+            EnsureNotDisposed();
+            _instance.Stop();
+        }
+
+        /// <summary>
+        /// Stops sharing the LocalDB instance.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        public void Unshare()
+        {
+            EnsureNotDisposed();
+            _instance.Unshare();
         }
 
         /// <summary>
@@ -150,10 +279,24 @@ namespace System.Data.SqlLocalDb
                 if (_instance != null)
                 {
                     _instance.Stop();
-                    SqlLocalDbInstance.Delete(_instance);
+                    SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false);
                 }
 
                 _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the instance has not been disposed of.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The instance has been disposed.
+        /// </exception>
+        private void EnsureNotDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(this.GetType().FullName);
             }
         }
 

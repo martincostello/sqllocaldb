@@ -10,6 +10,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -92,6 +93,9 @@ namespace System.Data.SqlLocalDb
 
                 // The instance is not running if there is no pipe open
                 Assert.IsFalse(string.IsNullOrEmpty(target.Instance.NamedPipe), "The temporary SQL LocalDB instance has not been started.");
+
+                Assert.AreEqual(target.Instance.Name, target.Name, "TemporarySqlLocalDbInstance.Name is incorrect.");
+                Assert.AreEqual(target.Instance.NamedPipe, target.NamedPipe, "TemporarySqlLocalDbInstance.NamedPipe is incorrect.");
             }
 
             // The instance should have been deleted
@@ -124,6 +128,9 @@ namespace System.Data.SqlLocalDb
 
                 // The instance is not running if there is no pipe open
                 Assert.IsFalse(string.IsNullOrEmpty(target.Instance.NamedPipe), "The temporary SQL LocalDB instance has not been started.");
+
+                Assert.AreEqual(target.Instance.Name, target.Name, "TemporarySqlLocalDbInstance.Name is incorrect.");
+                Assert.AreEqual(target.Instance.NamedPipe, target.NamedPipe, "TemporarySqlLocalDbInstance.NamedPipe is incorrect.");
             }
 
             // The instance should have been deleted
@@ -152,6 +159,9 @@ namespace System.Data.SqlLocalDb
 
                 // The instance is not running if there is no pipe open
                 Assert.IsFalse(string.IsNullOrEmpty(target.Instance.NamedPipe), "The temporary SQL LocalDB instance has not been started.");
+
+                Assert.AreEqual(target.Instance.Name, target.Name, "TemporarySqlLocalDbInstance.Name is incorrect.");
+                Assert.AreEqual(target.Instance.NamedPipe, target.NamedPipe, "TemporarySqlLocalDbInstance.NamedPipe is incorrect.");
             }
 
             // The instance should have been deleted
@@ -164,6 +174,195 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        [TestMethod]
+        [Description("Tests CreateConnection().")]
+        public void CreateConnection_Creates_Connection()
+        {
+            // Arrange
+            using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
+            {
+                // Act
+                using (SqlConnection result = target.CreateConnection())
+                {
+                    // Assert
+                    Assert.IsNotNull(result, "CreateConnection() returned null.");
+                }
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests CreateConnectionStringBuilder().")]
+        public void CreateConnectionStringBuilder_Creates_SqlConnectionStringBuilder()
+        {
+            // Arrange
+            using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
+            {
+                // Act
+                SqlConnectionStringBuilder result = target.CreateConnectionStringBuilder();
+                
+                // Assert
+                Assert.IsNotNull(result, "CreateConnectionStringBuilder() returned null.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests GetInstanceInfo().")]
+        public void GetInstanceInfo_Returns_ISqlLocalDbInstanceInfo()
+        {
+            // Arrange
+            using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
+            {
+                // Act
+                ISqlLocalDbInstanceInfo result = target.GetInstanceInfo();
+
+                // Assert
+                Assert.IsNotNull(result, "GetInstanceInfo() returned null.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests Share().")]
+        public void Share_Invokes_Wrapped_Instance()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = CreateMockInstance();
+
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instance))
+            {
+                string sharedName = Guid.NewGuid().ToString();
+
+                // Act
+                target.Share(sharedName);
+
+                // Assert
+                Mock.Get(instance).Verify((p) => p.Share(sharedName), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests Start().")]
+        public void Start_Invokes_Wrapped_Instance()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = CreateMockInstance();
+
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instance))
+            {
+                // Act
+                target.Start();
+
+                // Assert
+                Mock.Get(instance).Verify((p) => p.Start(), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests Stop().")]
+        public void Stop_Invokes_Wrapped_Instance()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = CreateMockInstance();
+
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instance))
+            {
+                // Act
+                target.Stop();
+
+                // Assert
+                Mock.Get(instance).Verify((p) => p.Stop(), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests Unshare().")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly",
+            MessageId = "Unshare",
+            Justification = "Matches the name of the method being tested.")]
+        public void Unshare_Invokes_Wrapped_Instance()
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = CreateMockInstance();
+
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instance))
+            {
+                // Act
+                target.Unshare();
+
+                // Assert
+                Mock.Get(instance).Verify((p) => p.Unshare(), Times.Once());
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests CreateConnection() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void CreateConnection_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.CreateConnection());
+        }
+
+        [TestMethod]
+        [Description("Tests CreateConnection() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void CreateConnectionStringBuilder_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.CreateConnectionStringBuilder());
+        }
+
+        [TestMethod]
+        [Description("Tests GetInstanceInfo() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void GetInstanceInfo_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.GetInstanceInfo());
+        }
+
+        [TestMethod]
+        [Description("Tests Share() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void Share_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.Share(string.Empty));
+        }
+
+        [TestMethod]
+        [Description("Tests Start() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void Start_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.Start());
+        }
+
+        [TestMethod]
+        [Description("Tests Stop() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void Stop_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.Stop());
+        }
+
+        [TestMethod]
+        [Description("Tests Unshare() throws an exception if it has been disposed.")]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly",
+            MessageId = "Unshare",
+            Justification = "Matches the name of the method being tested.")]
+        public void Unshare_Throws_If_Instance_Disposed()
+        {
+            // Act and Assert
+            AssertThrowsObjectDisposedException((p) => p.Unshare());
+        }
+
         /// <summary>
         /// Assets that the specified SQL LocalDB instance name is in the specified state of existence.
         /// </summary>
@@ -174,6 +373,45 @@ namespace System.Data.SqlLocalDb
             ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
             Assert.IsNotNull(info, "SqlLocalDbApi.GetInstanceInfo() returned null.");
             Assert.AreEqual(exists, info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
+        }
+
+        /// <summary>
+        /// Asserts that invoking the specified delegate causes an <see cref="ObjectDisposedException"/>
+        /// to occur if the <see cref="TemporarySqlLocalDbInstance"/> instance has already been disposed.
+        /// </summary>
+        /// <param name="action">A delegate to a method to invoke for an instance of <see cref="TemporarySqlLocalDbInstance"/>.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Usage",
+            "CA2202:Do not dispose objects multiple times",
+            Justification = "The test is designed to test this scenario.")]
+        private static void AssertThrowsObjectDisposedException(Action<TemporarySqlLocalDbInstance> action)
+        {
+            // Arrange
+            ISqlLocalDbInstance instance = CreateMockInstance();
+
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instance))
+            {
+                target.Dispose();
+
+                // Act
+                action(target);
+            }
+        }
+
+        /// <summary>
+        /// Creates a mock instance of <see cref="ISqlLocalDbInstance"/>.
+        /// </summary>
+        /// <returns>
+        /// The created mock implementation of <see cref="ISqlLocalDbInstance"/>.
+        /// </returns>
+        private static ISqlLocalDbInstance CreateMockInstance()
+        {
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+
+            mock.Setup((p) => p.Name)
+                .Returns("MyInstanceName");
+
+            return mock.Object;
         }
 
         #endregion
