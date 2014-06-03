@@ -758,6 +758,43 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests the default value of the StopOptions property.")]
+        public void StopOptions_Has_Correct_Default_Value()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    StopInstanceOptions result = SqlLocalDbApi.StopOptions;
+
+                    // Assert
+                    Assert.AreEqual(
+                        StopInstanceOptions.None,
+                        result,
+                        "SqlLocalDbApi.StopOptions is incorrect.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests the StopOptions property.")]
+        public void StopOptions_Can_Be_Set()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    StopInstanceOptions value = StopInstanceOptions.NoWait;
+
+                    // Act
+                    SqlLocalDbApi.StopOptions = value;
+
+                    // Assert
+                    Assert.AreEqual(value, StopInstanceOptions.NoWait, "SqlLocalDbApi.StopOptions is incorrect.");
+                });
+        }
+
+        [TestMethod]
         [Description("Tests the default value of the StopTimeout property.")]
         public void StopTimeout_DefaultValue()
         {
