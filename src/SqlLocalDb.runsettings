@@ -11,6 +11,7 @@
             <CollectAspDotNet>False</CollectAspDotNet>
             <ModulePaths>
               <Exclude>
+                <ModulePath>.*appveyor.*</ModulePath>
                 <ModulePath>.*ATL.*</ModulePath>
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
                 <ModulePath>.*MSVC.*</ModulePath>
