@@ -9,7 +9,6 @@
     <SolutionFile>SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
     <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
-    <RunTests Condition="'$(CI)' != ''">false</RunTests>
     <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)' == ''">true</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings Condition="'$(SourceAnalysisTreatErrorsAsWarnings)' == ''">false</SourceAnalysisTreatErrorsAsWarnings>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
@@ -47,17 +46,19 @@
   </Target>
   <Target Name="Test">
     <PropertyGroup>
-      <TestToolDir>$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow</TestToolDir>
+      <TestToolDir Condition="'$(APPVEYOR)' == ''">$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow\</TestToolDir>
+      <TestToolDir Condition="'$(APPVEYOR)' != ''"></TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
+      <TestOptions Condition="'$(APPVEYOR)' != ''">$(TestOptions) /logger:Appveyor</TestOptions>
     </PropertyGroup>
     <ItemGroup>
       <TestContainer Include="$(OutDir)\*test*.dll" />
       <PlatformsToTest Include="x86" />
       <PlatformsToTest Include="x64" />
     </ItemGroup>
-    <Exec Command="%22$(TestToolDir)\$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22" WorkingDirectory="$(OutDir)" />
+    <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
   </Target>
   <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Target Name="CreateZipFile">
