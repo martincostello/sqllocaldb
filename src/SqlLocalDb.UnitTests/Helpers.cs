@@ -10,6 +10,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,6 +53,40 @@ namespace System.Data.SqlLocalDb
             if (!SqlLocalDbApi.IsLocalDBInstalled())
             {
                 Assert.Inconclusive("SQL Server LocalDB is not installed on {0}.", Environment.MachineName);
+            }
+        }
+
+        /// <summary>
+        /// Invokes the specified delegate in a new <see cref="AppDomain"/>.
+        /// </summary>
+        /// <param name="callBackDelegate">The delegate to invoke in the new <see cref="AppDomain"/>.</param>
+        /// <param name="appDomainData">The optional data to set for the <see cref="AppDomain"/>.</param>
+        /// <param name="callerMemberName">The optional name of the caller of this method.</param>
+        public static void InvokeInNewAppDomain(
+            CrossAppDomainDelegate callBackDelegate,
+            IDictionary<string, object> appDomainData = null,
+            [CallerMemberName] string callerMemberName = null)
+        {
+            AppDomain appDomain = AppDomain.CreateDomain(
+                callerMemberName,
+                null,
+                AppDomain.CurrentDomain.SetupInformation);
+
+            try
+            {
+                if (appDomainData != null)
+                {
+                    foreach (var pair in appDomainData)
+                    {
+                        appDomain.SetData(pair.Key, pair.Value);
+                    }
+                }
+
+                appDomain.DoCallBack(callBackDelegate);
+            }
+            finally
+            {
+                AppDomain.Unload(appDomain);
             }
         }
 
