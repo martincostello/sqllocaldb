@@ -10,6 +10,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.EntityClient;
 using System.Globalization;
@@ -914,36 +915,32 @@ namespace System.Data.SqlLocalDb
         public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Set()
         {
             // Arrange
-            AppDomain appDomain = AppDomain.CreateDomain("TestAppDomain", null, AppDomain.CurrentDomain.SetupInformation);
-            appDomain.SetData("DataDirectory", @"C:\MyDatabases");
-
-            try
+            var appDomainData = new Dictionary<string, object>()
             {
-                appDomain.DoCallBack(
-                    () =>
+                { "DataDirectory", @"C:\MyDatabases" },
+            };
+
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+                    string fileName = @"|DataDirectory|\MyDatabase.mdf";
+                    string expected = @"C:\MyDatabases\MyDatabase.mdf";
+
+                    // Arrange
+                    DbConnectionStringBuilder value = new DbConnectionStringBuilder()
                     {
-                        string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
-                        string fileName = @"|DataDirectory|\MyDatabase.mdf";
-                        string expected = @"C:\MyDatabases\MyDatabase.mdf";
+                        ConnectionString = connectionString,
+                    };
 
-                        // Arrange
-                        DbConnectionStringBuilder value = new DbConnectionStringBuilder()
-                        {
-                            ConnectionString = connectionString,
-                        };
+                    // Act
+                    value.SetPhysicalFileName(fileName);
 
-                        // Act
-                        value.SetPhysicalFileName(fileName);
-
-                        // Assert
-                        string result = value.GetPhysicalFileName();
-                        Assert.AreEqual(expected, result, "SetPhysicalFileName() did not set the correct value.");
-                    });
-            }
-            finally
-            {
-                AppDomain.Unload(appDomain);
-            }
+                    // Assert
+                    string result = value.GetPhysicalFileName();
+                    Assert.AreEqual(expected, result, "SetPhysicalFileName() did not set the correct value.");
+                },
+                appDomainData: appDomainData);
         }
 
         [TestMethod]
@@ -952,31 +949,22 @@ namespace System.Data.SqlLocalDb
         public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Not_Set()
         {
             // Arrange
-            AppDomain appDomain = AppDomain.CreateDomain("TestAppDomain", null, AppDomain.CurrentDomain.SetupInformation);
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+                    string fileName = @"|DataDirectory|\MyDatabase.mdf";
 
-            try
-            {
-                appDomain.DoCallBack(
-                    () =>
+                    // Arrange
+                    DbConnectionStringBuilder value = new DbConnectionStringBuilder()
                     {
-                        string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
-                        string fileName = @"|DataDirectory|\MyDatabase.mdf";
+                        ConnectionString = connectionString,
+                    };
 
-                        // Arrange
-                        DbConnectionStringBuilder value = new DbConnectionStringBuilder()
-                        {
-                            ConnectionString = connectionString,
-                        };
-
-                        // Act and Assert
-                        throw ErrorAssert.Throws<NotSupportedException>(
-                            () => value.SetPhysicalFileName(fileName));
-                    });
-            }
-            finally
-            {
-                AppDomain.Unload(appDomain);
-            }
+                    // Act and Assert
+                    throw ErrorAssert.Throws<NotSupportedException>(
+                        () => value.SetPhysicalFileName(fileName));
+                });
         }
 
         [TestMethod]

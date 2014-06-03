@@ -761,14 +761,19 @@ namespace System.Data.SqlLocalDb
         [Description("Tests the default value of the StopTimeout property.")]
         public void StopTimeout_DefaultValue()
         {
-            // Act
-            TimeSpan result = SqlLocalDbApi.StopTimeout;
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    TimeSpan result = SqlLocalDbApi.StopTimeout;
 
-            // Assert
-            Assert.AreEqual(
-                TimeSpan.FromMinutes(1),
-                result,
-                "SqlLocalDbApi.StopTimeout is incorrect.");
+                    // Assert
+                    Assert.AreEqual(
+                        TimeSpan.FromMinutes(1),
+                        result,
+                        "SqlLocalDbApi.StopTimeout is incorrect.");
+                });
         }
 
         [TestMethod]
@@ -777,20 +782,24 @@ namespace System.Data.SqlLocalDb
         public void StopTimeout_ThrowsIfValueIsInvalid()
         {
             // Arrange
-            TimeSpan value = TimeSpan.FromMinutes(-6);
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    TimeSpan value = TimeSpan.FromMinutes(-6);
 
-            // Act
-            ArgumentOutOfRangeException error = ErrorAssert.Throws<ArgumentOutOfRangeException>(
-                () => SqlLocalDbApi.StopTimeout = value,
-                "value");
+                    // Act
+                    ArgumentOutOfRangeException error = ErrorAssert.Throws<ArgumentOutOfRangeException>(
+                        () => SqlLocalDbApi.StopTimeout = value,
+                        "value");
 
-            // Assert
-            Assert.AreEqual(
-                value,
-                error.ActualValue,
-                "ArgumentOutOfRangeException.ActualValue is incorrect.");
+                    // Assert
+                    Assert.AreEqual(
+                        value,
+                        error.ActualValue,
+                        "ArgumentOutOfRangeException.ActualValue is incorrect.");
 
-            throw error;
+                    throw error;
+                });
         }
 
         [TestMethod]
@@ -798,22 +807,17 @@ namespace System.Data.SqlLocalDb
         public void StopTimeout()
         {
             // Arrange
-            TimeSpan oldValue = SqlLocalDbApi.StopTimeout;
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    TimeSpan value = TimeSpan.FromMilliseconds(500);
 
-            try
-            {
-                TimeSpan value = TimeSpan.FromMilliseconds(500);
+                    // Act
+                    SqlLocalDbApi.StopTimeout = value;
 
-                // Act
-                SqlLocalDbApi.StopTimeout = value;
-
-                // Assert
-                Assert.AreEqual(value, SqlLocalDbApi.StopTimeout, "SqlLocalDbApi.StopTimeout is incorrect.");
-            }
-            finally
-            {
-                SqlLocalDbApi.StopTimeout = oldValue;
-            }
+                    // Assert
+                    Assert.AreEqual(value, SqlLocalDbApi.StopTimeout, "SqlLocalDbApi.StopTimeout is incorrect.");
+                });
         }
 
         [TestMethod]
