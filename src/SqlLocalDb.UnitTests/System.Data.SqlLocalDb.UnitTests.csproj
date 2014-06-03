@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="TemporarySqlLocalDbInstanceTests.cs" />
     <Compile Include="TestCategories.cs" />
+    <Compile Include="TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlLocalDb\System.Data.SqlLocalDb.csproj">
