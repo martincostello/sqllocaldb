@@ -14,6 +14,6 @@ build:
 artifacts:
   - path: src\BuildOutput\*.nupkg
   - path: src\BuildOutput\*.zip
-  - path: *.coverage
+  - path: src\TestResults\*\*.coverage
 
 test: off
