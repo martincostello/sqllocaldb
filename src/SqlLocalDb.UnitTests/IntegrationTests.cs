@@ -40,14 +40,6 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Maintainability",
-            "CA1506:AvoidExcessiveClassCoupling",
-            Justification = "The class coupling here is OK.")]
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Usage",
-            "CA2202:Do not dispose objects multiple times",
-            Justification = "It is not disposed multiple times.")]
         public void End_To_End()
         {
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
@@ -59,20 +51,19 @@ namespace System.Data.SqlLocalDb
 
             ISqlLocalDbProvider provider = new SqlLocalDbProvider();
 
-            IList<ISqlLocalDbVersionInfo> versions = provider.GetVersions();
+            TestVersions(provider);
 
-            Assert.IsNotNull(versions, "GetVersions() returned null.");
-            CollectionAssert.AllItemsAreNotNull(versions.ToArray(), "GetVersions() returned a null item.");
+            TestInstances(provider);
 
-            foreach (ISqlLocalDbVersionInfo version in versions)
-            {
-                Assert.IsNotNull(version.Name, "ISqlLocalDbVersionInfo.Name is null.");
-                Assert.AreNotEqual(string.Empty, version.Name, "ISqlLocalDbVersionInfo.Name is incorrect.");
-                Assert.IsTrue(version.Exists, "ISqlLocalDbVersionInfo.Exists is incorrect for version '{0}'.", version.Name);
-                Assert.IsNotNull(version.Version, "ISqlLocalDbVersionInfo.Version is null for version '{0}'.", version.Name);
-                Assert.AreNotEqual(string.Empty, version.Version, "ISqlLocalDbVersionInfo.Version is incorrect for version '{0}'.", version.Name);
-            }
+            TestInstanceLifecycle(localDB, provider);
+        }
 
+        /// <summary>
+        /// Tests that the instances reported by the specified <see cref="ISqlLocalDbProvider"/> are valid.
+        /// </summary>
+        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to test the instances for.</param>
+        private static void TestInstances(ISqlLocalDbProvider provider)
+        {
             IList<ISqlLocalDbInstanceInfo> instances = provider.GetInstances();
 
             Assert.IsNotNull(instances, "GetInstances() returned null.");
@@ -111,7 +102,36 @@ namespace System.Data.SqlLocalDb
                     Assert.AreNotEqual(string.Empty, instanceInfo.OwnerSid, "ISqlLocalDbInstanceInfo.OwnerSid is incorrect for instance '{0}'.", instanceInfo.Name);
                 }
             }
+        }
 
+        /// <summary>
+        /// Tests that the versions reported by the specified <see cref="ISqlLocalDbProvider"/> are valid.
+        /// </summary>
+        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to test the versions for.</param>
+        private static void TestVersions(ISqlLocalDbProvider provider)
+        {
+            IList<ISqlLocalDbVersionInfo> versions = provider.GetVersions();
+
+            Assert.IsNotNull(versions, "GetVersions() returned null.");
+            CollectionAssert.AllItemsAreNotNull(versions.ToArray(), "GetVersions() returned a null item.");
+
+            foreach (ISqlLocalDbVersionInfo version in versions)
+            {
+                Assert.IsNotNull(version.Name, "ISqlLocalDbVersionInfo.Name is null.");
+                Assert.AreNotEqual(string.Empty, version.Name, "ISqlLocalDbVersionInfo.Name is incorrect.");
+                Assert.IsTrue(version.Exists, "ISqlLocalDbVersionInfo.Exists is incorrect for version '{0}'.", version.Name);
+                Assert.IsNotNull(version.Version, "ISqlLocalDbVersionInfo.Version is null for version '{0}'.", version.Name);
+                Assert.AreNotEqual(string.Empty, version.Version, "ISqlLocalDbVersionInfo.Version is incorrect for version '{0}'.", version.Name);
+            }
+        }
+
+        /// <summary>
+        /// Tests the lifecycle of SQL LocalDB instances.
+        /// </summary>
+        /// <param name="localDB">The <see cref="ISqlLocalDbApi"/> to use.</param>
+        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to use.</param>
+        private static void TestInstanceLifecycle(ISqlLocalDbApi localDB, ISqlLocalDbProvider provider)
+        {
             string instanceName = Guid.NewGuid().ToString();
             string sharedInstanceName = string.Empty;
 
