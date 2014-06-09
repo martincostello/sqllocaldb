@@ -75,6 +75,15 @@
     </PropertyGroup>
     <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir)" />
   </Target>
+  <Target Name="CleanArchiveFiles" AfterTargets="Clean">
+    <CreateItem Include="$(OutDir)\*.nupkg">
+      <Output TaskParameter="Include" ItemName="ArchiveWrites" />
+    </CreateItem>
+    <CreateItem Include="$(OutDir)\*.zip">
+      <Output TaskParameter="Include" ItemName="ArchiveWrites" />
+    </CreateItem>
+    <Delete Files="@(ArchiveWrites)" />
+  </Target>
   <Target Name="UpdateAssemblyConfiguration">
     <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" />
   </Target>
