@@ -20,6 +20,8 @@
     <NuGetPrerelease Condition="'$(NuGetPrerelease)' == ''"></NuGetPrerelease>
     <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion)</NuGetVersion>
     <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion.Substring(0, $(NuGetVersion.LastIndexOf(`.`))))</NuGetVersion>
+    <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
+    <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
   </PropertyGroup>
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
@@ -60,13 +62,13 @@
     </ItemGroup>
     <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
   </Target>
-  <UsingTask Condition="'$(CreateZip)' == 'true'" TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
+  <UsingTask TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Target Name="CreateZipFile">
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
     </ItemGroup>
-    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip"/>
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
   </Target>
   <Target Name="CreateNuGetPackage">
     <PropertyGroup>
@@ -106,4 +108,20 @@ File.WriteAllText(AssemblyInfoPath, content);
       </Code>
     </Task>
   </UsingTask>
+  <Target Name="BuildCoverity">
+    <PropertyGroup>
+      <CoverityToolDir Condition="'$(CoverityToolDir)' == ''"></CoverityToolDir>
+      <CoverityTool Condition="'$(CoverityTool)' == ''">$(CoverityToolDir)\cov-build.exe</CoverityTool>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(CoverityTool)')" Text="The Coverity Build Tool cannot be found." />
+    <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)Build.cmd%22 /p:RunTests=false" />
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(CoverityOutputDir)" RemoveRoot="$(OutDir)" ZipFileName="$(CoverityZipFile)" />
+  </Target>
+  <Target Name="CleanCoverity" AfterTargets="Clean">
+    <CreateItem Include="$(CoverityZipFile)">
+      <Output TaskParameter="Include" ItemName="CoverityWrites" />
+    </CreateItem>
+    <Delete Files="@(CoverityWrites)" />
+    <RemoveDir Directories="$(CoverityOutputDir)" />
+  </Target>
 </Project>
