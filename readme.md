@@ -28,4 +28,5 @@ A mirror of the repository is located on [GitHub](https://github.com/martincoste
 
 # Build Status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0itmyqg8s7ger2nq)](https://ci.appveyor.com/project/martincostello/sqllocaldb)
+[![Build Status](https://ci.appveyor.com/api/projects/status/0itmyqg8s7ger2nq)](https://ci.appveyor.com/project/martincostello/sqllocaldb)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
