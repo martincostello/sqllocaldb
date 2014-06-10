@@ -124,4 +124,20 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Delete Files="@(CoverityWrites)" />
     <RemoveDir Directories="$(CoverityOutputDir)" />
   </Target>
+  <Target Name="UploadCoverity">
+    <PropertyGroup>
+      <CurlToolPath>$(SqlLocalDbRoot)Tools\Curl\curl.exe</CurlToolPath>
+      <CoverityBuildDescription Condition="'$(CoverityBuildDescription)' == ''">$(AssemblyVersion)</CoverityBuildDescription>
+      <CoverityEmail Condition="'$(CoverityEmail)' == ''"></CoverityEmail>
+      <CoverityProjectName Condition="'$(CoverityProjectName)' == ''">martincostello%2Fsqllocaldb</CoverityProjectName>
+      <CoverityProjectToken Condition="'$(CoverityProjectToken)' == ''"></CoverityProjectToken>
+      <CoverityProjectUrl Condition="'$(CoverityProjectUrl)' == ''">https://scan.coverity.com/builds?project=martincostello%2Fsqllocaldb</CoverityProjectUrl>
+      <CoverityUploadCommand>%22$(CurlToolPath)%22 --form project=$(CoverityProjectName) --form token=$(CoverityProjectToken) --form email=$(CoverityEmail) --form file=@$(CoverityZipFile) --form version="$(AssemblyVersion)" --form description="$(CoverityBuildDescription)" $(CoverityProjectUrl) --insecure</CoverityUploadCommand>
+    </PropertyGroup>
+    <Error Condition="'$(CoverityEmail)' == ''" Text="The CoverityEmail property is not defined." />
+    <Error Condition="'$(CoverityProjectToken)' == ''" Text="The CoverityProjectToken property is not defined." />
+    <Error Condition="!Exists('$(CurlToolPath)')" Text="The upload tool cannot be found." />
+    <Error Condition="!Exists('$(CoverityZipFile)')" Text="The Coverity ZIP file cannot be found." />
+    <Exec Command="$(CoverityUploadCommand)" />
+  </Target>
 </Project>
