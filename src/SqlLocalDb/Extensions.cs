@@ -14,11 +14,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data.Common;
-using System.Data.EntityClient;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace System.Data.SqlLocalDb
 {
@@ -36,6 +36,16 @@ namespace System.Data.SqlLocalDb
         private const string AttachDBFilenameKeywordName = "AttachDBFilename";
 
         /// <summary>
+        /// The assembly-qualified name of the type to use for entity connection string builders.
+        /// </summary>
+        private const string EntityConnectionStringBuilderTypeName = "System.Data.EntityClient.EntityConnectionStringBuilder, System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
+
+        /// <summary>
+        /// The assembly-qualified name of the type to use for entity connections.
+        /// </summary>
+        private const string EntityConnectionTypeName = "System.Data.EntityClient.EntityConnection, System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
+
+        /// <summary>
         /// The connection string keyword for the Initial Catalog.
         /// </summary>
         private const string InitialCatalogKeywordName = "Initial Catalog";
@@ -44,6 +54,25 @@ namespace System.Data.SqlLocalDb
         /// The connection string keyword for the Provider Connection String.
         /// </summary>
         private const string ProviderConnectionStringKeywordName = "Provider Connection String";
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// The <see cref="Type"/> for the type with the name specified by <see cref="EntityConnectionStringBuilderTypeName"/>.
+        /// </summary>
+        private static Type _entityConnectionStringBuilderType;
+
+        /// <summary>
+        /// The <see cref="Type"/> for the type with the name specified by <see cref="EntityConnectionTypeName"/>.
+        /// </summary>
+        private static Type _entityConnectionType;
+
+        /// <summary>
+        /// The <see cref="PropertyInfo"/> for the <c>ProviderConnectionString</c> property of the type specified by <see cref="EntityConnectionStringBuilderTypeName"/>.
+        /// </summary>
+        private static PropertyInfo _providerConnectionStringProperty;
 
         #endregion
 
@@ -73,7 +102,7 @@ namespace System.Data.SqlLocalDb
         public static DbConnection GetConnectionForDefaultModel(this ISqlLocalDbInstance instance)
         {
             DbConnectionStringBuilder builder = instance.GetConnectionStringForDefaultModel();
-            return new EntityConnection(builder.ConnectionString);
+            return CreateConnection(builder.ConnectionString);
         }
 
         /// <summary>
@@ -101,7 +130,7 @@ namespace System.Data.SqlLocalDb
         public static DbConnection GetConnectionForDefaultModel(this ISqlLocalDbInstance instance, string initialCatalog)
         {
             DbConnectionStringBuilder builder = instance.GetConnectionStringForDefaultModel(initialCatalog);
-            return new EntityConnection(builder.ConnectionString);
+            return CreateConnection(builder.ConnectionString);
         }
 
         /// <summary>
@@ -121,7 +150,7 @@ namespace System.Data.SqlLocalDb
         public static DbConnection GetConnectionForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName)
         {
             DbConnectionStringBuilder builder = instance.GetConnectionStringForModel(modelConnectionStringName);
-            return new EntityConnection(builder.ConnectionString);
+            return CreateConnection(builder.ConnectionString);
         }
 
         /// <summary>
@@ -142,7 +171,7 @@ namespace System.Data.SqlLocalDb
         public static DbConnection GetConnectionForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName, string initialCatalog)
         {
             DbConnectionStringBuilder builder = instance.GetConnectionStringForModel(modelConnectionStringName, initialCatalog);
-            return new EntityConnection(builder.ConnectionString);
+            return CreateConnection(builder.ConnectionString);
         }
 
         /// <summary>
@@ -435,9 +464,26 @@ namespace System.Data.SqlLocalDb
             Debug.Assert(connectionStringSettings != null, "connectionStringSettings cannot be null.");
             Debug.Assert(namedPipe != null, "namedPipe cannot be null.");
 
-            EntityConnectionStringBuilder entityBuilder = new EntityConnectionStringBuilder(connectionStringSettings.ConnectionString);
+            if (_entityConnectionStringBuilderType == null)
+            {
+                _entityConnectionStringBuilderType = Type.GetType(EntityConnectionStringBuilderTypeName);
+            }
 
-            SqlConnectionStringBuilder providerBuilder = new SqlConnectionStringBuilder(entityBuilder.ProviderConnectionString)
+            Debug.Assert(_entityConnectionStringBuilderType != null, "Could not find the EntityConnectionStringBuilder type.");
+
+            DbConnectionStringBuilder entityBuilder = Activator.CreateInstance(
+                _entityConnectionStringBuilderType,
+                new object[] { connectionStringSettings.ConnectionString }) as DbConnectionStringBuilder;
+
+            if (_providerConnectionStringProperty == null)
+            {
+                _providerConnectionStringProperty = _entityConnectionStringBuilderType.GetProperty("ProviderConnectionString");
+            }
+
+            Debug.Assert(_providerConnectionStringProperty != null, "Could not find the ProviderConnectionString property of the EntityConnectionStringBuilder type.");
+            string providerConnectionString = _providerConnectionStringProperty.GetValue(entityBuilder, null) as string;
+
+            SqlConnectionStringBuilder providerBuilder = new SqlConnectionStringBuilder(providerConnectionString)
             {
                 DataSource = namedPipe,
             };
@@ -447,8 +493,27 @@ namespace System.Data.SqlLocalDb
                 providerBuilder.InitialCatalog = initialCatalog;
             }
 
-            entityBuilder.ProviderConnectionString = providerBuilder.ConnectionString;
+            _providerConnectionStringProperty.SetValue(entityBuilder, providerBuilder.ConnectionString, null);
+
             return entityBuilder;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DbConnection"/> for an entity connection.
+        /// </summary>
+        /// <param name="connectionString">The connection string to use to create the connection.</param>
+        /// <returns>
+        /// The created instance of <see cref="DbConnection"/>.
+        /// </returns>
+        private static DbConnection CreateConnection(string connectionString)
+        {
+            if (_entityConnectionType == null)
+            {
+                _entityConnectionType = Type.GetType(EntityConnectionTypeName);
+            }
+
+            Debug.Assert(_entityConnectionType != null, "The EntityConnection type could not be found.");
+            return Activator.CreateInstance(_entityConnectionType, new object[] { connectionString }) as DbConnection;
         }
 
         /// <summary>
