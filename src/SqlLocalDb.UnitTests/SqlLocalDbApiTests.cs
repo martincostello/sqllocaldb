@@ -211,8 +211,8 @@ namespace System.Data.SqlLocalDb
                 IList<string> versionsAfter = SqlLocalDbApi.Versions;
 
                 // The default instances have a name which is the version prefixed with 'v' when
-                // using the SQL LocalDB 2012 native API. With the SQL LocalDB 2014 native API,
-                // the default instance is named 'MSSQLLocalDB'.
+                // using the SQL LocalDB 2012 native API. With the SQL LocalDB 2014 native API
+                // (and presumably later versions), the default instance is named 'MSSQLLocalDB'.
                 string[] expectedNames = namesAfter
                     .Where((p) => p.StartsWith("v", StringComparison.Ordinal) ||
                                   string.Equals(p, "MSSQLLocalDB", StringComparison.Ordinal) ||
@@ -225,7 +225,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                // Try delete the instance we created if the test fails
+                // Try to delete the instance we created if the test fails
                 SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
             }
         }

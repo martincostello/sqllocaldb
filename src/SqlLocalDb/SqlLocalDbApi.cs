@@ -265,10 +265,27 @@ namespace System.Data.SqlLocalDb
                     // In some cases, SQL LocalDB may report instance names in calls
                     // to enumerate the instances that do not actually exist. Presumably
                     // this can occur if the installation/instances become corrupted.
-                    // Such failures to delete an instance should be ignored.
-                    if (DeleteInstance(instanceName, throwIfNotFound: false))
+                    // Such failures to delete an instance should be ignored
+                    try
                     {
-                        instancesDeleted++;
+                        if (DeleteInstance(instanceName, throwIfNotFound: false))
+                        {
+                            instancesDeleted++;
+                        }
+                    }
+                    catch (SqlLocalDbException ex)
+                    {
+                        if (ex.ErrorCode == SqlLocalDbErrors.InstanceBusy)
+                        {
+                            Logger.Warning(
+                                Logger.TraceEvent.DeleteFailedAsInstanceInUse,
+                                SR.SqlLocalDbApi_LogDeleteFailedAsInUseFormat,
+                                ex.InstanceName);
+
+                            continue;
+                        }
+
+                        throw;
                     }
                 }
             }

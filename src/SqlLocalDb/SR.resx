@@ -279,4 +279,7 @@
   <data name="NativeMethods_ApiVersionOverriddenByUserFormat" xml:space="preserve">
     <value>The SQL LocalDB native API version to load was overridden by the user to {0}.</value>
   </data>
+  <data name="SqlLocalDbApi_LogDeleteFailedAsInUseFormat" xml:space="preserve">
+    <value>The SQL LocalDB instance '{0}' could not be deleted as it is currently in use.</value>
+  </data>
 </root>

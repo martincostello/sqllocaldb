@@ -430,6 +430,11 @@ namespace System.Data.SqlLocalDb
             /// </summary>
             internal static readonly int NativeApiVersionOverriddenByUser = 21;
 
+            /// <summary>
+            /// A user instance of SQL LocalDB could not be deleted as it is in use.
+            /// </summary>
+            internal static readonly int DeleteFailedAsInstanceInUse = 22;
+
             #endregion
         }
 
