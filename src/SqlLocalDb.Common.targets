@@ -8,11 +8,9 @@
     <AssemblyOriginatorKeyFile>$(SolutionDir)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>$(SolutionDir)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <HighEntropyVA>true</HighEntropyVA>
-    <RestorePackages>true</RestorePackages>
     <SignAssembly>true</SignAssembly>
     <SourceAnalysisOverrideSettingsFile>$(SolutionDir)\StyleCop.settings</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
   <Import Project="$(SolutionDir)AssemblyVersion.targets"/>
-  <Import Project="$(SolutionDir)Tools\NuGet\nuget.targets" />
   <Import Project="$(SolutionDir)Tools\StyleCop\StyleCop.targets" />
 </Project>

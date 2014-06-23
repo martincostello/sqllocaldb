@@ -6,7 +6,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <SqlLocalDbRoot>$(MSBuildProjectDirectory)\</SqlLocalDbRoot>
     <OutDir>$(SqlLocalDbRoot)BuildOutput\</OutDir>
-    <SolutionFile>SqlLocalDb.sln</SolutionFile>
+    <SolutionFile>$(SqlLocalDbRoot)SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
     <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
     <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)' == ''">true</CodeAnalysisTreatWarningsAsErrors>
@@ -32,10 +32,10 @@
   <Target Name="Clean">
     <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
-  <Target Name="Build">
+  <Target Name="Build" DependsOnTargets="RestorePackages">
     <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
-  <Target Name="Rebuild">
+  <Target Name="Rebuild"  DependsOnTargets="RestorePackages">
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
@@ -139,5 +139,14 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Error Condition="!Exists('$(CurlToolPath)')" Text="The upload tool cannot be found." />
     <Error Condition="!Exists('$(CoverityZipFile)')" Text="The Coverity ZIP file cannot be found." />
     <Exec Command="$(CoverityUploadCommand)" />
+  </Target>
+  <Target Name="RestorePackages">
+    <PropertyGroup>
+      <NuGetToolsPath>$([System.IO.Path]::Combine($(SolutionDir), "Tools", "NuGet"))</NuGetToolsPath>
+      <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+      <RequireRestoreConsent>false</RequireRestoreConsent>
+    </PropertyGroup>
+    <Message Text="Restoring NuGet packages..." Importance="normal" />
+    <Exec Command="%22$(NuGetExePath)%22 restore %22$(SolutionFile)%22" LogStandardErrorAsError="true" />
   </Target>
 </Project>
