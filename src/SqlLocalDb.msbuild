@@ -71,14 +71,14 @@
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
   </Target>
   <Target Name="CreateNuGetPackage">
+    <RemoveDir Directories="$(OutDir)\src" />
     <ItemGroup>
-      <SourceFiles Include="$(SolutionDir)\*.cs;$(SolutionDir)\**\SqlLocalDb\**\*.cs"  Exclude="$(SolutionDir)\**\obj\**\*.cs" />
+      <SourceFiles Include="$(SolutionDir)\*.cs;$(SolutionDir)\**\SqlLocalDb\**\*.cs" Exclude="$(SolutionDir)\**\obj\**\*.cs" />
     </ItemGroup>
     <PropertyGroup>
       <NuGetTool>$(SolutionDir)\Tools\NuGet\NuGet.exe</NuGetTool>
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
-    <RemoveDir Directories="$(OutDir)\src" />
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
     <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir) -Symbols" />
   </Target>
