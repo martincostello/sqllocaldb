@@ -80,7 +80,7 @@
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
-    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir) -Symbols" />
+    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir) -Symbols" StandardOutputImportance="high" />
   </Target>
   <Target Name="CleanArchiveFiles" AfterTargets="Clean">
     <CreateItem Include="$(OutDir)\*.nupkg">
