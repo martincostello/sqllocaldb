@@ -35,7 +35,7 @@
   <Target Name="Build" DependsOnTargets="RestorePackages">
     <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
-  <Target Name="Rebuild"  DependsOnTargets="RestorePackages">
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages">
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
   </Target>
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
@@ -71,11 +71,16 @@
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
   </Target>
   <Target Name="CreateNuGetPackage">
+    <ItemGroup>
+      <SourceFiles Include="$(SolutionDir)\*.cs;$(SolutionDir)\**\SqlLocalDb\**\*.cs"  Exclude="$(SolutionDir)\**\obj\**\*.cs" />
+    </ItemGroup>
     <PropertyGroup>
       <NuGetTool>$(SolutionDir)\Tools\NuGet\NuGet.exe</NuGetTool>
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
-    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir)" />
+    <RemoveDir Directories="$(OutDir)\src" />
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
+    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir) -Symbols" />
   </Target>
   <Target Name="CleanArchiveFiles" AfterTargets="Clean">
     <CreateItem Include="$(OutDir)\*.nupkg">
@@ -85,6 +90,7 @@
       <Output TaskParameter="Include" ItemName="ArchiveWrites" />
     </CreateItem>
     <Delete Files="@(ArchiveWrites)" />
+    <RemoveDir Directories="$(OutDir)\src" />
   </Target>
   <Target Name="UpdateAssemblyConfiguration">
     <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" />

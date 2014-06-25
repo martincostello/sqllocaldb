@@ -26,6 +26,8 @@
   </metadata>
   <files>
     <file src="System.Data.SqlLocalDb.dll" target="lib\net20" />
+    <file src="System.Data.SqlLocalDb.pdb" target="lib\net20" />
     <file src="System.Data.SqlLocalDb.xml" target="lib\net20" />
+    <file src="src\**\*.cs" target="src" />
   </files>
 </package>
