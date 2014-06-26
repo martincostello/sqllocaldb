@@ -50,8 +50,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ILogger.cs" />
     <Compile Include="StopInstanceOptions.cs" />
     <Compile Include="TemporarySqlLocalDbInstance.cs" />
+    <Compile Include="TraceSourceLogger.cs" />
     <None Include="..\AssemblyVersion.targets">
       <Link>AssemblyVersion.targets</Link>
     </None>
