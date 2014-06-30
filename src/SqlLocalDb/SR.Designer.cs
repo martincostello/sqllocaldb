@@ -250,7 +250,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting instance names for SQL LocalDB..
+        ///   Looks up a localized string similar to Obtaining instance names for SQL LocalDB..
         /// </summary>
         internal static string SqlLocalDbApi_LogGetInstances {
             get {
@@ -259,7 +259,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting information for SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtaining information for SQL LocalDB instance &apos;{0}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogGettingInfoFormat {
             get {
@@ -268,7 +268,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting version information for SQL LocalDB version &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtaining version information for SQL LocalDB version &apos;{0}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogGetVersionInfoFormat {
             get {

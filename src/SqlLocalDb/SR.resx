@@ -175,13 +175,13 @@
     <value>Deleting named instance of SQL LocalDB '{0}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogGetInstances" xml:space="preserve">
-    <value>Getting instance names for SQL LocalDB.</value>
+    <value>Obtaining instance names for SQL LocalDB.</value>
   </data>
   <data name="SqlLocalDbApi_LogGettingInfoFormat" xml:space="preserve">
-    <value>Getting information for SQL LocalDB instance '{0}'.</value>
+    <value>Obtaining information for SQL LocalDB instance '{0}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogGetVersionInfoFormat" xml:space="preserve">
-    <value>Getting version information for SQL LocalDB version '{0}'.</value>
+    <value>Obtaining version information for SQL LocalDB version '{0}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogGotInfoFormat" xml:space="preserve">
     <value>Obtained information for SQL LocalDB instance '{0}'.</value>
