@@ -196,10 +196,10 @@
     <value>SQL LocalDB returned HRESULT {0}.</value>
   </data>
   <data name="SqlLocalDbApi_LogSharedInstanceFormat" xml:space="preserve">
-    <value>Shared SQL LocalDB instance '{0}' for owner SID '{1} as '{2}'.</value>
+    <value>Shared SQL LocalDB instance '{0}' for owner SID '{1}' as '{2}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogSharingInstanceFormat" xml:space="preserve">
-    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}. Shared instance name: '{2}'.</value>
+    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}'. Shared instance name: '{2}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogStartedFormat" xml:space="preserve">
     <value>Started SQL LocalDB instance '{0}' using named pipe '{1}'.</value>

@@ -313,7 +313,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shared SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1} as &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Shared SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos; as &apos;{2}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogSharedInstanceFormat {
             get {
@@ -322,7 +322,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}. Shared instance name: &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos;. Shared instance name: &apos;{2}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogSharingInstanceFormat {
             get {
