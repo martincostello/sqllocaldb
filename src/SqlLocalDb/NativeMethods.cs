@@ -828,7 +828,7 @@ namespace System.Data.SqlLocalDb
                 int hrLocalDB,
                 int dwFlags,
                 int dwLanguageId,
-                [MarshalAs(UnmanagedType.LPWStr)]
+                [MarshalAs(UnmanagedType.LPWStr)][Out]
                 StringBuilder wszMessage,
                 ref int lpcchMessage);
 
@@ -945,7 +945,7 @@ namespace System.Data.SqlLocalDb
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string pInstanceName,
                 int dwFlags,
-                [MarshalAs(UnmanagedType.LPWStr)]
+                [MarshalAs(UnmanagedType.LPWStr)][Out]
                 StringBuilder wszSqlConnection,
                 ref int lpcchSqlConnection);
 
