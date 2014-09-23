@@ -121,8 +121,8 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="Array"/> of <see cref="String"/>
-        /// containing the available versions of SQL LocalDB.
+        /// Gets an <see cref="Array"/> of <see cref="String"/> containing
+        /// the available versions of SQL LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
@@ -160,8 +160,8 @@ namespace System.Data.SqlLocalDb
         /// No versions of SQL Server LocalDB are installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/>
-        /// could not be stopped or the installed versions of SQL LocalDB could not be determined.
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could
+        /// not be stopped or the installed versions of SQL LocalDB could not be determined.
         /// </exception>
         public static void CreateInstance(string instanceName)
         {
@@ -181,8 +181,7 @@ namespace System.Data.SqlLocalDb
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/>
-        /// and <paramref name="version"/> could not be created.
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> and <paramref name="version"/> could not be created.
         /// </exception>
         public static void CreateInstance(string instanceName, string version)
         {
@@ -304,8 +303,7 @@ namespace System.Data.SqlLocalDb
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The information for the SQL Server LocalDB instance specified by
-        /// <paramref name="instanceName"/> could not obtained.
+        /// The information for the SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not obtained.
         /// </exception>
         public static ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName)
         {
@@ -412,8 +410,7 @@ namespace System.Data.SqlLocalDb
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The information for the SQL Server LocalDB version specified by
-        /// <paramref name="version"/> could not be obtained.
+        /// The information for the SQL Server LocalDB version specified by <paramref name="version"/> could not be obtained.
         /// </exception>
         public static ISqlLocalDbVersionInfo GetVersionInfo(string version)
         {
@@ -469,7 +466,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="instanceName">The private name for the LocalDB instance to share.</param>
         /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share.</param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> or <paramref name="instanceName"/> is <see langword="null"/>.
+        /// <paramref name="instanceName"/> or <paramref name="sharedInstanceName"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
@@ -499,8 +496,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="instanceName">The private name for the LocalDB instance to share.</param>
         /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share.</param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="ownerSid"/>, <paramref name="instanceName"/> or
-        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// <paramref name="ownerSid"/>, <paramref name="instanceName"/> or <paramref name="sharedInstanceName"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
@@ -751,7 +747,7 @@ namespace System.Data.SqlLocalDb
         /// Stops the sharing of the specified SQL Server LocalDB instance.
         /// </summary>
         /// <param name="instanceName">
-        /// The private name for the LocalDB instance to share.
+        /// The private name for the LocalDB instance to stop sharing.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="instanceName"/> is <see langword="null"/>.
@@ -760,8 +756,7 @@ namespace System.Data.SqlLocalDb
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by
-        /// <paramref name="instanceName"/> could not be unshared.
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be unshared.
         /// </exception>
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",

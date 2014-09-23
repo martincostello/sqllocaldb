@@ -153,7 +153,7 @@ namespace System.Data.SqlLocalDb
         /// to communicate with the SQL Server Local DB instance.
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="IsRunning"/> is <see langword="false"/>.
+        /// The value of <see cref="SqlLocalDbInstance.IsRunning"/> is <see langword="false"/>.
         /// </exception>
         public virtual SqlConnection CreateConnection()
         {
@@ -176,7 +176,7 @@ namespace System.Data.SqlLocalDb
         /// the default SQL connection string to connect to the LocalDB instance.
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="IsRunning"/> is <see langword="false"/>.
+        /// The value of <see cref="SqlLocalDbInstance.IsRunning"/> is <see langword="false"/>.
         /// </exception>
         public virtual SqlConnectionStringBuilder CreateConnectionStringBuilder()
         {
@@ -198,8 +198,7 @@ namespace System.Data.SqlLocalDb
         /// Returns information about the LocalDB instance.
         /// </summary>
         /// <returns>
-        /// An instance of <see cref="ISqlLocalDbInstanceInfo"/>
-        /// containing information about the LocalDB instance.
+        /// An instance of <see cref="ISqlLocalDbInstanceInfo"/> containing information about the LocalDB instance.
         /// </returns>
         public virtual ISqlLocalDbInstanceInfo GetInstanceInfo()
         {

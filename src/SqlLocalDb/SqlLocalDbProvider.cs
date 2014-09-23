@@ -196,11 +196,11 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Returns information about the installed SQL Server LocalDB versions.
+        /// Returns information about the installed SQL Server LocalDB version(s).
         /// </summary>
         /// <returns>
         /// An <see cref="IList&lt;ISqlLocalDbVersionInfo&gt;"/> containing information
-        /// about the SQL Server LocalDB versions installed on the current machine.
+        /// about the SQL Server LocalDB version(s) installed on the current machine.
         /// </returns>
         public virtual IList<ISqlLocalDbVersionInfo> GetVersions()
         {

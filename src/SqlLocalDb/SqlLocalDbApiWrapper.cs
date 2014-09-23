@@ -57,8 +57,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="Array"/> of <see cref="String"/>
-        /// containing the available versions of SQL LocalDB.
+        /// Gets an <see cref="Array"/> of <see cref="String"/> containing the available version(s) of SQL LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
@@ -87,8 +86,7 @@ namespace System.Data.SqlLocalDb
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/>
-        /// and <paramref name="version"/> could not be created.
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> and <paramref name="version"/> could not be created.
         /// </exception>
         public virtual void CreateInstance(string instanceName, string version)
         {

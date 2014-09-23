@@ -33,8 +33,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="Array"/> of <see cref="String"/>
-        /// containing the available versions of SQL LocalDB.
+        /// Gets an <see cref="Array"/> of <see cref="String"/> containing the available version(s) of SQL LocalDB.
         /// </summary>
         IList<string> Versions
         {
@@ -151,7 +150,7 @@ namespace System.Data.SqlLocalDb
         /// Stops the sharing of the specified SQL Server LocalDB instance.
         /// </summary>
         /// <param name="instanceName">
-        /// The private name for the LocalDB instance to share.
+        /// The private name for the LocalDB instance to stop sharing.
         /// </param>
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
