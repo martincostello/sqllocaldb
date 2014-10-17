@@ -351,9 +351,9 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                SqlLocalDbApi.DeleteInstance(instance.Name, throwIfNotFound);
+                SqlLocalDbApi.DeleteInstanceInternal(instance.Name, throwIfNotFound);
             }
-            catch (SqlLocalDbException e)
+            catch (SqlLocalDbException ex)
             {
                 string message = SRHelper.Format(
                     SR.SqlLocalDbInstance_DeleteFailedFormat,
@@ -363,9 +363,9 @@ namespace System.Data.SqlLocalDb
 
                 throw new SqlLocalDbException(
                     message,
-                    e.ErrorCode,
-                    e.InstanceName,
-                    e);
+                    ex.ErrorCode,
+                    ex.InstanceName,
+                    ex);
             }
         }
 

@@ -131,7 +131,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 
@@ -330,7 +330,7 @@ namespace System.Data.SqlLocalDb
             finally
             {
                 // Try to delete the instance we created if the test fails
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
             }
         }
 
@@ -379,7 +379,7 @@ namespace System.Data.SqlLocalDb
                     finally
                     {
                         // Try to delete the instance we created if the test fails
-                        SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
+                        SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
                     }
                 });
         }
@@ -425,7 +425,7 @@ namespace System.Data.SqlLocalDb
             finally
             {
                 // Try to delete the instance we created if the test fails
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
             }
         }
 
@@ -679,7 +679,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 
@@ -796,7 +796,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 
@@ -912,7 +912,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 
@@ -952,7 +952,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 
@@ -1163,7 +1163,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstanceInternal(instanceName, throwIfNotFound: false);
             }
         }
 

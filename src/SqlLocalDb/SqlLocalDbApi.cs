@@ -262,7 +262,7 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void DeleteInstance(string instanceName, bool deleteFiles)
         {
-            DeleteInstance(instanceName, throwIfNotFound: true, deleteFiles: deleteFiles);
+            DeleteInstanceInternal(instanceName, throwIfNotFound: true, deleteFiles: deleteFiles);
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace System.Data.SqlLocalDb
                     // Such failures to delete an instance should be ignored
                     try
                     {
-                        if (DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: deleteFiles))
+                        if (DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: deleteFiles))
                         {
                             instancesDeleted++;
                         }
@@ -867,7 +867,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
-        internal static bool DeleteInstance(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
+        internal static bool DeleteInstanceInternal(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
         {
             if (instanceName == null)
             {
