@@ -930,8 +930,10 @@ namespace System.Data.SqlLocalDb
         /// Deletes the file(s) from disk that are associated with the specified SQL LocalDB instance.
         /// </summary>
         /// <param name="instanceName">The name of the SQL LocalDB instance to delete the file(s) for.</param>
-        private static void DeleteInstanceFiles(string instanceName)
+        internal static void DeleteInstanceFiles(string instanceName)
         {
+            Debug.Assert(instanceName != null, "instanceName cannot be null.");
+
             string instancePath = Path.Combine(GetInstancesFolderPath(), instanceName);
 
             try
