@@ -61,16 +61,25 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         /// <param name="callBackDelegate">The delegate to invoke in the new <see cref="AppDomain"/>.</param>
         /// <param name="appDomainData">The optional data to set for the <see cref="AppDomain"/>.</param>
+        /// <param name="configurationFile">The optional name of the configuration file to use.</param>
         /// <param name="callerMemberName">The optional name of the caller of this method.</param>
         public static void InvokeInNewAppDomain(
             CrossAppDomainDelegate callBackDelegate,
             IDictionary<string, object> appDomainData = null,
+            string configurationFile = null,
             [CallerMemberName] string callerMemberName = null)
         {
+            AppDomainSetup info = AppDomain.CurrentDomain.SetupInformation;
+
+            if (!string.IsNullOrEmpty(configurationFile))
+            {
+                info.ConfigurationFile = configurationFile;
+            }
+
             AppDomain appDomain = AppDomain.CreateDomain(
                 callerMemberName,
                 null,
-                AppDomain.CurrentDomain.SetupInformation);
+                info);
 
             try
             {

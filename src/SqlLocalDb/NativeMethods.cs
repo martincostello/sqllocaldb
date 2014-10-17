@@ -684,7 +684,7 @@ namespace System.Data.SqlLocalDb
             Version overrideVersion = null;
 
             // Is there a setting overriding the version to load?
-            string overrideVersionString = Configuration.ConfigurationManager.AppSettings["SQLLocalDB:OverrideVersion"];
+            string overrideVersionString = SqlLocalDbConfig.NativeApiOverrideVersionString;
 
             string path = null;
 

@@ -97,6 +97,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="SqlLocalDbApiTests.AutomaticallyDeleteInstanceFiles.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\FxCopDictionary.xml">

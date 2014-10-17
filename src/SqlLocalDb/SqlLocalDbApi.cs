@@ -44,6 +44,11 @@ namespace System.Data.SqlLocalDb
         private static string[] _versions;
 
         /// <summary>
+        /// Whether to automatically delete the files associated with SQL LocalDB instances when they are deleted.
+        /// </summary>
+        private static bool _automaticallyDeleteInstanceFiles = SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles;
+
+        /// <summary>
         /// The timeout for stopping an instance of LocalDB.
         /// </summary>
         private static TimeSpan _stopTimeout = TimeSpan.FromMinutes(1);
@@ -60,12 +65,13 @@ namespace System.Data.SqlLocalDb
         /// Setting the value of this property affects the behavior of all delete
         /// operations in the current <see cref="AppDomain"/> unless the overloads
         /// of <see cref="DeleteInstance(String, Boolean)"/> and <see cref="DeleteUserInstances(Boolean)"/> are
-        /// used. The default value is <see langword="false"/>.
+        /// used. The default value is <see langword="false"/>, unless overridden
+        /// by the <c>SQLLocalDB:AutomaticallyDeleteInstanceFiles</c> application configuration setting.
         /// </remarks>
         public static bool AutomaticallyDeleteInstanceFiles
         {
-            get;
-            set;
+            get { return _automaticallyDeleteInstanceFiles; }
+            set { _automaticallyDeleteInstanceFiles = value; }
         }
 
         /// <summary>

@@ -48,6 +48,22 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests the default value of the AutomaticallyDeleteInstanceFiles property if overridden in the configuration file.")]
+        public void AutomaticallyDeleteInstanceFiles_Can_Be_Overridden_From_Configuration_File()
+        {
+            // Act
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    bool value = SqlLocalDbApi.AutomaticallyDeleteInstanceFiles;
+
+                    // Assert
+                    Assert.IsTrue(value, "The default value of SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is incorrect.");
+                },
+                configurationFile: "SqlLocalDbApiTests.AutomaticallyDeleteInstanceFiles.config");
+        }
+
+        [TestMethod]
         [Description("Tests that the AutomaticallyDeleteInstanceFiles property can be set.")]
         public void AutomaticallyDeleteInstanceFiles_Can_Be_Set()
         {
