@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -50,6 +51,22 @@ namespace System.Data.SqlLocalDb
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to automatically delete the
+        /// files associated with SQL LocalDB instances when they are deleted.
+        /// </summary>
+        /// <remarks>
+        /// Setting the value of this property affects the behavior of all delete
+        /// operations in the current <see cref="AppDomain"/> unless the overloads
+        /// of <see cref="DeleteInstance(String, Boolean)"/> and <see cref="DeleteUserInstances(Boolean)"/> are
+        /// used. The default value is <see langword="false"/>.
+        /// </remarks>
+        public static bool AutomaticallyDeleteInstanceFiles
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the version string for the latest installed version of SQL Server LocalDB.
@@ -222,7 +239,30 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public static void DeleteInstance(string instanceName)
         {
-            DeleteInstance(instanceName, throwIfNotFound: true);
+            DeleteInstance(instanceName, deleteFiles: AutomaticallyDeleteInstanceFiles);
+        }
+
+        /// <summary>
+        /// Deletes the specified SQL Server LocalDB instance.
+        /// </summary>
+        /// <param name="instanceName">
+        /// The name of the LocalDB instance to delete.
+        /// </param>
+        /// <param name="deleteFiles">
+        /// Whether to delete the file(s) associated with the SQL LocalDB instance.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
+        /// </exception>
+        public static void DeleteInstance(string instanceName, bool deleteFiles)
+        {
+            DeleteInstance(instanceName, throwIfNotFound: true, deleteFiles: deleteFiles);
         }
 
         /// <summary>
@@ -236,6 +276,26 @@ namespace System.Data.SqlLocalDb
         /// installed on the local machine are not deleted.
         /// </remarks>
         public static int DeleteUserInstances()
+        {
+            return DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
+        }
+
+        /// <summary>
+        /// Deletes all user instances of SQL LocalDB on the current machine,
+        /// optionally also deleting all of the file(s) associated with the
+        /// SQL LocalDB user instance(s) from disk.
+        /// </summary>
+        /// <param name="deleteFiles">
+        /// Whether to delete the file(s) associated with the SQL LocalDB user instance(s).
+        /// </param>
+        /// <returns>
+        /// The number of user instances of SQL LocalDB that were deleted.
+        /// </returns>
+        /// <remarks>
+        /// The default instance(s) of any version(s) of SQL LocalDB that are
+        /// installed on the local machine are not deleted.
+        /// </remarks>
+        public static int DeleteUserInstances(bool deleteFiles)
         {
             int instancesDeleted = 0;
 
@@ -263,7 +323,7 @@ namespace System.Data.SqlLocalDb
                     // Such failures to delete an instance should be ignored
                     try
                     {
-                        if (DeleteInstance(instanceName, throwIfNotFound: false))
+                        if (DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: deleteFiles))
                         {
                             instancesDeleted++;
                         }
@@ -790,6 +850,9 @@ namespace System.Data.SqlLocalDb
         /// Whether to throw an exception if the SQL LocalDB instance
         /// specified by <paramref name="instanceName"/> cannot be found.
         /// </param>
+        /// <param name="deleteFiles">
+        /// Whether to delete the file(s) associated with the SQL LocalDB instance.
+        /// </param>
         /// <returns>
         /// <see langword="true"/> if the instance specified by <paramref name="instanceName"/>
         /// was successfully deleted; <see langword="false"/> if <paramref name="throwIfNotFound"/>
@@ -804,7 +867,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
-        internal static bool DeleteInstance(string instanceName, bool throwIfNotFound)
+        internal static bool DeleteInstance(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
         {
             if (instanceName == null)
             {
@@ -826,8 +889,96 @@ namespace System.Data.SqlLocalDb
                 throw GetLocalDbError(hr, Logger.TraceEvent.DeleteInstance, instanceName);
             }
 
+            if (deleteFiles)
+            {
+                DeleteInstanceFiles(instanceName);
+            }
+
             Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletedFormat, instanceName);
             return true;
+        }
+
+        /// <summary>
+        /// Deletes the file(s) from disk that are associated with the specified SQL LocalDB instance.
+        /// </summary>
+        /// <param name="instanceName">The name of the SQL LocalDB instance to delete the file(s) for.</param>
+        private static void DeleteInstanceFiles(string instanceName)
+        {
+            string instancePath = PathCombine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft",
+                "Microsoft SQL Server Local DB",
+                "Instances",
+                instanceName);
+
+            try
+            {
+                if (Directory.Exists(instancePath))
+                {
+                    Logger.Verbose(
+                        Logger.TraceEvent.DeletingInstanceFiles,
+                        SR.SqlLocalDbApi_LogDeletingInstanceFilesFormat,
+                        instanceName,
+                        instancePath);
+
+                    Directory.Delete(instancePath, recursive: true);
+
+                    Logger.Verbose(
+                        Logger.TraceEvent.DeletedInstanceFiles,
+                        SR.SqlLocalDbApi_LogDeletedInstanceFilesFormat,
+                        instanceName,
+                        instancePath);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                Logger.Error(
+                    Logger.TraceEvent.DeletingInstanceFilesFailed,
+                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
+                    instanceName,
+                    instancePath,
+                    ex.Message);
+            }
+            catch (IOException ex)
+            {
+                Logger.Error(
+                    Logger.TraceEvent.DeletingInstanceFilesFailed,
+                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
+                    instanceName,
+                    instancePath,
+                    ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logger.Error(
+                    Logger.TraceEvent.DeletingInstanceFilesFailed,
+                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
+                    instanceName,
+                    instancePath,
+                    ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Combines the specified strings into a full file system path.
+        /// </summary>
+        /// <param name="paths">An array containing at least two paths to combine.</param>
+        /// <returns>
+        /// The full path created from combining the values in <paramref name="paths"/>.
+        /// </returns>
+        private static string PathCombine(params string[] paths)
+        {
+            Debug.Assert(paths != null, "paths cannot be null.");
+            Debug.Assert(paths.Length > 1, "At least two paths must be specified.");
+
+            string path = Path.Combine(paths[0], paths[1]);
+
+            for (int i = 2; i < paths.Length; i++)
+            {
+                path = Path.Combine(path, paths[i]);
+            }
+
+            return path;
         }
 
         /// <summary>

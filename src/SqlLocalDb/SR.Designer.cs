@@ -232,6 +232,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        /// </summary>
+        internal static string SqlLocalDbApi_LogDeletedInstanceFilesFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_LogDeletedInstanceFilesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; could not be deleted as it is currently in use..
         /// </summary>
         internal static string SqlLocalDbApi_LogDeleteFailedAsInUseFormat {
@@ -246,6 +255,24 @@ namespace System.Data.SqlLocalDb {
         internal static string SqlLocalDbApi_LogDeletingFormat {
             get {
                 return ResourceManager.GetString("SqlLocalDbApi_LogDeletingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;: {2}.
+        /// </summary>
+        internal static string SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        /// </summary>
+        internal static string SqlLocalDbApi_LogDeletingInstanceFilesFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_LogDeletingInstanceFilesFormat", resourceCulture);
             }
         }
         

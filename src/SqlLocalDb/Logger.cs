@@ -247,6 +247,21 @@ namespace System.Data.SqlLocalDb
             /// </summary>
             internal static readonly int DeleteFailedAsInstanceInUse = 22;
 
+            /// <summary>
+            /// The files(s) for a user instance of SQL LocalDB are being deleted.
+            /// </summary>
+            internal static readonly int DeletingInstanceFiles = 23;
+
+            /// <summary>
+            /// The files(s) for a user instance of SQL LocalDB were deleted.
+            /// </summary>
+            internal static readonly int DeletedInstanceFiles = 24;
+
+            /// <summary>
+            /// The files(s) for a user instance of SQL LocalDB could not be deleted.
+            /// </summary>
+            internal static readonly int DeletingInstanceFilesFailed = 25;
+
             #endregion
         }
 

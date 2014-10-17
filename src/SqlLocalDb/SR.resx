@@ -282,4 +282,13 @@
   <data name="SqlLocalDbApi_LogDeleteFailedAsInUseFormat" xml:space="preserve">
     <value>The SQL LocalDB instance '{0}' could not be deleted as it is currently in use.</value>
   </data>
+  <data name="SqlLocalDbApi_LogDeletedInstanceFilesFormat" xml:space="preserve">
+    <value>Deleted file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat" xml:space="preserve">
+    <value>Failed to delete file(s) for SQL LocalDB instance '{0}' from '{1}': {2}</value>
+  </data>
+  <data name="SqlLocalDbApi_LogDeletingInstanceFilesFormat" xml:space="preserve">
+    <value>Deleting file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
+  </data>
 </root>

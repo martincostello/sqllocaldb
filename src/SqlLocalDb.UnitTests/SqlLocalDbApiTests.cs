@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,6 +35,34 @@ namespace System.Data.SqlLocalDb
         #endregion
 
         #region Methods
+
+        [TestMethod]
+        [Description("Tests the default value of the AutomaticallyDeleteInstanceFiles property.")]
+        public void AutomaticallyDeleteInstanceFiles_Is_False_By_Default()
+        {
+            // Act
+            bool value = SqlLocalDbApi.AutomaticallyDeleteInstanceFiles;
+
+            // Assert
+            Assert.IsFalse(value, "The default value of SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is incorrect.");
+        }
+
+        [TestMethod]
+        [Description("Tests that the AutomaticallyDeleteInstanceFiles property can be set.")]
+        public void AutomaticallyDeleteInstanceFiles_Can_Be_Set()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+                    bool value = SqlLocalDbApi.AutomaticallyDeleteInstanceFiles;
+
+                    // Assert
+                    Assert.IsTrue(value, "The value of SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is incorrect.");
+                });
+        }
 
         [TestMethod]
         [Description("Tests CreateInstance(string) if instanceName is null.")]
@@ -186,10 +215,81 @@ namespace System.Data.SqlLocalDb
             Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
             Assert.AreEqual(instanceName, info.Name, "ISqlLocalDbInstanceInfo.Name is incorrect..");
             Assert.IsFalse(info.Exists, "The LocalDB instance has not been deleted.");
+
+            string instancePath = GetInstanceFolderPath(instanceName);
+            Assert.IsTrue(Directory.Exists(instancePath), "The instance folder was deleted.");
+            Assert.AreNotEqual(0, Directory.GetFiles(instancePath).Length, "The instance files were deleted.");
         }
 
         [TestMethod]
-        [Description("Tests DeleteUserInstances() deletes only user instances.")]
+        [Description("Tests DeleteInstance(string) deletes the instance folder if AutomaticallyDeleteInstanceFiles is true.")]
+        public void DeleteInstance_Deletes_Folder_If_AutomaticallyDeleteInstanceFiles_Is_True()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    string instanceName = Guid.NewGuid().ToString();
+
+                    IList<string> instanceNames = SqlLocalDbApi.GetInstanceNames();
+                    CollectionAssert.DoesNotContain(instanceNames.ToArray(), instanceName, "The specified instance name already exists.");
+
+                    SqlLocalDbApi.CreateInstance(instanceName);
+
+                    instanceNames = SqlLocalDbApi.GetInstanceNames();
+                    CollectionAssert.Contains(instanceNames.ToArray(), instanceName, "The specified instance was not created.");
+
+                    // Act
+                    SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+                    SqlLocalDbApi.DeleteInstance(instanceName);
+
+                    // Assert
+                    ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
+
+                    Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
+                    Assert.AreEqual(instanceName, info.Name, "ISqlLocalDbInstanceInfo.Name is incorrect..");
+                    Assert.IsFalse(info.Exists, "The LocalDB instance has not been deleted.");
+
+                    string instancePath = GetInstanceFolderPath(instanceName);
+                    Assert.IsFalse(Directory.Exists(instancePath), "The instance folder was not deleted.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests DeleteInstance(string, bool).")]
+        public void DeleteInstance_Deletes_Instance_Folder()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            string instanceName = Guid.NewGuid().ToString();
+
+            IList<string> instanceNames = SqlLocalDbApi.GetInstanceNames();
+            CollectionAssert.DoesNotContain(instanceNames.ToArray(), instanceName, "The specified instance name already exists.");
+
+            SqlLocalDbApi.CreateInstance(instanceName);
+
+            instanceNames = SqlLocalDbApi.GetInstanceNames();
+            CollectionAssert.Contains(instanceNames.ToArray(), instanceName, "The specified instance was not created.");
+
+            // Act
+            SqlLocalDbApi.DeleteInstance(instanceName, deleteFiles: true);
+
+            // Assert
+            ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
+
+            Assert.IsNotNull(info, "GetInstanceInfo() returned null.");
+            Assert.AreEqual(instanceName, info.Name, "ISqlLocalDbInstanceInfo.Name is incorrect..");
+            Assert.IsFalse(info.Exists, "The LocalDB instance has not been deleted.");
+
+            string instancePath = GetInstanceFolderPath(instanceName);
+            Assert.IsFalse(Directory.Exists(instancePath), "The instance folder was not deleted.");
+        }
+
+        [TestMethod]
+        [Description("Tests DeleteUserInstances() deletes only user instances and does not delete the instance folders.")]
         public void DeleteUserInstances_Deletes_Only_User_Instances()
         {
             // Arrange
@@ -222,11 +322,110 @@ namespace System.Data.SqlLocalDb
                 CollectionAssert.AreEquivalent(expectedNames, namesAfter.ToArray(), "One or more instance was not deleted.");
                 CollectionAssert.AreEquivalent(versionsBefore.ToArray(), versionsAfter.ToArray(), "One or more default instances was deleted.");
                 Assert.AreEqual(namesBefore.Count - namesAfter.Count, result, "DeleteUserInstances() returned incorrect result.");
+
+                string instancePath = GetInstanceFolderPath(instanceName);
+                Assert.IsTrue(Directory.Exists(instancePath), "The instance folder was deleted.");
+                Assert.AreNotEqual(0, Directory.GetFiles(instancePath).Length, "The instance files were deleted.");
             }
             finally
             {
                 // Try to delete the instance we created if the test fails
-                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
+                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests DeleteUserInstances() deletes only user instances and deletes the instance folders if AutomaticallyDeleteInstanceFiles is true.")]
+        public void DeleteUserInstances_Deletes_Only_User_Instances_If_AutomaticallyDeleteInstanceFiles_Is_True()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    string instanceName = Guid.NewGuid().ToString();
+                    SqlLocalDbApi.CreateInstance(instanceName);
+
+                    try
+                    {
+                        IList<string> namesBefore = SqlLocalDbApi.GetInstanceNames();
+                        IList<string> versionsBefore = SqlLocalDbApi.Versions;
+
+                        // Act
+                        SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+                        int result = SqlLocalDbApi.DeleteUserInstances();
+
+                        // Assert
+                        IList<string> namesAfter = SqlLocalDbApi.GetInstanceNames();
+                        IList<string> versionsAfter = SqlLocalDbApi.Versions;
+
+                        // The default instances have a name which is the version prefixed with 'v' when
+                        // using the SQL LocalDB 2012 native API. With the SQL LocalDB 2014 native API
+                        // (and presumably later versions), the default instance is named 'MSSQLLocalDB'.
+                        string[] expectedNames = namesAfter
+                            .Where((p) => p.StartsWith("v", StringComparison.Ordinal) ||
+                                          string.Equals(p, "MSSQLLocalDB", StringComparison.Ordinal) ||
+                                          string.Equals(p, @".\MSSQLLocalDB", StringComparison.Ordinal))
+                            .ToArray();
+
+                        CollectionAssert.AreEquivalent(expectedNames, namesAfter.ToArray(), "One or more instance was not deleted.");
+                        CollectionAssert.AreEquivalent(versionsBefore.ToArray(), versionsAfter.ToArray(), "One or more default instances was deleted.");
+                        Assert.AreEqual(namesBefore.Count - namesAfter.Count, result, "DeleteUserInstances() returned incorrect result.");
+
+                        string instancePath = GetInstanceFolderPath(instanceName);
+                        Assert.IsFalse(Directory.Exists(instancePath), "The instance folder was not deleted.");
+                    }
+                    finally
+                    {
+                        // Try to delete the instance we created if the test fails
+                        SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
+                    }
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests DeleteUserInstances() deletes only user instances and deletes the instance folders.")]
+        public void DeleteUserInstances_Deletes_Only_User_Instances_And_Deletes_Instance_Folder()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            string instanceName = Guid.NewGuid().ToString();
+            SqlLocalDbApi.CreateInstance(instanceName);
+
+            try
+            {
+                IList<string> namesBefore = SqlLocalDbApi.GetInstanceNames();
+                IList<string> versionsBefore = SqlLocalDbApi.Versions;
+
+                // Act
+                int result = SqlLocalDbApi.DeleteUserInstances(deleteFiles: true);
+
+                // Assert
+                IList<string> namesAfter = SqlLocalDbApi.GetInstanceNames();
+                IList<string> versionsAfter = SqlLocalDbApi.Versions;
+
+                // The default instances have a name which is the version prefixed with 'v' when
+                // using the SQL LocalDB 2012 native API. With the SQL LocalDB 2014 native API
+                // (and presumably later versions), the default instance is named 'MSSQLLocalDB'.
+                string[] expectedNames = namesAfter
+                    .Where((p) => p.StartsWith("v", StringComparison.Ordinal) ||
+                                  string.Equals(p, "MSSQLLocalDB", StringComparison.Ordinal) ||
+                                  string.Equals(p, @".\MSSQLLocalDB", StringComparison.Ordinal))
+                    .ToArray();
+
+                CollectionAssert.AreEquivalent(expectedNames, namesAfter.ToArray(), "One or more instance was not deleted.");
+                CollectionAssert.AreEquivalent(versionsBefore.ToArray(), versionsAfter.ToArray(), "One or more default instances was deleted.");
+                Assert.AreEqual(namesBefore.Count - namesAfter.Count, result, "DeleteUserInstances() returned incorrect result.");
+
+                string instancePath = GetInstanceFolderPath(instanceName);
+                Assert.IsFalse(Directory.Exists(instancePath), "The instance folder was not deleted.");
+            }
+            finally
+            {
+                // Try to delete the instance we created if the test fails
+                SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false, deleteFiles: true);
             }
         }
 
@@ -966,6 +1165,23 @@ namespace System.Data.SqlLocalDb
             {
                 SqlLocalDbApi.DeleteInstance(instanceName, throwIfNotFound: false);
             }
+        }
+
+        /// <summary>
+        /// Returns the full path of the folder for the specified SQL LocalDB instance.
+        /// </summary>
+        /// <param name="instanceName">The name of the SQL LocalDB instance.</param>
+        /// <returns>
+        /// The full path of the folder for the specified SQL LocalDB instance.
+        /// </returns>
+        private static string GetInstanceFolderPath(string instanceName)
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft",
+                "Microsoft SQL Server Local DB",
+                "Instances",
+                instanceName);
         }
 
         #endregion
