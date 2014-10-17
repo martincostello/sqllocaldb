@@ -524,10 +524,29 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests that GetInstancesFolderPath() returns the correct value.")]
+        public void GetInstancesFolderPath_Returns_Correct_Path()
+        {
+            // Arrange
+            string expected = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft",
+                "Microsoft SQL Server Local DB",
+                "Instances");
+
+            // Act
+            string result = SqlLocalDbApi.GetInstancesFolderPath();
+
+            // Assert
+            Assert.AreEqual(expected, result, "GetInstancesFolderPath() returned incorrect value.");
+        }
+
+        [TestMethod]
         [Description("Tests GetVersionInfo() if version is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetVersionInfo_ThrowsIfVersionIsNull()
         {
+            // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
                 () => SqlLocalDbApi.GetVersionInfo(null),
                 "version");
@@ -1192,12 +1211,7 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         private static string GetInstanceFolderPath(string instanceName)
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft",
-                "Microsoft SQL Server Local DB",
-                "Instances",
-                instanceName);
+            return Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
         }
 
         #endregion

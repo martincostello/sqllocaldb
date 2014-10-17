@@ -462,6 +462,28 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets the full path of the directory containing the SQL LocalDB instance files for the current user.
+        /// </summary>
+        /// <returns>
+        /// The full path of the directory containing the SQL LocalDB instance files for the current user.
+        /// </returns>
+        /// <remarks>
+        /// The folder usually used to store SQL LocalDB instance files is <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances</c>.
+        /// </remarks>
+        [Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Design",
+            "CA1024:UsePropertiesWhereAppropriate",
+            Justification = "Calls a number of methods so is more appropriate as a method.")]
+        public static string GetInstancesFolderPath()
+        {
+            return PathCombine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft",
+                "Microsoft SQL Server Local DB",
+                "Instances");
+        }
+
+        /// <summary>
         /// Returns information about the specified LocalDB version.
         /// </summary>
         /// <param name="version">The name of the LocalDB version to get the information for.</param>
@@ -910,12 +932,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="instanceName">The name of the SQL LocalDB instance to delete the file(s) for.</param>
         private static void DeleteInstanceFiles(string instanceName)
         {
-            string instancePath = PathCombine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft",
-                "Microsoft SQL Server Local DB",
-                "Instances",
-                instanceName);
+            string instancePath = Path.Combine(GetInstancesFolderPath(), instanceName);
 
             try
             {
