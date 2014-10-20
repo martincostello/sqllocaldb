@@ -31,6 +31,11 @@ namespace System.Data.SqlLocalDb
         private static readonly ISqlLocalDbProvider DefaultProvider = new SqlLocalDbProvider();
 
         /// <summary>
+        /// Whether to delete the files associated with the instance when disposed.
+        /// </summary>
+        private readonly bool _deleteFiles;
+
+        /// <summary>
         /// The temporary SQL LocalDB instance.
         /// </summary>
         private readonly ISqlLocalDbInstance _instance;
@@ -65,6 +70,20 @@ namespace System.Data.SqlLocalDb
         /// <paramref name="instanceName"/> or <paramref name="provider"/> is <see langword="null"/>.
         /// </exception>
         public TemporarySqlLocalDbInstance(string instanceName, ISqlLocalDbProvider provider)
+            : this(instanceName, provider, SqlLocalDbApi.AutomaticallyDeleteInstanceFiles)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
+        /// </summary>
+        /// <param name="instanceName">The name of the temporary SQL LocalDB instance.</param>
+        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to use to create the temporary instance.</param>
+        /// <param name="deleteFiles">Whether to delete the file(s) associated with the SQL LocalDB instance when deleted.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> or <paramref name="provider"/> is <see langword="null"/>.
+        /// </exception>
+        public TemporarySqlLocalDbInstance(string instanceName, ISqlLocalDbProvider provider, bool deleteFiles)
         {
             if (instanceName == null)
             {
@@ -77,6 +96,7 @@ namespace System.Data.SqlLocalDb
             }
 
             _instance = provider.CreateInstance(instanceName);
+            _deleteFiles = deleteFiles;
 
             try
             {
@@ -84,7 +104,7 @@ namespace System.Data.SqlLocalDb
             }
             catch (Exception)
             {
-                SqlLocalDbInstance.Delete(_instance);
+                SqlLocalDbInstance.Delete(_instance, throwIfNotFound: true, deleteFiles: _deleteFiles);
                 throw;
             }
         }
@@ -135,6 +155,14 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets a value indicating whether to delete the instance file(s) when the instance is disposed of.
+        /// </summary>
+        internal bool DeleteFiles
+        {
+            get { return _deleteFiles; }
+        }
+
+        /// <summary>
         /// Gets the temporary SQL LocalDB instance associated with this instance.
         /// </summary>
         internal ISqlLocalDbInstance Instance
@@ -154,8 +182,20 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         public static TemporarySqlLocalDbInstance Create()
         {
+            return Create(SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
+        /// </summary>
+        /// <param name="deleteFiles">Whether to delete the file(s) associated with the SQL LocalDB instance when deleted.</param>
+        /// <returns>
+        /// The created instance of <see cref="TemporarySqlLocalDbInstance"/>.
+        /// </returns>
+        public static TemporarySqlLocalDbInstance Create(bool deleteFiles)
+        {
             string instanceName = Guid.NewGuid().ToString();
-            return new TemporarySqlLocalDbInstance(instanceName);
+            return new TemporarySqlLocalDbInstance(instanceName, DefaultProvider, deleteFiles);
         }
 
         /// <summary>
@@ -279,7 +319,7 @@ namespace System.Data.SqlLocalDb
                 if (_instance != null)
                 {
                     _instance.Stop();
-                    SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false);
+                    SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false, deleteFiles: _deleteFiles);
                 }
 
                 _disposed = true;

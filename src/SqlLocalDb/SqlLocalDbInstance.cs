@@ -344,6 +344,28 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         internal static void Delete(ISqlLocalDbInstance instance, bool throwIfNotFound)
         {
+            Delete(instance, throwIfNotFound, SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
+        }
+
+        /// <summary>
+        /// Deletes the specified <see cref="ISqlLocalDbInstance"/> instance.
+        /// </summary>
+        /// <param name="instance">The LocalDB instance to delete.</param>
+        /// <param name="throwIfNotFound">
+        /// Whether to throw an exception if the SQL LocalDB instance
+        /// associated with <paramref name="instance"/> cannot be found.
+        /// </param>
+        /// <param name="deleteFiles">
+        /// Whether to delete the file(s) associated with the SQL LocalDB instance.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instance"/> could not be deleted.
+        /// </exception>
+        internal static void Delete(ISqlLocalDbInstance instance, bool throwIfNotFound, bool deleteFiles)
+        {
             if (instance == null)
             {
                 throw new ArgumentNullException("instance");
@@ -351,10 +373,7 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                SqlLocalDbApi.DeleteInstanceInternal(
-                    instance.Name,
-                    throwIfNotFound,
-                    SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
+                SqlLocalDbApi.DeleteInstanceInternal(instance.Name, throwIfNotFound, deleteFiles);
             }
             catch (SqlLocalDbException ex)
             {
