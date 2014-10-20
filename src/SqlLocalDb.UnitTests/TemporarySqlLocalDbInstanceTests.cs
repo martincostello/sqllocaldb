@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Data.SqlClient;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -167,11 +168,62 @@ namespace System.Data.SqlLocalDb
             // The instance should have been deleted
             AssertExistence(instanceName, exists: false);
 
+            string path = Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
+            Assert.IsTrue(Directory.Exists(path), "The instance folder was deleted.");
+            Assert.AreNotEqual(0, Directory.GetFiles(path), "The instance files were deleted.");
+
             // Verify that the same random name isn't used again
             using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
             {
                 Assert.AreNotEqual(instanceName, target.Instance.Name, "The same random name was used to generate a temporary instance.");
             }
+        }
+
+        [TestMethod]
+        [Description("Tests Create() and deletes when disposed if SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is true.")]
+        public void Create_Creates_Temporary_Instance_With_Random_Name_And_Deletes_If_SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_True()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+
+                    string instanceName;
+
+                    // Act
+                    using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
+                    {
+                        // Assert
+                        Assert.IsNotNull(target.Instance, "TemporarySqlLocalDbInstance.Instance is null.");
+
+                        instanceName = target.Instance.Name;
+
+                        Guid notUsed;
+                        Assert.IsTrue(Guid.TryParse(instanceName, out notUsed), "The random instance name is not a valid GUID.");
+
+                        // Check the instance was created
+                        AssertExistence(instanceName, exists: true);
+
+                        // The instance is not running if there is no pipe open
+                        Assert.IsFalse(string.IsNullOrEmpty(target.Instance.NamedPipe), "The temporary SQL LocalDB instance has not been started.");
+
+                        Assert.AreEqual(target.Instance.Name, target.Name, "TemporarySqlLocalDbInstance.Name is incorrect.");
+                        Assert.AreEqual(target.Instance.NamedPipe, target.NamedPipe, "TemporarySqlLocalDbInstance.NamedPipe is incorrect.");
+                    }
+
+                    // The instance should have been deleted
+                    AssertExistence(instanceName, exists: false);
+
+                    string path = Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
+                    Assert.IsFalse(Directory.Exists(path), "The instance folder was not deleted.");
+
+                    // Verify that the same random name isn't used again
+                    using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
+                    {
+                        Assert.AreNotEqual(instanceName, target.Instance.Name, "The same random name was used to generate a temporary instance.");
+                    }
+                });
         }
 
         [TestMethod]

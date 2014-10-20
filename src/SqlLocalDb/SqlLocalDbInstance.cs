@@ -351,7 +351,10 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                SqlLocalDbApi.DeleteInstanceInternal(instance.Name, throwIfNotFound);
+                SqlLocalDbApi.DeleteInstanceInternal(
+                    instance.Name,
+                    throwIfNotFound,
+                    SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
             }
             catch (SqlLocalDbException ex)
             {
