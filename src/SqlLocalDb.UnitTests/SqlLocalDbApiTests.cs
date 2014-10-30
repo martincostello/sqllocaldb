@@ -1202,6 +1202,56 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        [TestMethod]
+        [Description("Tests that DeleteInstanceFiles() escapes the instanceName parameter to prevent path traversal when deleting files.")]
+        public void DeleteInstanceFiles_Escapes_InstanceName()
+        {
+            // Arrange - Create a path to a directory somewhere on disk that is separate to LocalDB
+            string directoryName = Guid.NewGuid().ToString();
+            string path = Path.Combine(Path.GetTempPath(), directoryName);
+
+            // Get the drive letters associated with the SQL LocalDB instances and the temporary directory
+            string instancesFolderPathRoot = Directory.GetDirectoryRoot(SqlLocalDbApi.GetInstancesFolderPath());
+            string tempPathRoot = Directory.GetDirectoryRoot(path);
+
+            // Assert - We can't run this test if %TEMP% isn't on the same drive as %LOCALAPPDATA%.
+            if (!string.Equals(instancesFolderPathRoot, tempPathRoot))
+            {
+                Assert.Inconclusive(
+                    "The SQL LocalDB instances folder is not stored on the same drive ({0}) as the temporary directory ({1}).",
+                    tempPathRoot,
+                    instancesFolderPathRoot);
+            }
+
+            // Get the path of the temporary directory without the drive and use it to build an instance
+            // name that would cause path traversal from the SQL LocalDB instances folder to the temporary folder.
+            string pathWithoutDrive = path.Replace(tempPathRoot, string.Empty);
+
+            int pathSegments = path.Split(Path.DirectorySeparatorChar).Length;
+
+            string instanceName = Path.Combine(
+                string.Join(Path.DirectorySeparatorChar.ToString(), Enumerable.Repeat("..", pathSegments)),
+                pathWithoutDrive);
+
+            Directory.CreateDirectory(path);
+
+            try
+            {
+                // Act
+                SqlLocalDbApi.DeleteInstanceFiles(instanceName);
+
+                // Assert
+                Assert.IsTrue(Directory.Exists(path), "The external directory was deleted due to path traversal in the instance name.");
+            }
+            finally
+            {
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+            }
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>

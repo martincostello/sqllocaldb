@@ -934,7 +934,11 @@ namespace System.Data.SqlLocalDb
         {
             Debug.Assert(instanceName != null, "instanceName cannot be null.");
 
-            string instancePath = Path.Combine(GetInstancesFolderPath(), instanceName);
+            // Sanitize the instance name's path to prevent directory traversal
+            string instanceNameSafe = Path.GetFullPath(instanceName);
+            instanceNameSafe = Path.GetFileName(instanceNameSafe);
+
+            string instancePath = Path.Combine(GetInstancesFolderPath(), instanceNameSafe);
 
             try
             {
