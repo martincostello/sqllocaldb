@@ -1215,7 +1215,7 @@ namespace System.Data.SqlLocalDb
             string tempPathRoot = Directory.GetDirectoryRoot(path);
 
             // Assert - We can't run this test if %TEMP% isn't on the same drive as %LOCALAPPDATA%.
-            if (!string.Equals(instancesFolderPathRoot, tempPathRoot))
+            if (!string.Equals(instancesFolderPathRoot, tempPathRoot, StringComparison.OrdinalIgnoreCase))
             {
                 Assert.Inconclusive(
                     "The SQL LocalDB instances folder is not stored on the same drive ({0}) as the temporary directory ({1}).",
