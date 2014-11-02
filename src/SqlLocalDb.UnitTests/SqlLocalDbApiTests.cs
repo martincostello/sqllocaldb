@@ -1218,9 +1218,9 @@ namespace System.Data.SqlLocalDb
             if (!string.Equals(instancesFolderPathRoot, tempPathRoot, StringComparison.OrdinalIgnoreCase))
             {
                 Assert.Inconclusive(
-                    "The SQL LocalDB instances folder is not stored on the same drive ({0}) as the temporary directory ({1}).",
-                    tempPathRoot,
-                    instancesFolderPathRoot);
+                    "The SQL LocalDB instances folder is stored on a different drive ({0}) than the temporary directory ({1}).",
+                    instancesFolderPathRoot,
+                    tempPathRoot);
             }
 
             // Get the path of the temporary directory without the drive and use it to build an instance
