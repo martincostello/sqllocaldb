@@ -229,6 +229,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Set the property to false to ensure that the parameter is used to control deletion not the property
                     SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = false;
+                    SqlLocalDbApi.StopOptions = StopInstanceOptions.NoWait;
 
                     string instanceName;
                     bool deleteFiles = true;
@@ -270,6 +271,7 @@ namespace System.Data.SqlLocalDb
                 () =>
                 {
                     SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+                    SqlLocalDbApi.StopOptions = StopInstanceOptions.NoWait;
 
                     string instanceName;
 
