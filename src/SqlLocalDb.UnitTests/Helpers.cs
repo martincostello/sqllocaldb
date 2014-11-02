@@ -76,7 +76,7 @@ namespace System.Data.SqlLocalDb
                 info.ConfigurationFile = configurationFile;
             }
 
-            AppDomain appDomain = AppDomain.CreateDomain(
+            AppDomain domain = AppDomain.CreateDomain(
                 callerMemberName,
                 null,
                 info);
@@ -87,15 +87,22 @@ namespace System.Data.SqlLocalDb
                 {
                     foreach (var pair in appDomainData)
                     {
-                        appDomain.SetData(pair.Key, pair.Value);
+                        domain.SetData(pair.Key, pair.Value);
                     }
                 }
 
-                appDomain.DoCallBack(callBackDelegate);
+                // Create an instance of the type that configures logging in the new AppDomain
+                Type helperType = typeof(LoggingHelper);
+                var handle = domain.CreateInstanceFrom(helperType.Assembly.Location, helperType.FullName);
+
+                var helper = (LoggingHelper)handle.Unwrap();
+                helper.SetLogger(TraceSourceLogger.Instance);
+
+                domain.DoCallBack(callBackDelegate);
             }
             finally
             {
-                AppDomain.Unload(appDomain);
+                AppDomain.Unload(domain);
             }
         }
 
@@ -127,6 +134,34 @@ namespace System.Data.SqlLocalDb
                 name = identity.Name;
                 return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
             }
+        }
+
+        #endregion
+
+        #region Classes
+
+        /// <summary>
+        /// A helper class that is used to configure logging in an <see cref="AppDomain"/> used by a test. This class cannot be inherited.
+        /// </summary>
+        [Serializable]
+        private sealed class LoggingHelper : MarshalByRefObject
+        {
+            #region Methods
+
+            /// <summary>
+            /// Sets the <see cref="ILogger"/> implementation in use by the <see cref="AppDomain"/>.
+            /// </summary>
+            /// <param name="logger">The <see cref="ILogger"/> to use.</param>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage(
+                "Microsoft.Performance",
+                "CA1822:MarkMembersAsStatic",
+                Justification = "This is an instance method to allow calling it across AppDomain boundaries.")]
+            internal void SetLogger(ILogger logger)
+            {
+                Logger.SetLogger(logger);
+            }
+
+            #endregion
         }
 
         #endregion

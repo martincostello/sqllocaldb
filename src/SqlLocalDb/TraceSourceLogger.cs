@@ -17,9 +17,9 @@ using System.Threading;
 namespace System.Data.SqlLocalDb
 {
     /// <summary>
-    /// A class representing an implementation of <see cref="ILogger"/> that logs to a <see cref="TraceSource"/>.
+    /// A class representing an implementation of <see cref="ILogger"/> that logs to a <see cref="TraceSource"/>. This class cannot be inherited.
     /// </summary>
-    internal sealed class TraceSourceLogger : ILogger
+    internal sealed class TraceSourceLogger : MarshalByRefObject, ILogger
     {
         #region Constants and Fields
 
@@ -66,6 +66,7 @@ namespace System.Data.SqlLocalDb
         /// Prevents a default instance of the <see cref="TraceSourceLogger"/> class from being created.
         /// </summary>
         private TraceSourceLogger()
+            : base()
         {
         }
 
