@@ -12,6 +12,7 @@
 
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -752,13 +753,13 @@ namespace System.Data.SqlLocalDb
                 return false;
             }
 
-            if (!System.IO.File.Exists(path))
+            if (!File.Exists(path))
             {
                 Logger.Error(Logger.TraceEvent.NativeApiPathNotFound, SR.NativeMethods_NativeApiNotFoundFormat, path);
                 return false;
             }
 
-            fileName = path;
+            fileName = Path.GetFullPath(path);
             return true;
         }
 
