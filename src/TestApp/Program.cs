@@ -32,6 +32,9 @@ namespace System.Data.SqlLocalDb
             Justification = "It isn't.")]
         internal static void Main()
         {
+            SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
+            SqlLocalDbApi.StopOptions = StopInstanceOptions.NoWait;
+
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
 
             if (!localDB.IsLocalDBInstalled())
