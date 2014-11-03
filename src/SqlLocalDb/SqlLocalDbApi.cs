@@ -49,9 +49,14 @@ namespace System.Data.SqlLocalDb
         private static bool _automaticallyDeleteInstanceFiles = SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles;
 
         /// <summary>
+        /// The options to use when stopping instances of SQL LocalDB.
+        /// </summary>
+        private static StopInstanceOptions _stopOptions = SqlLocalDbConfig.StopOptions;
+
+        /// <summary>
         /// The timeout for stopping an instance of LocalDB.
         /// </summary>
-        private static TimeSpan _stopTimeout = TimeSpan.FromMinutes(1);
+        private static TimeSpan _stopTimeout = SqlLocalDbConfig.StopTimeout;
 
         #endregion
 
@@ -110,8 +115,8 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         public static StopInstanceOptions StopOptions
         {
-            get;
-            set;
+            get { return _stopOptions; }
+            set { _stopOptions = value; }
         }
 
         /// <summary>

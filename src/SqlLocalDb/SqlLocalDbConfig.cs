@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Configuration;
+using System.Data.SqlLocalDb.Configuration;
 
 namespace System.Data.SqlLocalDb
 {
@@ -19,17 +20,22 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class SqlLocalDbConfig
     {
-        #region Fields
+        #region Constants and Fields
 
         /// <summary>
-        /// Whether to automatically delete the files associated with SQL LocalDB instances when they are deleted.
+        /// The name of the legacy application configuration setting for specifying whether to automatically delete instance files.
         /// </summary>
-        private static readonly bool DeleteInstanceFiles = LoadAutomaticDeletionValueFromConfig();
+        private const string LegacyDeleteInstanceFilesSettingName = "SQLLocalDB:AutomaticallyDeleteInstanceFiles";
 
         /// <summary>
-        /// The version string of the native SQL LocalDB API to load, if any.
+        /// The name of the legacy application configuration setting for overriding the native SQL LocalDB API version to use.
         /// </summary>
-        private static readonly string OverrideVersionString = ConfigurationManager.AppSettings["SQLLocalDB:OverrideVersion"];
+        private const string LegacyOverrideVersionSettingName = "SQLLocalDB:OverrideVersion";
+
+        /// <summary>
+        /// The current <see cref="SqlLocalDbConfigurationSection"/> loaded from the application configuration file.
+        /// </summary>
+        private static readonly SqlLocalDbConfigurationSection ConfigSection = SqlLocalDbConfigurationSection.GetSection();
 
         #endregion
 
@@ -40,7 +46,8 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         internal static bool AutomaticallyDeleteInstanceFiles
         {
-            get { return DeleteInstanceFiles; }
+            // Use the value fron app.config first, then if not specified try the legacy appSettings setting value
+            get { return ConfigSection.IsAutomaticallyDeleteInstanceFilesSpecified ? ConfigSection.AutomaticallyDeleteInstanceFiles : LoadAutomaticDeletionValueFromConfig(); }
         }
 
         /// <summary>
@@ -48,7 +55,24 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         internal static string NativeApiOverrideVersionString
         {
-            get { return OverrideVersionString; }
+            // Use the value fron app.config first, then if not specified try the legacy appSettings setting value
+            get { return ConfigSection.IsNativeApiOverrideVersionSpecified ? ConfigSection.NativeApiOverrideVersion : (ConfigurationManager.AppSettings["SQLLocalDB:OverrideVersion"] ?? string.Empty); }
+        }
+
+        /// <summary>
+        /// Gets the options to use when stopping instances of SQL LocalDB.
+        /// </summary>
+        internal static StopInstanceOptions StopOptions
+        {
+            get { return ConfigSection.StopOptions; }
+        }
+
+        /// <summary>
+        /// Gets the default timeout to use when stopping instances of SQL LocalDB.
+        /// </summary>
+        internal static TimeSpan StopTimeout
+        {
+            get { return ConfigSection.StopTimeout; }
         }
 
         #endregion
@@ -56,14 +80,14 @@ namespace System.Data.SqlLocalDb
         #region Methods
 
         /// <summary>
-        /// Loads the default value of the <see cref="AutomaticallyDeleteInstanceFiles"/> property from the configuration file.
+        /// Loads the default value of the <see cref="AutomaticallyDeleteInstanceFiles"/> property from the application setting section of the configuration file.
         /// </summary>
         /// <returns>
         /// The default value to use for the <see cref="AutomaticallyDeleteInstanceFiles"/> property.
         /// </returns>
         private static bool LoadAutomaticDeletionValueFromConfig()
         {
-            string value = ConfigurationManager.AppSettings["SQLLocalDB:AutomaticallyDeleteInstanceFiles"];
+            string value = ConfigurationManager.AppSettings[LegacyDeleteInstanceFilesSettingName];
             bool automaticallyDeleteInstanceFiles;
 
             if (string.IsNullOrEmpty(value) ||

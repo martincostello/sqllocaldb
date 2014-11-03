@@ -21,8 +21,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class Program
     {
-        #region Methods
-
         /// <summary>
         /// The main entry point to the application.
         /// </summary>
@@ -32,9 +30,6 @@ namespace System.Data.SqlLocalDb
             Justification = "It isn't.")]
         internal static void Main()
         {
-            SqlLocalDbApi.AutomaticallyDeleteInstanceFiles = true;
-            SqlLocalDbApi.StopOptions = StopInstanceOptions.NoWait;
-
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
 
             if (!localDB.IsLocalDBInstalled())
@@ -144,7 +139,5 @@ namespace System.Data.SqlLocalDb
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
-
-        #endregion
     }
 }

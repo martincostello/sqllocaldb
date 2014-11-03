@@ -27,9 +27,6 @@ namespace System.Data.SqlLocalDb.EFSample
         /// </summary>
         internal static void Main()
         {
-            // Change the default stop options value to improve performance
-            SqlLocalDbApi.StopOptions = StopInstanceOptions.NoWait;
-
             // Get or create an instance of SQL Local DB to use for our blogging context
             ISqlLocalDbProvider provider = new SqlLocalDbProvider();
             ISqlLocalDbInstance instance = provider.GetOrCreateInstance("BloggingDb");
@@ -110,7 +107,7 @@ namespace System.Data.SqlLocalDb.EFSample
             finally
             {
                 // Tidy up
-                SqlLocalDbApi.DeleteInstance(instance.Name, deleteFiles: true);
+                SqlLocalDbApi.DeleteInstance(instance.Name);
             }
 
             Console.WriteLine("Press any key to exit...");

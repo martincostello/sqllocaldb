@@ -50,6 +50,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\SqlLocalDbConfigurationSection.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="SqlLocalDbConfig.cs" />
     <Compile Include="StopInstanceOptions.cs" />

@@ -23,18 +23,12 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class SqlLocalDbApiTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbApiTests"/> class.
         /// </summary>
         public SqlLocalDbApiTests()
         {
         }
-
-        #endregion
-
-        #region Methods
 
         [TestMethod]
         [Description("Tests the default value of the AutomaticallyDeleteInstanceFiles property.")]
@@ -1252,6 +1246,22 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        [TestMethod]
+        [Description("Tests that SqlLocalDbApi uses the correct default values if the configuration section is defined and the attributes are set.")]
+        public void SqlLocalDbApi_Uses_User_Values_If_Configuration_Section_Defined_And_Attributes_Specified()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Assert
+                    Assert.AreEqual(true, SqlLocalDbApi.AutomaticallyDeleteInstanceFiles, "SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, SqlLocalDbApi.StopOptions, "SqlLocalDbApi.StopOptions is incorrect.");
+                    Assert.AreEqual(TimeSpan.FromSeconds(30), SqlLocalDbApi.StopTimeout, "SqlLocalDbApi.StopTimeout is incorrect.");
+                },
+                configurationFile: "SqlLocalDbApiTests.PropertiesOverridden.config");
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>
@@ -1263,7 +1273,5 @@ namespace System.Data.SqlLocalDb
         {
             return Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
         }
-
-        #endregion
     }
 }
