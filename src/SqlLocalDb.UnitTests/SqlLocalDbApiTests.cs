@@ -1262,6 +1262,58 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.PropertiesOverridden.config");
         }
 
+        [TestMethod]
+        [Description("Tests that the DefaultInstanceName property returns the correct value.")]
+        public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value()
+        {
+            // Act
+            string result = SqlLocalDbApi.DefaultInstanceName;
+
+            // Assert
+            if (NativeMethods.NativeApiVersion.Major == 11)
+            {
+                Assert.AreEqual("v11.0", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
+            }
+            else
+            {
+                Assert.AreEqual("MSSQLLocalDB", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2012.")]
+        public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2012()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    string result = SqlLocalDbApi.DefaultInstanceName;
+
+                    // Assert
+                    Assert.AreEqual("v11.0", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
+                },
+                configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2012.config");
+        }
+
+        [TestMethod]
+        [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2014.")]
+        public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2014()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    string result = SqlLocalDbApi.DefaultInstanceName;
+
+                    // Assert
+                    Assert.AreEqual("MSSQLLocalDB", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
+                },
+                configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2014.config");
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>

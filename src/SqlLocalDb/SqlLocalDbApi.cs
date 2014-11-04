@@ -29,6 +29,16 @@ namespace System.Data.SqlLocalDb
         #region Constants and Fields
 
         /// <summary>
+        /// The name of the default instance in SQL LocalDB 2012.
+        /// </summary>
+        private const string DefaultInstanceName2012 = "v11.0";
+
+        /// <summary>
+        /// The name of the default instance in SQL LocalDB 2014 and later.
+        /// </summary>
+        private const string DefaultInstanceName2014AndLater = "MSSQLLocalDB";
+
+        /// <summary>
         /// The maximum length of an SQL LocalDB instance name, in bytes.
         /// </summary>
         private const int MaxInstanceNameLength = (NativeMethods.MAX_LOCALDB_INSTANCE_NAME_LENGTH + 1) * sizeof(char);
@@ -77,6 +87,30 @@ namespace System.Data.SqlLocalDb
         {
             get { return _automaticallyDeleteInstanceFiles; }
             set { _automaticallyDeleteInstanceFiles = value; }
+        }
+
+        /// <summary>
+        /// Gets the name of the default SQL LocalDB instance.
+        /// </summary>
+        public static string DefaultInstanceName
+        {
+            get
+            {
+                // Force the native API to be loaded so we can determine its version
+                if (!IsLocalDBInstalled())
+                {
+                    // It isn't installed, so don't assume anything
+                    return string.Empty;
+                }
+
+                if (NativeMethods.NativeApiVersion.Major == 11)
+                {
+                    return DefaultInstanceName2012;
+                }
+
+                // Provided Microsoft do not change the default name again this should work for all versions 12.0+
+                return DefaultInstanceName2014AndLater;
+            }
         }
 
         /// <summary>
@@ -323,7 +357,7 @@ namespace System.Data.SqlLocalDb
                     // As of SQL LocalDB 2014, the default instance is named 'MSSQLLocalDB'.
                     if (!info.Exists ||
                         info.IsAutomatic ||
-                        string.Equals(info.Name, "MSSQLLocalDB", StringComparison.Ordinal))
+                        string.Equals(info.Name, DefaultInstanceName2014AndLater, StringComparison.Ordinal))
                     {
                         continue;
                     }
