@@ -18,3 +18,25 @@ artifacts:
 
 skip_tags: false
 test: off
+
+deploy:
+
+  - provider: GitHub
+    release: "SQL-LocalDB-Wrapper-v$(appveyor_build_version)"
+    auth_token:
+      secure: mLFHRaYb30++8z/i4iDEkwLI3XzuAfbdbzyWVsxANtzs2aGWMWMuClfUC+QSU6YF
+    artifact: /.*\.zip/
+    draft: true
+    prerelease: false
+    on:
+      branch: master
+      appveyor_repo_tag: true
+    
+  - provider: NuGet
+    api_key:
+      secure: 7xiMOBgPvPg3LrtOPUFfhJJqcCU/fKHWG9WHVDgPnBI74dAd3lgeh1VxL7qjM5R0
+    artifact: /.*\.nupkg/
+    skip_symbols: false
+    on:
+      branch: master
+      appveyor_repo_tag: true
