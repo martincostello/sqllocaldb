@@ -16,5 +16,5 @@ artifacts:
   - path: src\BuildOutput\*.zip
   - path: src\TestResults\*\*.coverage
 
-skip_tags: true
+skip_tags: false
 test: off
