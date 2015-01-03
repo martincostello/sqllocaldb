@@ -8,23 +8,21 @@ It is designed to support use of dependency injection by consumers by implementi
 
 The recommended way of obtaining the assembly is using [NuGet](https://www.nuget.org/packages/System.Data.SqlLocalDb).
 
-Alternatively, a ZIP file containing the assembly can be downloaded from [CodePlex](https://sqllocaldb.codeplex.com/releases).
+Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub](https://github.com/martincostello/sqllocaldb/releases).
 
 # Examples
 
-An example of using the API can be found [here](https://sqllocaldb.codeplex.com/SourceControl/latest#src/TestApp/Program.cs) in the TestApp project in the source code.
+An example of using the API can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/TestApp/Program.cs) in the TestApp project in the source code.
 
-An example of using the API with EntityFramework can be found [here](http://sqllocaldb.codeplex.com/SourceControl/latest#src/SqlLocalDb.EFSample/Program.cs) in the source code.
+An example of using the API with EntityFramework can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/SqlLocalDb.EFSample/Program.cs) in the source code.
 
 # Feedback
 
-Any feedback or issues can be added to the [CodePlex](https://sqllocaldb.codeplex.com/) project.
+Any feedback or issues can be added to the [GitHub](https://github.com/martincostello/sqllocaldb/issues) project.
 
-# Repositories
+# Repository
 
-The primary repository is located on [CodePlex](https://sqllocaldb.codeplex.com/): https://git01.codeplex.com/sqllocaldb
-
-A mirror of the repository is located on [GitHub](https://github.com/martincostello/sqllocaldb): https://github.com/martincostello/sqllocaldb.git
+The repository is located on [GitHub](https://github.com/martincostello/sqllocaldb): https://github.com/martincostello/sqllocaldb.git
 
 # Build Status
 

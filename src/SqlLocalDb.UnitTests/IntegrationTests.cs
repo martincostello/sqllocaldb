@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IntegrationTests.cs" company="http://sqllocaldb.codeplex.com">
-//   Martin Costello (c) 2012-2014
+// <copyright file="IntegrationTests.cs" company="https://github.com/martincostello/sqllocaldb">
+//   Martin Costello (c) 2012-2015
 // </copyright>
 // <license>
 //   See license.txt in the project root for license information.
