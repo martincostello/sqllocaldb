@@ -1,5 +1,9 @@
 # SQL LocalDB Wrapper
 
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb)
+
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
+
 SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.
 
 It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other database providers defined under the System.Data namespaces.
@@ -23,9 +27,3 @@ Any feedback or issues can be added to the [GitHub](https://github.com/martincos
 # Repository
 
 The repository is located on [GitHub](https://github.com/martincostello/sqllocaldb): https://github.com/martincostello/sqllocaldb.git
-
-# Build Status
-
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb)
-
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
