@@ -8,7 +8,7 @@ It is designed to support use of dependency injection by consumers by implementi
 
 The recommended way of obtaining the assembly is using [NuGet](https://www.nuget.org/packages/System.Data.SqlLocalDb).
 
-Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub](https://github.com/martincostello/sqllocaldb/releases).
+Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub](https://github.com/martincostello/sqllocaldb/releases/latest).
 
 # Examples
 
