@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("http://sqllocaldb.codeplex.com/")]
-[assembly: AssemblyCopyright("Copyright © Martin Costello 2012-2014")]
+[assembly: AssemblyCopyright("Copyright © Martin Costello 2012-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

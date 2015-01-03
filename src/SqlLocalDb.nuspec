@@ -14,7 +14,7 @@
     <description>The SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</description>
     <summary>The SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</summary>
     <language>en-US</language>
-    <copyright>Copyright © Martin Costello 2012-2014</copyright>
+    <copyright>Copyright © Martin Costello 2012-2015</copyright>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Data" />
     </frameworkAssemblies>
