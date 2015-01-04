@@ -8,7 +8,7 @@ SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft
 
 It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other data access providers defined under the System.Data namespaces.
 
-The assembly supports SQL Server LocalDB 2012 and 2014 for x86 and x64.
+The assembly supports using SQL Server LocalDB 2012 and 2014 for both the x86 and x64 platforms.
 
 # Downloads
 
@@ -33,3 +33,17 @@ The repository is hosted in [GitHub](https://github.com/martincostello/sqllocald
 # License
 
 This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
+
+# Building and Testing
+
+Building and testing the project is supported using Microsoft Visual Studio 2013.
+
+The simplest way to build and test the assembly from the source code is by using the [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/src/Build.cmd) batch file in the root of the ```src``` folder of the repository like so: ```Build.cmd```. The project can also be built and tested from Visual Studio.
+
+Building the project from the command-line using [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/src/Build.cmd) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```) for both the x86 and x64 platforms.
+
+The standard build process also includes running [StyleCop](https://stylecop.codeplex.com/) and FxCop.
+
+To only compile the source code and not run the tests, use the following command: ```Build.cmd /p:RunTests=false```
+
+__Note__: To run all the tests, you must run either ```Build.cmd``` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be marked as Inconclusive by MSTest.
