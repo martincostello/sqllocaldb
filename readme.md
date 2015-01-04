@@ -4,9 +4,11 @@
 
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
 
-SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.
+SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft SQL Server LocalDB](http://msdn.microsoft.com/en-us/library/hh510202.aspx) native API from managed code using .NET APIs.
 
-It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other database providers defined under the System.Data namespaces.
+It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other data access providers defined under the System.Data namespaces.
+
+The assembly supports SQL Server LocalDB 2012 and 2014 for x86 and x64.
 
 # Downloads
 
@@ -18,12 +20,16 @@ Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub
 
 An example of using the API can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/TestApp/Program.cs) in the TestApp project in the source code.
 
-An example of using the API with EntityFramework can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/SqlLocalDb.EFSample/Program.cs) in the source code.
+An example of using the API with [EntityFramework](http://entityframework.codeplex.com/) can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/SqlLocalDb.EFSample/Program.cs) in the source code.
 
 # Feedback
 
-Any feedback or issues can be added to the [GitHub](https://github.com/martincostello/sqllocaldb/issues) project.
+Any feedback or issues can be added to the issues for this project in [GitHub](https://github.com/martincostello/sqllocaldb/issues).
 
 # Repository
 
-The repository is located on [GitHub](https://github.com/martincostello/sqllocaldb): https://github.com/martincostello/sqllocaldb.git
+The repository is hosted in [GitHub](https://github.com/martincostello/sqllocaldb): https://github.com/martincostello/sqllocaldb.git
+
+# License
+
+This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt) license.
