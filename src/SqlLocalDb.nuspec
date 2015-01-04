@@ -8,7 +8,7 @@
     <owners>Martin Costello</owners>
     <tags>SQL LocalDB ADO.NET Data</tags>
     <projectUrl>https://github.com/martincostello/sqllocaldb</projectUrl>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
     <releaseNotes>See https://github.com/martincostello/sqllocaldb/releases for details.</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</description>
