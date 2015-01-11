@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="TemporarySqlLocalDbInstanceTests.cs" />
     <Compile Include="TestCategories.cs" />
+    <Compile Include="EmptyLogger.cs" />
     <Compile Include="TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +108,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Configuration\SqlLocalDbConfigurationSectionTests.DefinedButNotSpecified.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="LoggerTests.CustomLoggerType.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">

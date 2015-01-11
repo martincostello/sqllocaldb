@@ -51,6 +51,14 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets the type of the <see cref="ILogger"/> implementation to use, if any.
+        /// </summary>
+        internal static Type LoggerType
+        {
+            get { return ConfigSection.LoggerType; }
+        }
+
+        /// <summary>
         /// Gets the version string of the native SQL LocalDB API to load, if any.
         /// </summary>
         internal static string NativeApiOverrideVersionString

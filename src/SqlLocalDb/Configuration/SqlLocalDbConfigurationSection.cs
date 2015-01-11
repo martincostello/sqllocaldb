@@ -10,6 +10,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel;
 using System.Configuration;
 
 namespace System.Data.SqlLocalDb.Configuration
@@ -29,6 +30,11 @@ namespace System.Data.SqlLocalDb.Configuration
         /// The name of the <see cref="AutomaticallyDeleteInstanceFiles"/> configuration attribute.
         /// </summary>
         private const string AutomaticallyDeleteInstanceFilesAttributeName = "automaticallyDeleteInstanceFiles";
+
+        /// <summary>
+        /// The name of the <see cref="LoggerType"/> configuration attribute.
+        /// </summary>
+        private const string LoggerTypeAttributeName = "loggerType";
 
         /// <summary>
         /// The name of the <see cref="NativeApiOverrideVersion"/> configuration attribute.
@@ -62,6 +68,18 @@ namespace System.Data.SqlLocalDb.Configuration
         {
             get { return (bool)base[AutomaticallyDeleteInstanceFilesAttributeName]; }
             set { base[AutomaticallyDeleteInstanceFilesAttributeName] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the type of the <see cref="ILogger"/> implementation to use, if any.
+        /// </summary>
+        [ConfigurationProperty(LoggerTypeAttributeName, IsRequired = false, DefaultValue = null)]
+        [SubclassTypeValidator(typeof(ILogger))]
+        [TypeConverter(typeof(TypeNameConverter))]
+        public Type LoggerType
+        {
+            get { return base[LoggerTypeAttributeName] as Type; }
+            set { base[LoggerTypeAttributeName] = value; }
         }
 
         /// <summary>

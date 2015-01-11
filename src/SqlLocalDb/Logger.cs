@@ -35,9 +35,14 @@ namespace System.Data.SqlLocalDb
         #region Fields
 
         /// <summary>
-        /// The trace source for <c>System.Data.SqlLocalDb</c>.
+        /// The default <see cref="ILogger"/> to use. This field is read-only.
         /// </summary>
-        private static ILogger _logger = TraceSourceLogger.Instance;
+        private static readonly ILogger DefaultLogger = CreateDefaultLogger();
+
+        /// <summary>
+        /// The <see cref="ILogger"/> to use.
+        /// </summary>
+        private static ILogger _logger = DefaultLogger;
 
         #endregion
 
@@ -50,7 +55,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void SetLogger(ILogger logger)
         {
-            _logger = logger ?? TraceSourceLogger.Instance;
+            _logger = logger ?? DefaultLogger;
         }
 
         /// <summary>
@@ -119,6 +124,31 @@ namespace System.Data.SqlLocalDb
         public static void Warning(int id, string format, params object[] args)
         {
             _logger.WriteWarning(id, format, args);
+        }
+
+        /// <summary>
+        /// Creates the default <see cref="ILogger"/> implementation to use.
+        /// </summary>
+        /// <returns>
+        /// The default implementation of <see cref="ILogger"/>.
+        /// </returns>
+        private static ILogger CreateDefaultLogger()
+        {
+            Type loggerType = SqlLocalDbConfig.LoggerType;
+
+            ILogger logger;
+
+            if (loggerType == null)
+            {
+                logger = TraceSourceLogger.Instance;
+            }
+            else
+            {
+                // This cast is safe as the configuration section validates that the type implements ILogger
+                logger = (ILogger)Activator.CreateInstance(loggerType, nonPublic: true);
+            }
+
+            return logger;
         }
 
         #endregion

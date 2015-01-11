@@ -44,6 +44,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(false, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(false, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(false, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.IsNull(result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(string.Empty, result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromMinutes(1), result.StopTimeout, "SqlLocalDbConfigurationSection.StopTimeout is incorrect.");
@@ -67,6 +68,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(false, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(false, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(false, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.IsNull(result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(string.Empty, result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromMinutes(1), result.StopTimeout, "SqlLocalDbConfigurationSection.StopTimeout is incorrect.");
@@ -90,6 +92,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(true, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(true, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(true, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.AreEqual(typeof(EmptyLogger), result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual("11.0", result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromSeconds(30), result.StopTimeout, "SqlLocalDbConfigurationSection.StopTimeout is incorrect.");
@@ -106,6 +109,7 @@ namespace System.Data.SqlLocalDb.Configuration
                 () =>
                 {
                     bool automaticallyDeleteInstanceFiles = true;
+                    Type loggerType = typeof(EmptyLogger);
                     string nativeApiOverrideVersion = "11.0";
                     StopInstanceOptions stopOptions = StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait;
                     TimeSpan stopTimeout = TimeSpan.FromSeconds(30);
@@ -114,12 +118,14 @@ namespace System.Data.SqlLocalDb.Configuration
 
                     // Act
                     target.AutomaticallyDeleteInstanceFiles = automaticallyDeleteInstanceFiles;
+                    target.LoggerType = loggerType;
                     target.NativeApiOverrideVersion = nativeApiOverrideVersion;
                     target.StopOptions = stopOptions;
                     target.StopTimeout = stopTimeout;
 
                     // Assert
                     Assert.AreEqual(automaticallyDeleteInstanceFiles, target.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(loggerType, target.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(nativeApiOverrideVersion, target.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(stopOptions, target.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
                     Assert.AreEqual(stopTimeout, target.StopTimeout, "SqlLocalDbConfigurationSection.StopTimeout is incorrect.");
@@ -142,6 +148,25 @@ namespace System.Data.SqlLocalDb.Configuration
                     // Act and Assert
                     throw ErrorAssert.Throws<ConfigurationErrorsException>(
                         () => target.StopTimeout = value);
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests that the LoggerType property of an instance of SqlLocalDbConfigurationSection must implement ILogger.")]
+        [ExpectedException(typeof(ConfigurationErrorsException))]
+        public void SqlLocalDbConfigurationSection_LoggerType_Must_Implement_ILogger()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    Type value = typeof(object);
+
+                    SqlLocalDbConfigurationSection target = new SqlLocalDbConfigurationSection();
+
+                    // Act and Assert
+                    throw ErrorAssert.Throws<ConfigurationErrorsException>(
+                        () => target.LoggerType = value);
                 });
         }
     }

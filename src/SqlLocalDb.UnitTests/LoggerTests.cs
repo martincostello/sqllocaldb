@@ -21,18 +21,12 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class LoggerTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerTests"/> class.
         /// </summary>
         public LoggerTests()
         {
         }
-
-        #endregion
-
-        #region Methods
 
         [TestMethod]
         [Description("Tests SetLogger() sets the logging implementation in use and setting it to null resets the logging implementation.")]
@@ -80,6 +74,81 @@ namespace System.Data.SqlLocalDb
                 });
         }
 
-        #endregion
+        [TestMethod]
+        [Description("Tests that the Logger class uses the custom ILogger implementation configured in the application configuration file.")]
+        public void SetLogger_Uses_Custom_ILogger_Implementation_From_Configuration_File()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    int id = 42;
+                    string format = "The machine name is {0}.";
+                    object[] args = new object[] { Environment.MachineName };
+
+                    Logger.SetLogger(null); // Clear the special logger the cross-AppDomain logging for the tests sets up
+
+                    // Act
+                    Logger.Error(id, format, args);
+                    Logger.Information(id, format, args);
+                    Logger.Verbose(id, format, args);
+                    Logger.Warning(id, format, args);
+
+                    // Assert
+                    Assert.AreEqual(4, TestLogger.InvocationCount, "The custom logger was not used.");
+                },
+                configurationFile: "LoggerTests.CustomLoggerType.config");
+        }
+
+        /// <summary>
+        /// A class for testing changing the default <see cref="ILogger"/> implementation. This class cannot be inherited.
+        /// </summary>
+        private sealed class TestLogger : ILogger
+        {
+            /// <summary>
+            /// The number of times any logger has been invoked.
+            /// </summary>
+            private static int _invocationCount;
+
+            /// <summary>
+            /// Prevents a default instance of the <see cref="TestLogger"/> class from being created.
+            /// </summary>
+            private TestLogger()
+            {
+                // Private constructor and class used to test that non-public loggers can be used
+            }
+
+            /// <summary>
+            /// Gets the number of times any logger has been invoked.
+            /// </summary>
+            internal static int InvocationCount
+            {
+                get { return _invocationCount; }
+            }
+
+            /// <inheritdoc />
+            public void WriteError(int id, string format, params object[] args)
+            {
+                _invocationCount++;
+            }
+
+            /// <inheritdoc />
+            public void WriteInformation(int id, string format, params object[] args)
+            {
+                _invocationCount++;
+            }
+
+            /// <inheritdoc />
+            public void WriteVerbose(int id, string format, params object[] args)
+            {
+                _invocationCount++;
+            }
+
+            /// <inheritdoc />
+            public void WriteWarning(int id, string format, params object[] args)
+            {
+                _invocationCount++;
+            }
+        }
     }
 }
