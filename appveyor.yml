@@ -29,7 +29,6 @@ deploy:
     draft: true
     prerelease: false
     on:
-      branch: master
       appveyor_repo_tag: true
     
   - provider: NuGet
@@ -38,5 +37,4 @@ deploy:
     artifact: /.*\.nupkg/
     skip_symbols: false
     on:
-      branch: master
       appveyor_repo_tag: true
