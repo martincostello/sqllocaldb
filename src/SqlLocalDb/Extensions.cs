@@ -300,6 +300,21 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets the default SQL Local DB instance.
+        /// </summary>
+        /// <param name="value">The <see cref="ISqlLocalDbProvider"/> to use to get the default instance.</param>
+        /// <returns>
+        /// The default SQL Local DB instance.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        public static ISqlLocalDbInstance GetDefaultInstance(this ISqlLocalDbProvider value)
+        {
+            return value.GetOrCreateInstance(SqlLocalDbApi.DefaultInstanceName);
+        }
+
+        /// <summary>
         /// Gets the Initial Catalog name from the specified <see cref="DbConnectionStringBuilder"/>, if present.
         /// </summary>
         /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to extract the Initial Catalog name from.</param>

@@ -1051,6 +1051,21 @@ namespace System.Data.SqlLocalDb
             mock.Verify((p) => p.Start(), Times.Once());
         }
 
+        [TestMethod]
+        [Description("Tests GetDefaultInstance() returns default instance.")]
+        public void GetDefaultInstance_Returns_Default_Instance()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = new SqlLocalDbProvider();
+
+            // Act
+            ISqlLocalDbInstance result = value.GetDefaultInstance();
+
+            // Assert
+            Assert.IsNotNull(result, "GetDefaultInstance() returned null.");
+            Assert.AreEqual(SqlLocalDbApi.DefaultInstanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
+        }
+
         #endregion
     }
 }
