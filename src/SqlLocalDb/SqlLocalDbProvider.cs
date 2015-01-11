@@ -143,7 +143,18 @@ namespace System.Data.SqlLocalDb
                 throw new InvalidOperationException(message);
             }
 
-            string version = _version ?? _localDB.LatestVersion;
+            string version;
+
+            // If creating the default instance, the version number must not be specified
+            if (SqlLocalDbApi.IsDefaultInstanceName(instanceName))
+            {
+                version = string.Empty;
+            }
+            else
+            {
+                version = _version ?? _localDB.LatestVersion;
+            }
+
             _localDB.CreateInstance(instanceName, version);
 
             return GetInstance(instanceName);

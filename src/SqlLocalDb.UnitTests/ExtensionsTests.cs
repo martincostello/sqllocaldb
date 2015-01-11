@@ -819,6 +819,38 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2012 default instance name.")]
+        public void GetOrCreateInstance_For_2012_Default_Instance_Name()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = new SqlLocalDbProvider();
+            string instanceName = "v11.0";
+
+            // Act
+            ISqlLocalDbInstance result = value.GetOrCreateInstance(instanceName);
+
+            // Assert
+            Assert.IsNotNull(result, "GetOrCreateInstance() returned null.");
+            Assert.AreEqual(instanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
+        }
+
+        [TestMethod]
+        [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2014 default instance name.")]
+        public void GetOrCreateInstance_For_2014_Default_Instance_Name()
+        {
+            // Arrange
+            ISqlLocalDbProvider value = new SqlLocalDbProvider();
+            string instanceName = "MSSQLLocalDB";
+
+            // Act
+            ISqlLocalDbInstance result = value.GetOrCreateInstance(instanceName);
+
+            // Assert
+            Assert.IsNotNull(result, "GetOrCreateInstance() returned null.");
+            Assert.AreEqual(instanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
+        }
+
+        [TestMethod]
         [Description("Tests SetInitialCatalogName() if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SetInitialCatalogName_Throws_If_Value_Is_Null()
@@ -1008,14 +1040,15 @@ namespace System.Data.SqlLocalDb
         public void Restart_Restarts_Instance()
         {
             // Arrange
-            ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            ISqlLocalDbInstance instance = mock.Object;
 
             // Act
             instance.Restart();
 
             // Assert
-            Mock.Get(instance).Verify((p) => p.Stop(), Times.Once());
-            Mock.Get(instance).Verify((p) => p.Start(), Times.Once());
+            mock.Verify((p) => p.Stop(), Times.Once());
+            mock.Verify((p) => p.Start(), Times.Once());
         }
 
         #endregion

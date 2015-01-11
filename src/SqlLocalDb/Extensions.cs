@@ -356,15 +356,26 @@ namespace System.Data.SqlLocalDb
             }
 
             bool instanceExists = false;
-            IList<ISqlLocalDbInstanceInfo> instances = value.GetInstances();
 
-            if (instances != null)
+            if (SqlLocalDbApi.IsDefaultInstanceName(instanceName))
             {
-                // Instance names in SQL Local DB are case-insensitive
-                instanceExists = instances
-                    .Where((p) => p != null)
-                    .Where((p) => string.Equals(p.Name, instanceName, StringComparison.OrdinalIgnoreCase))
-                    .Any();
+                // The default instance is always listed, even if it does not exist,
+                // so need to query that separately to verify whether to get or create.
+                instanceExists = SqlLocalDbApi.GetInstanceInfo(instanceName).Exists;
+            }
+            else
+            {
+                // This approach is used otherwise for testability
+                IList<ISqlLocalDbInstanceInfo> instances = value.GetInstances();
+
+                if (instances != null)
+                {
+                    // Instance names in SQL Local DB are case-insensitive
+                    instanceExists = instances
+                        .Where((p) => p != null)
+                        .Where((p) => string.Equals(p.Name, instanceName, StringComparison.OrdinalIgnoreCase))
+                        .Any();
+                }
             }
 
             if (instanceExists)

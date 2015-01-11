@@ -1028,6 +1028,21 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Returns whether the specified SQL LocalDB instance name is one of the default instance names.
+        /// </summary>
+        /// <param name="instanceName">The instance name to test.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="instanceName"/> is one of the default SQL LocalDB
+        /// instance names; otherwise <see langword="false"/>.
+        /// </returns>
+        internal static bool IsDefaultInstanceName(string instanceName)
+        {
+            return
+                string.Equals(instanceName, DefaultInstanceName2014AndLater, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(instanceName, DefaultInstanceName2012, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Combines the specified strings into a full file system path.
         /// </summary>
         /// <param name="paths">An array containing at least two paths to combine.</param>
