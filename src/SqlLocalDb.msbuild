@@ -17,6 +17,7 @@
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
     <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
+    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == '' and '$(CI)' != '' and '$(APPVEYOR_REPO_TAG)' == 'false'">-beta$(APPVEYOR_BUILD_NUMBER)</NuGetPrerelease>
     <NuGetPrerelease Condition="'$(NuGetPrerelease)' == ''"></NuGetPrerelease>
     <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion)</NuGetVersion>
     <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion.Substring(0, $(NuGetVersion.LastIndexOf(`.`))))</NuGetVersion>
