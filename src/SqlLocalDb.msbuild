@@ -48,12 +48,16 @@
     <CallTarget Targets="CreateNuGetPackage" Condition="'$(CreatePackage)' == 'true'" />
   </Target>
   <Target Name="Test">
+    <IsCurrentUserAdmin>
+      <Output PropertyName="_IsCurrentUserAdmin" TaskParameter="IsAdmin" />
+    </IsCurrentUserAdmin>
     <PropertyGroup>
       <TestToolDir Condition="'$(APPVEYOR)' == ''">$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow\</TestToolDir>
       <TestToolDir Condition="'$(APPVEYOR)' != ''"></TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
+      <TestOptions Condition="!$(_IsCurrentUserAdmin)">$(TestOptions) /TestCaseFilter:TestCategory!="Requires Administrative Permissions"</TestOptions>
       <TestOptions Condition="'$(APPVEYOR)' != ''">$(TestOptions) /logger:Appveyor</TestOptions>
     </PropertyGroup>
     <ItemGroup>
@@ -63,6 +67,25 @@
     </ItemGroup>
     <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
   </Target>
+  <UsingTask TaskName="IsCurrentUserAdmin"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll" >
+    <ParameterGroup>
+      <IsAdmin ParameterType="System.Boolean" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Security.Principal"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+        {
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            IsAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+      ]]>
+      </Code>
+    </Task>
+  </UsingTask>
   <UsingTask TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Target Name="CreateZipFile">
     <ItemGroup>
