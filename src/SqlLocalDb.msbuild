@@ -168,7 +168,9 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Error Condition="'$(CoverityProjectToken)' == ''" Text="The CoverityProjectToken property is not defined." />
     <Error Condition="!Exists('$(CurlToolPath)')" Text="The upload tool cannot be found." />
     <Error Condition="!Exists('$(CoverityZipFile)')" Text="The Coverity ZIP file cannot be found." />
-    <Exec Command="$(CoverityUploadCommand)" />
+    <Message Text="Uploading '$(CoverityZipFile)' to Coverity for static analysis..." Importance="high" />
+    <Exec Command="$(CoverityUploadCommand)" StandardErrorImportance="low" StandardOutputImportance="low" />
+    <Message Text="Uploaded '$(CoverityZipFile)' to Coverity for static analysis." Importance="high" />
   </Target>
   <Target Name="RestorePackages">
     <PropertyGroup>
