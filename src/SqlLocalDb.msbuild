@@ -17,10 +17,10 @@
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
     <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
-    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == '' and '$(CI)' != '' and '$(APPVEYOR_REPO_TAG)' == 'false'">-beta$(APPVEYOR_BUILD_NUMBER)</NuGetPrerelease>
+    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == '' and '$(CI)' != '' and '$(APPVEYOR_REPO_TAG)' == 'false'">beta$(APPVEYOR_BUILD_NUMBER)</NuGetPrerelease>
     <NuGetPrerelease Condition="'$(NuGetPrerelease)' == ''"></NuGetPrerelease>
-    <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion)</NuGetVersion>
-    <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion.Substring(0, $(NuGetVersion.LastIndexOf(`.`))))</NuGetVersion>
+    <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion.Substring(0, $(AssemblyVersion.LastIndexOf(`.`))))</NuGetVersion>
+    <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion)-$(NuGetPrerelease)</NuGetVersion>
     <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
     <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
   </PropertyGroup>
@@ -104,7 +104,7 @@
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
-    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion)$(NuGetPrerelease) -OutputDirectory $(OutDir) -Symbols" StandardOutputImportance="high" />
+    <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion) -OutputDirectory $(OutDir) -Symbols" StandardOutputImportance="high" />
   </Target>
   <Target Name="CleanArchiveFiles" AfterTargets="Clean">
     <CreateItem Include="$(OutDir)\*.nupkg">
