@@ -522,7 +522,7 @@ namespace System.Data.SqlLocalDb
             if (shouldFilesExist)
             {
                 Assert.IsTrue(Directory.Exists(path), "The instance folder was deleted.");
-                Assert.AreNotEqual(0, Directory.GetFiles(path), "The instance file(s) were deleted.");
+                Assert.AreNotEqual(0, Directory.GetFiles(path).Length, "The instance file(s) were deleted.");
             }
             else
             {

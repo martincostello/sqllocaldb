@@ -339,7 +339,7 @@ namespace System.Data.SqlLocalDb
 
             string path = Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
             Assert.IsTrue(Directory.Exists(path), "The instance folder was deleted.");
-            Assert.AreNotEqual(0, Directory.GetFiles(path), "The instance files were deleted.");
+            Assert.AreNotEqual(0, Directory.GetFiles(path).Length, "The instance files were deleted.");
         }
 
         [TestMethod]
