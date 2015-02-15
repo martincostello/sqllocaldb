@@ -17,6 +17,7 @@ TestResults
 *.opensdf
 *.sdf
 *.sln.cache
+*.sln.ide
 *.suo
 *.user
 /src/Tools/NuGet/NuGet.exe.old
