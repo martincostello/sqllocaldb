@@ -23,8 +23,6 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class TemporarySqlLocalDbInstanceTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstanceTests"/> class.
         /// </summary>
@@ -32,14 +30,10 @@ namespace System.Data.SqlLocalDb
         {
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [Description("Tests .ctor() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_Throws_If_InstanceName_Is_Null()
+        public void TemporarySqlLocalDbInstance_Constructor_Throws_If_InstanceName_Is_Null()
         {
             // Arrange
             string instanceName = null;
@@ -59,7 +53,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests .ctor() if provider is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_Throws_If_Provider_Is_Null()
+        public void TemporarySqlLocalDbInstance_Constructor_Throws_If_Provider_Is_Null()
         {
             // Arrange
             string instanceName = Guid.NewGuid().ToString();
@@ -78,7 +72,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests .ctor(string).")]
-        public void Constructor_Creates_Temporary_Instance()
+        public void TemporarySqlLocalDbInstance_Constructor_Creates_Temporary_Instance()
         {
             // Arrange
             string instanceName = "MyTempInstance" + Guid.NewGuid().ToString();
@@ -107,7 +101,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests .ctor(string, ISqlLocalDbProvider).")]
-        public void Constructor_Creates_Temporary_Instance_With_Specified_Provider()
+        public void TemporarySqlLocalDbInstance_Constructor_Creates_Temporary_Instance_With_Specified_Provider()
         {
             // Arrange
             var mock = new Mock<SqlLocalDbProvider>()
@@ -144,7 +138,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests .ctor(string, ISqlLocalDbProvider, bool).")]
-        public void Constructor_Creates_Temporary_Instance_With_Specified_Provider_And_Does_Not_Delete_Instance_Files()
+        public void TemporarySqlLocalDbInstance_Constructor_Creates_Temporary_Instance_With_Specified_Provider_And_Does_Not_Delete_Instance_Files()
         {
             // Arrange
             var mock = new Mock<SqlLocalDbProvider>()
@@ -182,7 +176,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Create().")]
-        public void Create_Creates_Temporary_Instance_With_Random_Name()
+        public void TemporarySqlLocalDbInstance_Create_Creates_Temporary_Instance_With_Random_Name()
         {
             string instanceName;
 
@@ -221,7 +215,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Create(bool) deletes the instance files if deleteFiles is true.")]
-        public void Create_With_DeleteFiles_Parameter_Creates_Temporary_Instance_With_Random_Name_And_Deletes_Files_When_Disposed()
+        public void TemporarySqlLocalDbInstance_Create_With_DeleteFiles_Parameter_Creates_Temporary_Instance_With_Random_Name_And_Deletes_Files_When_Disposed()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -264,7 +258,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Create() and deletes when disposed if SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is true.")]
-        public void Create_Creates_Temporary_Instance_With_Random_Name_And_Deletes_If_SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_True()
+        public void TemporarySqlLocalDbInstance_Create_Creates_Temporary_Instance_With_Random_Name_And_Deletes_If_SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_True()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -311,7 +305,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateConnection().")]
-        public void CreateConnection_Creates_Connection()
+        public void TemporarySqlLocalDbInstance_CreateConnection_Creates_Connection()
         {
             // Arrange
             using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
@@ -327,7 +321,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateConnectionStringBuilder().")]
-        public void CreateConnectionStringBuilder_Creates_SqlConnectionStringBuilder()
+        public void TemporarySqlLocalDbInstance_CreateConnectionStringBuilder_Creates_SqlConnectionStringBuilder()
         {
             // Arrange
             using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
@@ -342,7 +336,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstanceInfo().")]
-        public void GetInstanceInfo_Returns_ISqlLocalDbInstanceInfo()
+        public void TemporarySqlLocalDbInstance_GetInstanceInfo_Returns_ISqlLocalDbInstanceInfo()
         {
             // Arrange
             using (TemporarySqlLocalDbInstance target = TemporarySqlLocalDbInstance.Create())
@@ -357,7 +351,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Share().")]
-        public void Share_Invokes_Wrapped_Instance()
+        public void TemporarySqlLocalDbInstance_Share_Invokes_Wrapped_Instance()
         {
             // Arrange
             ISqlLocalDbInstance instance = CreateMockInstance();
@@ -376,7 +370,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Start().")]
-        public void Start_Invokes_Wrapped_Instance()
+        public void TemporarySqlLocalDbInstance_Start_Invokes_Wrapped_Instance()
         {
             // Arrange
             ISqlLocalDbInstance instance = CreateMockInstance();
@@ -393,7 +387,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Stop().")]
-        public void Stop_Invokes_Wrapped_Instance()
+        public void TemporarySqlLocalDbInstance_Stop_Invokes_Wrapped_Instance()
         {
             // Arrange
             ISqlLocalDbInstance instance = CreateMockInstance();
@@ -415,7 +409,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method being tested.")]
-        public void Unshare_Invokes_Wrapped_Instance()
+        public void TemporarySqlLocalDbInstance_Unshare_Invokes_Wrapped_Instance()
         {
             // Arrange
             ISqlLocalDbInstance instance = CreateMockInstance();
@@ -433,7 +427,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateConnection() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void CreateConnection_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_CreateConnection_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.CreateConnection());
@@ -442,7 +436,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateConnection() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void CreateConnectionStringBuilder_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_CreateConnectionStringBuilder_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.CreateConnectionStringBuilder());
@@ -451,7 +445,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetInstanceInfo() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void GetInstanceInfo_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_GetInstanceInfo_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.GetInstanceInfo());
@@ -460,7 +454,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Share() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void Share_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_Share_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.Share(string.Empty));
@@ -469,7 +463,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Start() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void Start_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_Start_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.Start());
@@ -478,7 +472,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Stop() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void Stop_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_Stop_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.Stop());
@@ -492,7 +486,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method being tested.")]
-        public void Unshare_Throws_If_Instance_Disposed()
+        public void TemporarySqlLocalDbInstance_Unshare_Throws_If_Instance_Disposed()
         {
             // Act and Assert
             AssertThrowsObjectDisposedException((p) => p.Unshare());
@@ -568,7 +562,5 @@ namespace System.Data.SqlLocalDb
 
             return mock.Object;
         }
-
-        #endregion
     }
 }

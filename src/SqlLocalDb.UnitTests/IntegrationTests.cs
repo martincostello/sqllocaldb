@@ -24,8 +24,6 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class IntegrationTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegrationTests"/> class.
         /// </summary>
@@ -33,14 +31,10 @@ namespace System.Data.SqlLocalDb
         {
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
-        public void End_To_End()
+        public void System_Data_SqlLocalDb_Assembly_Can_Be_Used_End_To_End_To_Create_And_Manage_Instances()
         {
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
 
@@ -257,7 +251,5 @@ namespace System.Data.SqlLocalDb
                 connection.Close();
             }
         }
-
-        #endregion
     }
 }

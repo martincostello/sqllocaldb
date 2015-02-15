@@ -32,7 +32,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the default value of the AutomaticallyDeleteInstanceFiles property.")]
-        public void AutomaticallyDeleteInstanceFiles_Is_False_By_Default()
+        public void SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_False_By_Default()
         {
             // Act
             bool value = SqlLocalDbApi.AutomaticallyDeleteInstanceFiles;
@@ -43,7 +43,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the default value of the AutomaticallyDeleteInstanceFiles property if overridden in the configuration file.")]
-        public void AutomaticallyDeleteInstanceFiles_Can_Be_Overridden_From_Configuration_File()
+        public void SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Can_Be_Overridden_From_Configuration_File()
         {
             // Act
             Helpers.InvokeInNewAppDomain(
@@ -59,7 +59,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests that the AutomaticallyDeleteInstanceFiles property can be set.")]
-        public void AutomaticallyDeleteInstanceFiles_Can_Be_Set()
+        public void SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Can_Be_Set()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -77,41 +77,51 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateInstance(string) if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_CreateInstance_Throws_If_InstanceName_Is_Null()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
 
+            string instanceName = null;
+
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.CreateInstance(null),
+                () => SqlLocalDbApi.CreateInstance(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests CreateInstance(string, string) if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateInstance_OverloadThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_CreateInstance_With_Version_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+            string version = string.Empty;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.CreateInstance(null, string.Empty),
+                () => SqlLocalDbApi.CreateInstance(instanceName, version),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests CreateInstance(string, string) if version is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateInstance_ThrowsIfVersionNull()
+        public void SqlLocalDbApi_CreateInstance_Throws_If_Version_Is_Null()
         {
+            // Arrange
+            string instanceName = string.Empty;
+            string version = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.CreateInstance(string.Empty, null),
+                () => SqlLocalDbApi.CreateInstance(instanceName, version),
                 "version");
         }
 
         [TestMethod]
         [Description("Tests CreateInstance(string) if the instance does not already exist.")]
-        public void CreateInstance_InstanceDoesNotExist()
+        public void SqlLocalDbApi_CreateInstance_If_Instance_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -148,7 +158,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateInstance(string) if the instance cannot be created.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void CreateInstance_InstanceCreationFails()
+        public void SqlLocalDbApi_CreateInstance_If_Instance_Creation_Fails()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -170,18 +180,21 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests DeleteInstance() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_DeleteInstance_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.DeleteInstance(null),
+                () => SqlLocalDbApi.DeleteInstance(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests DeleteInstance() if instanceName does not exist.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void DeleteInstance_ThrowsIfInstanceNameDoesNotExist()
+        public void SqlLocalDbApi_DeleteInstance_Throws_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -201,7 +214,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteInstance(string).")]
-        public void DeleteInstance()
+        public void SqlLocalDbApi_DeleteInstance_Deletes_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -233,7 +246,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteInstance(string) deletes the instance folder if AutomaticallyDeleteInstanceFiles is true.")]
-        public void DeleteInstance_Deletes_Folder_If_AutomaticallyDeleteInstanceFiles_Is_True()
+        public void SqlLocalDbApi_DeleteInstance_Deletes_Folder_If_AutomaticallyDeleteInstanceFiles_Is_True()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -269,7 +282,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteInstance(string, bool).")]
-        public void DeleteInstance_Deletes_Instance_Folder()
+        public void SqlLocalDbApi_DeleteInstance_Deletes_Instance_Folder()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -300,7 +313,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteUserInstances() deletes only user instances and does not delete the instance folders.")]
-        public void DeleteUserInstances_Deletes_Only_User_Instances()
+        public void SqlLocalDbApi_DeleteUserInstances_Deletes_Only_User_Instances()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -346,7 +359,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteUserInstances() deletes only user instances and deletes the instance folders if AutomaticallyDeleteInstanceFiles is true.")]
-        public void DeleteUserInstances_Deletes_Only_User_Instances_If_AutomaticallyDeleteInstanceFiles_Is_True()
+        public void SqlLocalDbApi_DeleteUserInstances_Deletes_Only_User_Instances_If_AutomaticallyDeleteInstanceFiles_Is_True()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -396,7 +409,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests DeleteUserInstances() deletes only user instances and deletes the instance folders.")]
-        public void DeleteUserInstances_Deletes_Only_User_Instances_And_Deletes_Instance_Folder()
+        public void SqlLocalDbApi_DeleteUserInstances_Deletes_Only_User_Instances_And_Deletes_Instance_Folder()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -442,18 +455,21 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetInstanceInfo() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetInstanceInfo_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_GetInstanceInfo_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.GetInstanceInfo(null),
+                () => SqlLocalDbApi.GetInstanceInfo(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests GetInstanceInfo() if instanceName is invalid.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void GetInstanceInfo_ThrowsIfInstanceNameIsInvalid()
+        public void SqlLocalDbApi_GetInstanceInfo_Throws_If_InstanceName_Is_Invalid()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -473,7 +489,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstanceInfo() if instanceName does not exist.")]
-        public void GetInstanceInfo_InstanceNameDoesNotExist()
+        public void SqlLocalDbApi_GetInstanceInfo_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -502,7 +518,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstanceNames().")]
-        public void GetInstanceNames()
+        public void SqlLocalDbApi_GetInstanceNames_Returns_Instance_Names()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -519,7 +535,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests that GetInstancesFolderPath() returns the correct value.")]
-        public void GetInstancesFolderPath_Returns_Correct_Path()
+        public void SqlLocalDbApi_GetInstancesFolderPath_Returns_Correct_Path()
         {
             // Arrange
             string expected = Path.Combine(
@@ -538,7 +554,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetVersionInfo() if version is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetVersionInfo_ThrowsIfVersionIsNull()
+        public void SqlLocalDbApi_GetVersionInfo_Throws_If_Version_Is_Null()
         {
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
@@ -549,7 +565,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetVersionInfo() if instanceName is invalid.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void GetVersionInfo_ThrowsIfInstanceNameIsInvalid()
+        public void SqlLocalDbApi_GetVersionInfo_Throws_If_InstanceName_Is_Invalid()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -569,7 +585,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetVersionInfo().")]
-        public void GetVersionInfo()
+        public void SqlLocalDbApi_GetVersionInfo_Returns_Version_Information()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -596,7 +612,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the LatestVersion property returns the correct value.")]
-        public void LatestVersion_Returns_Latest_Version()
+        public void SqlLocalDbApi_LatestVersion_Returns_Latest_Version()
         {
             // Arrange
             IList<string> installedVersions = SqlLocalDbApi.Versions;
@@ -626,40 +642,55 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests ShareInstance() if sharedInstanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShareInstance_ThrowsIfSharedInstanceNameIsNull()
+        public void SqlLocalDbApi_ShareInstance_Throws_If_SharedInstanceName_Is_Null()
         {
+            // Arrange
+            string ownerSid = string.Empty;
+            string instanceName = string.Empty;
+            string sharedInstanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.ShareInstance(string.Empty, string.Empty, null),
+                () => SqlLocalDbApi.ShareInstance(ownerSid, instanceName, sharedInstanceName),
                 "sharedInstanceName");
         }
 
         [TestMethod]
         [Description("Tests ShareInstance() if ownerSid is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShareInstance_ThrowsIfOwnerSidIsNull()
+        public void SqlLocalDbApi_ShareInstance_Throws_If_OwnerSid_Is_Null()
         {
+            // Arrange
+            string ownerSid = null;
+            string instanceName = string.Empty;
+            string sharedInstanceName = string.Empty;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.ShareInstance(null, string.Empty, string.Empty),
+                () => SqlLocalDbApi.ShareInstance(ownerSid, instanceName, sharedInstanceName),
                 "ownerSid");
         }
 
         [TestMethod]
         [Description("Tests ShareInstance() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShareInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_ShareInstance_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string ownerSid = string.Empty;
+            string instanceName = null;
+            string sharedInstanceName = string.Empty;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.ShareInstance(string.Empty, null, string.Empty),
+                () => SqlLocalDbApi.ShareInstance(ownerSid, instanceName, sharedInstanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests ShareInstance().")]
-        public void ShareInstance()
+        public void SqlLocalDbApi_ShareInstance_Shares_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -715,7 +746,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests ShareInstance() if instanceName is invalid.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void ShareInstance_ThrowsIfInstanceNameIsInvalid()
+        public void SqlLocalDbApi_ShareInstance_Throws_If_InstanceName_Is_Invalid()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -737,7 +768,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests ShareInstance() if instanceName is the empty string.")]
         [ExpectedException(typeof(ArgumentException))]
-        public void ShareInstance_ThrowsIfInstanceNameIsEmptyString()
+        public void SqlLocalDbApi_ShareInstance_Throws_If_InstanceName_Is_Empty_String()
         {
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentException>(
@@ -748,18 +779,21 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests StartInstance() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StartInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_StartInstance_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.StartInstance(null),
+                () => SqlLocalDbApi.StartInstance(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests StartInstance() if instanceName does not exist.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void StartInstance_ThrowsIfInstanceNameDoesNotExist()
+        public void SqlLocalDbApi_StartInstance_Throws_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -779,7 +813,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests StartInstance(string).")]
-        public void StartInstance()
+        public void SqlLocalDbApi_StartInstance_Starts_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -831,7 +865,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the StartTracing() method.")]
-        public void StartTracing()
+        public void SqlLocalDbApi_StartTracing_Does_Not_Throw()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -839,24 +873,35 @@ namespace System.Data.SqlLocalDb
             // Act (no Assert)
             // No easy way to ensure it's initialized, so just test method doesn't throw
             SqlLocalDbApi.StartTracing();
-            SqlLocalDbApi.StartTracing();
+
+            try
+            {
+                SqlLocalDbApi.StartTracing();
+            }
+            finally
+            {
+                SqlLocalDbApi.StopTracing();
+            }
         }
 
         [TestMethod]
         [Description("Tests StopInstance(string) if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StopInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_StopInstance_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.StopInstance(null),
+                () => SqlLocalDbApi.StopInstance(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests StopInstance(string, TimeSpan) if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StopInstance_ThrowsIfInstanceNameIsNull2()
+        public void SqlLocalDbApi_StopInstance_With_Timeout_Throws_If_InstanceName_Is_Null()
         {
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
@@ -867,7 +912,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests StopInstance(string, TimeSpan) if timeout is less than zero.")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void StopInstance_ThrowsIfTimeoutIsLessThanZero()
+        public void SqlLocalDbApi_StopInstance_Throws_If_Timeout_Is_Less_Than_Zero()
         {
             // Arrange
             TimeSpan value = TimeSpan.Zero - TimeSpan.FromTicks(1);
@@ -889,7 +934,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests StopInstance() if instanceName does not exist.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void StopInstance_ThrowsIfInstanceNameDoesNotExist()
+        public void SqlLocalDbApi_StopInstance_Throws_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -909,7 +954,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests StopInstance(string).")]
-        public void StopInstance()
+        public void SqlLocalDbApi_StopInstance_Stops_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -947,7 +992,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests StopInstance(string, StopInstanceOptions, TimeSpan).")]
-        public void StopInstance_When_All_Parameters_Specified()
+        public void SqlLocalDbApi_StopInstance_When_All_Parameters_Specified()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -987,7 +1032,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the default value of the StopOptions property.")]
-        public void StopOptions_Has_Correct_Default_Value()
+        public void SqlLocalDbApi_StopOptions_Has_Correct_Default_Value()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1006,7 +1051,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the StopOptions property.")]
-        public void StopOptions_Can_Be_Set()
+        public void SqlLocalDbApi_StopOptions_Can_Be_Set()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1024,7 +1069,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the default value of the StopTimeout property.")]
-        public void StopTimeout_DefaultValue()
+        public void SqlLocalDbApi_StopTimeout_DefaultValue()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1044,7 +1089,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests the the StopTimeout property if value is invalid.")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void StopTimeout_ThrowsIfValueIsInvalid()
+        public void SqlLocalDbApi_StopTimeout_Throws_If_Value_Is_Invalid()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1069,7 +1114,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the StopTimeout property.")]
-        public void StopTimeout()
+        public void SqlLocalDbApi_StopTimeout_Can_Be_Set()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1087,7 +1132,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the StopTracing() method.")]
-        public void StopTracing()
+        public void SqlLocalDbApi_StopTracing_Does_Not_Throw()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -1106,11 +1151,14 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method under test.")]
-        public void UnshareInstance_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbApi_UnshareInstance_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbApi.UnshareInstance(null),
+                () => SqlLocalDbApi.UnshareInstance(instanceName),
                 "instanceName");
         }
 
@@ -1122,7 +1170,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method under test.")]
-        public void UnshareInstance_ThrowsIfInstanceNameDoesNotExist()
+        public void SqlLocalDbApi_UnshareInstance_Throws_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -1148,7 +1196,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method under test.")]
-        public void UnshareInstance()
+        public void SqlLocalDbApi_UnshareInstance_Stops_Sharing_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -1198,7 +1246,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests that DeleteInstanceFiles() escapes the instanceName parameter to prevent path traversal when deleting files.")]
-        public void DeleteInstanceFiles_Escapes_InstanceName()
+        public void SqlLocalDbApi_DeleteInstanceFiles_Escapes_InstanceName()
         {
             // Arrange - Create a path to a directory somewhere on disk that is separate to LocalDB
             string directoryName = Guid.NewGuid().ToString();

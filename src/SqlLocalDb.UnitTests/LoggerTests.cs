@@ -30,7 +30,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests SetLogger() sets the logging implementation in use and setting it to null resets the logging implementation.")]
-        public void SetLogger_Sets_Logger_And_Allows_Logger_To_Be_Reset()
+        public void Logger_SetLogger_Sets_Logger_And_Allows_Logger_To_Be_Reset()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -76,7 +76,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests that the Logger class uses the custom ILogger implementation configured in the application configuration file.")]
-        public void SetLogger_Uses_Custom_ILogger_Implementation_From_Configuration_File()
+        public void Logger_SetLogger_Uses_Custom_ILogger_Implementation_From_Configuration_File()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(

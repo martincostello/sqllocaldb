@@ -26,18 +26,12 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class ExtensionsTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtensionsTests"/> class.
         /// </summary>
         public ExtensionsTests()
         {
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the test context which provides
@@ -49,14 +43,10 @@ namespace System.Data.SqlLocalDb
             set;
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [Description("Tests GetConnectionForDefaultModel() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetConnectionForDefaultModel_Throws_If_Instance_Is_Null()
+        public void Extensions_GetConnectionForDefaultModel_Throws_If_Instance_Is_Null()
         {
             // Arrange
             ISqlLocalDbInstance instance = null;
@@ -69,7 +59,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForDefaultModel() returns a connection.")]
-        public void GetConnectionForDefaultModel_Returns_Connection()
+        public void Extensions_GetConnectionForDefaultModel_Returns_Connection()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -93,7 +83,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForDefaultModel() returns a connection if initialCatalog is null.")]
-        public void GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Null()
+        public void Extensions_GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Null()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -118,7 +108,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForDefaultModel() returns a connection if initialCatalog is the empty string.")]
-        public void GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Empty()
+        public void Extensions_GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Empty()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -143,7 +133,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForDefaultModel() returns a connection if an Initial Catalog is specified.")]
-        public void GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Specified()
+        public void Extensions_GetConnectionForDefaultModel_Returns_Connection_If_InitialCatalog_Is_Specified()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -169,7 +159,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetConnectionForModel() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetConnectionForModel_Throws_If_Instance_Is_Null()
+        public void Extensions_GetConnectionForModel_Throws_If_Instance_Is_Null()
         {
             // Arrange
             ISqlLocalDbInstance instance = null;
@@ -183,7 +173,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForModel() returns a connection.")]
-        public void GetConnectionForModel_Returns_Connection()
+        public void Extensions_GetConnectionForModel_Returns_Connection()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -208,7 +198,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForModel() returns a connection if initialCatalog is null.")]
-        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Null()
+        public void Extensions_GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Null()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -234,7 +224,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForModel() returns a connection if initialCatalog is the empty string.")]
-        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Empty()
+        public void Extensions_GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Empty()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -260,7 +250,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionForModel() returns a connection if an Initial Catalog is specified.")]
-        public void GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Specified()
+        public void Extensions_GetConnectionForModel_Returns_Connection_If_InitialCatalog_Is_Specified()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -287,7 +277,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetConnectionStringForDefaultModel() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetConnectionStringForDefaultModel_Throws_If_Instance_Is_Null()
+        public void Extensions_GetConnectionStringForDefaultModel_Throws_If_Instance_Is_Null()
         {
             // Arrange
             ISqlLocalDbInstance instance = null;
@@ -300,7 +290,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForDefaultModel() returns a connection string.")]
-        public void GetConnectionStringForDefaultModel_Returns_Connection_String()
+        public void Extensions_GetConnectionStringForDefaultModel_Returns_Connection_String()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -322,7 +312,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForDefaultModel() returns a connection string if initialCatalog is null.")]
-        public void GetConnectionStringForDefaultModel_Returns_Connection_String_If_InitialCatalog_Is_Null()
+        public void Extensions_GetConnectionStringForDefaultModel_Returns_Connection_String_If_InitialCatalog_Is_Null()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -345,7 +335,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForDefaultModel() returns a connection string if initialCatalog is the empty string.")]
-        public void GetConnectionStringForDefaultModel_Returns_Connection_String_If_InitialCatalog_Is_Empty()
+        public void Extensions_GetConnectionStringForDefaultModel_Returns_Connection_String_If_InitialCatalog_Is_Empty()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -368,7 +358,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForDefaultModel() returns a connection string if a different Initial Catalog is specified.")]
-        public void GetConnectionStringForDefaultModel_Returns_Connection_String_If_Initial_Catalog_Specified()
+        public void Extensions_GetConnectionStringForDefaultModel_Returns_Connection_String_If_Initial_Catalog_Specified()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -392,7 +382,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetConnectionStringForModel_Throws_If_Instance_Is_Null()
+        public void Extensions_GetConnectionStringForModel_Throws_If_Instance_Is_Null()
         {
             // Arrange
             ISqlLocalDbInstance instance = null;
@@ -407,7 +397,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() if modelConnectionStringName cannot be found.")]
         [ExpectedException(typeof(ArgumentException))]
-        public void GetConnectionStringForModel_Throws_If_ConnectionString_Cannot_Be_Found()
+        public void Extensions_GetConnectionStringForModel_Throws_If_ConnectionString_Cannot_Be_Found()
         {
             // Arrange
             ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
@@ -421,7 +411,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() returns a connection string.")]
-        public void GetConnectionStringForModel_Returns_Connection_String()
+        public void Extensions_GetConnectionStringForModel_Returns_Connection_String()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -444,7 +434,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() returns a connection string if initialCatalog is null.")]
-        public void GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Null()
+        public void Extensions_GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Null()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -468,7 +458,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() returns a connection string if initialCatalog is the empty string.")]
-        public void GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Empty()
+        public void Extensions_GetConnectionStringForModel_Returns_Connection_String_If_InitialCatalog_Is_Empty()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -492,7 +482,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetConnectionStringForModel() returns a connection string if a different Initial Catalog is specified.")]
-        public void GetConnectionStringForModel_Returns_Connection_String_If_Initial_Catalog_Specified()
+        public void Extensions_GetConnectionStringForModel_Returns_Connection_String_If_Initial_Catalog_Specified()
         {
             // Arrange
             string namedPipe = @"np:\\.\pipe\LOCALDB#C0209E6A\tsql\query";
@@ -517,7 +507,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetInitialCatalogName() throws an exception if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetInitialCatalogName_Throws_If_Value_Is_Null()
+        public void Extensions_GetInitialCatalogName_Throws_If_Value_Is_Null()
         {
             // Arrange
             DbConnectionStringBuilder value = null;
@@ -530,7 +520,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInitialCatalogName() if the Initial Catalog name cannot be found.")]
-        public void GetInitialCatalogName_Returns_Null_If_Not_Found()
+        public void Extensions_GetInitialCatalogName_Returns_Null_If_Not_Found()
         {
             // Arrange
             DbConnectionStringBuilder value = new DbConnectionStringBuilder();
@@ -549,7 +539,7 @@ namespace System.Data.SqlLocalDb
             @"|DataDirectory|\GetInitialCatalogNameTestCases.xml",
             "testCase",
             DataAccessMethod.Sequential)]
-        public void GetInitialCatalogName_Returns_Correct_Initial_Catalog()
+        public void Extensions_GetInitialCatalogName_Returns_Correct_Initial_Catalog()
         {
             // Arrange
             string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
@@ -570,7 +560,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInitialCatalogName() if the connection string is an entity connection string.")]
-        public void GetInitialCatalogName_Returns_Initial_Catalog_If_Entity_Connection_String()
+        public void Extensions_GetInitialCatalogName_Returns_Initial_Catalog_If_Entity_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
@@ -585,7 +575,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInitialCatalogName() if the connection string is an entity connection string with no Initial Catalog.")]
-        public void GetInitialCatalogName_Returns_Null_If_No_Initial_Catalog_In_Entity_Connection_String()
+        public void Extensions_GetInitialCatalogName_Returns_Null_If_No_Initial_Catalog_In_Entity_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
@@ -600,7 +590,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInitialCatalogName() if the connection string is an SQL connection string.")]
-        public void GetInitialCatalogName_Returns_Initial_Catalog_If_Sql_Connection_String()
+        public void Extensions_GetInitialCatalogName_Returns_Initial_Catalog_If_Sql_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
@@ -615,7 +605,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInitialCatalogName() if the connection string is an SQL connection string with no Initial Catalog.")]
-        public void GetInitialCatalogName_Returns_Null_If_No_Initial_Catalog_In_Sql_Connection_String()
+        public void Extensions_GetInitialCatalogName_Returns_Null_If_No_Initial_Catalog_In_Sql_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
@@ -631,7 +621,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetPhysicalFileName() throws an exception if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetPhysicalFileName_Throws_If_Value_Is_Null()
+        public void Extensions_GetPhysicalFileName_Throws_If_Value_Is_Null()
         {
             // Arrange
             DbConnectionStringBuilder value = null;
@@ -644,7 +634,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetPhysicalFileName() if the file name cannot be found.")]
-        public void GetPhysicalFileName_Returns_Null_If_Not_Found()
+        public void Extensions_GetPhysicalFileName_Returns_Null_If_Not_Found()
         {
             // Arrange
             DbConnectionStringBuilder value = new DbConnectionStringBuilder();
@@ -663,7 +653,7 @@ namespace System.Data.SqlLocalDb
             @"|DataDirectory|\GetPhysicalFileNameTestCases.xml",
             "testCase",
             DataAccessMethod.Sequential)]
-        public void GetPhysicalFileName_Returns_Correct_FileName()
+        public void Extensions_GetPhysicalFileName_Returns_Correct_FileName()
         {
             // Arrange
             string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
@@ -684,7 +674,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetPhysicalFileName() if the connection string is an entity connection string.")]
-        public void GetPhysicalFileName_Returns_FileName_If_Entity_Connection_String()
+        public void Extensions_GetPhysicalFileName_Returns_FileName_If_Entity_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
@@ -699,7 +689,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetPhysicalFileName() if the connection string is an entity connection string with no file name.")]
-        public void GetPhysicalFileName_Returns_Null_If_No_FileName_In_Entity_Connection_String()
+        public void Extensions_GetPhysicalFileName_Returns_Null_If_No_FileName_In_Entity_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.EntityClient.EntityConnectionStringBuilder(
@@ -714,7 +704,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetPhysicalFileName() if the connection string is an SQL connection string.")]
-        public void GetPhysicalFileName_Returns_FileName_If_Sql_Connection_String()
+        public void Extensions_GetPhysicalFileName_Returns_FileName_If_Sql_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
@@ -729,7 +719,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetPhysicalFileName() if the connection string is an SQL connection string with no file name.")]
-        public void GetPhysicalFileName_Returns_Null_If_No_FileName_In_Sql_Connection_String()
+        public void Extensions_GetPhysicalFileName_Returns_Null_If_No_FileName_In_Sql_Connection_String()
         {
             // Arrange
             DbConnectionStringBuilder value = new System.Data.SqlClient.SqlConnectionStringBuilder(
@@ -745,7 +735,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetOrCreateInstance_Throws_If_Value_Is_Null()
+        public void Extensions_GetOrCreateInstance_Throws_If_Value_Is_Null()
         {
             // Arrange
             ISqlLocalDbProvider value = null;
@@ -760,7 +750,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetOrCreateInstance_Throws_If_InstanceName_Is_Null()
+        public void Extensions_GetOrCreateInstance_Throws_If_InstanceName_Is_Null()
         {
             // Arrange
             ISqlLocalDbProvider value = Mock.Of<ISqlLocalDbProvider>();
@@ -774,7 +764,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if instanceName does not exist.")]
-        public void GetOrCreateInstance_If_InstanceName_Does_Not_Exist()
+        public void Extensions_GetOrCreateInstance_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
@@ -797,7 +787,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if instanceName exists.")]
-        public void GetOrCreateInstance_If_InstanceName_Exists()
+        public void Extensions_GetOrCreateInstance_If_InstanceName_Exists()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
@@ -820,7 +810,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2012 default instance name.")]
-        public void GetOrCreateInstance_For_2012_Default_Instance_Name()
+        public void Extensions_GetOrCreateInstance_For_2012_Default_Instance_Name()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
@@ -836,7 +826,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2014 default instance name.")]
-        public void GetOrCreateInstance_For_2014_Default_Instance_Name()
+        public void Extensions_GetOrCreateInstance_For_2014_Default_Instance_Name()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
@@ -853,7 +843,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests SetInitialCatalogName() if value is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SetInitialCatalogName_Throws_If_Value_Is_Null()
+        public void Extensions_SetInitialCatalogName_Throws_If_Value_Is_Null()
         {
             // Arrange
             DbConnectionStringBuilder value = null;
@@ -872,7 +862,7 @@ namespace System.Data.SqlLocalDb
             @"|DataDirectory|\SetInitialCatalogNameTestCases.xml",
             "testCase",
             DataAccessMethod.Sequential)]
-        public void SetInitialCatalogName_Returns_Correct_Initial_Catalog()
+        public void Extensions_SetInitialCatalogName_Returns_Correct_Initial_Catalog()
         {
             // Arrange
             string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
@@ -899,7 +889,7 @@ namespace System.Data.SqlLocalDb
             @"|DataDirectory|\SetPhysicalFileNameTestCases.xml",
             "testCase",
             DataAccessMethod.Sequential)]
-        public void SetPhysicalFileName_Returns_Correct_File_Name()
+        public void Extensions_SetPhysicalFileName_Returns_Correct_File_Name()
         {
             // Arrange
             string connectionString = Convert.ToString(this.TestContext.DataRow["connectionString"], CultureInfo.InvariantCulture);
@@ -921,7 +911,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests SetPhysicalFileName() sets the correct physical file name if a relative path is used.")]
-        public void SetPhysicalFileName_Sets_Correct_Value_If_Relative_Path_Used()
+        public void Extensions_SetPhysicalFileName_Sets_Correct_Value_If_Relative_Path_Used()
         {
             // Arrange
             string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
@@ -944,7 +934,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests SetPhysicalFileName() sets the correct physical file name if the |DataDirectory| AppDomain value is set.")]
-        public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Set()
+        public void Extensions_SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Set()
         {
             // Arrange
             var appDomainData = new Dictionary<string, object>()
@@ -978,7 +968,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests SetPhysicalFileName() sets the correct physical file name if the |DataDirectory| AppDomain value is not set.")]
         [ExpectedException(typeof(NotSupportedException))]
-        public void SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Not_Set()
+        public void Extensions_SetPhysicalFileName_Sets_Correct_Value_If_Data_Directory_Used_And_Not_Set()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1001,7 +991,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests SetPhysicalFileName() clears the physical file name if null is specified.")]
-        public void SetPhysicalFileName_Sets_Correct_Value_If_Null_Specified()
+        public void Extensions_SetPhysicalFileName_Sets_Correct_Value_If_Null_Specified()
         {
             // Arrange
             string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
@@ -1024,7 +1014,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Restart() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Restart_Throws_If_Instance_Is_Null()
+        public void Extensions_Restart_Throws_If_Instance_Is_Null()
         {
             // Arrange
             ISqlLocalDbInstance instance = null;
@@ -1037,7 +1027,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Restart().")]
-        public void Restart_Restarts_Instance()
+        public void Extensions_Restart_Restarts_Instance()
         {
             // Arrange
             Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
@@ -1053,7 +1043,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetDefaultInstance() returns default instance.")]
-        public void GetDefaultInstance_Returns_Default_Instance()
+        public void Extensions_GetDefaultInstance_Returns_Default_Instance()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
@@ -1065,7 +1055,5 @@ namespace System.Data.SqlLocalDb
             Assert.IsNotNull(result, "GetDefaultInstance() returned null.");
             Assert.AreEqual(SqlLocalDbApi.DefaultInstanceName, result.Name, "ISqlLocalDbInstance.Name is incorrect.");
         }
-
-        #endregion
     }
 }

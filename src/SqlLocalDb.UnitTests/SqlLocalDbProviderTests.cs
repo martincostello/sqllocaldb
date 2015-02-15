@@ -23,8 +23,6 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class SqlLocalDbProviderTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbProviderTests"/> class.
         /// </summary>
@@ -32,13 +30,9 @@ namespace System.Data.SqlLocalDb
         {
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [Description("Tests .ctor().")]
-        public void Default_Constructor_Uses_Correct_LocalDB_Instance()
+        public void SqlLocalDbProvider_Default_Constructor_Uses_Correct_LocalDB_Instance()
         {
             // Act
             SqlLocalDbProvider target = new SqlLocalDbProvider();
@@ -50,7 +44,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests .ctor(ISqlLocalDbApi).")]
-        public void Constructor_Uses_Specified_LocalDB_Instance()
+        public void SqlLocalDbProvider_Constructor_Uses_Specified_LocalDB_Instance()
         {
             // Arrange
             ISqlLocalDbApi localDB = Mock.Of<ISqlLocalDbApi>();
@@ -65,7 +59,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests .ctor(ISqlLocalDbApi) throws if localDB is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_Throws_If_LocalDB_Is_Null()
+        public void SqlLocalDbProvider_Constructor_Throws_If_LocalDB_Is_Null()
         {
             // Arrange
             ISqlLocalDbApi localDB = null;
@@ -78,7 +72,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateInstance().")]
-        public void CreateInstance_Void()
+        public void SqlLocalDbProvider_CreateInstance_Creates_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -116,7 +110,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateInstance(string).")]
-        public void CreateInstance_String()
+        public void SqlLocalDbProvider_CreateInstance_Creates_Instance_With_Specified_Name()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -153,7 +147,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateInstance(string) if the underlying API returned no instance information.")]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void CreateInstance_Throws_If_No_Instance_Info_From_Api()
+        public void SqlLocalDbProvider_CreateInstance_Throws_If_No_Instance_Info_From_Api()
         {
             // Arrange
             ISqlLocalDbApi localDB = Mock.Of<ISqlLocalDbApi>();
@@ -169,7 +163,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateInstance(string) if the instance already exists.")]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void CreateInstance_ThrowsIfInstanceAlreadyExists()
+        public void SqlLocalDbProvider_CreateInstance_Throws_If_Instance_Already_Exists()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -193,7 +187,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateInstance(string) uses the latest version of SQL LocalDB if not overridden.")]
-        public void CreateInstance_Uses_Latest_Version()
+        public void SqlLocalDbProvider_CreateInstance_Uses_Latest_Version_If_Not_Overridden()
         {
             // Arrange
             string instanceName = Guid.NewGuid().ToString();
@@ -232,7 +226,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden.")]
-        public void CreateInstance_Uses_Specified_Version()
+        public void SqlLocalDbProvider_CreateInstance_Uses_Specified_Version_If_Overridden()
         {
             // Arrange
             string instanceName = Guid.NewGuid().ToString();
@@ -272,7 +266,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstance(string).")]
-        public void GetInstance()
+        public void SqlLocalDbProvider_GetInstance_Returns_Specified_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -307,7 +301,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstances()")]
-        public void GetInstances()
+        public void SqlLocalDbProvider_GetInstances_Returns_Installed_Instances()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -352,7 +346,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetVersions()")]
-        public void GetVersions()
+        public void SqlLocalDbProvider_GetVersions_Returns_Installed_Versions()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -370,7 +364,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests ISqlLocalDbFactory.CreateInstance(string).")]
-        public void ISqlLocalDbFactory_CreateInstance()
+        public void SqlLocalDbProvider_As_ISqlLocalDbFactory_CreateInstance_Creates_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -403,7 +397,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests ISqlLocalDbFactory.GetInstance(string).")]
-        public void ISqlLocalDbFactory_GetInstance()
+        public void SqlLocalDbProvider_As_ISqlLocalDbFactory_GetInstance_Returns_Specified_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -438,7 +432,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests the Version property getter and setter work correctly.")]
-        public void Version_Property_Can_Be_Set_Correctly()
+        public void SqlLocalDbProvider_Version_Property_Can_Be_Set_Correctly()
         {
             // Arrange
             string value = "3.4.5.6";
@@ -466,7 +460,5 @@ namespace System.Data.SqlLocalDb
             // Assert
             Assert.AreEqual(latestVersion, result, "SqlLocalDbProvider.Version returned incorrect value.");
         }
-
-        #endregion
     }
 }

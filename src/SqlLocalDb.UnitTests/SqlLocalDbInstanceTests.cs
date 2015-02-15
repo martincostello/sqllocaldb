@@ -23,8 +23,6 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class SqlLocalDbInstanceTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbInstanceTests"/> class.
         /// </summary>
@@ -32,34 +30,36 @@ namespace System.Data.SqlLocalDb
         {
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [Description("Tests .ctor() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_ThrowsIfInstanceNameIsNull()
+        public void SqlLocalDbInstance_Constructor_Throws_If_InstanceName_Is_Null()
         {
+            // Arrange
+            string instanceName = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => new SqlLocalDbInstance(null),
+                () => new SqlLocalDbInstance(instanceName),
                 "instanceName");
         }
 
         [TestMethod]
         [Description("Tests .ctor() if instanceName does not exist.")]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Constructor_ThrowsIfInstanceNameDoesNotExist()
+        public void SqlLocalDbInstance_Constructor_Throws_If_Instance_Name_Does_Not_Exist()
         {
+            // Arrange
+            string instanceName = Guid.NewGuid().ToString();
+
             // Act and Assert
             throw ErrorAssert.Throws<InvalidOperationException>(
-                () => new SqlLocalDbInstance(Guid.NewGuid().ToString()));
+                () => new SqlLocalDbInstance(instanceName));
         }
 
         [TestMethod]
         [Description("Tests .ctor() if the instance is not started.")]
-        public void Constructor_ThrowsIfInstanceNotStarted()
+        public void SqlLocalDbInstance_Constructor_Throws_If_Instance_Not_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -86,7 +86,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests .ctor() if the instance is started.")]
-        public void Constructor_InstanceIsStarted()
+        public void SqlLocalDbInstance_Constructor_If_Instance_Is_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -122,7 +122,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateConnection() if the instance is started.")]
-        public void CreateConnection_InstanceIsStarted()
+        public void SqlLocalDbInstance_CreateConnection_If_Instance_Is_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -168,7 +168,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateConnection() if the instance is started and the CreateConnectionStringBuilder() returns null.")]
-        public void CreateConnection_InstanceIsStartedAndConnectionStringBuilderIsNull()
+        public void SqlLocalDbInstance_CreateConnection_If_Instance_Is_Started_And_Returned_ConnectionStringBuilder_Is_Null()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -180,7 +180,9 @@ namespace System.Data.SqlLocalDb
             {
                 Mock<SqlLocalDbInstance> mock = new Mock<SqlLocalDbInstance>(instanceName);
                 mock.CallBase = true;
-                mock.Setup((i) => i.CreateConnectionStringBuilder()).Returns(null as SqlConnectionStringBuilder);
+
+                mock.Setup((p) => p.CreateConnectionStringBuilder())
+                    .Returns(null as SqlConnectionStringBuilder);
 
                 SqlLocalDbInstance target = mock.Object;
                 target.Start();
@@ -218,7 +220,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests CreateConnectionStringBuilder() if the instance is started.")]
-        public void CreateConnectionStringBuilder_InstanceStarted()
+        public void SqlLocalDbInstance_CreateConnectionStringBuilder_If_Instance_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -254,7 +256,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests CreateConnection() if the instance is not started.")]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void CreateConnectionStringBuilder_ThrowsIfInstanceNotStarted()
+        public void SqlLocalDbInstance_CreateConnectionStringBuilder_Throws_If_Instance_Not_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -279,30 +281,35 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Delete() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Delete_ThrowsIfInstanceIsNull()
+        public void SqlLocalDbInstance_Delete_Throws_If_Instance_Is_Null()
         {
+            // Arrange
+            ISqlLocalDbInstance instance = null;
+
             // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SqlLocalDbInstance.Delete(null),
+                () => SqlLocalDbInstance.Delete(instance),
                 "instance");
         }
 
         [TestMethod]
         [Description("Tests Delete() if instance is invalid.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void Delete_ThrowsIfInstanceIsInvalid()
+        public void SqlLocalDbInstance_Delete_Throws_If_Instance_Is_Invalid()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
 
             const string InstanceName = "\\\\";
 
-            Mock<ISqlLocalDbInstance> instance = new Mock<ISqlLocalDbInstance>();
-            instance.Setup((i) => i.Name).Returns(InstanceName);
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.Name).Returns(InstanceName);
+
+            ISqlLocalDbInstance instance = mock.Object;
 
             // Act
             SqlLocalDbException error = ErrorAssert.Throws<SqlLocalDbException>(
-                () => SqlLocalDbInstance.Delete(instance.Object));
+                () => SqlLocalDbInstance.Delete(instance));
 
             // Assert
             Assert.AreEqual(SqlLocalDbErrors.InvalidInstanceName, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
@@ -313,7 +320,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Delete().")]
-        public void Delete()
+        public void SqlLocalDbInstance_Delete_Deletes_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -322,15 +329,17 @@ namespace System.Data.SqlLocalDb
 
             SqlLocalDbApi.CreateInstance(instanceName);
 
-            Mock<ISqlLocalDbInstance> instance = new Mock<ISqlLocalDbInstance>();
-            instance.Setup((i) => i.Name).Returns(instanceName);
+            Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+            mock.Setup((p) => p.Name).Returns(instanceName);
 
             ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
             Assert.IsNotNull(info, "SqlLocalDbApi.GetInstanceInfo() returned null.");
             Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
 
+            ISqlLocalDbInstance instance = mock.Object;
+
             // Act
-            SqlLocalDbInstance.Delete(instance.Object);
+            SqlLocalDbInstance.Delete(instance);
 
             // Assert
             info = SqlLocalDbApi.GetInstanceInfo(instanceName);
@@ -344,7 +353,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Delete() if SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is true.")]
-        public void Delete_If_SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_True()
+        public void SqlLocalDbInstance_Delete_If_SqlLocalDbApi_AutomaticallyDeleteInstanceFiles_Is_True()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -358,15 +367,17 @@ namespace System.Data.SqlLocalDb
 
                     SqlLocalDbApi.CreateInstance(instanceName);
 
-                    Mock<ISqlLocalDbInstance> instance = new Mock<ISqlLocalDbInstance>();
-                    instance.Setup((i) => i.Name).Returns(instanceName);
+                    Mock<ISqlLocalDbInstance> mock = new Mock<ISqlLocalDbInstance>();
+                    mock.Setup((p) => p.Name).Returns(instanceName);
 
                     ISqlLocalDbInstanceInfo info = SqlLocalDbApi.GetInstanceInfo(instanceName);
                     Assert.IsNotNull(info, "SqlLocalDbApi.GetInstanceInfo() returned null.");
                     Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
 
+                    ISqlLocalDbInstance instance = mock.Object;
+
                     // Act
-                    SqlLocalDbInstance.Delete(instance.Object);
+                    SqlLocalDbInstance.Delete(instance);
 
                     // Assert
                     info = SqlLocalDbApi.GetInstanceInfo(instanceName);
@@ -380,7 +391,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests GetInstanceInfo().")]
-        public void GetInstanceInfo()
+        public void SqlLocalDbInstance_GetInstanceInfo_Returns_Information_For_The_Specified_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -420,7 +431,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [TestCategory(TestCategories.RequiresAdministrativePermissions)]
         [Description("Tests Share() if the instance is started.")]
-        public void Share_InstanceIsStarted()
+        public void SqlLocalDbInstance_Share_If_Instance_Is_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -462,7 +473,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Share() if sharedName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Share_ThrowsIfSharedNameIsNull()
+        public void SqlLocalDbInstance_Share_Throws_If_SharedName_Is_Null()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -474,9 +485,11 @@ namespace System.Data.SqlLocalDb
             {
                 SqlLocalDbInstance target = new SqlLocalDbInstance(instanceName);
 
+                string sharedName = null;
+
                 // Act and Assert
                 throw ErrorAssert.Throws<ArgumentNullException>(
-                    () => target.Share(null),
+                    () => target.Share(sharedName),
                     "sharedName");
             }
             finally
@@ -488,7 +501,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Share() if sharedName is invalid.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void Share_ThrowsIfSharedNameIsInvalid()
+        public void SqlLocalDbInstance_Share_Throws_If_SharedName_Is_Invalid()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -520,7 +533,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Start().")]
-        public void Start()
+        public void SqlLocalDbInstance_Start_Starts_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -566,7 +579,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Start() if an error occurs.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void Start_ThrowsIfAnErrorOccurs()
+        public void SqlLocalDbInstance_Start_Throws_If_An_Error_Occurs()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -598,7 +611,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Stop().")]
-        public void Stop()
+        public void SqlLocalDbInstance_Stop_Stops_Instance()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -645,7 +658,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Stop() if an error occurs.")]
         [ExpectedException(typeof(SqlLocalDbException))]
-        public void Stop_ThrowsIfAnErrorOccurs()
+        public void SqlLocalDbInstance_Stop_Throws_If_An_Error_Occurs()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -683,7 +696,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method under test.")]
-        public void Unshare_InstanceIsStarted()
+        public void SqlLocalDbInstance_Unshare_If_Instance_Is_Started()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -737,7 +750,7 @@ namespace System.Data.SqlLocalDb
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
             Justification = "Matches the name of the method under test.")]
-        public void Unshare_ThrowsIfAnErrorOccurs()
+        public void SqlLocalDbInstance_Unshare_Throws_If_An_Error_Occurs()
         {
             // Arrange
             Helpers.EnsureLocalDBInstalled();
@@ -772,7 +785,5 @@ namespace System.Data.SqlLocalDb
                 SqlLocalDbApi.DeleteInstance(instanceName);
             }
         }
-
-        #endregion
     }
 }

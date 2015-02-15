@@ -23,8 +23,6 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public class SRHelperTests
     {
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SRHelperTests"/> class.
         /// </summary>
@@ -32,34 +30,40 @@ namespace System.Data.SqlLocalDb
         {
         }
 
-        #endregion
-
-        #region Methods
-
         [TestMethod]
         [Description("Tests Format() if format is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Format_ThrowsIfFormatIsNull()
+        public void SRHelper_Format_Throws_If_Format_Is_Null()
         {
+            // Arrange
+            string format = null;
+            object[] args = new object[0];
+
+            // Act and Assert
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SRHelper.Format(null, new object[0]),
+                () => SRHelper.Format(format, args),
                 "format");
         }
 
         [TestMethod]
         [Description("Tests Format() if args is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Format_ThrowsIfArgsIsNull()
+        public void SRHelper_Format_ThrowsIfArgsIsNull()
         {
+            // Arrange
+            string format = string.Empty;
+            object[] args = null;
+
             throw ErrorAssert.Throws<ArgumentNullException>(
-                () => SRHelper.Format(string.Empty, null),
+                () => SRHelper.Format(format, args),
                 "args");
         }
 
         [TestMethod]
         [Description("Tests Format().")]
-        public void Format()
+        public void SRHelper_Format_Formats_Parameters()
         {
+            // Arrange
             Task.Factory.StartNew(
                 () =>
                 {
@@ -73,17 +77,17 @@ namespace System.Data.SqlLocalDb
                     // i.e. US format dates vs. UK format dates
                     DateTime value = new DateTime(2012, 2, 3, 12, 34, 56);
 
+                    // Act
                     string result = SRHelper.Format(
                         "{0}",
                         value);
 
+                    // Assert
                     Assert.AreEqual(
                         value.ToString(culture),
                         result,
                         "Format() returned incorrect result.");
                 }).Wait();
         }
-
-        #endregion
     }
 }
