@@ -91,6 +91,7 @@
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
+      <FilesToZip Include="$(OutDir)\en-GB\System.Data.SqlLocalDb.resources.dll" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
   </Target>

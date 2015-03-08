@@ -28,6 +28,7 @@
     <file src="System.Data.SqlLocalDb.dll" target="lib\net20" />
     <file src="System.Data.SqlLocalDb.pdb" target="lib\net20" />
     <file src="System.Data.SqlLocalDb.xml" target="lib\net20" />
+    <file src="en-GB\System.Data.SqlLocalDb.resources.dll" target="lib\net20\en-GB" />
     <file src="src\**\*.cs" target="src" />
   </files>
 </package>
