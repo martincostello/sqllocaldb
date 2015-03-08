@@ -121,7 +121,7 @@ namespace System.Data.SqlLocalDb
         /// order is used. This property is provided for integrators to specifically override the language used from
         /// the defaults used by the local installed operating system.
         /// </remarks>
-        public static int DefaultLanguageId
+        public static int LanguageId
         {
             get;
             set;
@@ -1087,7 +1087,7 @@ namespace System.Data.SqlLocalDb
             // Get the description of the error from the LocalDB API.
             int hr2 = NativeMethods.GetLocalDbError(
                 hr,
-                DefaultLanguageId,
+                LanguageId,
                 buffer,
                 ref size);
 
@@ -1102,8 +1102,8 @@ namespace System.Data.SqlLocalDb
                 // this case as otherwise we will mask the original exception from the user.
                 Logger.Error(
                     Logger.TraceEvent.InvalidLanguageId,
-                    SR.SqlLocalDbApi_InvalidDefaultLanguageIdFormat,
-                    DefaultLanguageId,
+                    SR.SqlLocalDbApi_InvalidLanguageIdFormat,
+                    LanguageId,
                     typeof(SqlLocalDbApi).Name);
 
                 // Use a generic message if getting the message from the API failed

@@ -291,7 +291,7 @@
   <data name="SqlLocalDbApi_LogDeletingInstanceFilesFormat" xml:space="preserve">
     <value>Deleting file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
   </data>
-  <data name="SqlLocalDbApi_InvalidDefaultLanguageIdFormat" xml:space="preserve">
-    <value>The current value ({0}) of the {1}.DefaultLanguageId property is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
+  <data name="SqlLocalDbApi_InvalidLanguageIdFormat" xml:space="preserve">
+    <value>The current value ({0}) of the {1}.LanguageId property is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
   </data>
 </root>

@@ -1364,24 +1364,24 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
-        [Description("Tests that the DefaultLanguageId property returns the correct default value.")]
-        public void SqlLocalDbApi_DefaultLanguageId_Returns_Correct_Value()
+        [Description("Tests that the LanguageId property returns the correct default value.")]
+        public void SqlLocalDbApi_LanguageId_Returns_Correct_Value()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
                 () =>
                 {
                     // Act
-                    int result = SqlLocalDbApi.DefaultLanguageId;
+                    int result = SqlLocalDbApi.LanguageId;
 
                     // Assert
-                    Assert.AreEqual(0, result, "SqlLocalDbApi.DefaultLanguageId returned incorrect value.");
+                    Assert.AreEqual(0, result, "SqlLocalDbApi.LanguageId returned incorrect value.");
                 });
         }
 
         [TestMethod]
-        [Description("Tests that the DefaultLanguageId property is used to format error messages.")]
-        public void SqlLocalDbApi_DefaultLanguageId_Used_By_GetLocalDbError_To_Format_Error_Messages()
+        [Description("Tests that the LanguageId property is used to format error messages.")]
+        public void SqlLocalDbApi_LanguageId_Used_By_GetLocalDbError_To_Format_Error_Messages()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1392,7 +1392,7 @@ namespace System.Data.SqlLocalDb
                     int traceEventId = 0;
 
                     int lcid = GetLcidForCulture("en-US");
-                    SqlLocalDbApi.DefaultLanguageId = lcid;
+                    SqlLocalDbApi.LanguageId = lcid;
 
                     // Act
                     Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
@@ -1403,7 +1403,7 @@ namespace System.Data.SqlLocalDb
 
                     // Arrange
                     lcid = GetLcidForCulture("es-ES");
-                    SqlLocalDbApi.DefaultLanguageId = lcid;
+                    SqlLocalDbApi.LanguageId = lcid;
 
                     // Act
                     result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
@@ -1414,7 +1414,7 @@ namespace System.Data.SqlLocalDb
 
                     // Arrange
                     lcid = GetLcidForCulture("fr-FR");
-                    SqlLocalDbApi.DefaultLanguageId = lcid;
+                    SqlLocalDbApi.LanguageId = lcid;
 
                     // Act
                     result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
@@ -1426,8 +1426,8 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
-        [Description("Tests that GetLocalDbError() does not mask the original error if the DefaultLanguageId property is not a recognized LCID.")]
-        public void SqlLocalDbApi_GetLocalDbError_Does_Not_Mask_Original_Error_If_DefaultLanguageId_Is_Not_Recognized()
+        [Description("Tests that GetLocalDbError() does not mask the original error if the LanguageId property is not a recognized LCID.")]
+        public void SqlLocalDbApi_GetLocalDbError_Does_Not_Mask_Original_Error_If_LanguageId_Is_Not_Recognized()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -1438,7 +1438,7 @@ namespace System.Data.SqlLocalDb
                     int traceEventId = 0;
 
                     int lcid = GetLcidForCulture("en-GB");  // N.B. A new culture must be used if a future version supports en-GB.
-                    SqlLocalDbApi.DefaultLanguageId = lcid;
+                    SqlLocalDbApi.LanguageId = lcid;
 
                     // Act
                     Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
@@ -1462,7 +1462,7 @@ namespace System.Data.SqlLocalDb
                     int traceEventId = 0;
 
                     int lcid = int.MaxValue;    // This value of LCID causes an internal error in SQL LocalDB (at the time of writing, it might not always)
-                    SqlLocalDbApi.DefaultLanguageId = lcid;
+                    SqlLocalDbApi.LanguageId = lcid;
 
                     // Act
                     Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
