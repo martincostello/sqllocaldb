@@ -1444,8 +1444,32 @@ namespace System.Data.SqlLocalDb
                     Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
 
                     // Assert
-                    Assert.AreEqual("An error occurred with SQL Server LocalDB. HRESULT = -1983577826", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual("An error occurred with SQL Server LocalDB. HRESULT = 89C5011E", result.Message, "The exception message was not correct for LCID {0}.", lcid);
                     Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests that GetLocalDbError() returns an appropriate exception if the native function call to get the exception message fails.")]
+        public void SqlLocalDbApi_GetLocalDbError_Returns_Different_HResult_If_Native_Function_Fails()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Arrange
+                    int hr = SqlLocalDbErrors.AdminRightsRequired;
+                    int traceEventId = 0;
+
+                    int lcid = int.MaxValue;    // This value of LCID causes an internal error in SQL LocalDB (at the time of writing, it might not always)
+                    SqlLocalDbApi.DefaultLanguageId = lcid;
+
+                    // Act
+                    Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("An error occurred with SQL Server LocalDB. HRESULT = 89C50108", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreNotEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
                 });
         }
 

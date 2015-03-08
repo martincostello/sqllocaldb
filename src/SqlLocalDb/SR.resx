@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SqlLocalDbApi_GenericFailureFormat" xml:space="preserve">
-    <value>An error occurred with SQL Server LocalDB. HRESULT = {0}</value>
+    <value>An error occurred with SQL Server LocalDB. HRESULT = {0:X}</value>
   </data>
   <data name="SqlLocalDbApi_NotInstalledFormat" xml:space="preserve">
     <value>SQL Server LocalDB is not installed on {0}.</value>

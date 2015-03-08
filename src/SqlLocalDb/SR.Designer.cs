@@ -187,7 +187,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB. HRESULT = {0}.
+        ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB. HRESULT = {0:X}.
         /// </summary>
         internal static string SqlLocalDbApi_GenericFailureFormat {
             get {
