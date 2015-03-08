@@ -292,6 +292,11 @@ namespace System.Data.SqlLocalDb
             /// </summary>
             internal static readonly int DeletingInstanceFilesFailed = 25;
 
+            /// <summary>
+            /// The value of the <see cref="SqlLocalDbApi.DefaultLanguageId"/> property is invalid.
+            /// </summary>
+            internal static readonly int InvalidLanguageId = 26;
+
             #endregion
         }
 

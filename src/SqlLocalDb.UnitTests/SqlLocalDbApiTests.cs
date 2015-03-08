@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -1362,6 +1363,92 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2014.config");
         }
 
+        [TestMethod]
+        [Description("Tests that the DefaultLanguageId property returns the correct default value.")]
+        public void SqlLocalDbApi_DefaultLanguageId_Returns_Correct_Value()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    int result = SqlLocalDbApi.DefaultLanguageId;
+
+                    // Assert
+                    Assert.AreEqual(0, result, "SqlLocalDbApi.DefaultLanguageId returned incorrect value.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests that the DefaultLanguageId property is used to format error messages.")]
+        public void SqlLocalDbApi_DefaultLanguageId_Used_By_GetLocalDbError_To_Format_Error_Messages()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Arrange
+                    int hr = SqlLocalDbErrors.AdminRightsRequired;
+                    int traceEventId = 0;
+
+                    int lcid = GetLcidForCulture("en-US");
+                    SqlLocalDbApi.DefaultLanguageId = lcid;
+
+                    // Act
+                    Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("Administrator privileges are required in order to execute this operation.\r\n", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+
+                    // Arrange
+                    lcid = GetLcidForCulture("es-ES");
+                    SqlLocalDbApi.DefaultLanguageId = lcid;
+
+                    // Act
+                    result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("Se requieren privilegios de administrador para ejecutar esta operación.\r\n", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+
+                    // Arrange
+                    lcid = GetLcidForCulture("fr-FR");
+                    SqlLocalDbApi.DefaultLanguageId = lcid;
+
+                    // Act
+                    result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("Des privilèges d'administrateur sont requis pour exécuter cette opération.\r\n", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests that GetLocalDbError() does not mask the original error if the DefaultLanguageId property is not a recognized LCID.")]
+        public void SqlLocalDbApi_GetLocalDbError_Does_Not_Mask_Original_Error_If_DefaultLanguageId_Is_Not_Recognized()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Arrange
+                    int hr = SqlLocalDbErrors.AdminRightsRequired;
+                    int traceEventId = 0;
+
+                    int lcid = GetLcidForCulture("en-GB");  // N.B. A new culture must be used if a future version supports en-GB.
+                    SqlLocalDbApi.DefaultLanguageId = lcid;
+
+                    // Act
+                    Exception result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("An error occurred with SQL Server LocalDB. HRESULT = -1983577826", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+                });
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>
@@ -1372,6 +1459,18 @@ namespace System.Data.SqlLocalDb
         private static string GetInstanceFolderPath(string instanceName)
         {
             return Path.Combine(SqlLocalDbApi.GetInstancesFolderPath(), instanceName);
+        }
+
+        /// <summary>
+        /// Returns the LCID to use for the specified culture.
+        /// </summary>
+        /// <param name="name">The name of the culture to get the LCID for.</param>
+        /// <returns>
+        /// The LCID for the culture specified by <paramref name="name"/>.
+        /// </returns>
+        private static int GetLcidForCulture(string name)
+        {
+            return CultureInfo.GetCultureInfo(name).LCID;
         }
     }
 }

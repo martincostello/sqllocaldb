@@ -205,6 +205,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The current value ({0}) of the {1}.DefaultLanguageId property is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults..
+        /// </summary>
+        internal static string SqlLocalDbApi_InvalidDefaultLanguageIdFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_InvalidDefaultLanguageIdFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
         /// </summary>
         internal static string SqlLocalDbApi_LogCreatedFormat {

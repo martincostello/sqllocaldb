@@ -114,6 +114,20 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Gets or sets the locale ID (LCID) to use for formatting error messages.
+        /// </summary>
+        /// <remarks>
+        /// The default value for this property is zero, in which case the <c>Win32</c> <c>FormatMessage</c> language
+        /// order is used. This property is provided for integrators to specifically override the language used from
+        /// the defaults used by the local installed operating system.
+        /// </remarks>
+        public static int DefaultLanguageId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the version string for the latest installed version of SQL Server LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -1043,28 +1057,6 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Combines the specified strings into a full file system path.
-        /// </summary>
-        /// <param name="paths">An array containing at least two paths to combine.</param>
-        /// <returns>
-        /// The full path created from combining the values in <paramref name="paths"/>.
-        /// </returns>
-        private static string PathCombine(params string[] paths)
-        {
-            Debug.Assert(paths != null, "paths cannot be null.");
-            Debug.Assert(paths.Length > 1, "At least two paths must be specified.");
-
-            string path = Path.Combine(paths[0], paths[1]);
-
-            for (int i = 2; i < paths.Length; i++)
-            {
-                path = Path.Combine(path, paths[i]);
-            }
-
-            return path;
-        }
-
-        /// <summary>
         /// Returns an <see cref="Exception"/> representing the specified LocalDB HRESULT.
         /// </summary>
         /// <param name="hr">The HRESULT returned by the LocalDB API.</param>
@@ -1073,7 +1065,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// An <see cref="Exception"/> representing <paramref name="hr"/>.
         /// </returns>
-        private static Exception GetLocalDbError(int hr, int traceEventId, string instanceName = "")
+        internal static Exception GetLocalDbError(int hr, int traceEventId, string instanceName = "")
         {
             string message;
 
@@ -1093,18 +1085,36 @@ namespace System.Data.SqlLocalDb
             int size = buffer.Capacity;
 
             // Get the description of the error from the LocalDB API.
-            // N.B. This doesn't currently support specifically overriding the language Id.
-            const int DefaultLanaguageId = 0;
-
             int hr2 = NativeMethods.GetLocalDbError(
                 hr,
-                DefaultLanaguageId,
+                DefaultLanguageId,
                 buffer,
                 ref size);
 
-            if (hr2 != 0)
+            if (hr2 == 0)
             {
+                message = buffer.ToString();
+            }
+            else if (hr2 == SqlLocalDbErrors.UnknownLanguageId)
+            {
+                // If the value of DefaultLanaguageId was not understood by the API,
+                // then log an error informing the user. Do not throw an exception in
+                // this case as otherwise we will mask the original exception from the user.
+                Logger.Error(
+                    Logger.TraceEvent.InvalidLanguageId,
+                    SR.SqlLocalDbApi_InvalidDefaultLanguageIdFormat,
+                    DefaultLanguageId,
+                    typeof(SqlLocalDbApi).Name);
+
                 // Use a generic message if getting the message from the API failed
+                message = SRHelper.Format(
+                    SR.SqlLocalDbApi_GenericFailureFormat,
+                    hr);
+            }
+            else
+            {
+                // Use a generic message if getting the message from the API failed.
+                // N.B. That if this occurs, then the original error is masked (although it is logged).
                 message = SRHelper.Format(
                     SR.SqlLocalDbApi_GenericFailureFormat,
                     hr2);
@@ -1117,14 +1127,34 @@ namespace System.Data.SqlLocalDb
                     instanceName);
             }
 
-            message = buffer.ToString();
-
             Logger.Error(traceEventId, message);
 
             return new SqlLocalDbException(
                 message,
                 hr,
                 instanceName);
+        }
+
+        /// <summary>
+        /// Combines the specified strings into a full file system path.
+        /// </summary>
+        /// <param name="paths">An array containing at least two paths to combine.</param>
+        /// <returns>
+        /// The full path created from combining the values in <paramref name="paths"/>.
+        /// </returns>
+        private static string PathCombine(params string[] paths)
+        {
+            Debug.Assert(paths != null, "paths cannot be null.");
+            Debug.Assert(paths.Length > 1, "At least two paths must be specified.");
+
+            string path = Path.Combine(paths[0], paths[1]);
+
+            for (int i = 2; i < paths.Length; i++)
+            {
+                path = Path.Combine(path, paths[i]);
+            }
+
+            return path;
         }
 
         /// <summary>
