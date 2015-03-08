@@ -59,6 +59,11 @@ namespace System.Data.SqlLocalDb
         private static bool _automaticallyDeleteInstanceFiles = SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles;
 
         /// <summary>
+        /// The locale ID (LCID) to use for formatting error messages.
+        /// </summary>
+        private static int _languageId = SqlLocalDbConfig.LanguageId;
+
+        /// <summary>
         /// The options to use when stopping instances of SQL LocalDB.
         /// </summary>
         private static StopInstanceOptions _stopOptions = SqlLocalDbConfig.StopOptions;
@@ -123,8 +128,8 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         public static int LanguageId
         {
-            get;
-            set;
+            get { return _languageId; }
+            set { _languageId = value; }
         }
 
         /// <summary>
@@ -1087,7 +1092,7 @@ namespace System.Data.SqlLocalDb
             // Get the description of the error from the LocalDB API.
             int hr2 = NativeMethods.GetLocalDbError(
                 hr,
-                LanguageId,
+                _languageId,
                 buffer,
                 ref size);
 

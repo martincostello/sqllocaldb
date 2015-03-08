@@ -37,6 +37,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(false, SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(0, SqlLocalDbConfig.LanguageId, "SqlLocalDbConfig.LanguageId is incorrect.");
                     Assert.AreEqual(string.Empty, SqlLocalDbConfig.NativeApiOverrideVersionString, "SqlLocalDbConfig.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, SqlLocalDbConfig.StopOptions, "SqlLocalDbConfig.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromMinutes(1), SqlLocalDbConfig.StopTimeout, "SqlLocalDbConfig.StopTimeout is incorrect.");
@@ -54,6 +55,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(false, SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(0, SqlLocalDbConfig.LanguageId, "SqlLocalDbConfig.LanguageId is incorrect.");
                     Assert.AreEqual(string.Empty, SqlLocalDbConfig.NativeApiOverrideVersionString, "SqlLocalDbConfig.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, SqlLocalDbConfig.StopOptions, "SqlLocalDbConfig.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromMinutes(1), SqlLocalDbConfig.StopTimeout, "SqlLocalDbConfig.StopTimeout is incorrect.");
@@ -71,6 +73,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(true, SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(0, SqlLocalDbConfig.LanguageId, "SqlLocalDbConfig.LanguageId is incorrect.");
                     Assert.AreEqual("11.0", SqlLocalDbConfig.NativeApiOverrideVersionString, "SqlLocalDbConfig.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, SqlLocalDbConfig.StopOptions, "SqlLocalDbConfig.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromMinutes(1), SqlLocalDbConfig.StopTimeout, "SqlLocalDbConfig.StopTimeout is incorrect.");
@@ -88,6 +91,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(true, SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(1036, SqlLocalDbConfig.LanguageId, "SqlLocalDbConfig.LanguageId is incorrect.");
                     Assert.AreEqual("11.0", SqlLocalDbConfig.NativeApiOverrideVersionString, "SqlLocalDbConfig.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, SqlLocalDbConfig.StopOptions, "SqlLocalDbConfig.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromSeconds(30), SqlLocalDbConfig.StopTimeout, "SqlLocalDbConfig.StopTimeout is incorrect.");
@@ -105,6 +109,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(false, SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(1036, SqlLocalDbConfig.LanguageId, "SqlLocalDbConfig.LanguageId is incorrect.");
                     Assert.AreEqual("12.0", SqlLocalDbConfig.NativeApiOverrideVersionString, "SqlLocalDbConfig.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, SqlLocalDbConfig.StopOptions, "SqlLocalDbConfig.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromSeconds(30), SqlLocalDbConfig.StopTimeout, "SqlLocalDbConfig.StopTimeout is incorrect.");

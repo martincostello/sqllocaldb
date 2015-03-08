@@ -1305,6 +1305,7 @@ namespace System.Data.SqlLocalDb
                 {
                     // Assert
                     Assert.AreEqual(true, SqlLocalDbApi.AutomaticallyDeleteInstanceFiles, "SqlLocalDbApi.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(1036, SqlLocalDbApi.LanguageId, "SqlLocalDbApi.LanguageId is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, SqlLocalDbApi.StopOptions, "SqlLocalDbApi.StopOptions is incorrect.");
                     Assert.AreEqual(TimeSpan.FromSeconds(30), SqlLocalDbApi.StopTimeout, "SqlLocalDbApi.StopTimeout is incorrect.");
                 },
@@ -1421,6 +1422,17 @@ namespace System.Data.SqlLocalDb
 
                     // Assert
                     Assert.AreEqual("Des privilèges d'administrateur sont requis pour exécuter cette opération.\r\n", result.Message, "The exception message was not correct for LCID {0}.", lcid);
+                    Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
+
+                    // Arrange
+                    lcid = GetLcidForCulture("de-DE");
+                    SqlLocalDbApi.LanguageId = lcid;
+
+                    // Act
+                    result = SqlLocalDbApi.GetLocalDbError(hr, traceEventId);
+
+                    // Assert
+                    Assert.AreEqual("Zum Ausführen dieses Vorgangs sind Administratorprivilegien erforderlich.\r\n", result.Message, "The exception message was not correct for LCID {0}.", lcid);
                     Assert.AreEqual(hr, result.HResult, "The HResult returned in the exception is incorrect.");
                 });
         }

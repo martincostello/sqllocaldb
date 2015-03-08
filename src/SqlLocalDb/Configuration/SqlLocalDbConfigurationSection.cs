@@ -12,6 +12,7 @@
 
 using System.ComponentModel;
 using System.Configuration;
+using System.Globalization;
 
 namespace System.Data.SqlLocalDb.Configuration
 {
@@ -30,6 +31,11 @@ namespace System.Data.SqlLocalDb.Configuration
         /// The name of the <see cref="AutomaticallyDeleteInstanceFiles"/> configuration attribute.
         /// </summary>
         private const string AutomaticallyDeleteInstanceFilesAttributeName = "automaticallyDeleteInstanceFiles";
+
+        /// <summary>
+        /// The name of the <see cref="Language"/> configuration attribute.
+        /// </summary>
+        private const string LanguageAttributeName = "language";
 
         /// <summary>
         /// The name of the <see cref="LoggerType"/> configuration attribute.
@@ -68,6 +74,17 @@ namespace System.Data.SqlLocalDb.Configuration
         {
             get { return (bool)base[AutomaticallyDeleteInstanceFilesAttributeName]; }
             set { base[AutomaticallyDeleteInstanceFilesAttributeName] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the override language to use to format error messages.
+        /// </summary>
+        [ConfigurationProperty(LanguageAttributeName, IsRequired = false, DefaultValue = null)]
+        [TypeConverter(typeof(CultureInfoConverter))]
+        public CultureInfo Language
+        {
+            get { return base[LanguageAttributeName] as CultureInfo; }
+            set { base[LanguageAttributeName] = value; }
         }
 
         /// <summary>

@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Configuration;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace System.Data.SqlLocalDb.Configuration
@@ -44,6 +45,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(false, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(false, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(false, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.IsNull(result.Language, "SqlLocalDbConfigurationSection.Language is incorrect.");
                     Assert.IsNull(result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(string.Empty, result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
@@ -68,6 +70,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(false, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(false, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(false, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.IsNull(result.Language, "SqlLocalDbConfigurationSection.Language is incorrect.");
                     Assert.IsNull(result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(string.Empty, result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.None, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
@@ -92,6 +95,7 @@ namespace System.Data.SqlLocalDb.Configuration
                     Assert.AreEqual(true, result.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
                     Assert.AreEqual(true, result.IsAutomaticallyDeleteInstanceFilesSpecified, "SqlLocalDbConfigurationSection.IsAutomaticallyDeleteInstanceFilesSpecified is incorrect.");
                     Assert.AreEqual(true, result.IsNativeApiOverrideVersionSpecified, "SqlLocalDbConfigurationSection.IsNativeApiOverrideVersionSpecified is incorrect.");
+                    Assert.AreEqual(CultureInfo.GetCultureInfo("fr-FR"), result.Language, "SqlLocalDbConfigurationSection.Language is incorrect.");
                     Assert.AreEqual(typeof(EmptyLogger), result.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual("11.0", result.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait, result.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");
@@ -109,6 +113,7 @@ namespace System.Data.SqlLocalDb.Configuration
                 () =>
                 {
                     bool automaticallyDeleteInstanceFiles = true;
+                    CultureInfo language = CultureInfo.GetCultureInfo("es-ES");
                     Type loggerType = typeof(EmptyLogger);
                     string nativeApiOverrideVersion = "11.0";
                     StopInstanceOptions stopOptions = StopInstanceOptions.KillProcess | StopInstanceOptions.NoWait;
@@ -118,6 +123,7 @@ namespace System.Data.SqlLocalDb.Configuration
 
                     // Act
                     target.AutomaticallyDeleteInstanceFiles = automaticallyDeleteInstanceFiles;
+                    target.Language = language;
                     target.LoggerType = loggerType;
                     target.NativeApiOverrideVersion = nativeApiOverrideVersion;
                     target.StopOptions = stopOptions;
@@ -125,6 +131,7 @@ namespace System.Data.SqlLocalDb.Configuration
 
                     // Assert
                     Assert.AreEqual(automaticallyDeleteInstanceFiles, target.AutomaticallyDeleteInstanceFiles, "SqlLocalDbConfigurationSection.AutomaticallyDeleteInstanceFiles is incorrect.");
+                    Assert.AreEqual(language, target.Language, "SqlLocalDbConfigurationSection.Language is incorrect.");
                     Assert.AreEqual(loggerType, target.LoggerType, "SqlLocalDbConfigurationSection.LoggerType is incorrect.");
                     Assert.AreEqual(nativeApiOverrideVersion, target.NativeApiOverrideVersion, "SqlLocalDbConfigurationSection.NativeApiOverrideVersion is incorrect.");
                     Assert.AreEqual(stopOptions, target.StopOptions, "SqlLocalDbConfigurationSection.StopOptions is incorrect.");

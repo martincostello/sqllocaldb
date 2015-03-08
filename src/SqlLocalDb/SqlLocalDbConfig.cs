@@ -12,6 +12,7 @@
 
 using System.Configuration;
 using System.Data.SqlLocalDb.Configuration;
+using System.Globalization;
 
 namespace System.Data.SqlLocalDb
 {
@@ -48,6 +49,32 @@ namespace System.Data.SqlLocalDb
         {
             // Use the value fron app.config first, then if not specified try the legacy appSettings setting value
             get { return ConfigSection.IsAutomaticallyDeleteInstanceFilesSpecified ? ConfigSection.AutomaticallyDeleteInstanceFiles : LoadAutomaticDeletionValueFromConfig(); }
+        }
+
+        /// <summary>
+        /// Gets the locale ID (LCID) to use for formatting error messages.
+        /// </summary>
+        internal static int LanguageId
+        {
+            get
+            {
+                CultureInfo culture = ConfigSection.Language;
+
+                if (culture == null)
+                {
+                    // Zero is used by SQL LocalDB to mean to defer to the OS configuration
+                    return 0;
+                }
+
+                // N.B. No checks as to the support of the configured culture's LCID for use
+                // by SQL LocalDB are made here, it is left to the user to ensure that the
+                // culture code they configure is supported. From experimentation, SQL LocalDB
+                // supports the "main" language/region for cultures and not the neutral culture.
+                // For example:
+                // Supported: de-DE, en-US, es-ES, fr-FR;
+                // Not supported: de, en, en-GB, es, es-MX, fr, fr-CA.
+                return culture.LCID;
+            }
         }
 
         /// <summary>
