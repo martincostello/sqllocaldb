@@ -57,7 +57,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="Array"/> of <see cref="String"/> containing the available version(s) of SQL LocalDB.
+        /// Gets an <see cref="IList{T}"/> of <see cref="String"/> containing the available version(s) of SQL LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.

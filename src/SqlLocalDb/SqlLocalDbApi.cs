@@ -183,7 +183,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="Array"/> of <see cref="String"/> containing
+        /// Gets an <see cref="IList{T}"/> of <see cref="String"/> containing
         /// the available versions of SQL LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
