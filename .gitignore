@@ -14,6 +14,7 @@ packages
 StyleCop.Cache
 TestResults
 *.DotSettings
+*.GhostDoc.xml
 *.opensdf
 *.sdf
 *.sln.cache
