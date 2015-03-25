@@ -23,6 +23,7 @@
     <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion)-$(NuGetPrerelease)</NuGetVersion>
     <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
     <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
+    <ChangelogPath>$(SolutionDir)\..\changelog.md</ChangelogPath>
   </PropertyGroup>
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
@@ -41,6 +42,7 @@
   </Target>
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
     <CallTarget Targets="UpdateAssemblyConfiguration" Condition="'$(APPVEYOR_REPO_COMMIT)' != ''" />
+    <CallTarget Targets="SetGitHubReleaseDescription" Condition="'$(APPVEYOR)' != ''" />
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
@@ -181,5 +183,18 @@ File.WriteAllText(AssemblyInfoPath, content);
     </PropertyGroup>
     <Message Text="Restoring NuGet packages..." Importance="normal" />
     <Exec Command="%22$(NuGetExePath)%22 restore %22$(SolutionFile)%22" LogStandardErrorAsError="true" />
+  </Target>
+  <Target Name="SetGitHubReleaseDescription" Condition="Exists('$(ChangelogPath)')">
+    <PropertyGroup>
+      <ReleaseDescription></ReleaseDescription>
+    </PropertyGroup>
+    <ReadLinesFromFile File="$(ChangelogPath)">
+      <Output TaskParameter="Lines" PropertyName="ReleaseDescription" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <ReleaseDescription>$(ReleaseDescription.Substring($(ReleaseDescription.IndexOf(`# SqlLocalDb v$(AssemblyVersion)`))))</ReleaseDescription>
+      <ReleaseDescription>$(ReleaseDescription.Replace(`;`, `\n`))</ReleaseDescription>
+    </PropertyGroup>
+    <Exec Command="appveyor SetVariable -Name %22GitHubReleaseDescription%22 -Value %22$(ReleaseDescription)%22" />
   </Target>
 </Project>
