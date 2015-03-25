@@ -123,7 +123,7 @@
   <UsingTask
     TaskName="UpdateAssemblyConfiguration"
     TaskFactory="CodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll" >
     <ParameterGroup>
       <AssemblyInfoPath Required="true" />
       <CommitId Required="true" />
