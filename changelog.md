@@ -2,6 +2,17 @@
 
 This changelog lists the additions, changes and bug fixes for each version of [SQL LocalDB Wrapper](https://github.com/martincostello/sqllocaldb).
 
+## SqlLocalDb v1.14.0.0
+
+### New Features
+*  Added support for specifying a custom `ILogger` implementation to use in the application configuration file.
+*  Added new `LanguageId` property to the `SqlLocalDbApi` class to allow integrators to override the default behaviour used to select the language used to format error messages from the SQL LocalDB Instance API.
+*  Added `en-GB` resources.
+
+### Bug Fixes
+*  Fixed the HRESULT in an exception message not being formatted in hexadecimal.
+* Fixed some incorrect XML documentation.
+
 ## SqlLocalDb v1.13.0.0
 
 ### New Features
