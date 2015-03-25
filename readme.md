@@ -1,12 +1,8 @@
 # SQL LocalDB Wrapper
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
 
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
-
-[![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
-
-[![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/) [![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
 
 SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft SQL Server LocalDB](http://msdn.microsoft.com/en-us/library/hh510202.aspx) native API from managed code using .NET APIs.
 
