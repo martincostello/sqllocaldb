@@ -22,7 +22,7 @@ test: off
 deploy:
 
   - provider: GitHub
-    release: "SQL LocalDB Wrapper v$(APPVEYOR_REPO_TAG_NAME)"
+    release: "SQL LocalDB Wrapper $(APPVEYOR_REPO_TAG_NAME)"
     description: "$(GitHubReleaseDescription)"
     auth_token:
       secure: mLFHRaYb30++8z/i4iDEkwLI3XzuAfbdbzyWVsxANtzs2aGWMWMuClfUC+QSU6YF
