@@ -129,3 +129,5 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 ## Bug Fixes
 *  Fixed the HRESULT in an exception message not being formatted in hexadecimal.
 * Fixed some incorrect XML documentation.
+
+# SqlLocalDb v1.15.0.0
