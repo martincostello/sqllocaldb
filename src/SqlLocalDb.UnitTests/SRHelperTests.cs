@@ -48,7 +48,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Format() if args is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SRHelper_Format_ThrowsIfArgsIsNull()
+        public void SRHelper_Format_Throws_If_Args_Is_Null()
         {
             // Arrange
             string format = string.Empty;
