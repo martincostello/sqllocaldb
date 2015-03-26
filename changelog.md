@@ -110,24 +110,24 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 ## New Features
 * Added new `system.data.sqlLocalDb` custom configuration section. The settings are documented [here](https://github.com/martincostello/sqllocaldb/wiki/Configuration).
 * Added static `DefaultInstanceName` property to the `SqlLocalDbApi` class.
-*  Added `GetDefaultInstance()` extension method for the `ISqlLocalDbProvider` interface.
+* Added `GetDefaultInstance()` extension method for the `ISqlLocalDbProvider` interface.
 * All references to [CodePlex](https://sqllocaldb.codeplex.com/) in the source code have been updated to [GitHub](https://github.com/martincostello/sqllocaldb).
 
 ## Bug Fixes
-*  Fixed inability to create the default named instances of SQL LocalDB (i.e. `v11.0` or `MSSQLLocalDB`).
+* Fixed inability to create the default named instances of SQL LocalDB (i.e. `v11.0` or `MSSQLLocalDB`).
 * Fixed the `GetOrCreateInstance()` extension method for the `ISqlLocalDbInstance` interface not being able to correctly determine if the instance already exists if the instance name is one of the default instance names.
-*  Fixed directory traversal flaw in the internal `SqlLocalDbApi.DeleteInstanceFiles(string)` method. This was not exploitable by the public API as the native SQL LocalDB Instance API rejects calls to `LocalDBDeleteInstance()` with such names so `DeleteInstanceFiles()` was never called.
+* Fixed directory traversal flaw in the internal `SqlLocalDbApi.DeleteInstanceFiles(string)` method. This was not exploitable by the public API as the native SQL LocalDB Instance API rejects calls to `LocalDBDeleteInstance()` with such names so `DeleteInstanceFiles()` was never called.
 * The path to the native SQL LocalDB Instance API DLL read from the registry is now canonicalized using `System.IO.Path.GetFullPath()` before being used.
 
 # SqlLocalDb v1.14.0.0
 
 ## New Features
-*  Added support for specifying a custom `ILogger` implementation to use in the application configuration file.
-*  Added new `LanguageId` property to the `SqlLocalDbApi` class to allow integrators to override the default behaviour used to select the language used to format error messages from the SQL LocalDB Instance API.
-*  Added `en-GB` resources.
+* Added support for specifying a custom `ILogger` implementation to use in the application configuration file.
+* Added new `LanguageId` property to the `SqlLocalDbApi` class to allow integrators to override the default behaviour used to select the language used to format error messages from the SQL LocalDB Instance API.
+* Added `en-GB` resources.
 
 ## Bug Fixes
-*  Fixed the HRESULT in an exception message not being formatted in hexadecimal.
+* Fixed the HRESULT in an exception message not being formatted in hexadecimal.
 * Fixed some incorrect XML documentation.
 
 # SqlLocalDb v1.15.0.0
