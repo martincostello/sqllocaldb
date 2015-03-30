@@ -131,3 +131,6 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 * Fixed some incorrect XML documentation.
 
 # SqlLocalDb v1.15.0.0
+
+## Changes
+* The assembly now targets .NET 4.0 instead of .NET 3.5.

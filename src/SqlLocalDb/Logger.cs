@@ -18,21 +18,13 @@ namespace System.Data.SqlLocalDb
     /// A class that performs logging for the <c>System.Data.SqlLocalDb</c> assembly.
     /// </summary>
     [DebuggerStepThrough]
-#if NET40
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     public static class Logger
     {
-        #region Constants
-
         /// <summary>
         /// The Trace condition string.
         /// </summary>
         private const string TraceCondition = "TRACE";
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         /// The default <see cref="ILogger"/> to use. This field is read-only.
@@ -43,10 +35,6 @@ namespace System.Data.SqlLocalDb
         /// The <see cref="ILogger"/> to use.
         /// </summary>
         private static ILogger _logger = DefaultLogger;
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Sets the <see cref="ILogger"/> implementation in use by the assembly.
@@ -151,17 +139,11 @@ namespace System.Data.SqlLocalDb
             return logger;
         }
 
-        #endregion
-
-        #region Classes
-
         /// <summary>
         /// A class containing trace event Ids.  This class cannot be inherited.
         /// </summary>
         internal static class TraceEvent
         {
-            #region Fields
-
             /// <summary>
             /// General usage.
             /// </summary>
@@ -296,10 +278,6 @@ namespace System.Data.SqlLocalDb
             /// The value of the <see cref="SqlLocalDbApi.LanguageId"/> property is invalid.
             /// </summary>
             internal static readonly int InvalidLanguageId = 26;
-
-            #endregion
         }
-
-        #endregion
     }
 }

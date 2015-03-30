@@ -12,9 +12,6 @@
 
 using System.Data.Common;
 using System.Runtime.Serialization;
-#if !NET40
-using System.Security.Permissions;
-#endif
 
 namespace System.Data.SqlLocalDb
 {
@@ -24,8 +21,6 @@ namespace System.Data.SqlLocalDb
     [Serializable]
     public class SqlLocalDbException : DbException
     {
-        #region Constants
-
         /// <summary>
         /// The serialization key for the <see cref="ErrorCode"/> property.
         /// </summary>
@@ -36,18 +31,10 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private const string InstanceNameKey = "SqlLocalDbException_InstanceName";
 
-        #endregion
-
-        #region Fields
-
         /// <summary>
         /// The error code associated with the exception, if any.
         /// </summary>
         private readonly int? _errorCode;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbException"/> class.
@@ -138,10 +125,6 @@ namespace System.Data.SqlLocalDb
             this.InstanceName = info.GetString(InstanceNameKey);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets the HRESULT of the error.
         /// </summary>
@@ -160,10 +143,6 @@ namespace System.Data.SqlLocalDb
             protected set;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Sets the <see cref="SerializationInfo"/> with information about the exception.
         /// </summary>
@@ -172,15 +151,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="info"/> parameter is <see langword="null"/>.
         /// </exception>
-        /// <PermissionSet>
-        /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
-        /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
-        /// </PermissionSet>
-#if NET40
         [System.Security.SecurityCritical]
-#else
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-#endif
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -193,7 +164,5 @@ namespace System.Data.SqlLocalDb
             info.AddValue(ErrorCodeKey, _errorCode);
             info.AddValue(InstanceNameKey, this.InstanceName);
         }
-
-        #endregion
     }
 }

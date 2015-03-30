@@ -26,8 +26,6 @@ namespace System.Data.SqlLocalDb
     [SecurityCritical]
     internal static class NativeMethods
     {
-        #region Constants
-
         /// <summary>
         /// The maximum size of SQL Server LocalDB connection string.
         /// </summary>
@@ -57,10 +55,6 @@ namespace System.Data.SqlLocalDb
         /// The name of the Windows Kernel library.
         /// </summary>
         private const string KernelLibName = "kernel32.dll";
-
-        #endregion
-
-        #region Fields
 
         /// <summary>
         /// Synchronization object to protect loading the native library and its functions.
@@ -137,10 +131,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private static Functions.LocalDBUnshareInstance _localDBUnshareInstance;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets the version of the SQL LocalDB native API loaded, if any.
         /// </summary>
@@ -149,10 +139,6 @@ namespace System.Data.SqlLocalDb
             get;
             private set;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
@@ -197,12 +183,6 @@ namespace System.Data.SqlLocalDb
         [DllImport(KernelLibName)]
         [return: MarshalAs(UnmanagedType.Bool)]
         [SecurityCritical]
-#if !NET40
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Security",
-            "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
-            Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
-#endif
         internal static extern bool FreeLibrary(IntPtr handle);
 
         /// <summary>
@@ -449,12 +429,6 @@ namespace System.Data.SqlLocalDb
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
         /// </remarks>
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
-#if !NET40
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Security",
-            "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
-            Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
-#endif
         private static extern IntPtr GetProcAddress(
             SafeLibraryHandle hModule,
             [MarshalAs(UnmanagedType.LPStr)]
@@ -473,12 +447,6 @@ namespace System.Data.SqlLocalDb
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx</c>.
         /// </remarks>
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
-#if !NET40
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Security",
-            "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
-            Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
-#endif
         private static extern SafeLibraryHandle LoadLibrary(
             [MarshalAs(UnmanagedType.LPStr)]
             string lpFileName);
@@ -503,12 +471,6 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         [DllImport(KernelLibName, CallingConvention = CallingConvention.Winapi, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-#if !NET40
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Security",
-            "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule",
-            Justification = "Doesn't apply to .NET 3.5 assemblies. See http://connect.microsoft.com/VisualStudio/feedback/details/729254/bogus-ca5122-warning-about-p-invoke-declarations-should-not-be-safe-critical.")]
-#endif
         private static extern bool IsWow64Process(
             IntPtr hProcess,
             [MarshalAs(UnmanagedType.Bool)]
@@ -763,17 +725,11 @@ namespace System.Data.SqlLocalDb
             return true;
         }
 
-        #endregion
-
-        #region Classes
-
         /// <summary>
         /// A class containing delegates to functions in the SQL LocalDB native API.
         /// </summary>
         private static class Functions
         {
-            #region Delegates
-
             /// <summary>
             /// Creates a new instance of SQL Server LocalDB.
             /// </summary>
@@ -1005,10 +961,6 @@ namespace System.Data.SqlLocalDb
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string pInstanceName,
                 int dwFlags);
-
-            #endregion
         }
-
-        #endregion
     }
 }
