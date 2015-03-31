@@ -4,6 +4,7 @@
 
 .metadata
 .settings
+.vs
 _ReSharper*
 bin
 Bin
