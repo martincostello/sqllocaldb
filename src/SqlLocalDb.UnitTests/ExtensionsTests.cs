@@ -1090,6 +1090,18 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests GetConnectionStringForDefaultModel() throws an exception if the instance has no named pipe.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Extensions_GetConnectionStringForDefaultModel_Throws_If_Instance_Has_No_Named_Pipe()
+        {
+            ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
+
+            // Act and Assert
+            throw ErrorAssert.Throws<InvalidOperationException>(
+                () => instance.GetConnectionStringForDefaultModel());
+        }
+
+        [TestMethod]
         [Description("Tests Restart() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Extensions_Restart_Throws_If_Instance_Is_Null()

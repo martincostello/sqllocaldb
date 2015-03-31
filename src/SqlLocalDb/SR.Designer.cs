@@ -97,6 +97,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No named pipe is associated with the specified SQL LocalDB instance..
+        /// </summary>
+        internal static string Extensions_NoNamedPipe {
+            get {
+                return ResourceManager.GetString("Extensions_NoNamedPipe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to More than one connection string is configured in the application configuration file.  The connection string name must be explicitly specified.  Other connection strings may be inherited from higher-level configuration files such as machine.config..
         /// </summary>
         internal static string Extensions_NoSingleConnectionString {

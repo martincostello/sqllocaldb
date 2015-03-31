@@ -28,8 +28,6 @@ namespace System.Data.SqlLocalDb
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class Extensions
     {
-        #region Constants
-
         /// <summary>
         /// The connection string keyword for the attached database file name.
         /// </summary>
@@ -55,10 +53,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private const string ProviderConnectionStringKeywordName = "Provider Connection String";
 
-        #endregion
-
-        #region Fields
-
         /// <summary>
         /// The <see cref="Type"/> for the type with the name specified by <see cref="EntityConnectionStringBuilderTypeName"/>.
         /// </summary>
@@ -73,10 +67,6 @@ namespace System.Data.SqlLocalDb
         /// The <see cref="PropertyInfo"/> for the <c>ProviderConnectionString</c> property of the type specified by <see cref="EntityConnectionStringBuilderTypeName"/>.
         /// </summary>
         private static PropertyInfo _providerConnectionStringProperty;
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates an instance of <see cref="DbConnection"/> that can be used to connect to the SQL LocalDB instance
@@ -213,8 +203,10 @@ namespace System.Data.SqlLocalDb
         /// <paramref name="instance"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// No connection strings are configured in the application configuration file or more than one
-        /// connection string is configured in the application configuration file.
+        /// No connection strings are configured in the application configuration file, more than one
+        /// connection string is configured in the application configuration file or the value of the
+        /// <see cref="ISqlLocalDbInstance.NamedPipe"/> property of <paramref name="instance"/> is
+        /// <see langword="null"/> or the empty string.
         /// </exception>
         /// <remarks>
         /// Connection strings may be inherited from outside the current application's configuration file, such as from
@@ -278,6 +270,9 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The value of the <see cref="ISqlLocalDbInstance.NamedPipe"/> property of <paramref name="instance"/> is <see langword="null"/> or the empty string.
         /// </exception>
         public static DbConnectionStringBuilder GetConnectionStringForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName, string initialCatalog)
         {
@@ -488,7 +483,11 @@ namespace System.Data.SqlLocalDb
             string initialCatalog)
         {
             Debug.Assert(connectionStringSettings != null, "connectionStringSettings cannot be null.");
-            Debug.Assert(namedPipe != null, "namedPipe cannot be null.");
+
+            if (string.IsNullOrEmpty(namedPipe))
+            {
+                throw new InvalidOperationException(SR.Extensions_NoNamedPipe);
+            }
 
             if (_entityConnectionStringBuilderType == null)
             {
@@ -696,7 +695,5 @@ namespace System.Data.SqlLocalDb
                 value[keyword] = keywordValue;
             }
         }
-
-        #endregion
     }
 }
