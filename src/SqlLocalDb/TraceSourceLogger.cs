@@ -75,22 +75,6 @@ namespace System.Data.SqlLocalDb
         #region Properties
 
         /// <summary>
-        /// Gets a value indicating whether logging is enabled.
-        /// </summary>
-        public static bool Enabled
-        {
-            get
-            {
-                if (!_initialized)
-                {
-                    Initialize();
-                }
-
-                return _enabled;
-            }
-        }
-
-        /// <summary>
         /// Gets the trace source used for the <c>System.Data.SqlLocalDb</c> assembly
         /// if logging is enabled; otherwise <see langword="null"/>.
         /// </summary>
