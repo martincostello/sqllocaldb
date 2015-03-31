@@ -26,8 +26,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public static class SqlLocalDbApi
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The name of the default instance in SQL LocalDB 2012.
         /// </summary>
@@ -72,10 +70,6 @@ namespace System.Data.SqlLocalDb
         /// The timeout for stopping an instance of LocalDB.
         /// </summary>
         private static TimeSpan _stopTimeout = SqlLocalDbConfig.StopTimeout;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether to automatically delete the
@@ -225,10 +219,6 @@ namespace System.Data.SqlLocalDb
                 return (string[])_versions.Clone();
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
@@ -534,7 +524,7 @@ namespace System.Data.SqlLocalDb
             Justification = "Calls a number of methods so is more appropriate as a method.")]
         public static string GetInstancesFolderPath()
         {
-            return PathCombine(
+            return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "Microsoft",
                 "Microsoft SQL Server Local DB",
@@ -1141,28 +1131,6 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Combines the specified strings into a full file system path.
-        /// </summary>
-        /// <param name="paths">An array containing at least two paths to combine.</param>
-        /// <returns>
-        /// The full path created from combining the values in <paramref name="paths"/>.
-        /// </returns>
-        private static string PathCombine(params string[] paths)
-        {
-            Debug.Assert(paths != null, "paths cannot be null.");
-            Debug.Assert(paths.Length > 1, "At least two paths must be specified.");
-
-            string path = Path.Combine(paths[0], paths[1]);
-
-            for (int i = 2; i < paths.Length; i++)
-            {
-                path = Path.Combine(path, paths[i]);
-            }
-
-            return path;
-        }
-
-        /// <summary>
         /// Gets the available versions of SQL LocalDB installed on the local machine.
         /// </summary>
         /// <returns>   
@@ -1277,7 +1245,5 @@ namespace System.Data.SqlLocalDb
         {
             return (T)Marshal.PtrToStructure(ptr, typeof(T));
         }
-
-        #endregion
     }
 }
