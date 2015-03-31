@@ -380,6 +380,42 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests GetConnectionStringForDefaultModel() if no connection strings are configured.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Extensions_GetConnectionStringForDefaultModel_Throws_If_No_Connection_Strings_Configured()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
+
+                    // Act and Assert
+                    throw ErrorAssert.Throws<InvalidOperationException>(
+                        () => instance.GetConnectionStringForDefaultModel());
+                },
+                configurationFile: "ExtensionsTests.NoConnectionStrings.config");
+        }
+
+        [TestMethod]
+        [Description("Tests GetConnectionStringForDefaultModel() if more than one connection string is configured.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Extensions_GetConnectionStringForDefaultModel_Throws_If_Multiple_Connection_Strings_Are_Configured()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    ISqlLocalDbInstance instance = Mock.Of<ISqlLocalDbInstance>();
+
+                    // Act and Assert
+                    throw ErrorAssert.Throws<InvalidOperationException>(
+                        () => instance.GetConnectionStringForDefaultModel());
+                },
+                configurationFile: "ExtensionsTests.MultipleConnectionStrings.config");
+        }
+
+        [TestMethod]
         [Description("Tests GetConnectionStringForModel() if instance is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Extensions_GetConnectionStringForModel_Throws_If_Instance_Is_Null()
@@ -1009,6 +1045,48 @@ namespace System.Data.SqlLocalDb
             // Assert
             string result = value.GetPhysicalFileName();
             Assert.IsNull(result, "SetPhysicalFileName() did not set the correct value.");
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() throws if fileName is invalid.")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Extensions_SetPhysicalFileName_Throws_If_FileName_Is_Invalid()
+        {
+            // Arrange
+            string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+            string fileName = @"\\\\\\";
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentException>(
+                () => value.SetPhysicalFileName(fileName),
+                "fileName");
+        }
+
+        [TestMethod]
+        [Description("Tests SetPhysicalFileName() throws if fileName is not supported.")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Extensions_SetPhysicalFileName_Throws_If_FileName_Is_Not_Supported()
+        {
+            // Arrange
+            string connectionString = @"data source=.;attachdbfilename=MyDatabase.mdf;integrated security=True;MultipleActiveResultSets=True";
+            string fileName = @"\database:mdf";
+
+            // Arrange
+            DbConnectionStringBuilder value = new DbConnectionStringBuilder()
+            {
+                ConnectionString = connectionString,
+            };
+
+            // Act and Assert
+            throw ErrorAssert.Throws<ArgumentException>(
+                () => value.SetPhysicalFileName(fileName),
+                "fileName");
         }
 
         [TestMethod]

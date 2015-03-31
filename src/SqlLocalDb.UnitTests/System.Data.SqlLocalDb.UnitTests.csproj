@@ -110,6 +110,12 @@
     <None Include="Configuration\SqlLocalDbConfigurationSectionTests.DefinedButNotSpecified.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ExtensionsTests.MultipleConnectionStrings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ExtensionsTests.NoConnectionStrings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="LoggerTests.CustomLoggerType.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
