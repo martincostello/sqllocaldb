@@ -145,8 +145,9 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         /// <param name="wszVersion">The LocalDB version, for example 11.0 or 11.0.1094.2.</param>
         /// <param name="pInstanceName">The name for the LocalDB instance to create.</param>
+        /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        internal static int CreateInstance(string wszVersion, string pInstanceName)
+        internal static int CreateInstance(string wszVersion, string pInstanceName, int dwFlags)
         {
             var function = EnsureFunction("LocalDBCreateInstance", ref _localDBCreateInstance);
 
@@ -155,15 +156,16 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(wszVersion, pInstanceName, 0);
+            return function(wszVersion, pInstanceName, dwFlags);
         }
 
         /// <summary>
         /// Deletes the specified SQL Server Express LocalDB instance.
         /// </summary>
         /// <param name="pInstanceName">The name of the LocalDB instance to delete.</param>
+        /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        internal static int DeleteInstance(string pInstanceName)
+        internal static int DeleteInstance(string pInstanceName, int dwFlags)
         {
             var function = EnsureFunction("LocalDBDeleteInstance", ref _localDBDeleteInstance);
 
@@ -172,7 +174,7 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(pInstanceName, 0);
+            return function(pInstanceName, dwFlags);
         }
 
         /// <summary>
@@ -305,8 +307,9 @@ namespace System.Data.SqlLocalDb
         /// <param name="pOwnerSID">The SID of the instance owner.</param>
         /// <param name="pInstancePrivateName">The private name for the LocalDB instance to share.</param>
         /// <param name="pInstanceSharedName">The shared name for the LocalDB instance to share.</param>
+        /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        internal static int ShareInstance(IntPtr pOwnerSID, string pInstancePrivateName, string pInstanceSharedName)
+        internal static int ShareInstance(IntPtr pOwnerSID, string pInstancePrivateName, string pInstanceSharedName, int dwFlags)
         {
             var function = EnsureFunction("LocalDBShareInstance", ref _localDBShareInstance);
 
@@ -315,13 +318,14 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, 0);
+            return function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags);
         }
 
         /// <summary>
         /// Starts the specified SQL Server Express LocalDB instance.
         /// </summary>
         /// <param name="pInstanceName">The name of the LocalDB instance to start.</param>
+        /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <param name="wszSqlConnection">The buffer to store the connection string to the LocalDB instance.</param>
         /// <param name="lpcchSqlConnection">
         /// On input contains the size of the <paramref name="wszSqlConnection"/> buffer in
@@ -329,7 +333,7 @@ namespace System.Data.SqlLocalDb
         /// too small, contains the required buffer size in characters, including any trailing nulls.
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        internal static int StartInstance(string pInstanceName, StringBuilder wszSqlConnection, ref int lpcchSqlConnection)
+        internal static int StartInstance(string pInstanceName, int dwFlags, StringBuilder wszSqlConnection, ref int lpcchSqlConnection)
         {
             var function = EnsureFunction("LocalDBStartInstance", ref _localDBStartInstance);
 
@@ -338,7 +342,7 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(pInstanceName, 0, wszSqlConnection, ref lpcchSqlConnection);
+            return function(pInstanceName, dwFlags, wszSqlConnection, ref lpcchSqlConnection);
         }
 
         /// <summary>
@@ -403,8 +407,11 @@ namespace System.Data.SqlLocalDb
         /// <param name="pInstanceName">
         /// The private name for the LocalDB instance to share.
         /// </param>
+        /// <param name="dwFlags">
+        /// Reserved for future use. Currently should be set to 0.
+        /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
-        internal static int UnshareInstance(string pInstanceName)
+        internal static int UnshareInstance(string pInstanceName, int dwFlags)
         {
             var function = EnsureFunction("LocalDBUnshareInstance", ref _localDBUnshareInstance);
 
@@ -413,7 +420,7 @@ namespace System.Data.SqlLocalDb
                 return SqlLocalDbErrors.NotInstalled;
             }
 
-            return function(pInstanceName, 0);
+            return function(pInstanceName, dwFlags);
         }
 
         /// <summary>

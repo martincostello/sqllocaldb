@@ -47,6 +47,11 @@ namespace System.Data.SqlLocalDb
         private const int MaxVersionLength = (NativeMethods.MAX_LOCALDB_VERSION_LENGTH + 1) * sizeof(char);
 
         /// <summary>
+        /// The value to pass to functions which have a reserved parameter for future use.
+        /// </summary>
+        private const int ReservedValue = 0;
+
+        /// <summary>
         /// The available versions of SQL Server LocalDB installed on the local machine.
         /// </summary>
         private static string[] _versions;
@@ -269,7 +274,7 @@ namespace System.Data.SqlLocalDb
             Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatingFormat, instanceName, version);
 
             InvokeThrowOnError(
-                () => NativeMethods.CreateInstance(version, instanceName),
+                () => NativeMethods.CreateInstance(version, instanceName, ReservedValue),
                 Logger.TraceEvent.CreateInstance,
                 instanceName);
 
@@ -685,7 +690,7 @@ namespace System.Data.SqlLocalDb
                 Marshal.Copy(binaryForm, 0, ptrSid, binaryForm.Length);
 
                 InvokeThrowOnError(
-                    () => NativeMethods.ShareInstance(ptrSid, instanceName, sharedInstanceName),
+                    () => NativeMethods.ShareInstance(ptrSid, instanceName, sharedInstanceName, ReservedValue),
                     Logger.TraceEvent.ShareInstance,
                     instanceName);
 
@@ -726,7 +731,7 @@ namespace System.Data.SqlLocalDb
             int size = buffer.Capacity;
 
             InvokeThrowOnError(
-                () => NativeMethods.StartInstance(instanceName, buffer, ref size),
+                () => NativeMethods.StartInstance(instanceName, ReservedValue, buffer, ref size),
                 Logger.TraceEvent.StartInstance,
                 instanceName);
 
@@ -909,7 +914,7 @@ namespace System.Data.SqlLocalDb
             Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppingSharingFormat, instanceName);
 
             InvokeThrowOnError(
-                () => NativeMethods.UnshareInstance(instanceName),
+                () => NativeMethods.UnshareInstance(instanceName, ReservedValue),
                 Logger.TraceEvent.UnshareInstance,
                 instanceName);
 
@@ -952,7 +957,7 @@ namespace System.Data.SqlLocalDb
 
             Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);
 
-            int hr = NativeMethods.DeleteInstance(instanceName);
+            int hr = NativeMethods.DeleteInstance(instanceName, ReservedValue);
 
             if (hr != 0)
             {
