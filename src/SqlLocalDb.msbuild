@@ -24,6 +24,8 @@
     <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
     <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
     <ChangelogPath>$(SolutionDir)\..\changelog.md</ChangelogPath>
+    <CodeTaskFactoryAssembly Condition="'$(MSBuildToolsVersion)' != '14.0'">$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</CodeTaskFactoryAssembly>
+    <CodeTaskFactoryAssembly Condition="'$(MSBuildToolsVersion)' == '14.0'">$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</CodeTaskFactoryAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
@@ -54,7 +56,9 @@
       <Output PropertyName="_IsCurrentUserAdmin" TaskParameter="IsAdmin" />
     </IsCurrentUserAdmin>
     <PropertyGroup>
-      <TestToolDir Condition="'$(APPVEYOR)' == ''">$(VS120COMNTOOLS)..\IDE\CommonExtensions\Microsoft\TestWindow\</TestToolDir>
+      <VSPath Condition="'$(MSBuildToolsVersion)' != '14.0'">$(VS120COMNTOOLS)</VSPath>
+      <VSPath Condition="'$(MSBuildToolsVersion)' == '14.0'">$(VS140COMNTOOLS)</VSPath>
+      <TestToolDir Condition="'$(APPVEYOR)' == ''">$(VSPath)..\IDE\CommonExtensions\Microsoft\TestWindow\</TestToolDir>
       <TestToolDir Condition="'$(APPVEYOR)' != ''"></TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
@@ -71,7 +75,7 @@
   </Target>
   <UsingTask TaskName="IsCurrentUserAdmin"
              TaskFactory="CodeTaskFactory"
-             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll" >
+             AssemblyFile="$(CodeTaskFactoryAssembly)" >
     <ParameterGroup>
       <IsAdmin ParameterType="System.Boolean" Output="true" />
     </ParameterGroup>
@@ -125,7 +129,7 @@
   <UsingTask
     TaskName="UpdateAssemblyConfiguration"
     TaskFactory="CodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll" >
+    AssemblyFile="$(CodeTaskFactoryAssembly)" >
     <ParameterGroup>
       <AssemblyInfoPath Required="true" />
       <CommitId Required="true" />
