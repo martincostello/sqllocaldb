@@ -454,6 +454,43 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests DeleteUserInstances() does not throw an exception if an instance is in use.")]
+        public void SqlLocalDbApi_DeleteUserInstances_Does_Not_Throw_If_Instance_In_Use()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            string instanceName = Guid.NewGuid().ToString();
+            bool deleteFiles = true;
+
+            SqlLocalDbApi.CreateInstance(instanceName);
+
+            try
+            {
+                SqlLocalDbApi.StartInstance(instanceName);
+
+                try
+                {
+                    // Act
+                    SqlLocalDbApi.DeleteUserInstances(deleteFiles);
+
+                    // Assert
+                    string instancePath = GetInstanceFolderPath(instanceName);
+                    Assert.IsTrue(Directory.Exists(instancePath), "The instance folder was deleted.");
+                    Assert.IsTrue(Directory.GetFiles(instancePath, "*.mdf").Length > 0, "The instance files were deleted.");
+                }
+                finally
+                {
+                    SqlLocalDbApi.StopInstance(instanceName);
+                }
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName, deleteFiles);
+            }
+        }
+
+        [TestMethod]
         [Description("Tests GetInstanceInfo() if instanceName is null.")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SqlLocalDbApi_GetInstanceInfo_Throws_If_InstanceName_Is_Null()
@@ -1292,6 +1329,43 @@ namespace System.Data.SqlLocalDb
                 {
                     Directory.Delete(path, true);
                 }
+            }
+        }
+
+        [TestMethod]
+        [Description("Tests DeleteInstanceFiles() does not throw an exception if an instance's files are in use.")]
+        public void SqlLocalDbApi_DeleteInstanceFiles_Does_Not_Throw_If_Instance_Files_In_Use()
+        {
+            // Arrange
+            Helpers.EnsureLocalDBInstalled();
+
+            string instanceName = Guid.NewGuid().ToString();
+            bool deleteFiles = true;
+
+            SqlLocalDbApi.CreateInstance(instanceName);
+
+            try
+            {
+                SqlLocalDbApi.StartInstance(instanceName);
+
+                try
+                {
+                    // Act
+                    SqlLocalDbApi.DeleteInstanceFiles(instanceName);
+
+                    // Assert
+                    string instancePath = GetInstanceFolderPath(instanceName);
+                    Assert.IsTrue(Directory.Exists(instancePath), "The instance folder was deleted.");
+                    Assert.IsTrue(Directory.GetFiles(instancePath, "*.mdf").Length > 0, "The instance files were deleted.");
+                }
+                finally
+                {
+                    SqlLocalDbApi.StopInstance(instanceName);
+                }
+            }
+            finally
+            {
+                SqlLocalDbApi.DeleteInstance(instanceName, deleteFiles);
             }
         }
 
