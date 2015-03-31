@@ -265,6 +265,78 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden for SQL Server LocalDB 2012.")]
+        public void SqlLocalDbProvider_CreateInstance_Specifies_No_Version_If_Default_Instance_Name_Specified_2012()
+        {
+            // Arrange
+            string instanceName = "v11.0";
+            string version = "1.2.3.4";
+
+            Mock<ISqlLocalDbInstanceInfo> mockInfo = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mockInfo
+                .SetupSequence((p) => p.Exists)
+                .Returns(false)
+                .Returns(true);
+
+            Mock<ISqlLocalDbApi> mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.CreateInstance(instanceName, string.Empty))
+                .Verifiable();
+
+            mock.Setup((p) => p.GetInstanceInfo(instanceName))
+                .Returns(mockInfo.Object)
+                .Verifiable();
+
+            ISqlLocalDbApi localDB = mock.Object;
+
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
+            target.Version = version;
+
+            // Act
+            target.CreateInstance(instanceName);
+
+            // Assert
+            mock.Verify();
+        }
+
+        [TestMethod]
+        [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden for SQL Server LocalDB 2014.")]
+        public void SqlLocalDbProvider_CreateInstance_Specifies_No_Version_If_Default_Instance_Name_Specified_2014()
+        {
+            // Arrange
+            string instanceName = "MSSQLLocalDB";
+            string version = "1.2.3.4";
+
+            Mock<ISqlLocalDbInstanceInfo> mockInfo = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mockInfo
+                .SetupSequence((p) => p.Exists)
+                .Returns(false)
+                .Returns(true);
+
+            Mock<ISqlLocalDbApi> mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.CreateInstance(instanceName, string.Empty))
+                .Verifiable();
+
+            mock.Setup((p) => p.GetInstanceInfo(instanceName))
+                .Returns(mockInfo.Object)
+                .Verifiable();
+
+            ISqlLocalDbApi localDB = mock.Object;
+
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
+            target.Version = version;
+
+            // Act
+            target.CreateInstance(instanceName);
+
+            // Assert
+            mock.Verify();
+        }
+
+        [TestMethod]
         [Description("Tests GetInstance(string).")]
         public void SqlLocalDbProvider_GetInstance_Returns_Specified_Instance()
         {
