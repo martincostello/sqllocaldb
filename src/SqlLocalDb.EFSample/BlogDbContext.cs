@@ -10,13 +10,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace System.Data.SqlLocalDb
 {
-    [DbConfigurationType(typeof(BlogDbConfiguration))]
+	[DbConfigurationType(typeof(BlogDbConfiguration))]
     public class BlogDbContext : DbContext
     {
         public BlogDbContext()
