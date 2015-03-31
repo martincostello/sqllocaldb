@@ -23,16 +23,10 @@ namespace System.Data.SqlLocalDb
     [TestClass]
     public sealed class TestSetup
     {
-        #region Fields
-
         /// <summary>
         /// The SQL LocalDB instance names that existed at the start of the test run.
         /// </summary>
         private static readonly List<string> InstanceNames = new List<string>();
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TestSetup"/> class from being created.
@@ -40,10 +34,6 @@ namespace System.Data.SqlLocalDb
         private TestSetup()
         {
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Initializes the test assembly.
@@ -89,9 +79,15 @@ namespace System.Data.SqlLocalDb
         private static string[] GetInstanceNames()
         {
             string path = SqlLocalDbApi.GetInstancesFolderPath();
-            return Directory.GetDirectories(path);
-        }
 
-        #endregion
+            if (Directory.Exists(path))
+            {
+                return Directory.GetDirectories(path);
+            }
+            else
+            {
+                return new string[0];
+            }
+        }
     }
 }
