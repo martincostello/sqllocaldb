@@ -11,9 +11,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-#if ASYNC
-using System.Threading.Tasks;
-#endif
 
 namespace System.Data.SqlLocalDb
 {
@@ -22,8 +19,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ISqlLocalDbApi
     {
-        #region Properties
-
         /// <summary>
         /// Gets the version string for the latest installed version of SQL Server LocalDB.
         /// </summary>
@@ -39,10 +34,6 @@ namespace System.Data.SqlLocalDb
         {
             get;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
@@ -158,86 +149,5 @@ namespace System.Data.SqlLocalDb
             MessageId = "Unshare",
             Justification = "Matches the name of the native LocalDB API function.")]
         void UnshareInstance(string instanceName);
-
-#if ASYNC
-
-        /// <summary>
-        /// Creates a new instance of SQL Server LocalDB as an asynchronous operation.
-        /// </summary>
-        /// <param name="instanceName">The name of the LocalDB instance.</param>
-        /// <param name="version">The version of SQL Server LocalDB to use.</param>
-        /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation.
-        /// </returns>
-        Task CreateInstanceAsync(string instanceName, string version);
-
-        /// <summary>
-        /// Deletes the specified SQL Server LocalDB instance as an asynchronous operation.
-        /// </summary>
-        /// <param name="instanceName">
-        /// The name of the LocalDB instance to delete.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation.
-        /// </returns>
-        Task DeleteInstanceAsync(string instanceName);
-
-        /// <summary>
-        /// Shares the specified SQL Server LocalDB instance with other users of the
-        /// computer, using the specified shared name, as an asynchronous operation.
-        /// </summary>
-        /// <param name="ownerSid">The SID of the instance owner.</param>
-        /// <param name="instanceName">The private name for the LocalDB instance to share.</param>
-        /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share.</param>
-        /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation.
-        /// </returns>
-        Task ShareInstanceAsync(string ownerSid, string instanceName, string sharedInstanceName);
-
-        /// <summary>
-        /// Starts the specified instance of SQL Server LocalDB as an asynchronous operation.
-        /// </summary>
-        /// <param name="instanceName">The name of the LocalDB instance to start.</param>
-        /// <returns>
-        /// A <see cref="Task{T}"/> representing the asynchronous operation which returns the
-        /// named pipe to use to connect to the LocalDB instance.
-        /// </returns>
-        Task<string> StartInstanceAsync(string instanceName);
-
-        /// <summary>
-        /// Stops the specified instance of SQL Server LocalDB as an asynchronous operation.
-        /// </summary>
-        /// <param name="instanceName">
-        /// The name of the LocalDB instance to stop.
-        /// </param>
-        /// <param name="timeout">
-        /// The amount of time to give the LocalDB instance to stop.
-        /// If the value is <see cref="TimeSpan.Zero"/>, the method will
-        /// return immediately and not wait for the instance to stop.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation.
-        /// </returns>
-        Task StopInstanceAsync(string instanceName, TimeSpan timeout);
-
-        /// <summary>
-        /// Stops the sharing of the specified SQL Server LocalDB instance as an asynchronous operation.
-        /// </summary>
-        /// <param name="instanceName">
-        /// The private name for the LocalDB instance to share.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> representing the asynchronous operation.
-        /// </returns>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly",
-            MessageId = "Unshare",
-            Justification = "Matches the name of the native LocalDB API function.")]
-        Task UnshareInstanceAsync(string instanceName);
-
-#endif
-
-        #endregion
     }
 }
