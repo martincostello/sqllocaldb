@@ -17,7 +17,7 @@ namespace System.Data.SqlLocalDb
     /// <summary>
     /// A class representing an implementation of <see cref=""/> that uses <c>log4net</c>. This class cannot be inherited.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    [Diagnostics.CodeAnalysis.SuppressMessage(
         "Microsoft.Performance",
         "CA1812:AvoidUninstantiatedInternalClasses",
         Justification = "Instantiated via reflection.")]
