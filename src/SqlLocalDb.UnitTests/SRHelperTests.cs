@@ -61,10 +61,10 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Format().")]
-        public void SRHelper_Format_Formats_Parameters()
+        public async Task SRHelper_Format_Formats_Parameters()
         {
             // Arrange
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
                     // Use a non-default culture
@@ -87,7 +87,7 @@ namespace System.Data.SqlLocalDb
                         value.ToString(culture),
                         result,
                         "Format() returned incorrect result.");
-                }).Wait();
+                });
         }
     }
 }
