@@ -22,6 +22,10 @@ namespace System.Data.SqlLocalDb
     /// A class containing unit tests for the <see cref="SqlLocalDbApi"/> class.
     /// </summary>
     [TestClass]
+    [Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Maintainability",
+        "CA1506:AvoidExcessiveClassCoupling",
+        Justification = "Coupling is mostly related to System.IO.* members used to validate instance creation/deletion.")]
     public class SqlLocalDbApiTests
     {
         /// <summary>
