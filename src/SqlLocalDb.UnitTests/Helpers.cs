@@ -152,7 +152,7 @@ namespace System.Data.SqlLocalDb
             /// Sets the <see cref="ILogger"/> implementation in use by the <see cref="AppDomain"/>.
             /// </summary>
             /// <param name="logger">The <see cref="ILogger"/> to use.</param>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            [Diagnostics.CodeAnalysis.SuppressMessage(
                 "Microsoft.Performance",
                 "CA1822:MarkMembersAsStatic",
                 Justification = "This is an instance method to allow calling it across AppDomain boundaries.")]

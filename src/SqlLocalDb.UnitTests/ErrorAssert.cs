@@ -10,7 +10,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,8 +25,6 @@ namespace System.Data.SqlLocalDb
     /// </remarks>
     internal static class ErrorAssert
     {
-        #region Methods
-
         /// <summary>
         /// Verifies that the specified delegate throws an exception of the specified
         /// type derived from <see cref="ArgumentException"/>.
@@ -143,7 +140,7 @@ namespace System.Data.SqlLocalDb
         private static T Invoke<T>(Action testCode)
             where T : Exception
         {
-            Contract.Requires(testCode != null);
+            Diagnostics.Debug.Assert(testCode != null, "testCode cannot be null.");
 
             try
             {
@@ -155,7 +152,5 @@ namespace System.Data.SqlLocalDb
                 return e;
             }
         }
-
-        #endregion
     }
 }

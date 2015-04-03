@@ -404,7 +404,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests Unshare().")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -481,7 +481,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests Unshare() throws an exception if it has been disposed.")]
         [ExpectedException(typeof(ObjectDisposedException))]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Naming",
             "CA1704:IdentifiersShouldBeSpelledCorrectly",
             MessageId = "Unshare",
@@ -529,7 +529,7 @@ namespace System.Data.SqlLocalDb
         /// to occur if the <see cref="TemporarySqlLocalDbInstance"/> instance has already been disposed.
         /// </summary>
         /// <param name="action">A delegate to a method to invoke for an instance of <see cref="TemporarySqlLocalDbInstance"/>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
             Justification = "The test is designed to test this scenario.")]

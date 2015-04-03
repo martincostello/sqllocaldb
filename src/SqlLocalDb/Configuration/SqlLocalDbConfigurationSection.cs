@@ -152,7 +152,7 @@ namespace System.Data.SqlLocalDb.Configuration
         /// <returns>
         /// An instance of <see cref="SqlLocalDbConfigurationSection"/> read from the current application configuration file.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Design",
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires loading the entire configuration file, which may be non-trivial.")]

@@ -151,7 +151,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="info"/> parameter is <see langword="null"/>.
         /// </exception>
-        [System.Security.SecurityCritical]
+        [Security.SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)

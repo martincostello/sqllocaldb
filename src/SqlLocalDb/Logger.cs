@@ -18,7 +18,7 @@ namespace System.Data.SqlLocalDb
     /// A class that performs logging for the <c>System.Data.SqlLocalDb</c> assembly.
     /// </summary>
     [DebuggerStepThrough]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Logger
     {
         /// <summary>
