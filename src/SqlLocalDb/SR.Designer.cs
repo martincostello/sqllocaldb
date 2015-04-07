@@ -187,6 +187,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The configured SQL LocalDB Instance API override version &apos;{0}&apos; cannot be found on {1}..
+        /// </summary>
+        internal static string NativeMethods_OverrideVersionNotFoundFormat {
+            get {
+                return ResourceManager.GetString("NativeMethods_OverrideVersionNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not open registry key &apos;{0}&apos;..
         /// </summary>
         internal static string NativeMethods_RegistryKeyNotFoundFormat {

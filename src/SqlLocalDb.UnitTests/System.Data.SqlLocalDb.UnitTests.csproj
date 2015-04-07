@@ -131,6 +131,9 @@
     <None Include="SqlLocalDbApiTests.DefaultInstanceName.2014.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SqlLocalDbApiTests.InvalidOverrideVersion.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SqlLocalDbApiTests.PropertiesOverridden.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

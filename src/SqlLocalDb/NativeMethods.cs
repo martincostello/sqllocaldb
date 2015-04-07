@@ -699,6 +699,16 @@ namespace System.Data.SqlLocalDb
                     }
                 }
 
+                if (!string.IsNullOrEmpty(overrideVersionString) && overrideVersion == null)
+                {
+                    Logger.Warning(
+                        Logger.TraceEvent.NativeApiVersionOverrideNotFound,
+                        SR.NativeMethods_OverrideVersionNotFoundFormat,
+                        overrideVersionString,
+                        Environment.MachineName,
+                        latestVersion);
+                }
+
                 Version versionToUse = overrideVersion ?? latestVersion;
 
                 if (versionToUse != null)

@@ -278,6 +278,11 @@ namespace System.Data.SqlLocalDb
             /// The value of the <see cref="SqlLocalDbApi.LanguageId"/> property is invalid.
             /// </summary>
             internal static readonly int InvalidLanguageId = 26;
+
+            /// <summary>
+            /// The version of the native SQL LocalDB API specified as the override by the user cannot be found.
+            /// </summary>
+            internal static readonly int NativeApiVersionOverrideNotFound = 27;
         }
     }
 }

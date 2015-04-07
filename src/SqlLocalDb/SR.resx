@@ -297,4 +297,7 @@
   <data name="Extensions_NoNamedPipe" xml:space="preserve">
     <value>No named pipe is associated with the specified SQL LocalDB instance.</value>
   </data>
+  <data name="NativeMethods_OverrideVersionNotFoundFormat" xml:space="preserve">
+    <value>The configured SQL LocalDB Instance API override version '{0}' cannot be found on {1}.</value>
+  </data>
 </root>

@@ -1563,6 +1563,23 @@ namespace System.Data.SqlLocalDb
                 });
         }
 
+        [TestMethod]
+        [Description("Tests that the latest version is loaded if the configured override version is invalid.")]
+        public void SqlLocalDbApi_Loads_Latest_Version_If_Configured_Override_Version_Is_Invalid()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    string result = SqlLocalDbApi.LatestVersion;
+
+                    // Assert
+                    Assert.AreEqual(new Version(result), NativeMethods.NativeApiVersion, "The SQL LocalDB Instance API was not loaded with an invalid override version.");
+                },
+                configurationFile: "SqlLocalDbApiTests.InvalidOverrideVersion.config");
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>

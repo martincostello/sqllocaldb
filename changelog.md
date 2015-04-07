@@ -134,3 +134,4 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 
 ## Changes
 * The assembly now targets .NET 4.0 instead of .NET 3.5.
+* A warning is logged if the configured version of the SQL LocalDB Instance API to load instead of the latest version cannot be found.
