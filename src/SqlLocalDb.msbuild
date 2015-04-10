@@ -48,7 +48,7 @@
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
     <CallTarget Targets="Test" Condition="'$(RunTests)' == 'true'" />
-    <CallTarget Targets="CreateZipFile" Condition="'$(CreateZip)' == 'true'" />
+    <CallTarget Targets="CreateZipFiles" Condition="'$(CreateZip)' == 'true'" />
     <CallTarget Targets="CreateNuGetPackage" Condition="'$(CreatePackage)' == 'true'" />
   </Target>
   <Target Name="Test">
@@ -93,13 +93,21 @@
     </Task>
   </UsingTask>
   <UsingTask TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
-  <Target Name="CreateZipFile">
+  <Target Name="CreateZipFiles">
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
       <FilesToZip Include="$(OutDir)\en-GB\System.Data.SqlLocalDb.resources.dll" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
+    <ItemGroup>
+      <FilesToZip Include="$(OutDir)\log4net.dll" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.pdb" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.TestApp.exe" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.TestApp.exe.config" />
+      <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.TestApp.pdb" />
+    </ItemGroup>
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).TestApp.zip" />
   </Target>
   <Target Name="CreateNuGetPackage">
     <RemoveDir Directories="$(OutDir)\src" />
