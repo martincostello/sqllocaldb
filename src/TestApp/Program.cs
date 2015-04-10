@@ -25,11 +25,12 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// The main entry point to the application.
         /// </summary>
+        /// <param name="args">The command-line arguments passed to the application.</param>
         [Diagnostics.CodeAnalysis.SuppressMessage(
             "Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times",
             Justification = "It isn't.")]
-        internal static void Main()
+        internal static void Main(string[] args)
         {
             PrintBanner();
 
@@ -39,6 +40,13 @@ namespace System.Data.SqlLocalDb
             {
                 Console.WriteLine(SR.SqlLocalDbApi_NotInstalledFormat, Environment.MachineName);
                 return;
+            }
+
+            if (args != null &&
+                args.Length == 1 &&
+                string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase))
+            {
+                SqlLocalDbApi.DeleteUserInstances(deleteFiles: true);
             }
 
             ISqlLocalDbProvider provider = new SqlLocalDbProvider();
