@@ -133,5 +133,6 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 # SqlLocalDb v1.15.0.0
 
 ## Changes
+* Fixed inability to load the SQL LocalDB Instance API DLL on x86 machines ([Bug #1](https://github.com/martincostello/sqllocaldb/issues/1)).
 * The assembly now targets .NET 4.0 instead of .NET 3.5.
 * A warning is logged if the configured version of the SQL LocalDB Instance API to load instead of the latest version cannot be found.
