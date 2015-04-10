@@ -459,31 +459,6 @@ namespace System.Data.SqlLocalDb
             string lpFileName);
 
         /// <summary>
-        /// Determines whether the specified process is running under WOW64.
-        /// </summary>
-        /// <param name="hProcess">A handle to the process.</param>
-        /// <param name="Wow64Process">
-        /// A pointer to a value that is set to <see langword="true"/> if the
-        /// process is running under WOW64. If the process is running under 32-bit
-        /// Windows, the value is set to <see langword="false"/>. If the process
-        /// is a 64-bit application running under 64-bit Windows, the value is also
-        /// set to <see langword="false"/>.
-        /// </param>
-        /// <returns>
-        /// If the function succeeds, the return value is a non-zero value.
-        /// If the function fails, the return value is zero.
-        /// </returns>
-        /// <remarks>
-        /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx</c>.
-        /// </remarks>
-        [DllImport(KernelLibName, CallingConvention = CallingConvention.Winapi, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool IsWow64Process(
-            IntPtr hProcess,
-            [MarshalAs(UnmanagedType.Bool)]
-            out bool Wow64Process);
-
-        /// <summary>
         /// Ensures that the specified delegate to an unmanaged function is initialized.
         /// </summary>
         /// <typeparam name="T">The type of the delegate representing the unmanaged function.</typeparam>
@@ -584,43 +559,6 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Returns whether the current process is a WOW64 process.
-        /// </summary>
-        /// <returns>
-        /// <see langword="true"/> if the current process is a WOW64
-        /// process; otherwise <see langword="false"/>.
-        /// </returns>
-        private static bool IsWow64Process()
-        {
-            if (IntPtr.Size == 8)
-            {
-                return false;
-            }
-
-            // This function is not supported before Windows XP
-            if ((Environment.OSVersion.Version.Major == 5 &&
-                 Environment.OSVersion.Version.Minor >= 1) ||
-                Environment.OSVersion.Version.Major >= 6)
-            {
-                using (Process process = Process.GetCurrentProcess())
-                {
-                    bool wow64Process;
-
-                    if (!IsWow64Process(process.Handle, out wow64Process))
-                    {
-                        return false;
-                    }
-
-                    return wow64Process;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Tries to obtaining the path to the latest version of the SQL LocalDB
         /// native API DLL for the currently executing process.
         /// </summary>
@@ -636,11 +574,13 @@ namespace System.Data.SqlLocalDb
         {
             fileName = null;
 
+            bool isWow64Process = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
+
             // Open the appropriate Registry key if running as a 32-bit process on a 64-bit machine
             string keyName = string.Format(
                 CultureInfo.InvariantCulture,
                 @"SOFTWARE\{0}Microsoft\Microsoft SQL Server Local DB\Installed Versions",
-                IsWow64Process() ? @"Wow6432Node\" : string.Empty);
+                isWow64Process ? @"Wow6432Node\" : string.Empty);
 
             RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, false);
 
