@@ -117,6 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Program_BannerFormat" xml:space="preserve">
+    <value>{0} Test Application
+{1}
+
+Operating System:               {2}
+Is 64-bit Operating System?     {3}
+Is 64-bit Process?              {4}
+Image Runtime Version:          {5}
+Assembly Version:               {6}
+Assembly File Version:          {7}
+Assembly Informational Version: {8}
+Assembly Configuration:         {9}</value>
+  </data>
   <data name="Program_ExitPrompt" xml:space="preserve">
     <value>Press any key to exit...</value>
   </data>

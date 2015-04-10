@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Security.Principal;
 
 namespace System.Data.SqlLocalDb
@@ -30,6 +31,8 @@ namespace System.Data.SqlLocalDb
             Justification = "It isn't.")]
         internal static void Main()
         {
+            PrintBanner();
+
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
 
             if (!localDB.IsLocalDBInstalled())
@@ -138,6 +141,28 @@ namespace System.Data.SqlLocalDb
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
+        }
+
+        /// <summary>
+        /// Prints a banner to the console containing assembly and operating system information.
+        /// </summary>
+        private static void PrintBanner()
+        {
+            Assembly assembly = typeof(SqlLocalDbApi).Assembly;
+            AssemblyName assemblyName = assembly.GetName();
+
+            Console.WriteLine(
+                Strings.Program_BannerFormat,
+                assemblyName.Name,
+                assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright,
+                Environment.OSVersion,
+                Environment.Is64BitOperatingSystem,
+                Environment.Is64BitProcess,
+                assembly.ImageRuntimeVersion,
+                assemblyName.Version,
+                assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version,
+                assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
+                assembly.GetCustomAttribute<AssemblyConfigurationAttribute>().Configuration);
         }
     }
 }
