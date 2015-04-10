@@ -121,14 +121,16 @@
     <value>{0} Test Application
 {1}
 
-Operating System:               {2}
-Is 64-bit Operating System?     {3}
-Is 64-bit Process?              {4}
-Image Runtime Version:          {5}
-Assembly Version:               {6}
-Assembly File Version:          {7}
-Assembly Informational Version: {8}
-Assembly Configuration:         {9}
+Assembly Version:               {2}
+Assembly File Version:          {3}
+Assembly Informational Version: {4}
+Assembly Configuration:         {5}
+Image Runtime Version:          {6}
+Windows User:                   {7}\{8}
+Does User Have Admin Token?     {9}
+Operating System:               {10}
+Is 64-bit Operating System?     {11}
+Is 64-bit Process?              {12}
 </value>
   </data>
   <data name="Program_ExitPrompt" xml:space="preserve">

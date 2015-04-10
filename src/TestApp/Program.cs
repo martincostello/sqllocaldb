@@ -163,14 +163,17 @@ namespace System.Data.SqlLocalDb
                 Strings.Program_BannerFormat,
                 assemblyName.Name,
                 assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright,
-                Environment.OSVersion,
-                Environment.Is64BitOperatingSystem,
-                Environment.Is64BitProcess,
-                assembly.ImageRuntimeVersion,
                 assemblyName.Version,
                 assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version,
                 assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
-                assembly.GetCustomAttribute<AssemblyConfigurationAttribute>().Configuration);
+                assembly.GetCustomAttribute<AssemblyConfigurationAttribute>().Configuration,
+                assembly.ImageRuntimeVersion,
+                Environment.UserDomainName,
+                Environment.UserName,
+                IsCurrentUserAdmin(),
+                Environment.OSVersion,
+                Environment.Is64BitOperatingSystem,
+                Environment.Is64BitProcess);
         }
     }
 }
