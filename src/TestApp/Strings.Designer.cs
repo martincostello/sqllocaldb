@@ -71,7 +71,8 @@ namespace System.Data.SqlLocalDb {
         ///Assembly Version:               {6}
         ///Assembly File Version:          {7}
         ///Assembly Informational Version: {8}
-        ///Assembly Configuration:         {9}.
+        ///Assembly Configuration:         {9}
+        ///.
         /// </summary>
         internal static string Program_BannerFormat {
             get {

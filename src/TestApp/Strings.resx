@@ -128,7 +128,8 @@ Image Runtime Version:          {5}
 Assembly Version:               {6}
 Assembly File Version:          {7}
 Assembly Informational Version: {8}
-Assembly Configuration:         {9}</value>
+Assembly Configuration:         {9}
+</value>
   </data>
   <data name="Program_ExitPrompt" xml:space="preserve">
     <value>Press any key to exit...</value>
