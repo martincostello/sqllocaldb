@@ -101,7 +101,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbVersionInfo.Name
         {
-            get { return Text.Encoding.Unicode.GetString(this.Name).TrimEnd(new char[] { '\0' }); }
+            get { return NativeMethods.MarshalString(this.Name); }
         }
 
         /// <summary>

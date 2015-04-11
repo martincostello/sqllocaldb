@@ -57,6 +57,11 @@ namespace System.Data.SqlLocalDb
         private const string KernelLibName = "kernel32.dll";
 
         /// <summary>
+        /// An array containing the '\0' character. This field is read-only.
+        /// </summary>
+        private static readonly char[] _nullArray = new char[] { '\0' };
+
+        /// <summary>
         /// Synchronization object to protect loading the native library and its functions.
         /// </summary>
         private static readonly object _syncRoot = new object();
@@ -421,6 +426,19 @@ namespace System.Data.SqlLocalDb
             }
 
             return function(pInstanceName, dwFlags);
+        }
+
+        /// <summary>
+        /// Marshals the specified <see cref="Array"/> of <see cref="Byte"/> to a <see cref="String"/>.
+        /// </summary>
+        /// <param name="bytes">The array to marshal as a <see cref="String"/>.</param>
+        /// <returns>
+        /// A <see cref="String"/> representation of <paramref name="bytes"/>.
+        /// </returns>
+        internal static string MarshalString(byte[] bytes)
+        {
+            Debug.Assert(bytes != null, "bytes cannot be null.");
+            return Encoding.Unicode.GetString(bytes).TrimEnd(_nullArray);
         }
 
         /// <summary>

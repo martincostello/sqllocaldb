@@ -12,7 +12,6 @@
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace System.Data.SqlLocalDb
 {
@@ -234,7 +233,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbInstanceInfo.Name
         {
-            get { return Encoding.Unicode.GetString(this.InstanceName).TrimEnd(new char[] { '\0' }); }
+            get { return NativeMethods.MarshalString(this.InstanceName); }
         }
 
         /// <summary>
@@ -242,7 +241,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbInstanceInfo.NamedPipe
         {
-            get { return Encoding.Unicode.GetString(this.Connection).TrimEnd(new char[] { '\0' }); }
+            get { return NativeMethods.MarshalString(this.Connection); }
         }
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbInstanceInfo.OwnerSid
         {
-            get { return Encoding.Unicode.GetString(this.OwnerSID).TrimEnd(new char[] { '\0' }); }
+            get { return NativeMethods.MarshalString(this.OwnerSID); }
         }
 
         /// <summary>
@@ -258,7 +257,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         string ISqlLocalDbInstanceInfo.SharedName
         {
-            get { return Encoding.Unicode.GetString(this.SharedInstanceName).TrimEnd(new char[] { '\0' }); }
+            get { return NativeMethods.MarshalString(this.SharedInstanceName); }
         }
 
         /// <summary>
