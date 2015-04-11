@@ -26,8 +26,6 @@ namespace System.Data.SqlLocalDb
     [StructLayout(LayoutKind.Sequential)]
     internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     {
-        #region Fields
-
         /// <summary>
         /// The size of an unmanaged type in bytes.  This field is read-only.
         /// </summary>
@@ -165,10 +163,6 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         internal bool IsAutomatic;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether the Registry configuration is corrupt.
         /// </summary>
@@ -271,12 +265,10 @@ namespace System.Data.SqlLocalDb
         /// Gets the name to display in the debugger
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [DebuggerNonUserCode]    // Use to hide from Code Coverage
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private string DebuggerDisplayName
         {
             get { return ((ISqlLocalDbInstanceInfo)this).Name; }
         }
-
-        #endregion
     }
 }
