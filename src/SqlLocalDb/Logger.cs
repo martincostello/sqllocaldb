@@ -132,8 +132,23 @@ namespace System.Data.SqlLocalDb
             }
             else
             {
-                // This cast is safe as the configuration section validates that the type implements ILogger
-                logger = (ILogger)Activator.CreateInstance(loggerType, nonPublic: true);
+                try
+                {
+                    // This cast is safe as the configuration section validates that the type implements ILogger
+                    logger = (ILogger)Activator.CreateInstance(loggerType, nonPublic: true);
+                }
+                catch (System.Reflection.TargetInvocationException ex)
+                {
+                    // Log directly to Trace if we cannot create the custom ILogger
+                    Trace.TraceError(SR.Logger_FailedToCreateCustomLoggerFormat, loggerType.AssemblyQualifiedName, (ex.InnerException ?? ex).Message);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    // Log directly to Trace if we cannot create the custom ILogger
+                    Trace.TraceError(SR.Logger_FailedToCreateCustomLoggerFormat, loggerType.AssemblyQualifiedName, ex.Message);
+                    throw;
+                }
             }
 
             return logger;

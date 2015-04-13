@@ -300,4 +300,7 @@
   <data name="NativeMethods_OverrideVersionNotFoundFormat" xml:space="preserve">
     <value>The configured SQL LocalDB Instance API override version '{0}' cannot be found on {1}.</value>
   </data>
+  <data name="Logger_FailedToCreateCustomLoggerFormat" xml:space="preserve">
+    <value>Failed to create an instance of type '{0}': {1}</value>
+  </data>
 </root>

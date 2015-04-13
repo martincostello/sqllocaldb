@@ -115,6 +115,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to create an instance of type &apos;{0}&apos;: {1}.
+        /// </summary>
+        internal static string Logger_FailedToCreateCustomLoggerFormat {
+            get {
+                return ResourceManager.GetString("Logger_FailedToCreateCustomLoggerFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB native API version to load was overridden by the user to {0}..
         /// </summary>
         internal static string NativeMethods_ApiVersionOverriddenByUserFormat {
