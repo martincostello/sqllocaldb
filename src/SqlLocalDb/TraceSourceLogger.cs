@@ -279,6 +279,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="args">
         /// An object array containing zero or more objects to format.
         /// </param>
+        [Conditional("TRACE")]
         private static void WriteEvent(TraceEventType traceLevel, int id, string format, params object[] args)
         {
             if (ValidateSettings(Source, traceLevel))
