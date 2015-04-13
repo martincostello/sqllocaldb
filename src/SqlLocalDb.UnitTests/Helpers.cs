@@ -91,12 +91,15 @@ namespace System.Data.SqlLocalDb
                     }
                 }
 
-                // Create an instance of the type that configures logging in the new AppDomain
-                Type helperType = typeof(LoggingHelper);
-                var handle = domain.CreateInstanceFrom(helperType.Assembly.Location, helperType.FullName);
+                if (Logger.DefaultLogger.GetType().IsMarshalByRef)
+                {
+                    // Create an instance of the type that configures logging in the new AppDomain
+                    Type helperType = typeof(LoggingHelper);
+                    var handle = domain.CreateInstanceFrom(helperType.Assembly.Location, helperType.FullName);
 
-                var helper = (LoggingHelper)handle.Unwrap();
-                helper.SetLogger(TraceSourceLogger.Instance);
+                    var helper = (LoggingHelper)handle.Unwrap();
+                    helper.SetLogger(Logger.DefaultLogger);
+                }
 
                 domain.DoCallBack(callBackDelegate);
             }

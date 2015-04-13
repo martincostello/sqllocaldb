@@ -22,14 +22,14 @@ namespace System.Data.SqlLocalDb
     public static class Logger
     {
         /// <summary>
+        /// The default <see cref="ILogger"/> to use. This field is read-only.
+        /// </summary>
+        internal static readonly ILogger DefaultLogger = CreateDefaultLogger();
+
+        /// <summary>
         /// The Trace condition string.
         /// </summary>
         private const string TraceCondition = "TRACE";
-
-        /// <summary>
-        /// The default <see cref="ILogger"/> to use. This field is read-only.
-        /// </summary>
-        private static readonly ILogger DefaultLogger = CreateDefaultLogger();
 
         /// <summary>
         /// The <see cref="ILogger"/> to use.
