@@ -21,8 +21,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal sealed class TraceSourceLogger : MarshalByRefObject, ILogger
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The singleton instance of <see cref="TraceSourceLogger"/>.  This field is read-only.
         /// </summary>
@@ -58,10 +56,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private static TraceSource _traceSource;
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
         /// Prevents a default instance of the <see cref="TraceSourceLogger"/> class from being created.
         /// </summary>
@@ -69,10 +63,6 @@ namespace System.Data.SqlLocalDb
             : base()
         {
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the trace source used for the <c>System.Data.SqlLocalDb</c> assembly
@@ -113,10 +103,6 @@ namespace System.Data.SqlLocalDb
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Writes an error trace event to the trace listeners for the assembly's trace source.
         /// </summary>
@@ -130,10 +116,7 @@ namespace System.Data.SqlLocalDb
         /// </param>
         public void WriteError(int id, string format, params object[] args)
         {
-            if (ValidateSettings(Source, TraceEventType.Error))
-            {
-                Source.TraceEvent(TraceEventType.Error, id, format, args);
-            }
+            WriteEvent(TraceEventType.Error, id, format, args);
         }
 
         /// <summary>
@@ -149,10 +132,7 @@ namespace System.Data.SqlLocalDb
         /// </param>
         public void WriteInformation(int id, string format, params object[] args)
         {
-            if (ValidateSettings(Source, TraceEventType.Information))
-            {
-                Source.TraceEvent(TraceEventType.Information, id, format, args);
-            }
+            WriteEvent(TraceEventType.Information, id, format, args);
         }
 
         /// <summary>
@@ -168,10 +148,7 @@ namespace System.Data.SqlLocalDb
         /// </param>
         public void WriteVerbose(int id, string format, params object[] args)
         {
-            if (ValidateSettings(Source, TraceEventType.Verbose))
-            {
-                Source.TraceEvent(TraceEventType.Verbose, id, format, args);
-            }
+            WriteEvent(TraceEventType.Verbose, id, format, args);
         }
 
         /// <summary>
@@ -187,10 +164,7 @@ namespace System.Data.SqlLocalDb
         /// </param>
         public void WriteWarning(int id, string format, params object[] args)
         {
-            if (ValidateSettings(Source, TraceEventType.Warning))
-            {
-                Source.TraceEvent(TraceEventType.Warning, id, format, args);
-            }
+            WriteEvent(TraceEventType.Warning, id, format, args);
         }
 
         /// <summary>
@@ -293,6 +267,24 @@ namespace System.Data.SqlLocalDb
             return true;
         }
 
-        #endregion
+        /// <summary>
+        /// Writes a trace event to the trace listeners for the assembly's trace source.
+        /// </summary>
+        /// <param name="traceLevel">The trace level to log at.</param>
+        /// <param name="id">A numeric identifier for the event.</param>
+        /// <param name="format">
+        /// A composite format string that contains text intermixed with zero or more
+        /// format items, which correspond to objects in the args array.
+        /// </param>
+        /// <param name="args">
+        /// An object array containing zero or more objects to format.
+        /// </param>
+        private static void WriteEvent(TraceEventType traceLevel, int id, string format, params object[] args)
+        {
+            if (ValidateSettings(Source, traceLevel))
+            {
+                Source.TraceEvent(traceLevel, id, format, args);
+            }
+        }
     }
 }
