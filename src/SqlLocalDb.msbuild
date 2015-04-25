@@ -30,13 +30,13 @@
     <PlatformsToBuild Include="Any CPU" />
   </ItemGroup>
   <Target Name="Clean">
-    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)" />
   </Target>
   <Target Name="Build" DependsOnTargets="RestorePackages">
-    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Build" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="RestorePackages">
-    <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)"/>
+    <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)" />
   </Target>
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
     <CallTarget Targets="UpdateAssemblyConfiguration" Condition="'$(APPVEYOR_REPO_COMMIT)' != ''" />
@@ -76,7 +76,7 @@
       <IsAdmin ParameterType="System.Boolean" Output="true" />
     </ParameterGroup>
     <Task>
-      <Using Namespace="System.Security.Principal"/>
+      <Using Namespace="System.Security.Principal" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
         using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
@@ -167,7 +167,7 @@
       <CommitId Required="true" />
     </ParameterGroup>
     <Task>
-      <Using Namespace="System.IO"/>
+      <Using Namespace="System.IO" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
 string content = File.ReadAllText(AssemblyInfoPath);
