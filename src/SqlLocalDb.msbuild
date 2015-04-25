@@ -17,10 +17,6 @@
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
     <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
-    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == '' and '$(CI)' != '' and '$(APPVEYOR_REPO_TAG)' == 'false'">beta$(APPVEYOR_BUILD_NUMBER)</NuGetPrerelease>
-    <NuGetPrerelease Condition="'$(NuGetPrerelease)' == ''"></NuGetPrerelease>
-    <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion.Substring(0, $(AssemblyVersion.LastIndexOf(`.`))))</NuGetVersion>
-    <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion)-$(NuGetPrerelease)</NuGetVersion>
     <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
     <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
     <ChangelogPath>$(SolutionDir)\..\changelog.md</ChangelogPath>
@@ -110,6 +106,34 @@
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).TestApp.zip" />
   </Target>
   <Target Name="CreateNuGetPackage">
+    <PropertyGroup>
+      <!--
+        The path of the file containing the released file versions of the assembly.
+      -->
+      <_ReleasesFileName>$(SolutionDir)\..\releases.txt</_ReleasesFileName>
+    </PropertyGroup>
+    <!--
+      If this is an AppVeyor CI build that is not associated with a tag
+      (i.e. not a build for release), then determine the pre-release version
+      number to use by calculating the build number offset from the build
+      number of the last released version compared to this build number.
+    -->
+    <GetPrereleaseVersionForCIBuild Condition="'$(NuGetPrerelease)' == '' and '$(CI)' != '' and '$(APPVEYOR_REPO_TAG)' == 'false' and '$(APPVEYOR_BUILD_NUMBER)' != ''"
+                                    AssemblyVersion="$(AssemblyVersion)"
+                                    CIBuildNumber="$(APPVEYOR_BUILD_NUMBER)"
+                                    ReleasesFileName="$(_ReleasesFileName)">
+      <Output PropertyName="_PrereleaseVersion" TaskParameter="PrereleaseVersion" />
+    </GetPrereleaseVersionForCIBuild>
+    <!--
+      Update the NuGet prerelease version if one was determined from the build number.
+    -->
+    <PropertyGroup Condition="'$(NuGetPrerelease)' == '' and '$(_PrereleaseVersion)' != ''">
+      <NuGetPrerelease>beta$(_PrereleaseVersion)</NuGetPrerelease>
+    </PropertyGroup>
+    <PropertyGroup>
+      <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion.Substring(0, $(AssemblyVersion.LastIndexOf(`.`))))</NuGetVersion>
+      <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion)-$(NuGetPrerelease)</NuGetVersion>
+    </PropertyGroup>
     <RemoveDir Directories="$(OutDir)\src" />
     <ItemGroup>
       <SourceFiles Include="$(SolutionDir)\*.cs;$(SolutionDir)\**\SqlLocalDb\**\*.cs" Exclude="$(SolutionDir)\**\obj\**\*.cs" />
@@ -209,4 +233,38 @@ File.WriteAllText(AssemblyInfoPath, content);
     </PropertyGroup>
     <Exec Command="appveyor SetVariable -Name %22GitHubReleaseDescription%22 -Value %22$(ReleaseDescription)%22" />
   </Target>
+  <UsingTask TaskName="GetPrereleaseVersionForCIBuild"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(CodeTaskFactoryAssembly)" >
+    <ParameterGroup>
+      <AssemblyVersion Required="true" />
+      <CIBuildNumber Required="true" />
+      <ReleasesFileName Required="true" />
+      <PrereleaseVersion ParameterType="System.Int32" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        string lastReleasedVersionString = System.IO.File.ReadAllLines(ReleasesFileName).Last();
+        Version lastReleasedVersion = new Version(lastReleasedVersionString);
+        Version thisVersion = new Version(AssemblyVersion);
+        int thisBuildNumber = int.Parse(CIBuildNumber, System.Globalization.CultureInfo.InvariantCulture);
+        
+        if (lastReleasedVersion.Major == thisVersion.Major &&
+            lastReleasedVersion.Minor == thisVersion.Minor)
+        {
+            // If the version number has not increased, just use the build
+            // number as its guaranteed to be larger than the last number
+            PrereleaseVersion = thisBuildNumber;
+        }
+        else
+        {
+            // Determine the offset between this build and the build of the last version
+            PrereleaseVersion = thisBuildNumber - lastReleasedVersion.Build;
+        }
+      ]]>
+      </Code>
+    </Task>
+  </UsingTask>
 </Project>
