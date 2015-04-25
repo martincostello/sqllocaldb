@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--
+  MSBuild project for building the SQL LocalDB Wrapper assembly and NuGet packages.
+-->
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)AssemblyVersion.targets" />
+  <!--
+    By default build the Release version with Visual Studio 2013 tooling
+    and place in the BuildOutput directory, then run the automated tests.
+  -->
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
     <PlatformToolset>v120</PlatformToolset>
     <SqlLocalDbRoot>$(MSBuildProjectDirectory)\</SqlLocalDbRoot>
     <OutDir>$(SqlLocalDbRoot)BuildOutput\</OutDir>
+    <OutDir>$([System.IO.Path]::GetFullPath('$(OutDir)'))</OutDir>
     <SolutionFile>$(SqlLocalDbRoot)SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
     <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
+  </PropertyGroup>
+  <!--
+    By default all compiler and static analysis warnings are treated as errors.
+  -->
+  <PropertyGroup>
     <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)' == ''">true</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings Condition="'$(SourceAnalysisTreatErrorsAsWarnings)' == ''">false</SourceAnalysisTreatErrorsAsWarnings>
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <!--
+    Set properties to determine whether to build the NuGet packages
+    and ZIP files. By default, only AppVeyor CI builds do this.
+  -->
+  <PropertyGroup>
     <SignOff Condition="'$(SignOff)' == ''">false</SignOff>
     <CreatePackage Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreatePackage>
     <CreatePackage Condition="'$(CreatePackage)' == ''">false</CreatePackage>
     <CreateZip Condition="'$(SignOff)' == 'true' or '$(CI)' != ''">true</CreateZip>
     <CreateZip Condition="'$(CreateZip)' == ''">false</CreateZip>
-    <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
-    <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
-    <ChangelogPath>$(SolutionDir)\..\changelog.md</ChangelogPath>
+  </PropertyGroup>
+  <!--
+    Define property for the assembly for in-line tasks so that the solution compiles correctly in Visual Studio 2015.
+  -->
+  <PropertyGroup>
     <CodeTaskFactoryAssembly Condition="'$(MSBuildToolsVersion)' != '14.0'">$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</CodeTaskFactoryAssembly>
     <CodeTaskFactoryAssembly Condition="'$(MSBuildToolsVersion)' == '14.0'">$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</CodeTaskFactoryAssembly>
   </PropertyGroup>
+  <!--
+    Set the build properties to pass through to MSBuild to compile the solution.
+  -->
   <PropertyGroup>
     <BuildProperties>Configuration=$(Configuration);CodeAnalysisTreatWarningsAsErrors=$(CodeAnalysisTreatWarningsAsErrors);SourceAnalysisTreatErrorsAsWarnings=$(SourceAnalysisTreatErrorsAsWarnings);TreatWarningsAsErrors=$(TreatWarningsAsErrors)</BuildProperties>
   </PropertyGroup>
+  <!--
+    Define which platforms to build for. This is a legacy from when
+    there were x86 and x64 platforms for compiling a C/C++ interop DLL,
+    but retaining for if it is needed again in a future version.
+  -->
   <ItemGroup>
     <PlatformsToBuild Include="Any CPU" />
   </ItemGroup>
+  <!--
+    Define the targets for cleaning and (re)building with appropriate target dependencies.
+  -->
   <Target Name="Clean">
     <MSBuild Projects="$(SolutionFile)" Targets="Clean" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)" />
   </Target>
@@ -39,7 +71,13 @@
     <MSBuild Projects="$(SolutionFile)" Targets="Rebuild" Properties="$(BuildProperties);Platform=%(PlatformsToBuild.Identity);OutDir=$(OutDir)" />
   </Target>
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild">
+    <!--
+      If there is a Git commit ID available update the [AssemblyConfiguration] attribute to contain it.
+    -->
     <CallTarget Targets="UpdateAssemblyConfiguration" Condition="'$(APPVEYOR_REPO_COMMIT)' != ''" />
+    <!--
+      If this is an AppVeyor CI build set the release description to use for creating a GitHub release.
+    -->
     <CallTarget Targets="SetGitHubReleaseDescription" Condition="'$(APPVEYOR)' != ''" />
   </Target>
   <Target Name="AfterBuild" AfterTargets="Build;Rebuild">
@@ -47,31 +85,60 @@
     <CallTarget Targets="CreateZipFiles" Condition="'$(CreateZip)' == 'true'" />
     <CallTarget Targets="CreateNuGetPackage" Condition="'$(CreatePackage)' == 'true'" />
   </Target>
+  <!--
+    Target that runs the automated tests using MSTest.
+  -->
   <Target Name="Test">
+    <!--
+      Determine whether the current process has administrator rights.
+      If it does not, then do not run tests that require them to prevent
+      the test run from failing due to Inconclusive test results.
+    -->
     <IsCurrentUserAdmin>
       <Output PropertyName="_IsCurrentUserAdmin" TaskParameter="IsAdmin" />
     </IsCurrentUserAdmin>
+    <!--
+      Find the MSTest console runner on the local machine for the appropriate Visual Studio version.
+    -->
     <PropertyGroup>
       <VSPath Condition="'$(MSBuildToolsVersion)' != '14.0'">$(VS120COMNTOOLS)</VSPath>
       <VSPath Condition="'$(MSBuildToolsVersion)' == '14.0'">$(VS140COMNTOOLS)</VSPath>
       <TestToolDir Condition="'$(APPVEYOR)' == ''">$(VSPath)..\IDE\CommonExtensions\Microsoft\TestWindow\</TestToolDir>
       <TestToolDir Condition="'$(APPVEYOR)' != ''"></TestToolDir>
       <TestToolName>vstest.console.exe</TestToolName>
+    </PropertyGroup>
+    <!--
+      Set the appropriate MSTest options for the test run.
+    -->
+    <PropertyGroup>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
       <TestOptions Condition="!$(_IsCurrentUserAdmin)">$(TestOptions) /TestCaseFilter:TestCategory!="Requires Administrative Permissions"</TestOptions>
+      <!--
+        If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
+      -->
       <TestOptions Condition="'$(APPVEYOR)' != ''">$(TestOptions) /logger:Appveyor</TestOptions>
     </PropertyGroup>
+    <!--
+      Find the test assemblies and declare the platforms to test for.
+      The assembly is AnyCPU but is tested running under MSTest for
+      32-bit and 64-bit to test that the P/Invoke code works correctly.
+    -->
     <ItemGroup>
       <TestContainer Include="$(OutDir)\*test*.dll" />
       <PlatformsToTest Include="x86" />
       <PlatformsToTest Include="x64" />
     </ItemGroup>
+    <!--
+      Run MSTest for each test assembly.
+    -->
     <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
   </Target>
-  <UsingTask TaskName="IsCurrentUserAdmin"
-             TaskFactory="CodeTaskFactory"
-             AssemblyFile="$(CodeTaskFactoryAssembly)" >
+  <!--
+    Task that determines whether the user associated with
+    the current process has administrative privileges.
+  -->
+  <UsingTask TaskName="IsCurrentUserAdmin" TaskFactory="CodeTaskFactory" AssemblyFile="$(CodeTaskFactoryAssembly)" >
     <ParameterGroup>
       <IsAdmin ParameterType="System.Boolean" Output="true" />
     </ParameterGroup>
@@ -88,14 +155,23 @@
       </Code>
     </Task>
   </UsingTask>
+  <!--
+    Creates the ZIP files containing the build output.
+  -->
   <UsingTask TaskName="MSBuild.ExtensionPack.Compression.Zip" AssemblyFile="$(SolutionDir)Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" />
   <Target Name="CreateZipFiles">
+    <!--
+      Create the ZIP file containing the compiled assembly.
+    -->
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.xml" />
       <FilesToZip Include="$(OutDir)\en-GB\System.Data.SqlLocalDb.resources.dll" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).zip" />
+    <!--
+      Create the ZIP file containing the compiled assembly, the PDBs and the test application.
+    -->
     <ItemGroup>
       <FilesToZip Include="$(OutDir)\log4net.dll" />
       <FilesToZip Include="$(OutDir)\System.Data.SqlLocalDb.pdb" />
@@ -105,6 +181,9 @@
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(FilesToZip)" RemoveRoot="$(OutDir)" ZipFileName="$(OutDir)SqlLocalDb_$(AssemblyVersion).TestApp.zip" />
   </Target>
+  <!--
+    Creates the NuGet packages for the assembly.
+  -->
   <Target Name="CreateNuGetPackage">
     <PropertyGroup>
       <!--
@@ -130,21 +209,35 @@
     <PropertyGroup Condition="'$(NuGetPrerelease)' == '' and '$(_PrereleaseVersion)' != ''">
       <NuGetPrerelease>beta$(_PrereleaseVersion)</NuGetPrerelease>
     </PropertyGroup>
+    <!--
+      Set the NuGet package version, trimming off the revision number from
+      the assembly version and adding the pre-release version if required.
+    -->
     <PropertyGroup>
       <NuGetVersion Condition="'$(NuGetVersion)' == ''">$(AssemblyVersion.Substring(0, $(AssemblyVersion.LastIndexOf(`.`))))</NuGetVersion>
       <NuGetVersion Condition="'$(NuGetPrerelease)' != ''">$(NuGetVersion)-$(NuGetPrerelease)</NuGetVersion>
     </PropertyGroup>
+    <!--
+      Copy the C# source code for the assembly to the output
+      directory, deleting any previous compile's source files first.
+    -->
     <RemoveDir Directories="$(OutDir)\src" />
     <ItemGroup>
       <SourceFiles Include="$(SolutionDir)\*.cs;$(SolutionDir)\**\SqlLocalDb\**\*.cs" Exclude="$(SolutionDir)\**\obj\**\*.cs" />
     </ItemGroup>
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
+    <!--
+      Create the NuGet packages from the nuspec file.
+    -->
     <PropertyGroup>
       <NuGetTool>$(SolutionDir)\Tools\NuGet\NuGet.exe</NuGetTool>
       <NuSpecFile>$(OutDir)SqlLocalDb.nuspec</NuSpecFile>
     </PropertyGroup>
-    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(OutDir)\src\%(RecursiveDir)" />
     <Exec Command="$(NuGetTool) pack %22$(NuSpecFile)%22 -Properties AssemblyVersion=$(NuGetVersion) -OutputDirectory $(OutDir) -Symbols" StandardOutputImportance="high" />
   </Target>
+  <!--
+    Delete any ZIP/NuGet-related files when doing a Clean.
+  -->
   <Target Name="CleanArchiveFiles" AfterTargets="Clean">
     <CreateItem Include="$(OutDir)\*.nupkg">
       <Output TaskParameter="Include" ItemName="ArchiveWrites" />
@@ -155,6 +248,10 @@
     <Delete Files="@(ArchiveWrites)" />
     <RemoveDir Directories="$(OutDir)\src" />
   </Target>
+  <!--
+    Updates the source code to include the GitHub commit
+    SHA in the [AssemblyConfiguration] attribute.
+  -->
   <Target Name="UpdateAssemblyConfiguration">
     <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" />
   </Target>
@@ -170,14 +267,30 @@
       <Using Namespace="System.IO" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
-string content = File.ReadAllText(AssemblyInfoPath);
-content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "\")]");
-File.WriteAllText(AssemblyInfoPath, content);
-]]>
+          string content = File.ReadAllText(AssemblyInfoPath);
+          content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "\")]");
+          File.WriteAllText(AssemblyInfoPath, content);
+        ]]>
       </Code>
     </Task>
   </UsingTask>
+  <!--
+    Set properties for builds for Coverity static analysis.
+  -->
+  <PropertyGroup>
+    <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
+    <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
+  </PropertyGroup>
+  <!--
+    Build the assembly using the Coverity compiler.
+  -->
   <Target Name="BuildCoverity">
+    <!--
+      The Coverity compiler is very large so is not included in the Git repository.
+      It must be downloaded separately onto the local machine and the CoverityToolDir
+      property either set using an environment variable or on the MSBuild command line.
+      The Coverity tool can be downloaded from here: https://scan.coverity.com/download/csharp/win_64
+    -->
     <PropertyGroup>
       <CoverityToolDir Condition="'$(CoverityToolDir)' == ''"></CoverityToolDir>
       <CoverityTool Condition="'$(CoverityTool)' == ''">$(CoverityToolDir)\cov-build.exe</CoverityTool>
@@ -186,6 +299,9 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)Build.cmd%22 /t:Rebuild /p:RunTests=false" />
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(CoverityOutputDir)" RemoveRoot="$(OutDir)" ZipFileName="$(CoverityZipFile)" />
   </Target>
+  <!--
+    Delete any previous Coverity compilation.
+  -->
   <Target Name="CleanCoverity" AfterTargets="Clean">
     <CreateItem Include="$(CoverityZipFile)">
       <Output TaskParameter="Include" ItemName="CoverityWrites" />
@@ -193,24 +309,45 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Delete Files="@(CoverityWrites)" />
     <RemoveDir Directories="$(CoverityOutputDir)" />
   </Target>
+  <!--
+    Upload the previously Coverity-compiled assemblies for static analysis.
+  -->
   <Target Name="UploadCoverity">
+    <!--
+      Set Coverity project properties and cURL commands for upload.
+    -->
     <PropertyGroup>
       <CurlToolPath>$(SqlLocalDbRoot)Tools\Curl\curl.exe</CurlToolPath>
       <CoverityBuildDescription Condition="'$(CoverityBuildDescription)' == ''">$(AssemblyVersion)</CoverityBuildDescription>
-      <CoverityEmail Condition="'$(CoverityEmail)' == ''"></CoverityEmail>
       <CoverityProjectName Condition="'$(CoverityProjectName)' == ''">martincostello%2Fsqllocaldb</CoverityProjectName>
-      <CoverityProjectToken Condition="'$(CoverityProjectToken)' == ''"></CoverityProjectToken>
       <CoverityProjectUrl Condition="'$(CoverityProjectUrl)' == ''">https://scan.coverity.com/builds?project=martincostello%2Fsqllocaldb</CoverityProjectUrl>
       <CoverityUploadCommand>%22$(CurlToolPath)%22 --form project=$(CoverityProjectName) --form token=$(CoverityProjectToken) --form email=$(CoverityEmail) --form file=@$(CoverityZipFile) --form version="$(AssemblyVersion)" --form description="$(CoverityBuildDescription)" $(CoverityProjectUrl) --insecure</CoverityUploadCommand>
     </PropertyGroup>
+    <!--
+      The email and project token must be either set using
+      an environment variable or on the MSBuild command line.
+    -->
+    <PropertyGroup>
+      <CoverityEmail Condition="'$(CoverityEmail)' == ''"></CoverityEmail>
+      <CoverityProjectToken Condition="'$(CoverityProjectToken)' == ''"></CoverityProjectToken>
+    </PropertyGroup>
+    <!--
+      Validate properties before attempting a build upload.
+    -->
     <Error Condition="'$(CoverityEmail)' == ''" Text="The CoverityEmail property is not defined." />
     <Error Condition="'$(CoverityProjectToken)' == ''" Text="The CoverityProjectToken property is not defined." />
     <Error Condition="!Exists('$(CurlToolPath)')" Text="The upload tool cannot be found." />
     <Error Condition="!Exists('$(CoverityZipFile)')" Text="The Coverity ZIP file cannot be found." />
+    <!--
+      Upload the last compilation to Coverity for static analysis.
+    -->
     <Message Text="Uploading '$(CoverityZipFile)' to Coverity for static analysis..." Importance="high" />
     <Exec Command="$(CoverityUploadCommand)" StandardErrorImportance="low" StandardOutputImportance="low" />
     <Message Text="Uploaded '$(CoverityZipFile)' to Coverity for static analysis." Importance="high" />
   </Target>
+  <!--
+    Restores the NuGet package dependencies.
+  -->
   <Target Name="RestorePackages">
     <PropertyGroup>
       <NuGetToolsPath>$([System.IO.Path]::Combine($(SolutionDir), "Tools", "NuGet"))</NuGetToolsPath>
@@ -220,19 +357,44 @@ File.WriteAllText(AssemblyInfoPath, content);
     <Message Text="Restoring NuGet packages..." Importance="normal" />
     <Exec Command="%22$(NuGetExePath)%22 restore %22$(SolutionFile)%22" LogStandardErrorAsError="true" />
   </Target>
+  <!--
+    Sets up the release description to use when creating a GitHub release from an AppVeyor CI build.
+    The release description is set by reading the details for the current version from the changelog.md Markdown file
+  -->
+  <PropertyGroup>
+    <ChangelogPath>$(SolutionDir)\..\changelog.md</ChangelogPath>
+  </PropertyGroup>
   <Target Name="SetGitHubReleaseDescription" Condition="Exists('$(ChangelogPath)')">
     <PropertyGroup>
       <ReleaseDescription></ReleaseDescription>
     </PropertyGroup>
+    <!--
+      Read in the Markdown from the changelog.
+    -->
     <ReadLinesFromFile File="$(ChangelogPath)">
       <Output TaskParameter="Lines" PropertyName="ReleaseDescription" />
     </ReadLinesFromFile>
+    <!--
+      Find the lines associated with this version in the changelog
+      and fix up the formatting so it renders correctly in GitHub.
+    -->
     <PropertyGroup>
       <ReleaseDescription>$(ReleaseDescription.Substring($(ReleaseDescription.IndexOf(`# SqlLocalDb v$(AssemblyVersion)`))))</ReleaseDescription>
       <ReleaseDescription>$(ReleaseDescription.Replace(`;`, `\n`))</ReleaseDescription>
     </PropertyGroup>
+    <!--
+      Use the AppVeyor tool to call out of the MSBuild process and
+      set the release description into an environment variable so
+      AppVeyor can reference it when it creates the GitHub release
+      later in the build process when MSBuild is no longer running.
+    -->
     <Exec Command="appveyor SetVariable -Name %22GitHubReleaseDescription%22 -Value %22$(ReleaseDescription)%22" />
   </Target>
+  <!--
+    Determines the build number relative to the assembly version number
+    by using the release history file which contains the build numbers
+    associated with each released version of the assembly.
+  -->
   <UsingTask TaskName="GetPrereleaseVersionForCIBuild"
              TaskFactory="CodeTaskFactory"
              AssemblyFile="$(CodeTaskFactoryAssembly)" >
