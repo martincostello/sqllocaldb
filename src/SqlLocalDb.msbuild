@@ -279,22 +279,106 @@
   -->
   <PropertyGroup>
     <CoverityOutputDir Condition="'$(CoverityOutputDir)' == ''">$(OutDir)cov-int</CoverityOutputDir>
+    <CoverityProjectName Condition="'$(CoverityProjectName)' == ''">martincostello%2Fsqllocaldb</CoverityProjectName>
+    <CoverityToolDir Condition="'$(CoverityToolDir)' == ''">$(SqlLocalDbRoot)Tools\Coverity\</CoverityToolDir>
     <CoverityZipFile Condition="'$(CoverityZipFile)' == ''">$(OutDir)SqlLocalDb_$(AssemblyVersion).Coverity.zip</CoverityZipFile>
+    <CurlToolPath>$(SqlLocalDbRoot)Tools\Curl\curl.exe</CurlToolPath>
   </PropertyGroup>
   <!--
-    Build the assembly using the Coverity compiler.
-  -->
-  <Target Name="BuildCoverity">
-    <!--
-      The Coverity compiler is very large so is not included in the Git repository.
-      It must be downloaded separately onto the local machine and the CoverityToolDir
-      property either set using an environment variable or on the MSBuild command line.
-      The Coverity tool can be downloaded from here: https://scan.coverity.com/download/csharp/win_64
+      The email and project token must be either set using
+      an environment variable or on the MSBuild command line.
     -->
     <PropertyGroup>
-      <CoverityToolDir Condition="'$(CoverityToolDir)' == ''"></CoverityToolDir>
-      <CoverityTool Condition="'$(CoverityTool)' == ''">$(CoverityToolDir)\cov-build.exe</CoverityTool>
+      <CoverityEmail Condition="'$(CoverityEmail)' == ''"></CoverityEmail>
+      <CoverityProjectToken Condition="'$(CoverityProjectToken)' == ''"></CoverityProjectToken>
     </PropertyGroup>
+  <!--
+    Downloads the Coverity compiler from the internet.
+  -->
+  <Target Name="DownloadCoverity">
+    <PropertyGroup>
+      <CoverityToolZipFile>$(CoverityToolDir)Coverity.zip</CoverityToolZipFile>
+      <CoverityToolZipMD5File>$(CoverityToolDir)Coverity.zip.md5</CoverityToolZipMD5File>
+      <CoverityDownloadUri>https://scan.coverity.com/download/csharp/win_64</CoverityDownloadUri>
+      <CoverityDownloadCommand>%22$(CurlToolPath)%22 --silent --form project=$(CoverityProjectName) --form token=$(CoverityProjectToken) $(CoverityDownloadUri) -o %22$(CoverityToolZipFile)%22</CoverityDownloadCommand>
+      <CoverityMD5Command>%22$(CurlToolPath)%22 --silent --form project=$(CoverityProjectName) --form md5=1 --form token=$(CoverityProjectToken) $(CoverityDownloadUri) -o %22$(CoverityToolZipMD5File)%22</CoverityMD5Command>
+    </PropertyGroup>
+    <ItemGroup>
+      <OldCoverityDirectories Include="$([System.IO.Directory]::GetDirectories('$(CoverityToolDir)'))" />
+    </ItemGroup>
+    <!--
+      Validate properties before attempting download.
+    -->
+    <Error Condition="'$(CoverityProjectToken)' == ''" Text="The CoverityProjectToken property is not defined." />
+    <!--
+      Create the Coverity tool directory if it does not exist.
+    -->
+    <MakeDir Condition="!Exists('$(CoverityToolDir)')" Directories="$(CoverityToolDir)" />
+    <!--
+      If the ZIP file containing the Coverity tool already exists
+      check its MD5 to see whether it is the latest version.
+    -->
+    <Message Condition="Exists('$(CoverityToolZipFile)')" Text="Checking for an updated version of the Coverity tool..." Importance="high" />
+    <Exec Condition="Exists('$(CoverityToolZipFile)')" Command="$(CoverityMD5Command)" />
+    <ReadLinesFromFile Condition="Exists('$(CoverityToolZipMD5File)')" File="$(CoverityToolZipMD5File)">
+      <Output TaskParameter="Lines" PropertyName="CoverityLatestMD5" />
+    </ReadLinesFromFile>
+    <Delete Condition="Exists('$(CoverityToolZipMD5File)')" Files="$(CoverityToolZipMD5File)" />
+    <!--
+      If the Coverity ZIP file exists locally, compute its MD5 hash.
+    -->
+    <ComputeMD5Hash Condition="Exists('$(CoverityToolZipFile)')" FileName="$(CoverityToolZipFile)">
+      <Output TaskParameter="MD5Hash" PropertyName="CoverityLocalMD5" />
+    </ComputeMD5Hash>    
+    <!--
+      Determine whether the ZIP file we already have locally is up-to-date.
+    -->
+    <PropertyGroup>
+      <_IsLatestCoverityTool Condition="'$(CoverityLocalMD5)' != '' and '$(CoverityLocalMD5)' == '$(CoverityLatestMD5)'">true</_IsLatestCoverityTool>
+      <_IsLatestCoverityTool Condition="'$(CoverityLocalMD5)' == '' or '$(CoverityLocalMD5)' != '$(CoverityLatestMD5)'">false</_IsLatestCoverityTool>
+    </PropertyGroup>
+    <!--
+      If the file doesn't exist then download it.
+    -->
+    <Message Condition="!Exists('$(CoverityToolZipFile)')" Text="Downloading '$(CoverityToolZipFile)'..." Importance="high" />
+    <!--
+      If the file exists but is out of date then download it to update it.
+    -->
+    <Message Condition="'$(_IsLatestCoverityTool)' == 'false' and Exists('$(CoverityToolZipFile)')" Text="Updating Coverity tool to the latest version (MD5: $(CoverityLatestMD5))..." Importance="high" />
+    <!--
+      If the file exists and the MD5 hash matches, then we are already up-to-date.
+    -->
+    <Message Condition="Exists('$(CoverityToolZipFile)') and '$(_IsLatestCoverityTool)' == 'true'" Text="The Coverity tool is up-to-date (MD5: $(CoverityLatestMD5))." Importance="high" />
+    <!--
+      Delete all directories in the Coverity tool directory if we need to update the current version.
+    -->
+    <RemoveDir Condition="'$(_IsLatestCoverityTool)' == 'false'" Directories="@(OldCoverityDirectories)" />
+    <!--
+      Download the latest ZIP file.
+    -->
+    <Exec Condition="!Exists('$(CoverityToolZipFile)') or '$(_IsLatestCoverityTool)' == 'false'" Command="$(CoverityDownloadCommand)" WorkingDirectory="$(CoverityToolDir)" />    
+    <!--
+      Extract the tool if the ZIP file exists and we just downloaded
+      it or it it exists but the extracted directory does not.
+    -->
+    <Message Condition="('$(_IsLatestCoverityTool)' == 'false' and Exists('$(CoverityToolZipFile)')) or '@(OldCoverityDirectories->Count())' == 0" Text="Extracting '$(CoverityToolZipFile)'..." Importance="high" />
+    <MSBuild.ExtensionPack.Compression.Zip
+      Condition="('$(_IsLatestCoverityTool)' == 'false' and Exists('$(CoverityToolZipFile)')) or '@(OldCoverityDirectories->Count())' == 0"
+      TaskAction="Extract"
+      ZipFileName="$(CoverityToolZipFile)"
+      ExtractPath="$(CoverityToolDir)" />
+  </Target>
+  <!--
+    Build the assembly using the Coverity compiler,
+    downloading/update the tool first if required.
+  -->
+  <Target Name="BuildCoverity" DependsOnTargets="DownloadCoverity">
+    <ItemGroup Condition="'$(CoverityTool)' == ''">
+      <CoverityTool Include="$(CoverityToolDir)**\bin\cov-build.exe" />
+    </ItemGroup>
+    <PropertyGroup>
+      <CoverityTool>@(CoverityTool)</CoverityTool>
+    </PropertyGroup>    
     <Error Condition="!Exists('$(CoverityTool)')" Text="The Coverity Build Tool cannot be found." />
     <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)Build.cmd%22 /t:Rebuild /p:RunTests=false" />
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(CoverityOutputDir)" RemoveRoot="$(OutDir)" ZipFileName="$(CoverityZipFile)" />
@@ -317,19 +401,9 @@
       Set Coverity project properties and cURL commands for upload.
     -->
     <PropertyGroup>
-      <CurlToolPath>$(SqlLocalDbRoot)Tools\Curl\curl.exe</CurlToolPath>
       <CoverityBuildDescription Condition="'$(CoverityBuildDescription)' == ''">$(AssemblyVersion)</CoverityBuildDescription>
-      <CoverityProjectName Condition="'$(CoverityProjectName)' == ''">martincostello%2Fsqllocaldb</CoverityProjectName>
       <CoverityProjectUrl Condition="'$(CoverityProjectUrl)' == ''">https://scan.coverity.com/builds?project=martincostello%2Fsqllocaldb</CoverityProjectUrl>
-      <CoverityUploadCommand>%22$(CurlToolPath)%22 --form project=$(CoverityProjectName) --form token=$(CoverityProjectToken) --form email=$(CoverityEmail) --form file=@$(CoverityZipFile) --form version="$(AssemblyVersion)" --form description="$(CoverityBuildDescription)" $(CoverityProjectUrl) --insecure</CoverityUploadCommand>
-    </PropertyGroup>
-    <!--
-      The email and project token must be either set using
-      an environment variable or on the MSBuild command line.
-    -->
-    <PropertyGroup>
-      <CoverityEmail Condition="'$(CoverityEmail)' == ''"></CoverityEmail>
-      <CoverityProjectToken Condition="'$(CoverityProjectToken)' == ''"></CoverityProjectToken>
+      <CoverityUploadCommand>%22$(CurlToolPath)%22 --silent --form project=$(CoverityProjectName) --form token=$(CoverityProjectToken) --form email=$(CoverityEmail) --form file=@$(CoverityZipFile) --form version="$(AssemblyVersion)" --form description="$(CoverityBuildDescription)" $(CoverityProjectUrl)</CoverityUploadCommand>
     </PropertyGroup>
     <!--
       Validate properties before attempting a build upload.
@@ -342,7 +416,7 @@
       Upload the last compilation to Coverity for static analysis.
     -->
     <Message Text="Uploading '$(CoverityZipFile)' to Coverity for static analysis..." Importance="high" />
-    <Exec Command="$(CoverityUploadCommand)" StandardErrorImportance="low" StandardOutputImportance="low" />
+    <Exec Command="$(CoverityUploadCommand)" />
     <Message Text="Uploaded '$(CoverityZipFile)' to Coverity for static analysis." Importance="high" />
   </Target>
   <!--
@@ -426,6 +500,40 @@
             PrereleaseVersion = thisBuildNumber - lastReleasedVersion.Build;
         }
       ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <!--
+    Computes the MD5 hash of a file and outputs it as a hexadecimal string.
+  -->
+  <UsingTask TaskName="ComputeMD5Hash" TaskFactory="CodeTaskFactory" AssemblyFile="$(CodeTaskFactoryAssembly)">
+    <ParameterGroup>
+      <FileName Required="true" />
+      <MD5Hash Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        using (Stream stream = File.OpenRead(FileName))
+        {
+            using (HashAlgorithm algorithm = MD5.Create())
+            {             
+                byte[] hashBytes = algorithm.ComputeHash(stream);
+                
+                var builder = new System.Text.StringBuilder();
+
+                foreach (byte b in hashBytes)
+                {
+                    builder.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0:x2}", b);
+                }
+
+                MD5Hash = builder.ToString();
+            }
+        }
+        ]]>
       </Code>
     </Task>
   </UsingTask>

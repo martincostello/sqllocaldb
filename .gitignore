@@ -22,4 +22,5 @@ TestResults
 *.sln.ide
 *.suo
 *.user
+/src/Tools/Coverity
 /src/Tools/NuGet/NuGet.exe.old
