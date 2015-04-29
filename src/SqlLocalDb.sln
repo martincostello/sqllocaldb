@@ -61,6 +61,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuildExtensionPack", "MSB
 		Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll = Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curl", "Curl", "{2C273D35-E10C-4C20-A534-BF19BC5FFB87}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Curl\curl.exe = Tools\Curl\curl.exe
+		Tools\Curl\libcurl.dll = Tools\Curl\libcurl.dll
+		Tools\Curl\libidn-11.dll = Tools\Curl\libidn-11.dll
+		Tools\Curl\ssleay32.dll = Tools\Curl\ssleay32.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,5 +100,6 @@ Global
 		{5F16D00C-39D3-45C2-A7A9-18A01E323809} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 		{C1285F26-933A-4A35-9AF1-1F35A3CE25AF} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
 		{42978B8C-754C-4144-A45D-4141B22A84DF} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
+		{2C273D35-E10C-4C20-A534-BF19BC5FFB87} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 	EndGlobalSection
 EndGlobal
