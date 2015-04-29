@@ -1,6 +1,6 @@
 # SQL LocalDB Wrapper
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424) [![Code Coverage](https://coveralls.io/repos/martincostello/sqllocaldb/badge.svg)](https://coveralls.io/r/martincostello/sqllocaldb)
 
 [![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/) [![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
 
