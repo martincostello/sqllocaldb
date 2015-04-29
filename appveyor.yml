@@ -1,5 +1,9 @@
 version: 1.15.{build}.0
 
+environment:
+  CoverallsRepoToken:
+    secure: dJhQTN93r6qvGYlPYzoxbNxXdM+t3jF8NddJtnTCX8PNRlkaeq5CouuNB2W3LZDk
+
 assembly_info:
   patch: true
   file: AssemblyVersion.cs
