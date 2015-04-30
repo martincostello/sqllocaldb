@@ -2,7 +2,7 @@ version: 1.15.{build}.0
 
 environment:
   CoverallsRepoToken:
-    secure: dJhQTN93r6qvGYlPYzoxbNxXdM+t3jF8NddJtnTCX8PNRlkaeq5CouuNB2W3LZDk
+    secure: t/5ID5XZAyFKZNmgVJIrcs2Ah7Bn1Kr2cmAZcmEbvl/lGHHl6F4sxSLHK89z7I7E
 
 assembly_info:
   patch: true
