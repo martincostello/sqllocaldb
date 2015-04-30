@@ -23,8 +23,6 @@ namespace System.Data.SqlLocalDb
     /// </remarks>
     public class TemporarySqlLocalDbInstance : ISqlLocalDbInstance, IDisposable
     {
-        #region Fields
-
         /// <summary>
         /// The default <see cref="ISqlLocalDbProvider"/> instance to use to create temporary instances.
         /// </summary>
@@ -44,10 +42,6 @@ namespace System.Data.SqlLocalDb
         /// Whether the instance has been disposed.
         /// </summary>
         private bool _disposed;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
@@ -121,10 +115,6 @@ namespace System.Data.SqlLocalDb
             _instance = instance;
         }
 
-        #endregion
-
-        #region Finalizer
-
         /// <summary>
         /// Finalizes an instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
         /// </summary>
@@ -132,10 +122,6 @@ namespace System.Data.SqlLocalDb
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the name of the LocalDB instance.
@@ -169,10 +155,6 @@ namespace System.Data.SqlLocalDb
         {
             get { return _instance; }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
@@ -318,7 +300,19 @@ namespace System.Data.SqlLocalDb
             {
                 if (_instance != null)
                 {
-                    _instance.Stop();
+                    try
+                    {
+                        _instance.Stop();
+                    }
+                    catch (SqlLocalDbException ex)
+                    {
+                        if (ex.ErrorCode != SqlLocalDbErrors.UnknownInstance)
+                        {
+                            // Ignore the exception if we could not stop the instance because it does not exist
+                            throw;
+                        }
+                    }
+
                     SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false, deleteFiles: _deleteFiles);
                 }
 
@@ -339,7 +333,5 @@ namespace System.Data.SqlLocalDb
                 throw new ObjectDisposedException(this.GetType().FullName);
             }
         }
-
-        #endregion
     }
 }

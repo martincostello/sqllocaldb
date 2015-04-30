@@ -175,6 +175,51 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [Description("Tests .ctor(string, ISqlLocalDbProvider, bool) if the instance cannot be started.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void TemporarySqlLocalDbInstance_Constructor_Attempts_To_Delete_Instance_If_Instance_Cannot_Be_Started()
+        {
+            // Arrange
+            string instanceName = "MyTempInstance" + Guid.NewGuid().ToString();
+
+            var mock = new Mock<SqlLocalDbProvider>()
+            {
+                CallBase = true,
+            };
+
+            // Set up the CreateInstance() method to create an SQL LocalDB
+            // instance but that then throws an exception when started.
+            mock.Setup((p) => p.CreateInstance(instanceName))
+                .Returns(
+                    () =>
+                    {
+                        SqlLocalDbApi.CreateInstance(instanceName);
+                        return new SqlLocalDbInstanceThatCannotBeStarted(instanceName);
+                    })
+                .Verifiable();
+            
+            ISqlLocalDbProvider provider = mock.Object;
+            bool deleteFiles = false;
+
+            // Act
+            InvalidOperationException error = ErrorAssert.Throws<InvalidOperationException>(
+                () =>
+                {
+                    using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instanceName, provider, deleteFiles))
+                    {
+                    }
+                });
+
+            mock.Verify();
+
+            ISqlLocalDbInstanceInfo instanceInfo = SqlLocalDbApi.GetInstanceInfo(instanceName);
+
+            Assert.IsFalse(instanceInfo.Exists, "The temporary instance was not deleted.");
+
+            throw error;
+        }
+
+        [TestMethod]
         [Description("Tests Create().")]
         public void TemporarySqlLocalDbInstance_Create_Creates_Temporary_Instance_With_Random_Name()
         {
@@ -561,6 +606,24 @@ namespace System.Data.SqlLocalDb
                 .Returns("MyInstanceName");
 
             return mock.Object;
+        }
+
+        /// <summary>
+        /// A class representing an implementation of <see cref="ISqlLocalDbInstance"/> that cannot be started. This class cannot be inherited.
+        /// </summary>
+        private sealed class SqlLocalDbInstanceThatCannotBeStarted : SqlLocalDbInstance, ISqlLocalDbInstance
+        {
+            /// <inheritdoc />
+            internal SqlLocalDbInstanceThatCannotBeStarted(string instanceName)
+                : base(instanceName)
+            {
+            }
+
+            /// <inheritdoc />
+            void ISqlLocalDbInstance.Start()
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }
