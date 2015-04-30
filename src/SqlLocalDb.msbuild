@@ -150,6 +150,7 @@
     <PropertyGroup>
       <CodeCoverageTool>$(VSPath)..\..\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe</CodeCoverageTool>
     </PropertyGroup>
+    <Message Condition="Exists('$(CodeCoverageTool)')" Text="Converting code coverage data to XML..." Importance="high" />
     <Exec Condition="Exists('$(CodeCoverageTool)')" Command="%22$(CodeCoverageTool)%22 analyze %22/output:%(CodeCoverageData.Identity).coveragexml%22 %22%(CodeCoverageData.Identity)%22" />
     <!--
       Add coveragexml files as artifacts for AppVeyor CI builds.
@@ -164,6 +165,7 @@
     <PropertyGroup Condition="'$(CoverallsTool)' == ''">
       <CoverallsTool>@(CoverallsTool)</CoverallsTool>
     </PropertyGroup>
+    <Message Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Text="Uploading code coverage XML to coveralls.io..." Importance="high" />
     <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Command="$(CoverallsTool) --dynamiccodecoverage --input %22%(CodeCoverageData.Identity).coveragexml%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths" IgnoreExitCode="true" />
   </Target>
   <!--
