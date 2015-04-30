@@ -133,6 +133,38 @@
       Run MSTest for each test assembly.
     -->
     <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 /EnableCodeCoverage /InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
+    <!--
+      Find the code coverage output files
+    -->
+    <ItemGroup>
+      <CodeCoverageData Include="$(SolutionDir)TestResults\**\*.coverage" />
+      <CodeCoverageXml Include="$(SolutionDir)TestResults\**\*.coverage.coveragexml" />
+    </ItemGroup>
+    <!--
+      Delete any existing coveragexml files.
+    -->
+    <Delete Files="@(CodeCoverageXml)" />
+    <!--
+      Covert the code coverage output files to XML.
+    -->
+    <PropertyGroup>
+      <CodeCoverageTool>$(VSPath)..\..\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe</CodeCoverageTool>
+    </PropertyGroup>
+    <Exec Condition="Exists('$(CodeCoverageTool)')" Command="%22$(CodeCoverageTool)%22 analyze %22/output:%(CodeCoverageData.Identity).coveragexml%22 %22%(CodeCoverageData.Identity)%22" />
+    <!--
+      Add coveragexml files as artifacts for AppVeyor CI builds.
+    -->
+    <Exec Condition="'$(APPVEYOR)' != ''" Command="appveyor PushArtifact %22%(CodeCoverageData.Identity).coveragexml%22" />
+    <!--
+      Upload code coverage XML to coveralls.io.
+    -->
+    <ItemGroup Condition="'$(CoverallsTool)' == ''">
+      <CoverallsTool Include="$(SolutionDir)packages\coveralls.net.*\csmacnz.coveralls.exe" />
+    </ItemGroup>
+    <PropertyGroup Condition="'$(CoverallsTool)' == ''">
+      <CoverallsTool>@(CoverallsTool)</CoverallsTool>
+    </PropertyGroup>
+    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Command="$(CoverallsTool) --dynamiccodecoverage -i %22%(CodeCoverageData.Identity).coveragexml%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_JOB_ID)%22 --useRelativePaths" />
   </Target>
   <!--
     Task that determines whether the user associated with
