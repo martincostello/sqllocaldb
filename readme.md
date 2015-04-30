@@ -1,8 +1,10 @@
 # SQL LocalDB Wrapper
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424) [![Code Coverage](https://coveralls.io/repos/martincostello/sqllocaldb/badge.svg)](https://coveralls.io/r/martincostello/sqllocaldb)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/martincostello/sqllocaldb?branch=master&svg=true)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Code Coverage](https://coveralls.io/repos/martincostello/sqllocaldb/badge.svg)](https://coveralls.io/r/martincostello/sqllocaldb) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
 
-[![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/) [![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
+[![Open GitHub Issues](https://img.shields.io/github/issues/martincostello/sqllocaldb.svg?label=Open%20Issues)](https://github.com/martincostello/sqllocaldb/issues) [![Latest GitHub Release](https://img.shields.io/github/release/martincostello/sqllocaldb.svg?label=Latest%20Release)](https://github.com/martincostello/sqllocaldb/releases/latest)
+
+[![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg?label=NuGet%20Downloads)](http://www.nuget.org/packages/System.Data.SqlLocalDb/) [![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg?label=Latest%20NuGet%20Package)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
 
 SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft SQL Server LocalDB](http://msdn.microsoft.com/en-us/library/hh510202.aspx) native API from managed code using .NET APIs.
 
