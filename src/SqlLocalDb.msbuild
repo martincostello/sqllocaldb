@@ -164,7 +164,7 @@
     <PropertyGroup Condition="'$(CoverallsTool)' == ''">
       <CoverallsTool>@(CoverallsTool)</CoverallsTool>
     </PropertyGroup>
-    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Command="$(CoverallsTool) --dynamiccodecoverage --input %22%(CodeCoverageData.Identity).coveragexml%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --useRelativePaths" />
+    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Command="$(CoverallsTool) --dynamiccodecoverage --input %22%(CodeCoverageData.Identity).coveragexml%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths" />
   </Target>
   <!--
     Task that determines whether the user associated with
