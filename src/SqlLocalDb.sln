@@ -20,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FxCopDictionary.xml = FxCopDictionary.xml
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\readme.md = ..\readme.md
-		..\readme.txt = ..\readme.txt
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
 		SqlLocalDb.msbuild = SqlLocalDb.msbuild
 		SqlLocalDb.nuspec = SqlLocalDb.nuspec
