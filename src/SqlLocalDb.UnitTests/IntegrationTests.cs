@@ -59,6 +59,8 @@ namespace System.Data.SqlLocalDb
         [Description("An end-to-end test for the System.Data.SqlLocalDb API using the SqlLocalDbApiWrapper class.")]
         public void System_Data_SqlLocalDb_Assembly_Can_Be_Used_End_To_End_To_Trace_Create_And_Share_Instances()
         {
+            Helpers.EnsureUserIsAdmin();
+
             SqlLocalDbApiWrapper target = new SqlLocalDbApiWrapper();
 
             if (!target.IsLocalDBInstalled())
