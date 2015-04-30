@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace System.Data.SqlLocalDb
@@ -33,7 +34,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
-        [Description("An end-to-end test for the System.Data.SqlLocalDb API.")]
+        [Description("An end-to-end test for the System.Data.SqlLocalDb API using the ISqlLocalDbApi interface.")]
         public void System_Data_SqlLocalDb_Assembly_Can_Be_Used_End_To_End_To_Create_And_Manage_Instances()
         {
             ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
@@ -50,6 +51,62 @@ namespace System.Data.SqlLocalDb
             TestInstances(provider);
 
             TestInstanceLifecycle(localDB, provider);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.Integration)]
+        [TestCategory(TestCategories.RequiresAdministrativePermissions)]
+        [Description("An end-to-end test for the System.Data.SqlLocalDb API using the SqlLocalDbApiWrapper class.")]
+        public void System_Data_SqlLocalDb_Assembly_Can_Be_Used_End_To_End_To_Trace_Create_And_Share_Instances()
+        {
+            SqlLocalDbApiWrapper target = new SqlLocalDbApiWrapper();
+
+            if (!target.IsLocalDBInstalled())
+            {
+                Assert.Fail("SQL LocalDB is not installed.");
+            }
+
+            string instanceName = Guid.NewGuid().ToString();            
+            string version = target.LatestVersion;
+
+            target.StartTracing();
+
+            try
+            {
+                target.CreateInstance(instanceName, version);
+
+                try
+                {
+                    target.StartInstance(instanceName);
+
+                    try
+                    {
+                        string ownerSid;
+
+                        using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                        {
+                            ownerSid = identity.User.Value;
+                        }
+
+                        string sharedInstanceName = Guid.NewGuid().ToString();
+
+                        target.ShareInstance(ownerSid, instanceName, sharedInstanceName);
+                        target.UnshareInstance(instanceName);
+                    }
+                    finally
+                    {
+                        target.StopInstance(instanceName, SqlLocalDbApi.StopTimeout);
+                    }
+                }
+                finally
+                {
+                    target.DeleteInstance(instanceName);
+                }
+            }
+            finally
+            {
+                target.StopTracing();
+            }
         }
 
         /// <summary>
