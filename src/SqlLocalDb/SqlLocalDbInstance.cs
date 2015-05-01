@@ -381,7 +381,7 @@ namespace System.Data.SqlLocalDb
                     SR.SqlLocalDbInstance_DeleteFailedFormat,
                     instance.Name);
 
-                Logger.Error(Logger.TraceEvent.DeleteInstance, message);
+                Logger.Error(Logger.TraceEvent.DeleteFailed, message);
 
                 throw new SqlLocalDbException(
                     message,
