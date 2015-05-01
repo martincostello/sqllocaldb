@@ -138,24 +138,26 @@
     -->
     <ItemGroup>
       <CodeCoverageData Include="$(SolutionDir)TestResults\**\*.coverage" />
-      <CodeCoverageXml Include="$(SolutionDir)TestResults\**\*.coverage.coveragexml" />
     </ItemGroup>
+    <PropertyGroup>
+      <CodeCoverageXml Condition="'$(CodeCoverageXml)' == ''">$(OutDir)tests.coveragexml</CodeCoverageXml>
+    </PropertyGroup>
     <!--
       Delete any existing coveragexml files.
     -->
-    <Delete Files="@(CodeCoverageXml)" />
+    <Delete Files="$(CodeCoverageXml)" />
     <!--
-      Covert the code coverage output files to XML.
+      Covert the code coverage output files to a single combined XML file.
     -->
     <PropertyGroup>
-      <CodeCoverageTool>$(VSPath)..\..\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe</CodeCoverageTool>
+      <CodeCoverageTool Condition="'$(CodeCoverageTool)' == ''">$(VSPath)..\..\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe</CodeCoverageTool>
     </PropertyGroup>
     <Message Condition="Exists('$(CodeCoverageTool)')" Text="Converting code coverage data to XML..." Importance="high" />
-    <Exec Condition="Exists('$(CodeCoverageTool)')" Command="%22$(CodeCoverageTool)%22 analyze %22/output:%(CodeCoverageData.Identity).coveragexml%22 %22%(CodeCoverageData.Identity)%22" />
+    <Exec Condition="Exists('$(CodeCoverageTool)')" Command="%22$(CodeCoverageTool)%22 analyze %22/output:$(CodeCoverageXml)%22 @(CodeCoverageData->'%22%(fullpath)%22', ' ')" />
     <!--
-      Add coveragexml files as artifacts for AppVeyor CI builds.
+      Add coveragexml file as artifact for AppVeyor CI builds.
     -->
-    <Exec Condition="'$(APPVEYOR)' != ''" Command="appveyor PushArtifact %22%(CodeCoverageData.Identity).coveragexml%22" />
+    <Exec Condition="'$(APPVEYOR)' != '' and Exists('$(CodeCoverageXml)')" Command="appveyor PushArtifact %22$(CodeCoverageXml)%22" />
     <!--
       Upload code coverage XML to coveralls.io.
     -->
@@ -165,8 +167,8 @@
     <PropertyGroup Condition="'$(CoverallsTool)' == ''">
       <CoverallsTool>@(CoverallsTool)</CoverallsTool>
     </PropertyGroup>
-    <Message Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Text="Uploading code coverage XML to coveralls.io..." Importance="high" />
-    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != ''" Command="$(CoverallsTool) --dynamiccodecoverage --input %22%(CodeCoverageData.Identity).coveragexml%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths" IgnoreExitCode="true" />
+    <Message Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != '' and Exists('$(CodeCoverageXml)')" Text="Uploading code coverage XML to coveralls.io..." Importance="high" />
+    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != '' and Exists('$(CodeCoverageXml)')" Command="$(CoverallsTool) --dynamiccodecoverage --input %22$(CodeCoverageXml)%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths" IgnoreExitCode="true" />
   </Target>
   <!--
     Task that determines whether the user associated with
