@@ -340,7 +340,7 @@
       <CoverityMD5Command>%22$(CurlToolPath)%22 --silent --form project=$(CoverityProjectName) --form md5=1 --form token=$(CoverityProjectToken) $(CoverityDownloadUri) -o %22$(CoverityToolZipMD5File)%22</CoverityMD5Command>
     </PropertyGroup>
     <ItemGroup>
-      <OldCoverityDirectories Include="$([System.IO.Directory]::GetDirectories('$(CoverityToolDir)'))" />
+      <OldCoverityDirectories Condition="Exists('$(CoverityToolDir)')" Include="$([System.IO.Directory]::GetDirectories('$(CoverityToolDir)'))" />
     </ItemGroup>
     <!--
       Validate properties before attempting download.
