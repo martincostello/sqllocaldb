@@ -416,7 +416,7 @@
       <CoverityTool>@(CoverityTool)</CoverityTool>
     </PropertyGroup>    
     <Error Condition="!Exists('$(CoverityTool)')" Text="The Coverity Build Tool cannot be found." />
-    <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)Build.cmd%22 /t:Rebuild /p:RunTests=false" />
+    <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)..\Build.cmd%22 /t:Rebuild /p:RunTests=false" />
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(CoverityOutputDir)" RemoveRoot="$(OutDir)" ZipFileName="$(CoverityZipFile)" />
   </Target>
   <!--

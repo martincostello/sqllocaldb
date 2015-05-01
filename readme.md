@@ -40,9 +40,9 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 Building and testing the project is supported using Microsoft Visual Studio 2013.
 
-The simplest way to build and test the assembly from the source code is by using the [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/src/Build.cmd) batch file in the root of the ```src``` folder of the repository like so: ```Build.cmd```. The project can also be built and tested from Visual Studio.
+The simplest way to build and test the assembly from the source code is by using the [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) batch file in the root of the repository like so: ```Build.cmd```. The project can also be built and tested from Visual Studio.
 
-Building the project from the command-line using [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/src/Build.cmd) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```) for both the x86 and x64 platforms.
+Building the project from the command-line using [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```) for both the x86 and x64 platforms.
 
 The standard build process also includes running [StyleCop](https://stylecop.codeplex.com/) and FxCop.
 
