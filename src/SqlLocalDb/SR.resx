@@ -193,7 +193,7 @@
     <value>Obtained version information for SQL LocalDB version '{0}'.</value>
   </data>
   <data name="SqlLocalDbApi_LogNativeResultFormat" xml:space="preserve">
-    <value>SQL LocalDB returned HRESULT {0}.</value>
+    <value>SQL LocalDB returned HRESULT {0:X}.</value>
   </data>
   <data name="SqlLocalDbApi_LogSharedInstanceFormat" xml:space="preserve">
     <value>Shared SQL LocalDB instance '{0}' for owner SID '{1}' as '{2}'.</value>

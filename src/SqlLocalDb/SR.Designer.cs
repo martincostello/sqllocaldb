@@ -367,7 +367,7 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0}..
+        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0:X}..
         /// </summary>
         internal static string SqlLocalDbApi_LogNativeResultFormat {
             get {
