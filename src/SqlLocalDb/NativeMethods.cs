@@ -154,14 +154,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int CreateInstance(string wszVersion, string pInstanceName, int dwFlags)
         {
-            var function = EnsureFunction("LocalDBCreateInstance", ref _localDBCreateInstance);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(wszVersion, pInstanceName, dwFlags);
+            return EnsureFunctionAndInvoke(
+                "LocalDBCreateInstance",
+                ref _localDBCreateInstance,
+                (function) => function(wszVersion, pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -172,14 +168,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int DeleteInstance(string pInstanceName, int dwFlags)
         {
-            var function = EnsureFunction("LocalDBDeleteInstance", ref _localDBDeleteInstance);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(pInstanceName, dwFlags);
+            return EnsureFunctionAndInvoke(
+                "LocalDBDeleteInstance",
+                ref _localDBDeleteInstance,
+                (function) => function(pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -203,14 +195,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int GetInstanceInfo(string wszInstanceName, IntPtr pInstanceInfo, int dwInstanceInfoSize)
         {
-            var function = EnsureFunction("LocalDBGetInstanceInfo", ref _localDBGetInstanceInfo);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(wszInstanceName, pInstanceInfo, dwInstanceInfoSize);
+            return EnsureFunctionAndInvoke(
+                "LocalDBGetInstanceInfo",
+                ref _localDBGetInstanceInfo,
+                (function) => function(wszInstanceName, pInstanceInfo, dwInstanceInfoSize));
         }
 
         /// <summary>
@@ -274,14 +262,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int GetVersionInfo(string wszVersionName, IntPtr pVersionInfo, int dwVersionInfoSize)
         {
-            var function = EnsureFunction("LocalDBGetVersionInfo", ref _localDBGetVersionInfo);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(wszVersionName, pVersionInfo, dwVersionInfoSize);
+            return EnsureFunctionAndInvoke(
+                "LocalDBGetVersionInfo",
+                ref _localDBGetVersionInfo,
+                (function) => function(wszVersionName, pVersionInfo, dwVersionInfoSize));
         }
 
         /// <summary>
@@ -316,14 +300,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int ShareInstance(IntPtr pOwnerSID, string pInstancePrivateName, string pInstanceSharedName, int dwFlags)
         {
-            var function = EnsureFunction("LocalDBShareInstance", ref _localDBShareInstance);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags);
+            return EnsureFunctionAndInvoke(
+                "LocalDBShareInstance",
+                ref _localDBShareInstance,
+                (function) => function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags));
         }
 
         /// <summary>
@@ -357,14 +337,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int StartTracing()
         {
-            var function = EnsureFunction("LocalDBStartTracing", ref _localDBStartTracing);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function();
+            return EnsureFunctionAndInvoke(
+                "LocalDBStartTracing",
+                ref _localDBStartTracing,
+                (function) => function());
         }
 
         /// <summary>
@@ -379,14 +355,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int StopInstance(string pInstanceName, StopInstanceOptions options, int ulTimeout)
         {
-            var function = EnsureFunction("LocalDBStopInstance", ref _localDBStopInstance);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(pInstanceName, (int)options, ulTimeout);
+            return EnsureFunctionAndInvoke(
+                "LocalDBStopInstance",
+                ref _localDBStopInstance,
+                (function) => function(pInstanceName, (int)options, ulTimeout));
         }
 
         /// <summary>
@@ -396,14 +368,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int StopTracing()
         {
-            var function = EnsureFunction("LocalDBStopTracing", ref _localDBStopTracing);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function();
+            return EnsureFunctionAndInvoke(
+                "LocalDBStopTracing",
+                ref _localDBStopTracing,
+                (function) => function());
         }
 
         /// <summary>
@@ -418,14 +386,10 @@ namespace System.Data.SqlLocalDb
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         internal static int UnshareInstance(string pInstanceName, int dwFlags)
         {
-            var function = EnsureFunction("LocalDBUnshareInstance", ref _localDBUnshareInstance);
-
-            if (function == null)
-            {
-                return SqlLocalDbErrors.NotInstalled;
-            }
-
-            return function(pInstanceName, dwFlags);
+            return EnsureFunctionAndInvoke(
+                "LocalDBUnshareInstance",
+                ref _localDBUnshareInstance,
+                (function) => function(pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -489,6 +453,8 @@ namespace System.Data.SqlLocalDb
         private static T EnsureFunction<T>(string functionName, ref T function)
             where T : class
         {
+            Debug.Assert(functionName != null, "functionName cannot be null.");
+
             if (function == null)
             {
                 lock (_syncRoot)
@@ -501,6 +467,27 @@ namespace System.Data.SqlLocalDb
             }
 
             return function;
+        }
+
+        /// <summary>
+        /// Ensures that the specified delegate to an unmanaged function is initialized and invokes the specified callback delegate if it does.
+        /// </summary>
+        /// <typeparam name="T">The type of the delegate representing the unmanaged function.</typeparam>
+        /// <param name="functionName">The name of the unmanaged function to ensure is loaded.</param>
+        /// <param name="function">A reference to a location to ensure contains a delegate for the specified function name.</param>
+        /// <param name="callback">A delegate to a callback method to invoke with the function if initialized.</param>
+        /// <returns>
+        /// The <see cref="Int32"/> result of invoking <paramref name="callback"/>, if the function was
+        /// initialized; otherwise the value of <see cref="SqlLocalDbErrors.NotInstalled"/> is returned.
+        /// </returns>
+        private static int EnsureFunctionAndInvoke<T>(string functionName, ref T function, Func<T, int> callback)
+            where T : class
+        {
+            Debug.Assert(callback != null, "callback cannot be null.");
+
+            function = EnsureFunction<T>(functionName, ref function);
+
+            return function == null ? SqlLocalDbErrors.NotInstalled : callback(function);
         }
 
         /// <summary>
@@ -557,6 +544,8 @@ namespace System.Data.SqlLocalDb
         private static T GetDelegate<T>(string functionName)
             where T : class
         {
+            Debug.Assert(functionName != null, "functionName cannot be null.");
+
             SafeLibraryHandle handle = EnsureLocalDBLoaded();
 
             if (handle == null)
