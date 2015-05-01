@@ -68,7 +68,7 @@ namespace System.Data.SqlLocalDb
         /// Gets the trace source used for the <c>System.Data.SqlLocalDb</c> assembly
         /// if logging is enabled; otherwise <see langword="null"/>.
         /// </summary>
-        public static TraceSource Source
+        private static TraceSource Source
         {
             get
             {
@@ -244,16 +244,6 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         private static bool ValidateSettings(TraceSource traceSource, TraceEventType traceLevel)
         {
-            if (!_enabled)
-            {
-                return false;
-            }
-
-            if (!_initialized)
-            {
-                Initialize();
-            }
-
             if ((traceSource == null) || !traceSource.Switch.ShouldTrace(traceLevel))
             {
                 return false;
