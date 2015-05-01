@@ -10,6 +10,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -98,6 +101,28 @@ namespace System.Data.SqlLocalDb
                     Assert.AreEqual(4, TestLogger.InvocationCount, "The custom logger was not used.");
                 },
                 configurationFile: "LoggerTests.CustomLoggerType.config");
+        }
+
+        [TestMethod]
+        [Description("Tests that all event ID values in the Logger.TraceEvent class are unique.")]
+        public void Logger_TraceEvent_All_Id_Values_Are_Unique()
+        {
+            // Arrange
+            Type type = typeof(Logger.TraceEvent);
+            var fields = type.GetFields(BindingFlags.Static | BindingFlags.NonPublic);
+
+            IList<int> values = new List<int>();
+
+            // Act
+            foreach (FieldInfo field in fields)
+            {
+                int value = (int)field.GetValue(null);
+                values.Add(value);
+            }
+
+            // Assert
+            Assert.AreNotEqual(0, values.Count, "No values were obtained for the {0} class.", type.FullName);
+            Assert.AreEqual(values.Distinct().Count(), values.Count, "The {0} class contains one or more duplicate event ID.", type.FullName);
         }
 
         /// <summary>
