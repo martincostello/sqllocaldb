@@ -150,6 +150,9 @@
     <None Include="SqlLocalDbConfigTests.DefinedButNotSpecifiedWithLegacySettings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TraceSourceLoggerTests.AllDisabled.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TraceSourceLoggerTests.AllEnabled.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

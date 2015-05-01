@@ -49,7 +49,7 @@ namespace System.Data.SqlLocalDb
                     // Assert
                     var data = TestTraceListener.LogData;
 
-                    Assert.AreEqual(2, data.Count);
+                    Assert.AreEqual(2, data.Count, "An incorrect number of messages were logged.");
 
                     int count = data
                         .Where((p) => p.Item1 == TraceEventType.Error)
@@ -95,7 +95,7 @@ namespace System.Data.SqlLocalDb
                     // Assert
                     var data = TestTraceListener.LogData;
 
-                    Assert.AreEqual(4, data.Count);
+                    Assert.AreEqual(4, data.Count, "An incorrect number of messages were logged.");
 
                     int count = data
                         .Where((p) => p.Item1 == TraceEventType.Error)
@@ -142,6 +142,30 @@ namespace System.Data.SqlLocalDb
                     Assert.AreEqual(1, count, "The verbose message was not logged correctly.");
                 },
                 configurationFile: "TraceSourceLoggerTests.AllEnabled.config");
+        }
+
+        [TestMethod]
+        [Description("Tests TraceSourceLogger does not log if all logging levels are not disabled.")]
+        public void TraceSourceLogger_Verbose_Does_Not_Log_If_All_Logging_Levels_Are_Not_Disabled()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    TraceSourceLogger target = TraceSourceLogger.Instance;
+
+                    // Act
+                    target.WriteError(1, "Letter 1 is {0}.", 'a');
+                    target.WriteWarning(2, "Letter 2 is {0}.", 'b');
+                    target.WriteInformation(3, "Letter 3 is {0}.", 'c');
+                    target.WriteVerbose(4, "Letter 4 is {0}.", 'd');
+
+                    // Assert
+                    var data = TestTraceListener.LogData;
+
+                    Assert.AreEqual(0, data.Count, "An incorrect number of messages were logged.");
+                },
+                configurationFile: "TraceSourceLoggerTests.AllDisabled.config");
         }
 
         /// <summary>
