@@ -168,7 +168,7 @@
       <CoverallsTool>@(CoverallsTool)</CoverallsTool>
     </PropertyGroup>
     <Message Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != '' and Exists('$(CodeCoverageXml)')" Text="Uploading code coverage XML to coveralls.io..." Importance="high" />
-    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != '' and Exists('$(CodeCoverageXml)')" Command="$(CoverallsTool) --dynamiccodecoverage --input %22$(CodeCoverageXml)%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths --basePath %22$(SqlLocalDbRoot)%22" IgnoreExitCode="true" />
+    <Exec Condition="'$(APPVEYOR)' != '' and '$(CoverallsRepoToken)' != '' and Exists('$(CodeCoverageXml)')" Command="$(CoverallsTool) --dynamiccodecoverage --input %22$(CodeCoverageXml)%22 --repoToken %22$(CoverallsRepoToken)%22 --commitId %22$(APPVEYOR_REPO_COMMIT)%22 --commitBranch %22$(APPVEYOR_REPO_BRANCH)%22 --commitAuthor %22$(APPVEYOR_REPO_COMMIT_AUTHOR)%22 --commitEmail %22$(APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL)%22 --commitMessage %22$(APPVEYOR_REPO_COMMIT_MESSAGE)%22 --jobId %22$(APPVEYOR_BUILD_ID)%22 --serviceName %22AppVeyor%22 --useRelativePaths" IgnoreExitCode="true" WorkingDirectory="$(SqlLocalDbRoot)..\" />
   </Target>
   <!--
     Task that determines whether the user associated with
