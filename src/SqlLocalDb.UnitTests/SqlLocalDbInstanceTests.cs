@@ -47,7 +47,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [Description("Tests .ctor() if instanceName does not exist.")]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void SqlLocalDbInstance_Constructor_Throws_If_Instance_Name_Does_Not_Exist()
+        public void SqlLocalDbInstance_Constructor_Throws_If_InstanceName_Does_Not_Exist()
         {
             // Arrange
             string instanceName = Guid.NewGuid().ToString();
@@ -55,6 +55,20 @@ namespace System.Data.SqlLocalDb
             // Act and Assert
             throw ErrorAssert.Throws<InvalidOperationException>(
                 () => new SqlLocalDbInstance(instanceName));
+        }
+
+        [TestMethod]
+        [Description("Tests .ctor() if instanceName causes the specified ISqlLocalDbApi to return null.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void SqlLocalDbInstance_Constructor_Throws_If_LocalDb_Returns_Null()
+        {
+            // Arrange
+            string instanceName = Guid.NewGuid().ToString();
+            ISqlLocalDbApi localDB = Mock.Of<ISqlLocalDbApi>();
+
+            // Act and Assert
+            throw ErrorAssert.Throws<InvalidOperationException>(
+                () => new SqlLocalDbInstance(instanceName, localDB));
         }
 
         [TestMethod]

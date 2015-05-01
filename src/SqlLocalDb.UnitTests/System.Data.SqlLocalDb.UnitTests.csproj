@@ -84,6 +84,7 @@
     <Compile Include="TestCategories.cs" />
     <Compile Include="EmptyLogger.cs" />
     <Compile Include="TestSetup.cs" />
+    <Compile Include="TraceSourceLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlLocalDb\System.Data.SqlLocalDb.csproj">
@@ -147,6 +148,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SqlLocalDbConfigTests.DefinedButNotSpecifiedWithLegacySettings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TraceSourceLoggerTests.AllEnabled.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TraceSourceLoggerTests.SomeDisabled.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
