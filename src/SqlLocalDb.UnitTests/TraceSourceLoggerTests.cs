@@ -32,6 +32,10 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests TraceSourceLogger does not log if some logging levels are not enabled.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1502:AvoidExcessiveComplexity",
+            Justification = "This method is not overly complex.")]
         public void TraceSourceLogger_Verbose_Does_Not_Log_If_Some_Logging_Levels_Are_Not_Enabled()
         {
             // Arrange
@@ -78,6 +82,10 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests TraceSourceLogger does not log if all logging levels are not enabled.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1502:AvoidExcessiveComplexity",
+            Justification = "This method is not overly complex.")]
         public void TraceSourceLogger_Verbose_Does_Not_Log_If_All_Logging_Levels_Are_Not_Enabled()
         {
             // Arrange
