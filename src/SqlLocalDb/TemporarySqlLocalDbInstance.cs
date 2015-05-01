@@ -306,14 +306,26 @@ namespace System.Data.SqlLocalDb
                     }
                     catch (SqlLocalDbException ex)
                     {
+                        // Ignore the exception if we could not stop the instance
+                        // because it does not exist, otherwise log the error.
                         if (ex.ErrorCode != SqlLocalDbErrors.UnknownInstance)
                         {
-                            // Ignore the exception if we could not stop the instance because it does not exist
-                            throw;
+                            Logger.Error(Logger.TraceEvent.StopFailed, SR.TemporarySqlLocalDbInstance_StopFailedFormat, _instance.Name, ex.ErrorCode);
                         }
                     }
 
-                    SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false, deleteFiles: _deleteFiles);
+                    try
+                    {
+                        SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false, deleteFiles: _deleteFiles);
+                    }
+                    catch (SqlLocalDbException ex)
+                    {
+                        // Ignore the exception if we could not delete the instance because it was in use
+                        if (ex.ErrorCode != SqlLocalDbErrors.InstanceBusy)
+                        {
+                            Logger.Error(Logger.TraceEvent.DeleteFailed, SR.TemporarySqlLocalDbInstance_DeleteFailedFormat, _instance.Name, ex.ErrorCode);
+                        }
+                    }
                 }
 
                 _disposed = true;

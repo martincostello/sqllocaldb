@@ -303,4 +303,10 @@
   <data name="Logger_FailedToCreateCustomLoggerFormat" xml:space="preserve">
     <value>Failed to create an instance of type '{0}': {1}</value>
   </data>
+  <data name="TemporarySqlLocalDbInstance_DeleteFailedFormat" xml:space="preserve">
+    <value>Failed to delete SQL LocalDB instance '{0}'. HRESULT = {1:X}.</value>
+  </data>
+  <data name="TemporarySqlLocalDbInstance_StopFailedFormat" xml:space="preserve">
+    <value>Failed to stop SQL LocalDB instance '{0}'. HRESULT = {1:X}.</value>
+  </data>
 </root>

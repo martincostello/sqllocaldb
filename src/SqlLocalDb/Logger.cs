@@ -298,6 +298,16 @@ namespace System.Data.SqlLocalDb
             /// The version of the native SQL LocalDB API specified as the override by the user cannot be found.
             /// </summary>
             internal static readonly int NativeApiVersionOverrideNotFound = 27;
+
+            /// <summary>
+            /// A user instance of SQL LocalDB could not be stopped.
+            /// </summary>
+            internal static readonly int StopFailed = 28;
+
+            /// <summary>
+            /// A user instance of SQL LocalDB could not be deleted.
+            /// </summary>
+            internal static readonly int DeleteFailed = 29;
         }
     }
 }

@@ -537,6 +537,44 @@ namespace System.Data.SqlLocalDb
             AssertThrowsObjectDisposedException((p) => p.Unshare());
         }
 
+        [TestMethod]
+        [Description("Tests Dispose() does not throw if a SQL LocalDB error occurs stopping the instance that is not the error from the instance not existing.")]
+        public void TemporarySqlLocalDbInstance_Dispose_Does_Not_Throw_If_Instance_Cannot_Be_Stopped_Due_To_Sql_LocalDb_Error()
+        {
+            // Arrange
+            string instanceName = "MyTempInstance" + Guid.NewGuid().ToString();
+
+            var mock = new Mock<SqlLocalDbProvider>()
+            {
+                CallBase = true,
+            };
+
+            // Set up the CreateInstance() method to create an SQL LocalDB
+            // instance but that then throws an exception when stopped.
+            mock.Setup((p) => p.CreateInstance(instanceName))
+                .Returns(
+                    () =>
+                    {
+                        SqlLocalDbApi.CreateInstance(instanceName);
+                        return new SqlLocalDbInstanceThatCannotBeStopped(instanceName);
+                    })
+                .Verifiable();
+
+            ISqlLocalDbProvider provider = mock.Object;
+
+            // Act
+            using (TemporarySqlLocalDbInstance target = new TemporarySqlLocalDbInstance(instanceName, provider))
+            {
+            }
+
+            // Assert
+            mock.Verify();
+
+            // Tidy up as the stop intentionally failed, meaning delete would also have failed
+            SqlLocalDbApi.StopInstance(instanceName);
+            SqlLocalDbApi.DeleteInstance(instanceName);
+        }
+
         /// <summary>
         /// Assets that the specified SQL LocalDB instance name is in the specified state of existence.
         /// </summary>
@@ -623,6 +661,24 @@ namespace System.Data.SqlLocalDb
             void ISqlLocalDbInstance.Start()
             {
                 throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// A class representing an implementation of <see cref="ISqlLocalDbInstance"/> that cannot be stopped. This class cannot be inherited.
+        /// </summary>
+        private sealed class SqlLocalDbInstanceThatCannotBeStopped : SqlLocalDbInstance, ISqlLocalDbInstance
+        {
+            /// <inheritdoc />
+            internal SqlLocalDbInstanceThatCannotBeStopped(string instanceName)
+                : base(instanceName)
+            {
+            }
+
+            /// <inheritdoc />
+            void ISqlLocalDbInstance.Stop()
+            {
+                throw new SqlLocalDbException("Error", SqlLocalDbErrors.UnknownErrorCode);
             }
         }
     }
