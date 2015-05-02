@@ -137,12 +137,67 @@ namespace System.Data.SqlLocalDb
         private static Functions.LocalDBUnshareInstance _localDBUnshareInstance;
 
         /// <summary>
+        /// The <see cref="IRegistry"/> to use.
+        /// </summary>
+        private static IRegistry _registry;
+
+        /// <summary>
+        /// Defines a method for opening a registry sub-key.
+        /// </summary>
+        internal interface IRegistry
+        {
+            /// <summary>
+            /// Retrieves a sub-key as read-only.
+            /// </summary>
+            /// <param name="keyName">The name or path of the sub-key to open as read-only.</param>
+            /// <returns>
+            /// The sub-key requested, or <see langword="null"/> if the operation failed.
+            /// </returns>
+            IRegistryKey OpenSubKey(string keyName);
+        }
+
+        /// <summary>
+        /// Defines a registry sub-key.
+        /// </summary>
+        internal interface IRegistryKey : IRegistry, IDisposable
+        {
+            /// <summary>
+            /// Retrieves an array of strings that contains all the sub-key names.
+            /// </summary>
+            /// <returns>
+            /// An array of strings that contains the names of the sub-keys for the current key.
+            /// </returns>
+            string[] GetSubKeyNames();
+
+            /// <summary>
+            /// Retrieves the value associated with the specified name.
+            /// </summary>
+            /// <param name="name">The name of the value to retrieve. This string is not case-sensitive.</param>
+            /// <returns>
+            /// The value associated with <paramref name="name"/>, or <see langword="null"/> if <paramref name="name"/> is not found.
+            /// </returns>
+            string GetValue(string name);
+        }
+
+        /// <summary>
         /// Gets the version of the SQL LocalDB native API loaded, if any.
         /// </summary>
         internal static Version NativeApiVersion
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IRegistry"/> to use.
+        /// </summary>
+        /// <remarks>
+        /// Used for unit testing.
+        /// </remarks>
+        internal static IRegistry Registry
+        {
+            get { return _registry ?? WindowsRegistry.Instance; }
+            set { _registry = value; }
         }
 
         /// <summary>
@@ -406,6 +461,129 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
+        /// Tries to obtaining the path to the latest version of the SQL LocalDB
+        /// native API DLL for the currently executing process.
+        /// </summary>
+        /// <param name="fileName">
+        /// When the method returns, contains the path to the SQL Local DB API
+        /// to use, if found; otherwise <see langword="null"/>.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the native API path was successfully found;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        internal static bool TryGetLocalDbApiPath(out string fileName)
+        {
+            fileName = null;
+
+            bool isWow64Process = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
+
+            // Open the appropriate Registry key if running as a 32-bit process on a 64-bit machine
+            string keyName = string.Format(
+                CultureInfo.InvariantCulture,
+                @"SOFTWARE\{0}Microsoft\Microsoft SQL Server Local DB\Installed Versions",
+                isWow64Process ? @"Wow6432Node\" : string.Empty);
+
+            IRegistryKey key = Registry.OpenSubKey(keyName);
+
+            if (key == null)
+            {
+                Logger.Warning(Logger.TraceEvent.RegistryKeyNotFound, SR.NativeMethods_RegistryKeyNotFoundFormat, keyName);
+                return false;
+            }
+
+            Version latestVersion = null;
+            Version overrideVersion = null;
+            string path = null;
+
+            try
+            {
+                // Is there a setting overriding the version to load?
+                string overrideVersionString = SqlLocalDbConfig.NativeApiOverrideVersionString;
+
+                foreach (string versionString in key.GetSubKeyNames())
+                {
+                    Version version;
+
+                    try
+                    {
+                        version = new Version(versionString);
+                    }
+                    catch (ArgumentException)
+                    {
+                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
+                        continue;
+                    }
+                    catch (FormatException)
+                    {
+                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
+                        continue;
+                    }
+                    catch (OverflowException)
+                    {
+                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
+                        continue;
+                    }
+
+                    if (!string.IsNullOrEmpty(overrideVersionString) &&
+                        overrideVersion == null &&
+                        string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Logger.Verbose(Logger.TraceEvent.NativeApiVersionOverriddenByUser, SR.NativeMethods_ApiVersionOverriddenByUserFormat, version);
+                        overrideVersion = version;
+                    }
+
+                    if (latestVersion == null ||
+                        latestVersion < version)
+                    {
+                        latestVersion = version;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(overrideVersionString) && overrideVersion == null)
+                {
+                    Logger.Warning(
+                        Logger.TraceEvent.NativeApiVersionOverrideNotFound,
+                        SR.NativeMethods_OverrideVersionNotFoundFormat,
+                        overrideVersionString,
+                        Environment.MachineName,
+                        latestVersion);
+                }
+
+                Version versionToUse = overrideVersion ?? latestVersion;
+
+                if (versionToUse != null)
+                {
+                    using (var subkey = key.OpenSubKey(versionToUse.ToString()))
+                    {
+                        path = subkey.GetValue("InstanceAPIPath");
+                    }
+
+                    NativeApiVersion = versionToUse;
+                }
+            }
+            finally
+            {
+                key.Dispose();
+            }
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Logger.Warning(Logger.TraceEvent.NoNativeApiFound, SR.NativeMethods_NoNativeApiFound);
+                return false;
+            }
+
+            if (!File.Exists(path))
+            {
+                Logger.Error(Logger.TraceEvent.NativeApiPathNotFound, SR.NativeMethods_NativeApiNotFoundFormat, path);
+                return false;
+            }
+
+            fileName = Path.GetFullPath(path);
+            return true;
+        }
+
+        /// <summary>
         /// Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).
         /// </summary>
         /// <param name="hModule">A handle to the DLL module that contains the function or variable. </param>
@@ -563,130 +741,6 @@ namespace System.Data.SqlLocalDb
             }
 
             return Marshal.GetDelegateForFunctionPointer(ptr, typeof(T)) as T;
-        }
-
-        /// <summary>
-        /// Tries to obtaining the path to the latest version of the SQL LocalDB
-        /// native API DLL for the currently executing process.
-        /// </summary>
-        /// <param name="fileName">
-        /// When the method returns, contains the path to the SQL Local DB API
-        /// to use, if found; otherwise <see langword="null"/>.
-        /// </param>
-        /// <returns>
-        /// <see langword="true"/> if the native API path was successfully found;
-        /// otherwise <see langword="false"/>.
-        /// </returns>
-        private static bool TryGetLocalDbApiPath(out string fileName)
-        {
-            fileName = null;
-
-            bool isWow64Process = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
-
-            // Open the appropriate Registry key if running as a 32-bit process on a 64-bit machine
-            string keyName = string.Format(
-                CultureInfo.InvariantCulture,
-                @"SOFTWARE\{0}Microsoft\Microsoft SQL Server Local DB\Installed Versions",
-                isWow64Process ? @"Wow6432Node\" : string.Empty);
-
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, false);
-
-            if (key == null)
-            {
-                Logger.Warning(Logger.TraceEvent.RegistryKeyNotFound, SR.NativeMethods_RegistryKeyNotFoundFormat, keyName);
-                return false;
-            }
-
-            Version latestVersion = null;
-            Version overrideVersion = null;
-
-            // Is there a setting overriding the version to load?
-            string overrideVersionString = SqlLocalDbConfig.NativeApiOverrideVersionString;
-
-            string path = null;
-
-            try
-            {
-                foreach (string versionString in key.GetSubKeyNames())
-                {
-                    Version version;
-
-                    try
-                    {
-                        version = new Version(versionString);
-                    }
-                    catch (ArgumentException)
-                    {
-                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
-                        continue;
-                    }
-                    catch (FormatException)
-                    {
-                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
-                        continue;
-                    }
-                    catch (OverflowException)
-                    {
-                        Logger.Warning(Logger.TraceEvent.InvalidRegistryKey, SR.NativeMethods_InvalidRegistryKeyNameFormat, versionString);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(overrideVersionString) &&
-                        overrideVersion == null &&
-                        string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Logger.Verbose(Logger.TraceEvent.NativeApiVersionOverriddenByUser, SR.NativeMethods_ApiVersionOverriddenByUserFormat, version);
-                        overrideVersion = version;
-                    }
-
-                    if (latestVersion == null ||
-                        latestVersion < version)
-                    {
-                        latestVersion = version;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(overrideVersionString) && overrideVersion == null)
-                {
-                    Logger.Warning(
-                        Logger.TraceEvent.NativeApiVersionOverrideNotFound,
-                        SR.NativeMethods_OverrideVersionNotFoundFormat,
-                        overrideVersionString,
-                        Environment.MachineName,
-                        latestVersion);
-                }
-
-                Version versionToUse = overrideVersion ?? latestVersion;
-
-                if (versionToUse != null)
-                {
-                    using (var subkey = key.OpenSubKey(versionToUse.ToString()))
-                    {
-                        path = subkey.GetValue("InstanceAPIPath", null, RegistryValueOptions.None) as string;
-                    }
-
-                    NativeApiVersion = versionToUse;
-                }
-            }
-            finally
-            {
-                key.Close();
-            }
-
-            if (string.IsNullOrEmpty(path))
-            {
-                Logger.Warning(Logger.TraceEvent.NoNativeApiFound, SR.NativeMethods_NoNativeApiFound);
-                return false;
-            }
-
-            if (!File.Exists(path))
-            {
-                Logger.Error(Logger.TraceEvent.NativeApiPathNotFound, SR.NativeMethods_NativeApiNotFoundFormat, path);
-                return false;
-            }
-
-            fileName = Path.GetFullPath(path);
-            return true;
         }
 
         /// <summary>
@@ -925,6 +979,77 @@ namespace System.Data.SqlLocalDb
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string pInstanceName,
                 int dwFlags);
+        }
+
+        /// <summary>
+        /// A class representing an implementation of <see cref="IRegistry"/> for the Windows registry. This class cannot be inherited.
+        /// </summary>
+        private sealed class WindowsRegistry : IRegistry
+        {
+            /// <summary>
+            /// The singleton instance of <see cref="WindowsRegistry"/>. This field is read-only.
+            /// </summary>
+            internal static readonly WindowsRegistry Instance = new WindowsRegistry();
+
+            /// <summary>
+            /// Prevents a default instance of the <see cref="WindowsRegistry"/> class from being created.
+            /// </summary>
+            private WindowsRegistry()
+            {
+            }
+
+            /// <inheritdoc />
+            public IRegistryKey OpenSubKey(string keyName)
+            {
+                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(keyName, writable: false);
+                return key == null ? null : new WindowsRegistryKey(key);
+            }
+        }
+
+        /// <summary>
+        /// A class representing an implementation of <see cref="IRegistryKey"/> for a Windows registry key. This class cannot be inherited.
+        /// </summary>
+        private sealed class WindowsRegistryKey : IRegistryKey
+        {
+            /// <summary>
+            /// The <see cref="RegistryKey"/> wrapped by the instance. This field is read-only.
+            /// </summary>
+            private readonly RegistryKey _key;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="WindowsRegistryKey"/> class.
+            /// </summary>
+            /// <param name="key">The <see cref="RegistryKey"/> to wrap.</param>
+            internal WindowsRegistryKey(RegistryKey key)
+            {
+                Debug.Assert(key != null, "key cannot be null.");
+                _key = key;
+            }
+
+            /// <inheritdoc />
+            void IDisposable.Dispose()
+            {
+                _key.Dispose();
+            }
+
+            /// <inheritdoc />
+            public string[] GetSubKeyNames()
+            {
+                return _key.GetSubKeyNames();
+            }
+
+            /// <inheritdoc />
+            public string GetValue(string name)
+            {
+                return _key.GetValue(name, null, RegistryValueOptions.None) as string;
+            }
+
+            /// <inheritdoc />
+            public IRegistryKey OpenSubKey(string keyName)
+            {
+                var key = _key.OpenSubKey(keyName);
+                return key == null ? null : new WindowsRegistryKey(key);
+            }
         }
     }
 }

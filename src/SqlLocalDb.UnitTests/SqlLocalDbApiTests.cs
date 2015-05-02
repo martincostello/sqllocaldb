@@ -1580,6 +1580,82 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.InvalidOverrideVersion.config");
         }
 
+        [TestMethod]
+        [Description("Tests IsLocalDBInstalled() returns false if SQL LocalDB is not installed on the local machine.")]
+        public void SqlLocalDbApi_IsLocalDBInstalled_Returns_False_If_Sql_LocalDb_Is_Not_Installed()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    SetupAsIfLocalDbNotInstalled();
+
+                    // Act
+                    bool result = SqlLocalDbApi.IsLocalDBInstalled();
+
+                    // Assert
+                    Assert.IsFalse(result, "IsLocalDBInstalled() returned incorrect result.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests DefaultInstanceName returns an empty string if SQL LocalDB is not installed on the local machine.")]
+        public void SqlLocalDbApi_DefaultInstanceName_Returns_Empty_String_If_Sql_LocalDb_Is_Not_Installed()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    SetupAsIfLocalDbNotInstalled();
+
+                    // Act
+                    string result = SqlLocalDbApi.DefaultInstanceName;
+
+                    // Assert
+                    Assert.AreEqual(string.Empty, result, "DefaultInstanceName returned incorrect value.");
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests LatestVersion throws if SQL LocalDB is not installed on the local machine.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void SqlLocalDbApi_LatestVersion_Throws_If_Sql_LocalDb_Is_Not_Installed()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    SetupAsIfLocalDbNotInstalled();
+
+                    // Act and Assert
+                    throw ErrorAssert.Throws<InvalidOperationException>(() => SqlLocalDbApi.LatestVersion);
+                });
+        }
+
+        [TestMethod]
+        [Description("Tests Versions throws if SQL LocalDB is not installed on the local machine.")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void SqlLocalDbApi_Versions_Throws_If_Sql_LocalDb_Is_Not_Installed()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    SetupAsIfLocalDbNotInstalled();
+
+                    // Act and Assert
+                    throw ErrorAssert.Throws<InvalidOperationException>(() => SqlLocalDbApi.Versions);
+                });
+        }
+
+        /// <summary>
+        /// Sets up the <see cref="AppDomain"/> as if SQL LocalDB is not installed.
+        /// </summary>
+        private static void SetupAsIfLocalDbNotInstalled()
+        {
+            NativeMethods.Registry = Moq.Mock.Of<NativeMethods.IRegistry>();
+        }
+
         /// <summary>
         /// Returns the full path of the folder for the specified SQL LocalDB instance.
         /// </summary>
