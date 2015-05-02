@@ -65,6 +65,7 @@ namespace System.Data.SqlLocalDb
                 });
         }
 
+        [Ignore]    // Test causes a UI pop-up from Windows when building from the command-line
         [TestMethod]
         [Description("Tests that P/Invoke methods to the SQL LocalDB Instance API return the correct value if the DLL cannot be loaded.")]
         public void NativeMethods_Methods_Return_Correct_Value_If_Sql_LocalDb_Instance_Api_Cannot_Be_Loaded()
@@ -102,7 +103,7 @@ namespace System.Data.SqlLocalDb
             Helpers.InvokeInNewAppDomain(
                 () =>
                 {
-                    string fileName = typeof(NativeMethods).Assembly.Location;  // .NET assembly not a native DLL, so GetProcAddress()
+                    string fileName = typeof(NativeMethods).Assembly.Location;  // .NET assembly not a native DLL, so GetProcAddress() will fail
 
                     var versions = new Tuple<string, string>[]
                     {
