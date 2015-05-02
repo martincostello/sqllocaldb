@@ -110,10 +110,16 @@
     <!--
       Set the appropriate MSTest options for the test run.
     -->
+    <PropertyGroup Condition="'$(TestCaseFilter)' == ''">
+      <TestCaseFilter>/TestCaseFilter:</TestCaseFilter>
+      <TestCaseFilter Condition="!$(_IsCurrentUserAdmin)">$(TestCaseFilter)TestCategory!="Requires Administrative Permissions"&amp;</TestCaseFilter>
+      <TestCaseFilter Condition="'$(APPVEYOR)' == ''">$(TestCaseFilter)TestCategory!="CI Only"&amp;</TestCaseFilter>
+      <TestCaseFilter>$(TestCaseFilter.TrimEnd('&amp;'))</TestCaseFilter>
+    </PropertyGroup>
     <PropertyGroup>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
-      <TestOptions Condition="!$(_IsCurrentUserAdmin)">$(TestOptions) /TestCaseFilter:TestCategory!="Requires Administrative Permissions"</TestOptions>
+      <TestOptions>$(TestOptions) $(TestCaseFilter)</TestOptions>
       <!--
         If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
       -->

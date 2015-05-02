@@ -65,8 +65,8 @@ namespace System.Data.SqlLocalDb
                 });
         }
 
-        [Ignore]    // Test causes a UI pop-up from Windows when building from the command-line
         [TestMethod]
+        [TestCategory(TestCategories.CIOnly)]   // Test causes a UI pop-up from Windows when building from the command-line
         [Description("Tests that P/Invoke methods to the SQL LocalDB Instance API return the correct value if the DLL cannot be loaded.")]
         public void NativeMethods_Methods_Return_Correct_Value_If_Sql_LocalDb_Instance_Api_Cannot_Be_Loaded()
         {

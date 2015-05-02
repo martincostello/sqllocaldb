@@ -17,7 +17,10 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class TestCategories
     {
-        #region Constants
+        /// <summary>
+        /// The name of the test category for tests that should only run as part of a continuous integration.
+        /// </summary>
+        internal const string CIOnly = "CI Only";
 
         /// <summary>
         /// The name of the integration test category.
@@ -28,7 +31,5 @@ namespace System.Data.SqlLocalDb
         /// The name of the test category for test that require administrative permissions to run.
         /// </summary>
         internal const string RequiresAdministrativePermissions = "Requires Administrative Permissions";
-
-        #endregion
     }
 }
