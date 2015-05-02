@@ -139,7 +139,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests TryGetLocalDbApiPath() correctly enumerates the registry to get the path of the latest installed version of SQL LocalDB ignoring any invalid registry keys.")]
-        public void NativeMethods_TryGetLocalDbApiPath_Enumerates_Installed_SQL_LocalDb_Versions_Correctly_Ignoring_Invalid_Registry_Keys()
+        public void NativeMethods_TryGetLocalDbApiPath_Enumerates_Installed_Sql_LocalDb_Versions_Correctly_Ignoring_Invalid_Registry_Keys()
         {
             // Arrange
             Helpers.InvokeInNewAppDomain(
@@ -199,7 +199,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests IRegistry.OpenSubKey() if the sub-key is not found.")]
-        public void NativeMethods_Registry_OpenSubKey_If_SubKey_Not_Found()
+        public void NativeMethods_Registry_OpenSubkey_If_Subkey_Not_Found()
         {
             // Arrange
             string keyName = Guid.NewGuid().ToString();
@@ -223,7 +223,7 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [Description("Tests IRegistryKey.OpenSubKey() if the sub-key is not found.")]
-        public void NativeMethods_RegistryKey_OpenSubKey_If_SubKey_Not_Found()
+        public void NativeMethods_RegistryKey_OpenSubkey_If_Subkey_Not_Found()
         {
             // Arrange
             using (var key = NativeMethods.Registry.OpenSubKey(@"SOFTWARE\Microsoft"))
