@@ -111,10 +111,10 @@
       Set the appropriate MSTest options for the test run.
     -->
     <PropertyGroup Condition="'$(TestCaseFilter)' == ''">
-      <TestCaseFilter>/TestCaseFilter:</TestCaseFilter>
       <TestCaseFilter Condition="!$(_IsCurrentUserAdmin)">$(TestCaseFilter)TestCategory!="Requires Administrative Permissions"&amp;</TestCaseFilter>
       <TestCaseFilter Condition="'$(APPVEYOR)' == ''">$(TestCaseFilter)TestCategory!="CI Only"&amp;</TestCaseFilter>
       <TestCaseFilter>$(TestCaseFilter.TrimEnd('&amp;'))</TestCaseFilter>
+      <TestCaseFilter Condition="'$(TestCaseFilter)' != ''">/TestCaseFilter:$(TestCaseFilter)</TestCaseFilter>
     </PropertyGroup>
     <PropertyGroup>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
