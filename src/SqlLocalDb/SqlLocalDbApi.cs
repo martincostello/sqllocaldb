@@ -485,12 +485,6 @@ namespace System.Data.SqlLocalDb
                 throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceNames);
             }
 
-            if (count == 0)
-            {
-                // Shortcut, no instances
-                return new string[0];
-            }
-
             // Allocate enough memory to receive the instance name array
             int nameLength = MaxInstanceNameLength;
             IntPtr ptrNames = Marshal.AllocHGlobal(nameLength * count);
