@@ -249,12 +249,7 @@ namespace System.Data.SqlLocalDb
                 return false;
             }
 
-            if (_appDomainShutdown)
-            {
-                return false;
-            }
-
-            return true;
+            return !_appDomainShutdown;
         }
 
         /// <summary>
