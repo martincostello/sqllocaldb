@@ -20,6 +20,9 @@ artifacts:
   - path: src\BuildOutput\*.zip
   - path: src\TestResults\*\*.coverage
 
+nuget:
+  disable_publish_on_pr: true
+
 skip_tags: false
 test: off
 
