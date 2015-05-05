@@ -1409,6 +1409,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2012)]
         [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2012.")]
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2012()
         {
@@ -1426,6 +1427,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2014)]
         [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2014.")]
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2014()
         {

@@ -845,6 +845,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2012)]
         [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2012 default instance name.")]
         public void Extensions_GetOrCreateInstance_For_2012_Default_Instance_Name()
         {
@@ -861,6 +862,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2014)]
         [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2014 default instance name.")]
         public void Extensions_GetOrCreateInstance_For_2014_Default_Instance_Name()
         {

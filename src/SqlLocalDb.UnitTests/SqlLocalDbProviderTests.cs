@@ -265,6 +265,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2012)]
         [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden for SQL Server LocalDB 2012.")]
         public void SqlLocalDbProvider_CreateInstance_Specifies_No_Version_If_Default_Instance_Name_Specified_2012()
         {
@@ -301,6 +302,7 @@ namespace System.Data.SqlLocalDb
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.SqlServer2014)]
         [Description("Tests CreateInstance(string) uses the specfied version of SQL LocalDB if overridden for SQL Server LocalDB 2014.")]
         public void SqlLocalDbProvider_CreateInstance_Specifies_No_Version_If_Default_Instance_Name_Specified_2014()
         {
