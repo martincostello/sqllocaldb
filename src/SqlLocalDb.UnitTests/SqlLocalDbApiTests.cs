@@ -1390,7 +1390,9 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.PropertiesOverridden.config");
         }
 
-        [TestMethod]
+        [TestMethod]    // This test's expected result depends on what the latest version installed is
+        [TestCategory(TestCategories.SqlServer2012)]
+        [TestCategory(TestCategories.SqlServer2014)]
         [Description("Tests that the DefaultInstanceName property returns the correct value.")]
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value()
         {
