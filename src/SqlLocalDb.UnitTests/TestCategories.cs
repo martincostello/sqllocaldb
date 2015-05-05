@@ -28,7 +28,7 @@ namespace System.Data.SqlLocalDb
         internal const string Integration = "Integration";
 
         /// <summary>
-        /// The name of the test category for test that require administrative permissions to run.
+        /// The name of the test category for tests that require administrative permissions to run.
         /// </summary>
         internal const string RequiresAdministrativePermissions = "Requires Administrative Permissions";
 
