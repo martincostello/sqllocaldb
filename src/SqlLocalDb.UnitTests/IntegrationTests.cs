@@ -122,17 +122,24 @@ namespace System.Data.SqlLocalDb
             Assert.IsNotNull(instances, "GetInstances() returned null.");
             CollectionAssert.AllItemsAreNotNull(instances.ToArray(), "GetInstances() returned a null item.");
 
+            bool usingSqlServer2012 = NativeMethods.NativeApiVersion == new Version(11, 0);
+
+            string[] defaultInstanceNamesForSqlServer2012 = new string[]
+            {
+                "v12.0",
+            };
+
             foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
             {
                 Assert.IsNotNull(instanceInfo.Name, "ISqlLocalDbInstanceInfo.Name is null.", instanceInfo.Name);
 
-                if (string.Equals(instanceInfo.Name, "v12.0", StringComparison.Ordinal) &&
-                    NativeMethods.NativeApiVersion == new Version(11, 0))
+                if (usingSqlServer2012 && defaultInstanceNamesForSqlServer2012.Contains(instanceInfo.Name, StringComparer.Ordinal))
                 {
-                    // The SQL LocalDB 2012 native library reports the name as v12.0 instead of MSSQLLocalDB,
+                    // The SQL LocalDB 2012 Instance API reports the name as 'v12.0' instead of 'MSSQLLocalDB',
                     // which then if queried states that it does not exist (because it doesn't actually exist)
-                    // under that name.  In this case, skip this test. We could fudge this in the wrapper itself,
-                    // but that's probably not the best idea as the default instance name may change again in SQL v13.0.
+                    // under that name.  In this case, skip this instance from being tested. We could fudge this
+                    // in the wrapper itself, but that's probably not the best idea as the default instance name
+                    // may change again in SQL Server 2016.
                     continue;
                 }
 
