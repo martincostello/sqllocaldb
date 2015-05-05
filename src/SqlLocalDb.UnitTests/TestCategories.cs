@@ -41,5 +41,10 @@ namespace System.Data.SqlLocalDb
         /// The name of the test category for tests that specifically require SQL Server 2014 or test its behavior.
         /// </summary>
         internal const string SqlServer2014 = "SQL Server 2014";
+
+        /// <summary>
+        /// The name of the test category for tests that specifically require SQL Server 2016 or test its behavior.
+        /// </summary>
+        internal const string SqlServer2016 = "SQL Server 2016";
     }
 }
