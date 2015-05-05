@@ -31,5 +31,15 @@ namespace System.Data.SqlLocalDb
         /// The name of the test category for test that require administrative permissions to run.
         /// </summary>
         internal const string RequiresAdministrativePermissions = "Requires Administrative Permissions";
+
+        /// <summary>
+        /// The name of the test category for tests that specifically require SQL Server 2012 or test its behavior.
+        /// </summary>
+        internal const string SqlServer2012 = "SQL Server 2012";
+
+        /// <summary>
+        /// The name of the test category for tests that specifically require SQL Server 2014 or test its behavior.
+        /// </summary>
+        internal const string SqlServer2014 = "SQL Server 2014";
     }
 }
