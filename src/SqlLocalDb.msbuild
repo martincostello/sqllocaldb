@@ -295,7 +295,7 @@
     SHA in the [AssemblyConfiguration] attribute.
   -->
   <Target Name="UpdateAssemblyConfiguration">
-    <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" />
+    <UpdateAssemblyConfiguration AssemblyInfoPath="$(SolutionDir)CommonAssemblyInfo.cs" CommitId="$(APPVEYOR_REPO_COMMIT)" Branch="$(APPVEYOR_REPO_BRANCH)" />
   </Target>
   <UsingTask
     TaskName="UpdateAssemblyConfiguration"
@@ -304,13 +304,14 @@
     <ParameterGroup>
       <AssemblyInfoPath Required="true" />
       <CommitId Required="true" />
+      <Branch Required="true" />
     </ParameterGroup>
     <Task>
       <Using Namespace="System.IO" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
           string content = File.ReadAllText(AssemblyInfoPath);
-          content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "\")]");
+          content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "-" + Branch + "\")]");
           File.WriteAllText(AssemblyInfoPath, content);
         ]]>
       </Code>
