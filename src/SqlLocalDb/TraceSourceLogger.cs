@@ -70,20 +70,7 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private static TraceSource Source
         {
-            get
-            {
-                if (!_initialized)
-                {
-                    Initialize();
-                }
-
-                if (!_enabled)
-                {
-                    return null;
-                }
-
-                return _traceSource;
-            }
+            get { return EnsureInitialized() ? _traceSource : null; }
         }
 
         /// <summary>
@@ -199,8 +186,11 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Initializes the <see cref="Logger"/> class.
         /// </summary>
+        /// <returns>
+        /// <see langword="true"/> if logging is enabled; otherwise <see langword="false"/>.
+        /// </returns>
         [SecurityCritical]
-        private static void Initialize()
+        private static bool EnsureInitialized()
         {
             lock (SyncRoot)
             {
@@ -230,6 +220,8 @@ namespace System.Data.SqlLocalDb
                     _enabled = loggingEnabled;
                     _initialized = true;
                 }
+
+                return _enabled;
             }
         }
 
