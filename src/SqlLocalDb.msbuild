@@ -311,7 +311,7 @@
       <Code Type="Fragment" Language="cs">
         <![CDATA[
           string content = File.ReadAllText(AssemblyInfoPath);
-          content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "-" + Branch + "\")]");
+          content = content.Replace("[assembly: AssemblyConfiguration(\"\")]", "[assembly: AssemblyConfiguration(\"" + CommitId + "|" + Branch + "\")]");
           File.WriteAllText(AssemblyInfoPath, content);
         ]]>
       </Code>
