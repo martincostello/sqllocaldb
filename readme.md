@@ -14,17 +14,49 @@ It is designed to support use of dependency injection by consumers by implementi
 
 The assembly supports using SQL Server LocalDB 2012 and 2014 for both the x86 and x64 platforms.
 
-## Documentation
-
-For documentation about the assembly and how to use it, consult the [Wiki](https://github.com/martincostello/sqllocaldb/wiki) in GitHub.
-
-You can also check out the [examples below](https://github.com/martincostello/sqllocaldb#examples).
-
 ## Downloads
 
 The recommended way of obtaining the assembly is using [NuGet](https://www.nuget.org/packages/System.Data.SqlLocalDb).
 
 Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub](https://github.com/martincostello/sqllocaldb/releases/latest).
+
+## Documentation
+
+### Basic Usage
+
+First install the [NuGet package](https://www.nuget.org/packages/System.Data.SqlLocalDb/):
+
+```Install-Package System.Data.SqlLocalDb```
+
+Add the appropriate namespace:
+
+```
+using System.Data.SqlLocalDb;
+```
+
+Then create an instance, start it and connect to it:
+
+```
+ISqlLocalDbProvider provider = new SqlLocalDbProvider();
+ISqlLocalDbInstance instance = provider.GetOrCreateInstance("MyInstance");
+
+instance.Start();
+
+using (SqlConnection connection = instance.CreateConnection())
+{
+    connection.Open();
+
+    // Use the connection...
+}
+
+instance.Stop();
+```
+
+### Further Details
+
+For further documentation about the assembly and how to use it, consult the [Wiki](https://github.com/martincostello/sqllocaldb/wiki) in GitHub.
+
+You can also check out the [examples below](https://github.com/martincostello/sqllocaldb#examples).
 
 ## Examples
 
