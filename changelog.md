@@ -137,3 +137,4 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 * The HRESULT values from the SQL LocalDB Instance API logged in error messages are now formatted as hexadecimal values.
 * A warning is logged if the configured version of the SQL LocalDB Instance API to load instead of the latest version cannot be found.
 * Fixed ```TemporarySqlLocalDbInstance``` so it no longer throws an exception when disposed if the temporary SQL LocalDB instance could not be stopped or deleted.
+* The internals now use the Windows ```LoadLibraryEx``` function instead of ```LoadLibrary```.

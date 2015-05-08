@@ -606,17 +606,21 @@ namespace System.Data.SqlLocalDb
         /// The specified module may cause other modules to be loaded.
         /// </summary>
         /// <param name="lpFileName">The name of the module.</param>
+        /// <param name="hFile">This parameter is reserved for future use. It must be <see cref="IntPtr.Zero"/>.</param>
+        /// <param name="dwFlags">The action to be taken when loading the module.</param>
         /// <returns>
         /// If the function succeeds, the return value is a handle to the module.
         /// If the function fails, the return value is <see langword="null"/>.
         /// </returns>
         /// <remarks>
-        /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms684175%28v=vs.85%29.aspx</c>.
+        /// See <c>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179%28v=vs.85%29.aspx</c>.
         /// </remarks>
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
-        private static extern SafeLibraryHandle LoadLibrary(
+        private static extern SafeLibraryHandle LoadLibraryEx(
             [MarshalAs(UnmanagedType.LPStr)]
-            string lpFileName);
+            string lpFileName,
+            IntPtr hFile,
+            int dwFlags);
 
         /// <summary>
         /// Ensures that the specified delegate to an unmanaged function is initialized.
@@ -690,7 +694,9 @@ namespace System.Data.SqlLocalDb
                             return null;
                         }
 
-                        _localDB = LoadLibrary(fileName);
+                        // TODO - If KB2533623 is installed on Windows Vista, 7, Server 2008
+                        // or Server 2008 R2, then use LOAD_LIBRARY_SEARCH_DEFAULT_DIRS for dwFlags.
+                        _localDB = LoadLibraryEx(fileName, IntPtr.Zero, 0);
 
                         if (_localDB == null ||
                             _localDB.IsInvalid)
