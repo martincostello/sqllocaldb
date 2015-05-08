@@ -52,6 +52,15 @@ namespace System.Data.SqlLocalDb
         private const int LOCALDB_TRUNCATE_ERR_MESSAGE = 1;
 
         /// <summary>
+        /// This value represents the recommended maximum number of directories an application should include in its DLL search path.
+        /// </summary>
+        /// <remarks>
+        /// Only supported on Windows Vista, 7, Server 2008 and Server 2008 R2 with KB2533623.
+        /// See <c>https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179%28v=vs.85%29.aspx</c>.
+        /// </remarks>
+        private const int LOAD_LIBRARY_SEARCH_DEFAULT_DIRS = 0x00001000;
+
+        /// <summary>
         /// The name of the Windows Kernel library.
         /// </summary>
         private const string KernelLibName = "kernel32.dll";
@@ -694,9 +703,25 @@ namespace System.Data.SqlLocalDb
                             return null;
                         }
 
-                        // TODO - If KB2533623 is installed on Windows Vista, 7, Server 2008
-                        // or Server 2008 R2, then use LOAD_LIBRARY_SEARCH_DEFAULT_DIRS for dwFlags.
-                        _localDB = LoadLibraryEx(fileName, IntPtr.Zero, 0);
+                        int dwFlags = 0;
+
+                        // Check if the local machine has KB2533623 installed in order
+                        // to use the more secure flags when calling LoadLibraryEx
+                        bool hasKB2533623;
+
+                        using (var hModule = LoadLibraryEx(KernelLibName, IntPtr.Zero, 0))
+                        {
+                            // If the AddDllDirectory function is found then the flags are supported
+                            hasKB2533623 = GetProcAddress(hModule, "AddDllDirectory") != IntPtr.Zero;
+                        }
+
+                        if (hasKB2533623)
+                        {
+                            // If KB2533623 is installed then specify the more secure LOAD_LIBRARY_SEARCH_DEFAULT_DIRS in dwFlags
+                            dwFlags = LOAD_LIBRARY_SEARCH_DEFAULT_DIRS;
+                        }
+
+                        _localDB = LoadLibraryEx(fileName, IntPtr.Zero, dwFlags);
 
                         if (_localDB == null ||
                             _localDB.IsInvalid)
