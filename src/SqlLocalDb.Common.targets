@@ -10,6 +10,8 @@
     <HighEntropyVA>true</HighEntropyVA>
     <SignAssembly>true</SignAssembly>
     <SourceAnalysisOverrideSettingsFile>$(SolutionDir)\StyleCop.settings</SourceAnalysisOverrideSettingsFile>
+    <StyleCopEnabled Condition="'$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5@Version)' == ''">false</StyleCopEnabled>
+    <StyleCopEnabled Condition="'$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5@Version)' != ''">true</StyleCopEnabled>
   </PropertyGroup>
   <Import Project="$(SolutionDir)AssemblyVersion.targets"/>
   <Import Project="$(SolutionDir)Tools\StyleCop\StyleCop.targets" />
