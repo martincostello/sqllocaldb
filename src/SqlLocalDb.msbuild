@@ -119,7 +119,7 @@
     <PropertyGroup>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
-      <TestOptions>$(TestOptions) %22$(TestCaseFilter)%22</TestOptions>
+      <TestOptions Condition="'$(TestCaseFilter)' != ''">$(TestOptions) %22$(TestCaseFilter)%22</TestOptions>
       <!--
         If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
       -->
