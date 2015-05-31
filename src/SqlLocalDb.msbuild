@@ -111,15 +111,15 @@
       Set the appropriate MSTest options for the test run.
     -->
     <PropertyGroup Condition="'$(TestCaseFilter)' == ''">
-      <TestCaseFilter Condition="!$(_IsCurrentUserAdmin)">$(TestCaseFilter)TestCategory!="Requires Administrative Permissions"&amp;</TestCaseFilter>
-      <TestCaseFilter Condition="'$(APPVEYOR)' == ''">$(TestCaseFilter)TestCategory!="CI Only"&amp;</TestCaseFilter>
+      <TestCaseFilter Condition="!$(_IsCurrentUserAdmin)">$(TestCaseFilter)TestCategory!=Requires Administrative Permissions&amp;</TestCaseFilter>
+      <TestCaseFilter Condition="'$(APPVEYOR)' == ''">$(TestCaseFilter)TestCategory!=CI Only&amp;</TestCaseFilter>
       <TestCaseFilter>$(TestCaseFilter.TrimEnd('&amp;'))</TestCaseFilter>
       <TestCaseFilter Condition="'$(TestCaseFilter)' != ''">/TestCaseFilter:$(TestCaseFilter)</TestCaseFilter>
     </PropertyGroup>
     <PropertyGroup>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
-      <TestOptions>$(TestOptions) $(TestCaseFilter)</TestOptions>
+      <TestOptions>$(TestOptions) %22$(TestCaseFilter)%22</TestOptions>
       <!--
         If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
       -->
