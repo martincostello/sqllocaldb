@@ -60,9 +60,9 @@ You can also check out the [examples below](https://github.com/martincostello/sq
 
 ## Examples
 
-An example of using the API can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/TestApp/Program.cs) in the TestApp project in the source code.
-
-An example of using the API with [EntityFramework](http://entityframework.codeplex.com/) can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/SqlLocalDb.EFSample/Program.cs) in the source code.
+  1. An example of using the API can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/TestApp/Program.cs) in the TestApp project in the source code.
+  1. An runnable example solution using the API to test an ASP.NET MVC application using SQL Server with MSTest is included as [BlogSample.sln](https://github.com/martincostello/sqllocaldb/blob/master/src/BlogSample.sln) in the source code.
+  1. An example of using the API with [EntityFramework](http://entityframework.codeplex.com/) can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/SqlLocalDb.EFSample/Program.cs) in the source code.
 
 ## Feedback
 
