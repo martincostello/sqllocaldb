@@ -22,5 +22,6 @@ TestResults
 *.sln.ide
 *.suo
 *.user
+/src/BlogSample/App_Data
 /src/Tools/Coverity
 /src/Tools/NuGet/NuGet.exe.old

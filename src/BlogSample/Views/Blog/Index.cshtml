@@ -1,0 +1,42 @@
+﻿@model HomePageViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+    string rowWidth = Model == null ? "6" : "4";
+}
+
+<div class="jumbotron">
+    <h1>My Blog</h1>
+    <p class="lead">This is my blog. I like to blog about things.</p>
+    <p>@Html.ActionLink("Read the latest post »", "Latest", null, new { @class = "btn btn-primary btn-lg" })</p>
+</div>
+
+<div class="row">
+    @if (Model != null)
+    {
+    <div class="col-md-@rowWidth">
+        <h2>@Model.LatestPostTitle</h2>
+        <p>@Model.LatestPostPreview</p>
+        <p>@Html.ActionLink("Read more »", "Latest", null, new { @class = "btn btn-default" })</p>
+    </div>
+    }
+    <div class="col-md-@rowWidth">
+        <h2>Archive</h2>
+        <p>View the blog posts in the archive.</p>
+        <p>@Html.ActionLink("View the archive »", "Archive", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-@rowWidth">
+        <h2>SQL LocalDB Wrapper</h2>
+        <p>
+            SQL LocalDB Wrapper is a .NET assembly providing interop with the Microsoft
+            SQL Server LocalDB native API from managed code using .NET APIs. It is designed
+            to support use of dependency injection by consumers by implementing interfaces,
+            and is also designed to fit with the other data access providers defined under
+            the <code>System.Data</code> namespaces.
+        </p>
+        <p>
+            The assembly supports using SQL Server LocalDB 2012 and 2014 for both the x86 and x64 platforms.
+        </p>
+        <p><a class="btn btn-default" href="https://github.com/martincostello/sqllocaldb">Learn more &raquo;</a></p>
+    </div>
+</div>
