@@ -52,8 +52,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F
 		Tools\StyleCop\StyleCop.Targets = Tools\StyleCop\StyleCop.Targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb.EFSample", "SqlLocalDb.EFSample\System.Data.SqlLocalDb.EFSample.csproj", "{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{C1285F26-933A-4A35-9AF1-1F35A3CE25AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuildExtensionPack", "MSBuildExtensionPack", "{42978B8C-754C-4144-A45D-4141B22A84DF}"
@@ -88,10 +86,6 @@ Global
 		{FB9017DA-0F3C-4A17-AF09-55F6AAE48B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB9017DA-0F3C-4A17-AF09-55F6AAE48B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB9017DA-0F3C-4A17-AF09-55F6AAE48B7B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F82244A-6B6E-4718-A15B-DAB40D6FFEB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
