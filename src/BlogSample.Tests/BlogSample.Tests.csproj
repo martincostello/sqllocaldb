@@ -93,7 +93,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\..\..\..\..\..\Coding\SqlLocalDbWrapper\src\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
@@ -123,7 +123,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Coding\SqlLocalDbWrapper\src\BlogSample\BlogSample.csproj">
+    <ProjectReference Include="..\BlogSample\BlogSample.csproj">
       <Project>{3B90EA51-9F00-40C7-A2F8-56984B33C1A3}</Project>
       <Name>BlogSample</Name>
     </ProjectReference>
