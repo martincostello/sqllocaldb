@@ -5,12 +5,10 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)AssemblyVersion.targets" />
   <!--
-    By default build the Release version with Visual Studio 2013 tooling
-    and place in the BuildOutput directory, then run the automated tests.
+    By default build the Release version and place in the BuildOutput directory, then run the automated tests.
   -->
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-    <PlatformToolset>v120</PlatformToolset>
     <SqlLocalDbRoot>$(MSBuildProjectDirectory)\</SqlLocalDbRoot>
     <OutDir>$(SqlLocalDbRoot)BuildOutput\</OutDir>
     <OutDir>$([System.IO.Path]::GetFullPath('$(OutDir)'))</OutDir>

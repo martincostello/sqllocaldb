@@ -77,7 +77,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Building and testing the project is supported using Microsoft Visual Studio 2013.
+Building and testing the project is supported using Microsoft Visual Studio 2013 and 2015.
 
 The simplest way to build and test the assembly from the source code is by using the [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) batch file in the root of the repository like so: ```Build.cmd```. The project can also be built and tested from Visual Studio.
 
