@@ -15,7 +15,7 @@
     <SolutionFile>$(SqlLocalDbRoot)SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
     <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
-    <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">true</EnableCodeCoverage>
+    <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">false</EnableCodeCoverage>
   </PropertyGroup>
   <!--
     By default all compiler and static analysis warnings are treated as errors.
