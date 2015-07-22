@@ -108,52 +108,6 @@ namespace BlogSample.Controllers
         }
 
         [TestMethod]
-        public async Task BlogController_Archive_Returns_All_Posts_If_There_Are_More_Than_Five_Posts_In_The_Database()
-        {
-            // Arrange
-            // We can use the shared database as the test data will artificially put items far
-            // enough in the future that we will still get the results we want and because our
-            // expected result set has a maximum size it does not matter if there is data already present.
-            // If this is the first test to run, the shared SQL LocalDB instance will be created now.
-            DateTime now = DateTime.UtcNow.AddYears(3);
-
-            using (BlogContext context = new BlogContext(TestSetup.ConnectionString))
-            {
-                context.Posts.Add(new BlogPost() { Body = "Body 1", Preview = "Preview 1", Title = "Future Title 1", PublishedAt = now });
-                context.Posts.Add(new BlogPost() { Body = "Body 2", Preview = "Preview 2", Title = "Future Title 2", PublishedAt = now.AddDays(1) });
-                context.Posts.Add(new BlogPost() { Body = "Body 3", Preview = "Preview 3", Title = "Future Title 3", PublishedAt = now.AddDays(2) });
-                context.Posts.Add(new BlogPost() { Body = "Body 4", Preview = "Preview 4", Title = "Future Title 4", PublishedAt = now.AddDays(3) });
-                context.Posts.Add(new BlogPost() { Body = "Body 5", Preview = "Preview 5", Title = "Future Title 5", PublishedAt = now.AddDays(4) });
-                context.Posts.Add(new BlogPost() { Body = "Body 6", Preview = "Preview 6", Title = "Future Title 6", PublishedAt = now.AddDays(5) });
-                context.Posts.Add(new BlogPost() { Body = "Body 7", Preview = "Preview 7", Title = "Future Title 7", PublishedAt = now.AddDays(6) });
-
-                await context.SaveChangesAsync();
-            }
-
-            using (BlogController target = CreateTarget())
-            {
-                // Act
-                ActionResult result = await target.Archive();
-
-                // Assert
-                Assert.IsNotNull(result);
-                Assert.IsInstanceOfType(result, typeof(ViewResult));
-
-                ViewResult view = result as ViewResult;
-
-                Assert.IsInstanceOfType(view.Model, typeof(ICollection<BlogPostViewModel>));
-                Assert.AreEqual(string.Empty, view.ViewName);
-
-                ICollection<BlogPostViewModel> model = view.Model as ICollection<BlogPostViewModel>;
-
-                Assert.AreEqual(5, model.Count);
-
-                Assert.AreEqual("Future Title 7", model.First().Title);
-                Assert.AreEqual("Future Title 3", model.Last().Title);
-            }
-        }
-
-        [TestMethod]
         public async Task BlogController_Index_Returns_Null_Model_If_There_Are_No_Posts_In_The_Database()
         {
             // Arrange
@@ -388,6 +342,52 @@ namespace BlogSample.Controllers
                 Assert.AreEqual(entity.Preview, model.Preview);
                 Assert.IsTrue(entity.PublishedAt >= model.PublishedAt.AddMilliseconds(model.PublishedAt.Millisecond * -1));
                 Assert.AreEqual(entity.Title, model.Title);
+            }
+        }
+
+        [TestMethod]
+        public async Task BlogController_Archive_Returns_All_Posts_If_There_Are_More_Than_Five_Posts_In_The_Database()
+        {
+            // Arrange
+            // We can use the shared database as the test data will artificially put items far
+            // enough in the future that we will still get the results we want and because our
+            // expected result set has a maximum size it does not matter if there is data already present.
+            // If this is the first test to run, the shared SQL LocalDB instance will be created now.
+            DateTime now = DateTime.UtcNow.AddYears(3);
+
+            using (BlogContext context = new BlogContext(TestSetup.ConnectionString))
+            {
+                context.Posts.Add(new BlogPost() { Body = "Body 1", Preview = "Preview 1", Title = "Future Title 1", PublishedAt = now });
+                context.Posts.Add(new BlogPost() { Body = "Body 2", Preview = "Preview 2", Title = "Future Title 2", PublishedAt = now.AddDays(1) });
+                context.Posts.Add(new BlogPost() { Body = "Body 3", Preview = "Preview 3", Title = "Future Title 3", PublishedAt = now.AddDays(2) });
+                context.Posts.Add(new BlogPost() { Body = "Body 4", Preview = "Preview 4", Title = "Future Title 4", PublishedAt = now.AddDays(3) });
+                context.Posts.Add(new BlogPost() { Body = "Body 5", Preview = "Preview 5", Title = "Future Title 5", PublishedAt = now.AddDays(4) });
+                context.Posts.Add(new BlogPost() { Body = "Body 6", Preview = "Preview 6", Title = "Future Title 6", PublishedAt = now.AddDays(5) });
+                context.Posts.Add(new BlogPost() { Body = "Body 7", Preview = "Preview 7", Title = "Future Title 7", PublishedAt = now.AddDays(6) });
+
+                await context.SaveChangesAsync();
+            }
+
+            using (BlogController target = CreateTarget())
+            {
+                // Act
+                ActionResult result = await target.Archive();
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+                ViewResult view = result as ViewResult;
+
+                Assert.IsInstanceOfType(view.Model, typeof(ICollection<BlogPostViewModel>));
+                Assert.AreEqual(string.Empty, view.ViewName);
+
+                ICollection<BlogPostViewModel> model = view.Model as ICollection<BlogPostViewModel>;
+
+                Assert.AreEqual(5, model.Count);
+
+                Assert.AreEqual("Future Title 7", model.First().Title);
+                Assert.AreEqual("Future Title 3", model.Last().Title);
             }
         }
 
