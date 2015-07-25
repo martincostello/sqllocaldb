@@ -118,7 +118,7 @@
       <SpecifyTestFramework Condition="'$(SpecifyTestFramework)' == ''">true</SpecifyTestFramework>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestInIsolation Condition="'$(TestInIsolation)' == ''">true</TestInIsolation>
-      <SpecifyTestSettingsFile Condition="'$(SpecifyTestSettingsFile)' == ''">false</SpecifyTestSettingsFile>
+      <SpecifyTestSettingsFile Condition="'$(SpecifyTestSettingsFile)' == ''">true</SpecifyTestSettingsFile>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
       <TestOptions Condition="'$(TestCaseFilter)' != ''">$(TestOptions) %22$(TestCaseFilter)%22</TestOptions>
       <!--
