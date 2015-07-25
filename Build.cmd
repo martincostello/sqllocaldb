@@ -7,3 +7,5 @@ if not exist %_MSBuild% set _MSBuild="%ProgramFiles%\MSBuild\12.0\Bin\MSBuild.ex
 if not exist %_MSBuild% echo Error: Could not find MSBuild.exe. && exit /b 1
 
 %_MSBuild% "%~dp0\src\SqlLocalDb.msbuild" /v:minimal /maxcpucount /nodeReuse:false %*
+
+echo. && echo Build completed at %TIME%.
