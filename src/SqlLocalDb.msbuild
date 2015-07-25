@@ -115,7 +115,7 @@
       <TestCaseFilter Condition="'$(TestCaseFilter)' != ''">/TestCaseFilter:$(TestCaseFilter)</TestCaseFilter>
     </PropertyGroup>
     <PropertyGroup>
-      <SpecifyTestFramework Condition="'$(SpecifyTestFramework)' == ''">false</SpecifyTestFramework>
+      <SpecifyTestFramework Condition="'$(SpecifyTestFramework)' == ''">true</SpecifyTestFramework>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
       <TestInIsolation Condition="'$(TestInIsolation)' == ''">true</TestInIsolation>
       <SpecifyTestSettingsFile Condition="'$(SpecifyTestSettingsFile)' == ''">false</SpecifyTestSettingsFile>
