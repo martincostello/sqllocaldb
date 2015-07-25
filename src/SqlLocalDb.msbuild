@@ -169,9 +169,9 @@
     <PropertyGroup>
       <CodeCoverageTool Condition="'$(CodeCoverageTool)' == ''">$(VSPath)..\..\Team Tools\Dynamic Code Coverage Tools\CodeCoverage.exe</CodeCoverageTool>
     </PropertyGroup>
-    <Error Condition="'$(EnableCodeCoverage)' == 'true' and @(CodeCoverageData->Count()) == 0" Text="No code coverage files were produced." />
+    <Error Condition="'$(EnableCodeCoverage)' == 'true' and '@(CodeCoverageData->Count())' == 0" Text="No code coverage files were produced." />
     <Message Condition="'$(EnableCodeCoverage)' == 'true' and Exists('$(CodeCoverageTool)')" Text="Converting code coverage data to XML..." Importance="high" />
-    <Exec Condition="'$(EnableCodeCoverage)' == 'true' and Exists('$(CodeCoverageTool)') and @(CodeCoverageData->Count()) > 0" Command="%22$(CodeCoverageTool)%22 analyze %22/output:$(CodeCoverageXml)%22 @(CodeCoverageData->'%22%(fullpath)%22', ' ')" />
+    <Exec Condition="'$(EnableCodeCoverage)' == 'true' and Exists('$(CodeCoverageTool)') and '@(CodeCoverageData->Count())' > 0" Command="%22$(CodeCoverageTool)%22 analyze %22/output:$(CodeCoverageXml)%22 @(CodeCoverageData->'%22%(fullpath)%22', ' ')" />
     <!--
       Add coveragexml file as artifact for AppVeyor CI builds.
     -->
