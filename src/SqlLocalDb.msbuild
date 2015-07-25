@@ -139,7 +139,7 @@
     <!--
       Run MSTest for each test assembly.
     -->
-    <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') $(CodeCoverageCommand)/InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
+    <Exec Command="%22$(TestToolDir)$(TestToolName)%22 @(TestContainer->'%22%(fullpath)%22', ' ') %22/Settings:$(TestSettings)%22 $(CodeCoverageCommand)/InIsolation %22/Platform:%(PlatformsToTest.Identity)%22 %22/Framework:$(TestFramework)%22 $(TestOptions)" WorkingDirectory="$(OutDir)" />
     <!--
       Find the code coverage output files
     -->
