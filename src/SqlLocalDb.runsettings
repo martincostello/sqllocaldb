@@ -5,19 +5,14 @@
   </RunConfiguration>
   <DataCollectionRunSettings>
     <DataCollectors>
-      <!--
       <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
         <Configuration>
           <CodeCoverage>
             <CollectAspDotNet>False</CollectAspDotNet>
             <ModulePaths>
-              <Exclude>
-                <ModulePath>.*appveyor.*</ModulePath>
-                <ModulePath>.*ATL.*</ModulePath>
-                <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
-                <ModulePath>.*MSVC.*</ModulePath>
-                <ModulePath>.*Tests.*</ModulePath>
-              </Exclude>
+              <Include>
+                <ModulePath>.*System\.Data\.SqlLocalDb\.dll$</ModulePath>
+              </Include>              
             </ModulePaths>
             <Attributes>
               <Exclude>
@@ -31,7 +26,6 @@
           </CodeCoverage>
         </Configuration>
       </DataCollector>
-      -->
     </DataCollectors>
   </DataCollectionRunSettings>
 </RunSettings>

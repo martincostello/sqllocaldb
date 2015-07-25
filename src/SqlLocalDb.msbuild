@@ -125,7 +125,7 @@
         If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
       -->
       <TestOptions Condition="'$(APPVEYOR)' != ''">$(TestOptions) /logger:Appveyor</TestOptions>
-      <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">false</EnableCodeCoverage>
+      <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">true</EnableCodeCoverage>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' == 'true'">/EnableCodeCoverage </CodeCoverageCommand>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' != 'true'"></CodeCoverageCommand>
     </PropertyGroup>
