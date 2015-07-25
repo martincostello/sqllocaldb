@@ -14,8 +14,8 @@
                 <ModulePath>.*appveyor.*</ModulePath>
                 <ModulePath>.*ATL.*</ModulePath>
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+                <ModulePath>.*cryptbase.dll$</ModulePath>
                 <ModulePath>.*MSVC.*</ModulePath>
-                <ModulePath>.*System32.*</ModulePath>
                 <ModulePath>.*Tests.*</ModulePath>
               </Exclude>
             </ModulePaths>
