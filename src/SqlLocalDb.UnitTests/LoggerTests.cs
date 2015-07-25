@@ -64,10 +64,8 @@ namespace System.Data.SqlLocalDb
                     // Act
                     Logger.SetLogger(null);
 
-                    Logger.Error(id, format, args);
                     Logger.Information(id, format, args);
                     Logger.Verbose(id, format, args);
-                    Logger.Warning(id, format, args);
 
                     // Assert
                     mock.Verify((p) => p.WriteError(id, format, args), Times.Once());
