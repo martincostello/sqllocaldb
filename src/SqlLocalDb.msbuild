@@ -15,7 +15,6 @@
     <SolutionFile>$(SqlLocalDbRoot)SqlLocalDb.sln</SolutionFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
     <RunTests Condition="'$(RunTests)' == ''">true</RunTests>
-    <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">true</EnableCodeCoverage>
   </PropertyGroup>
   <!--
     By default all compiler and static analysis warnings are treated as errors.
@@ -116,16 +115,17 @@
       <TestCaseFilter Condition="'$(TestCaseFilter)' != ''">/TestCaseFilter:$(TestCaseFilter)</TestCaseFilter>
     </PropertyGroup>
     <PropertyGroup>
-      <SpecifyTestFramework Condition="'$(SpecifyTestFramework)' == ''">true</SpecifyTestFramework>
+      <SpecifyTestFramework Condition="'$(SpecifyTestFramework)' == ''">false</SpecifyTestFramework>
       <TestFramework Condition="'$(TestFramework)' == ''">Framework40</TestFramework>
-      <TestInIsolation Condition="'$(TestInIsolation)' == ''">true</TestInIsolation>
-      <SpecifyTestSettingsFile Condition="'$(SpecifyTestSettingsFile)' == ''">true</SpecifyTestSettingsFile>
+      <TestInIsolation Condition="'$(TestInIsolation)' == ''">false</TestInIsolation>
+      <SpecifyTestSettingsFile Condition="'$(SpecifyTestSettingsFile)' == ''">false</SpecifyTestSettingsFile>
       <TestSettings Condition="'$(TestSettings)' == ''">$(SolutionDir)SqlLocalDb.runsettings</TestSettings>
       <TestOptions Condition="'$(TestCaseFilter)' != ''">$(TestOptions) %22$(TestCaseFilter)%22</TestOptions>
       <!--
         If this is an AppVeyor CI build use the custom logger that registers the test results with the build log.
       -->
       <TestOptions Condition="'$(APPVEYOR)' != ''">$(TestOptions) /logger:Appveyor</TestOptions>
+      <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == ''">false</EnableCodeCoverage>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' == 'true'">/EnableCodeCoverage </CodeCoverageCommand>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' != 'true'"></CodeCoverageCommand>
     </PropertyGroup>
