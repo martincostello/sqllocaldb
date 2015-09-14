@@ -5,6 +5,7 @@
 .metadata
 .settings
 .vs
+$tf
 _ReSharper*
 bin
 Bin
