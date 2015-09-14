@@ -9,12 +9,12 @@
         <Configuration>
           <CodeCoverage>
             <CollectAspDotNet>False</CollectAspDotNet>
-            <CollectFromChildProcesses>False</CollectFromChildProcesses>
             <ModulePaths>
               <Exclude>
                 <ModulePath>.*appveyor.*</ModulePath>
                 <ModulePath>.*ATL.*</ModulePath>
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+                <ModulePath>.*cryptbase.dll$</ModulePath>
                 <ModulePath>.*MSVC.*</ModulePath>
                 <ModulePath>.*Tests.*</ModulePath>
               </Exclude>
