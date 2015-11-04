@@ -68,7 +68,7 @@ namespace System.Data.SqlLocalDb
                 Assert.Fail("SQL LocalDB is not installed.");
             }
 
-            string instanceName = Guid.NewGuid().ToString();            
+            string instanceName = Guid.NewGuid().ToString();
             string version = target.LatestVersion;
 
             target.StartTracing();

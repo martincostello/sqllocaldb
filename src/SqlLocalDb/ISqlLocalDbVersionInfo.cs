@@ -17,8 +17,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ISqlLocalDbVersionInfo
     {
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether the instance files exist on disk.
         /// </summary>
@@ -42,7 +40,5 @@ namespace System.Data.SqlLocalDb
         {
             get;
         }
-
-        #endregion
     }
 }

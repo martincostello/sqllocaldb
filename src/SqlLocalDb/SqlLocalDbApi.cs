@@ -83,7 +83,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Setting the value of this property affects the behavior of all delete
         /// operations in the current <see cref="AppDomain"/> unless the overloads
-        /// of <see cref="DeleteInstance(String, Boolean)"/> and <see cref="DeleteUserInstances(Boolean)"/> are
+        /// of <see cref="DeleteInstance(string, bool)"/> and <see cref="DeleteUserInstances(bool)"/> are
         /// used. The default value is <see langword="false"/>, unless overridden
         /// by the <c>SQLLocalDB:AutomaticallyDeleteInstanceFiles</c> application configuration setting.
         /// </remarks>
@@ -201,7 +201,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="IList{T}"/> of <see cref="String"/> containing
+        /// Gets an <see cref="IList{T}"/> of <see cref="string"/> containing
         /// the available versions of SQL LocalDB.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -617,7 +617,7 @@ namespace System.Data.SqlLocalDb
 
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
-                ownerSid = identity.User.Value;                
+                ownerSid = identity.User.Value;
             }
 
             ShareInstance(ownerSid, instanceName, sharedInstanceName);
@@ -1132,8 +1132,8 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the available versions of SQL LocalDB installed on the local machine.
         /// </summary>
-        /// <returns>   
-        /// An <see cref="Array"/> of <see cref="String"/> containing the available versions.
+        /// <returns>
+        /// An <see cref="Array"/> of <see cref="string"/> containing the available versions.
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.

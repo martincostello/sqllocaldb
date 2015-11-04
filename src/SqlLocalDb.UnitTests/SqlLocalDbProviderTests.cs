@@ -78,7 +78,7 @@ namespace System.Data.SqlLocalDb
             Helpers.EnsureLocalDBInstalled();
 
             SqlLocalDbProvider target = new SqlLocalDbProvider();
-            
+
             // Act
             SqlLocalDbInstance result = target.CreateInstance();
 
@@ -381,7 +381,7 @@ namespace System.Data.SqlLocalDb
             Helpers.EnsureLocalDBInstalled();
 
             SqlLocalDbProvider target = new SqlLocalDbProvider();
-            
+
             // Act
             IList<ISqlLocalDbInstanceInfo> result = target.GetInstances();
 

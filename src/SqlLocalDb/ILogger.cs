@@ -16,8 +16,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ILogger
     {
-        #region Methods
-
         /// <summary>
         /// Writes an error trace event.
         /// </summary>
@@ -69,7 +67,5 @@ namespace System.Data.SqlLocalDb
         /// An object array containing zero or more objects to format.
         /// </param>
         void WriteWarning(int id, string format, params object[] args);
-
-        #endregion
     }
 }

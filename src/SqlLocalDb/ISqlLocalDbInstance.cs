@@ -19,8 +19,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ISqlLocalDbInstance
     {
-        #region Properties
-
         /// <summary>
         /// Gets the name of the LocalDB instance.
         /// </summary>
@@ -37,10 +35,6 @@ namespace System.Data.SqlLocalDb
         {
             get;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a connection to the LocalDB instance.
@@ -104,7 +98,5 @@ namespace System.Data.SqlLocalDb
             MessageId = "Unshare",
             Justification = "Matches the name of the LocalDB native API function.")]
         void Unshare();
-
-        #endregion
     }
 }

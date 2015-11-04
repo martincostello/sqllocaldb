@@ -21,8 +21,6 @@ namespace System.Data.SqlLocalDb
     [SecurityCritical]
     internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        #region Constructor
-
         /// <summary>
         /// Prevents a default instance of the <see cref="SafeLibraryHandle"/> class from being created.
         /// </summary>
@@ -30,10 +28,6 @@ namespace System.Data.SqlLocalDb
             : base(true)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Executes the code required to free the handle.
@@ -49,7 +43,5 @@ namespace System.Data.SqlLocalDb
         {
             return NativeMethods.FreeLibrary(this.handle);
         }
-
-        #endregion
     }
 }

@@ -17,8 +17,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public static class SqlLocalDbErrors
     {
-        #region Fields
-
         /// <summary>
         /// Cannot create folder for the LocalDB instance at: <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances\&lt;instance name&gt;</c>.
         /// </summary>
@@ -62,7 +60,7 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
         public static readonly int InstanceFolderPathTooLong = unchecked((int)0x89c50104);
-        
+
         /// <summary>
         /// Cannot access LocalDB instance folder: <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances\&lt;instance name&gt;</c>.
         /// </summary>
@@ -450,7 +448,5 @@ namespace System.Data.SqlLocalDb
         /// Maps to the <c>LOCALDB_EDETAIL_UNEXPECTED_RESULT</c> error.
         /// </remarks>
         public static readonly int UnexpectedResult = unchecked((int)0x89c50211);
-
-        #endregion
     }
 }

@@ -17,8 +17,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class SRHelper
     {
-        #region Methods
-
         /// <summary>
         /// Replaces the format item in a specified string with the string representation
         /// of a corresponding object in a specified array.
@@ -53,7 +51,5 @@ namespace System.Data.SqlLocalDb
                 format,
                 args);
         }
-
-        #endregion
     }
 }

@@ -281,7 +281,7 @@ namespace System.Data.SqlLocalDb
             try
             {
                 SqlLocalDbInstance target = new SqlLocalDbInstance(instanceName);
-             
+
                 // Act and Assert
                 throw ErrorAssert.Throws<InvalidOperationException>(
                     () => target.CreateConnectionStringBuilder());

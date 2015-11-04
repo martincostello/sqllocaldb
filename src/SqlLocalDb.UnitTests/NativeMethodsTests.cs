@@ -259,7 +259,7 @@ namespace System.Data.SqlLocalDb
 
                 // Act
                 string result = key.GetValue(name);
-                
+
                 // Assert
                 Assert.IsNull(result, "GetValue() did not return null.");
             }
