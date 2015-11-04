@@ -19,8 +19,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ISqlLocalDbProvider
     {
-        #region Methods
-
         /// <summary>
         /// Creates a new instance of <see cref="ISqlLocalDbInstance"/>.
         /// </summary>
@@ -64,7 +62,5 @@ namespace System.Data.SqlLocalDb
             "CA1024:UsePropertiesWhereAppropriate",
             Justification = "Requires querying the native LocalDB API.")]
         IList<ISqlLocalDbVersionInfo> GetVersions();
-
-        #endregion
     }
 }

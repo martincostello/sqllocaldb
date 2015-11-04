@@ -22,8 +22,6 @@ namespace System.Data.SqlLocalDb
     [Serializable]
     public class SqlLocalDbInstance : ISqlLocalDbInstance
     {
-        #region Fields
-
         /// <summary>
         /// The SQL Server LocalDB instance name.
         /// </summary>
@@ -33,10 +31,6 @@ namespace System.Data.SqlLocalDb
         /// The named pipe to the SQL Server LocalDB instance.
         /// </summary>
         private string _namedPipe;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbInstance"/> class.
@@ -96,10 +90,6 @@ namespace System.Data.SqlLocalDb
             _namedPipe = info.NamedPipe;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether the LocalDB instance is running.
         /// </summary>
@@ -124,10 +114,6 @@ namespace System.Data.SqlLocalDb
         {
             get { return _namedPipe; }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Deletes the specified <see cref="ISqlLocalDbInstance"/> instance.
@@ -163,7 +149,7 @@ namespace System.Data.SqlLocalDb
             {
                 return new SqlConnection();
             }
-            
+
             return new SqlConnection(builder.ConnectionString);
         }
 
@@ -390,7 +376,5 @@ namespace System.Data.SqlLocalDb
                     ex);
             }
         }
-
-        #endregion
     }
 }

@@ -22,8 +22,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class Helpers
     {
-        #region Methods
-
         /// <summary>
         /// Ensures that the current user has Administrative privileges.
         /// </summary>
@@ -139,18 +137,12 @@ namespace System.Data.SqlLocalDb
             }
         }
 
-        #endregion
-
-        #region Classes
-
         /// <summary>
         /// A helper class that is used to configure logging in an <see cref="AppDomain"/> used by a test. This class cannot be inherited.
         /// </summary>
         [Serializable]
         private sealed class LoggingHelper : MarshalByRefObject
         {
-            #region Methods
-
             /// <summary>
             /// Sets the <see cref="ILogger"/> implementation in use by the <see cref="AppDomain"/>.
             /// </summary>
@@ -163,10 +155,6 @@ namespace System.Data.SqlLocalDb
             {
                 Logger.SetLogger(logger);
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

@@ -457,11 +457,11 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Marshals the specified <see cref="Array"/> of <see cref="Byte"/> to a <see cref="String"/>.
+        /// Marshals the specified <see cref="Array"/> of <see cref="byte"/> to a <see cref="string"/>.
         /// </summary>
-        /// <param name="bytes">The array to marshal as a <see cref="String"/>.</param>
+        /// <param name="bytes">The array to marshal as a <see cref="string"/>.</param>
         /// <returns>
-        /// A <see cref="String"/> representation of <paramref name="bytes"/>.
+        /// A <see cref="string"/> representation of <paramref name="bytes"/>.
         /// </returns>
         internal static string MarshalString(byte[] bytes)
         {
@@ -668,7 +668,7 @@ namespace System.Data.SqlLocalDb
         /// <param name="function">A reference to a location to ensure contains a delegate for the specified function name.</param>
         /// <param name="callback">A delegate to a callback method to invoke with the function if initialized.</param>
         /// <returns>
-        /// The <see cref="Int32"/> result of invoking <paramref name="callback"/>, if the function was
+        /// The <see cref="int"/> result of invoking <paramref name="callback"/>, if the function was
         /// initialized; otherwise the value of <see cref="SqlLocalDbErrors.NotInstalled"/> is returned.
         /// </returns>
         private static int EnsureFunctionAndInvoke<T>(string functionName, ref T function, Func<T, int> callback)
@@ -791,10 +791,8 @@ namespace System.Data.SqlLocalDb
             /// </remarks>
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate int LocalDBCreateInstance(
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string wszVersion,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pInstanceName,
+                [MarshalAs(UnmanagedType.LPWStr)] string wszVersion,
+                [MarshalAs(UnmanagedType.LPWStr)] string pInstanceName,
                 int dwFlags);
 
             /// <summary>
@@ -808,8 +806,7 @@ namespace System.Data.SqlLocalDb
             /// </remarks>
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate int LocalDBDeleteInstance(
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pInstanceName,
+                [MarshalAs(UnmanagedType.LPWStr)] string pInstanceName,
                 int dwFlags);
 
             /// <summary>
@@ -834,8 +831,7 @@ namespace System.Data.SqlLocalDb
                 int hrLocalDB,
                 int dwFlags,
                 int dwLanguageId,
-                [MarshalAs(UnmanagedType.LPWStr)][Out]
-                StringBuilder wszMessage,
+                [MarshalAs(UnmanagedType.LPWStr)][Out] StringBuilder wszMessage,
                 ref int lpcchMessage);
 
             /// <summary>
@@ -925,10 +921,8 @@ namespace System.Data.SqlLocalDb
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate int LocalDBShareInstance(
                 IntPtr pOwnerSID,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pInstancePrivateName,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pInstanceSharedName,
+                [MarshalAs(UnmanagedType.LPWStr)] string pInstancePrivateName,
+                [MarshalAs(UnmanagedType.LPWStr)] string pInstanceSharedName,
                 int dwFlags);
 
             /// <summary>
@@ -948,11 +942,9 @@ namespace System.Data.SqlLocalDb
             /// </remarks>
             [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             internal delegate int LocalDBStartInstance(
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string pInstanceName,
+                [MarshalAs(UnmanagedType.LPWStr)] string pInstanceName,
                 int dwFlags,
-                [MarshalAs(UnmanagedType.LPWStr)][Out]
-                StringBuilder wszSqlConnection,
+                [MarshalAs(UnmanagedType.LPWStr)][Out] StringBuilder wszSqlConnection,
                 ref int lpcchSqlConnection);
 
             /// <summary>

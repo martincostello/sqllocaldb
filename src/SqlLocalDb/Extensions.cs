@@ -572,12 +572,12 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Extracts the <see cref="String"/> value of the specified keyword from the specified <see cref="DbConnectionStringBuilder"/>.
+        /// Extracts the <see cref="string"/> value of the specified keyword from the specified <see cref="DbConnectionStringBuilder"/>.
         /// </summary>
         /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to extract the value from.</param>
         /// <param name="keyword">The keyword to extract the value of.</param>
         /// <returns>
-        /// The <see cref="String"/> value of the keyword specified by <paramref name="keyword"/> present in <paramref name="value"/>, if any; otherwise <see langword="null"/>.
+        /// The <see cref="string"/> value of the keyword specified by <paramref name="keyword"/> present in <paramref name="value"/>, if any; otherwise <see langword="null"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
@@ -649,7 +649,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Sets the specified keyword's value to the specified <see cref="String"/> value in the specified <see cref="DbConnectionStringBuilder"/>.
+        /// Sets the specified keyword's value to the specified <see cref="string"/> value in the specified <see cref="DbConnectionStringBuilder"/>.
         /// </summary>
         /// <param name="value">The <see cref="DbConnectionStringBuilder"/> to set the keyword value for.</param>
         /// <param name="keyword">The keyword to set the value for.</param>

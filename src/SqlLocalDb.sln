@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb", "SqlLocalDb\System.Data.SqlLocalDb.csproj", "{B235F2A6-A8A2-4CE6-B3B0-54FFB89DE7DD}"
 EndProject
@@ -41,14 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B415E9C5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F16D00C-39D3-45C2-A7A9-18A01E323809}"
 	ProjectSection(SolutionItems) = preProject
-		Tools\StyleCop\CustomDictionary.en-US.xml = Tools\StyleCop\CustomDictionary.en-US.xml
-		Tools\StyleCop\CustomDictionary.xml = Tools\StyleCop\CustomDictionary.xml
-		Tools\StyleCop\mssp7en.dll = Tools\StyleCop\mssp7en.dll
-		Tools\StyleCop\mssp7en.lex = Tools\StyleCop\mssp7en.lex
-		Settings.StyleCop = Settings.StyleCop
-		Tools\StyleCop\StyleCop.CSharp.dll = Tools\StyleCop\StyleCop.CSharp.dll
-		Tools\StyleCop\StyleCop.CSharp.Rules.dll = Tools\StyleCop\StyleCop.CSharp.Rules.dll
-		Tools\StyleCop\StyleCop.dll = Tools\StyleCop\StyleCop.dll
+		Tools\StyleCop\stylecop.json = Tools\StyleCop\stylecop.json
 		Tools\StyleCop\StyleCop.Targets = Tools\StyleCop\StyleCop.Targets
 	EndProjectSection
 EndProject

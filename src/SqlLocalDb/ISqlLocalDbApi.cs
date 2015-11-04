@@ -28,7 +28,7 @@ namespace System.Data.SqlLocalDb
         }
 
         /// <summary>
-        /// Gets an <see cref="IList{T}"/> of <see cref="String"/> containing the available version(s) of SQL LocalDB.
+        /// Gets an <see cref="IList{T}"/> of <see cref="string"/> containing the available version(s) of SQL LocalDB.
         /// </summary>
         IList<string> Versions
         {

@@ -213,7 +213,7 @@ namespace System.Data.SqlLocalDb
             // Assert
             Assert.AreEqual(SqlLocalDbErrors.UnknownInstance, error.ErrorCode, "SqlLocalDbException.ErrorCode is incorrect.");
             Assert.AreEqual(instanceName, error.InstanceName, "SqlLocalDbException.InstanceName is incorrect.");
-            
+
             throw error;
         }
 
@@ -1390,7 +1390,8 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.PropertiesOverridden.config");
         }
 
-        [TestMethod]    // This test's expected result depends on what the latest version installed is
+        // This test's expected result depends on what the latest version installed is
+        [TestMethod]
         [TestCategory(TestCategories.SqlServer2012)]
         [TestCategory(TestCategories.SqlServer2014)]
         [Description("Tests that the DefaultInstanceName property returns the correct value.")]

@@ -197,7 +197,7 @@ namespace System.Data.SqlLocalDb
                         return new SqlLocalDbInstanceThatCannotBeStarted(instanceName);
                     })
                 .Verifiable();
-            
+
             ISqlLocalDbProvider provider = mock.Object;
             bool deleteFiles = false;
 
@@ -373,7 +373,7 @@ namespace System.Data.SqlLocalDb
             {
                 // Act
                 SqlConnectionStringBuilder result = target.CreateConnectionStringBuilder();
-                
+
                 // Assert
                 Assert.IsNotNull(result, "CreateConnectionStringBuilder() returned null.");
             }

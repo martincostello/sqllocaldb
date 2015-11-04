@@ -20,8 +20,6 @@ namespace System.Data.SqlLocalDb
     [Serializable]
     public class SqlLocalDbProvider : ISqlLocalDbProvider
     {
-        #region Fields
-
         /// <summary>
         /// The instance of <see cref="ISqlLocalDbApi"/> in use by the provider.
         /// </summary>
@@ -34,10 +32,6 @@ namespace System.Data.SqlLocalDb
         /// If the value is <see langword="null"/>, the latest version reported by <see cref="_localDB"/> is used.
         /// </remarks>
         private string _version;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbProvider"/> class.
@@ -64,10 +58,6 @@ namespace System.Data.SqlLocalDb
             _localDB = localDB;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the version of SQL LocalDB to use to create instances.
         /// </summary>
@@ -87,10 +77,6 @@ namespace System.Data.SqlLocalDb
         {
             get { return _localDB; }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Creates a new instance of <see cref="ISqlLocalDbInstance"/> with a unique random name.
@@ -254,7 +240,5 @@ namespace System.Data.SqlLocalDb
         {
             return GetInstance(instanceName);
         }
-
-        #endregion
     }
 }

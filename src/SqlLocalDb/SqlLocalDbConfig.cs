@@ -21,8 +21,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class SqlLocalDbConfig
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The name of the legacy application configuration setting for specifying whether to automatically delete instance files.
         /// </summary>
@@ -37,10 +35,6 @@ namespace System.Data.SqlLocalDb
         /// The current <see cref="SqlLocalDbConfigurationSection"/> loaded from the application configuration file.
         /// </summary>
         private static readonly SqlLocalDbConfigurationSection ConfigSection = SqlLocalDbConfigurationSection.GetSection();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether to automatically delete the files associated with SQL LocalDB instances when they are deleted.
@@ -110,10 +104,6 @@ namespace System.Data.SqlLocalDb
             get { return ConfigSection.StopTimeout; }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Loads the default value of the <see cref="AutomaticallyDeleteInstanceFiles"/> property from the application setting section of the configuration file.
         /// </summary>
@@ -133,7 +123,5 @@ namespace System.Data.SqlLocalDb
 
             return automaticallyDeleteInstanceFiles;
         }
-
-        #endregion
     }
 }

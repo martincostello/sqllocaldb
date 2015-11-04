@@ -17,8 +17,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     public interface ISqlLocalDbInstanceInfo
     {
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether the Registry configuration is corrupt.
         /// </summary>
@@ -106,7 +104,5 @@ namespace System.Data.SqlLocalDb
         {
             get;
         }
-
-        #endregion
     }
 }
