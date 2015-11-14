@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Globalization;
+using log4net;
 
 namespace System.Data.SqlLocalDb
 {
@@ -26,30 +27,18 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// The <c>log4net</c> logger being wrapped by the interface. This field is read-only.
         /// </summary>
-        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger("System.Data.SqlLocalDb");
+        private static readonly ILog Logger = LogManager.GetLogger("System.Data.SqlLocalDb");
 
         /// <inheritdoc/>
-        public void WriteError(int id, string format, params object[] args)
-        {
-            Logger.ErrorFormat(CultureInfo.InvariantCulture, format, args);
-        }
+        public void WriteError(int id, string format, params object[] args) => Logger.ErrorFormat(CultureInfo.InvariantCulture, format, args);
 
         /// <inheritdoc/>
-        public void WriteInformation(int id, string format, params object[] args)
-        {
-            Logger.InfoFormat(CultureInfo.InvariantCulture, format, args);
-        }
+        public void WriteInformation(int id, string format, params object[] args) => Logger.InfoFormat(CultureInfo.InvariantCulture, format, args);
 
         /// <inheritdoc/>
-        public void WriteVerbose(int id, string format, params object[] args)
-        {
-            Logger.DebugFormat(CultureInfo.InvariantCulture, format, args);
-        }
+        public void WriteVerbose(int id, string format, params object[] args) => Logger.DebugFormat(CultureInfo.InvariantCulture, format, args);
 
         /// <inheritdoc/>
-        public void WriteWarning(int id, string format, params object[] args)
-        {
-            Logger.WarnFormat(CultureInfo.InvariantCulture, format, args);
-        }
+        public void WriteWarning(int id, string format, params object[] args) => Logger.WarnFormat(CultureInfo.InvariantCulture, format, args);
     }
 }

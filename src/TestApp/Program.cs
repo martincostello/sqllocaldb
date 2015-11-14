@@ -42,9 +42,7 @@ namespace System.Data.SqlLocalDb
                 return;
             }
 
-            if (args != null &&
-                args.Length == 1 &&
-                string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase))
+            if (args?.Length == 1 && string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase))
             {
                 SqlLocalDbApi.DeleteUserInstances(deleteFiles: true);
             }
