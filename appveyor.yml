@@ -1,7 +1,6 @@
 version: 1.15.{build}.0
 
 environment:
-  EnableCodeCoverage: false
   CoverallsRepoToken:
     secure: t/5ID5XZAyFKZNmgVJIrcs2Ah7Bn1Kr2cmAZcmEbvl/lGHHl6F4sxSLHK89z7I7E
 
