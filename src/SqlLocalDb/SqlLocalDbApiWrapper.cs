@@ -38,10 +38,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// No versions of SQL Server LocalDB are installed on the local machine.
         /// </exception>
-        public virtual string LatestVersion
-        {
-            get { return SqlLocalDbApi.LatestVersion; }
-        }
+        public virtual string LatestVersion => SqlLocalDbApi.LatestVersion;
 
         /// <summary>
         /// Gets an <see cref="IList{T}"/> of <see cref="string"/> containing the available version(s) of SQL LocalDB.
@@ -52,10 +49,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The installed versions of SQL LocalDB could not be determined.
         /// </exception>
-        public virtual IList<string> Versions
-        {
-            get { return SqlLocalDbApi.Versions; }
-        }
+        public virtual IList<string> Versions => SqlLocalDbApi.Versions;
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
@@ -114,10 +108,7 @@ namespace System.Data.SqlLocalDb
         /// The information for the SQL Server LocalDB instance specified by
         /// <paramref name="instanceName"/> could not obtained.
         /// </exception>
-        public virtual ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName)
-        {
-            return SqlLocalDbApi.GetInstanceInfo(instanceName);
-        }
+        public virtual ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName) => SqlLocalDbApi.GetInstanceInfo(instanceName);
 
         /// <summary>
         /// Returns the names of all the SQL Server LocalDB instances for the current user.
@@ -131,10 +122,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance names could not be determined.
         /// </exception>
-        public virtual IList<string> GetInstanceNames()
-        {
-            return SqlLocalDbApi.GetInstanceNames();
-        }
+        public virtual IList<string> GetInstanceNames() => SqlLocalDbApi.GetInstanceNames();
 
         /// <summary>
         /// Returns information about the specified LocalDB version.
@@ -154,10 +142,7 @@ namespace System.Data.SqlLocalDb
         /// The information for the SQL Server LocalDB version specified by
         /// <paramref name="version"/> could not be obtained.
         /// </exception>
-        public virtual ISqlLocalDbVersionInfo GetVersionInfo(string version)
-        {
-            return SqlLocalDbApi.GetVersionInfo(version);
-        }
+        public virtual ISqlLocalDbVersionInfo GetVersionInfo(string version) => SqlLocalDbApi.GetVersionInfo(version);
 
         /// <summary>
         /// Returns whether SQL LocalDB is installed on the current machine.
@@ -166,10 +151,7 @@ namespace System.Data.SqlLocalDb
         /// <see langword="true"/> if SQL Server LocalDB is installed on the
         /// current machine; otherwise <see langword="false"/>.
         /// </returns>
-        public virtual bool IsLocalDBInstalled()
-        {
-            return SqlLocalDbApi.IsLocalDBInstalled();
-        }
+        public virtual bool IsLocalDBInstalled() => SqlLocalDbApi.IsLocalDBInstalled();
 
         /// <summary>
         /// Shares the specified SQL Server LocalDB instance with other
@@ -209,10 +191,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be started.
         /// </exception>
-        public virtual string StartInstance(string instanceName)
-        {
-            return SqlLocalDbApi.StartInstance(instanceName);
-        }
+        public virtual string StartInstance(string instanceName) => SqlLocalDbApi.StartInstance(instanceName);
 
         /// <summary>
         /// Enables tracing of native API calls for all the SQL Server

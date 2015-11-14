@@ -191,9 +191,9 @@ namespace System.Data.SqlLocalDb
                 {
                     string message = SRHelper.Format(
                         SR.SqlLocalDbApi_TimeoutTooSmallFormat,
-                        "value");
+                        nameof(value));
 
-                    throw new ArgumentOutOfRangeException("value", value, message);
+                    throw new ArgumentOutOfRangeException(nameof(value), value, message);
                 }
 
                 _stopTimeout = value;
@@ -263,12 +263,12 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             if (version == null)
             {
-                throw new ArgumentNullException("version");
+                throw new ArgumentNullException(nameof(version));
             }
 
             Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatingFormat, instanceName, version);
@@ -334,10 +334,7 @@ namespace System.Data.SqlLocalDb
         /// The default instance(s) of any version(s) of SQL LocalDB that are
         /// installed on the local machine are not deleted.
         /// </remarks>
-        public static int DeleteUserInstances()
-        {
-            return DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
-        }
+        public static int DeleteUserInstances() => DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
 
         /// <summary>
         /// Deletes all user instances of SQL LocalDB on the current machine,
@@ -428,7 +425,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGettingInfoFormat, instanceName);
@@ -551,7 +548,7 @@ namespace System.Data.SqlLocalDb
         {
             if (version == null)
             {
-                throw new ArgumentNullException("version");
+                throw new ArgumentNullException(nameof(version));
             }
 
             Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGetVersionInfoFormat, version);
@@ -646,17 +643,17 @@ namespace System.Data.SqlLocalDb
         {
             if (ownerSid == null)
             {
-                throw new ArgumentNullException("ownerSid");
+                throw new ArgumentNullException(nameof(ownerSid));
             }
 
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             if (sharedInstanceName == null)
             {
-                throw new ArgumentNullException("sharedInstanceName");
+                throw new ArgumentNullException(nameof(sharedInstanceName));
             }
 
             if (string.IsNullOrEmpty(instanceName))
@@ -666,7 +663,7 @@ namespace System.Data.SqlLocalDb
                 // then causes "interesting" results when using the other
                 // API functions on it.  Block this explicitly to stop
                 // callers messing up their LocalDB instance.
-                throw new ArgumentException(SR.SqlLocalDbApi_NoInstanceName, "instanceName");
+                throw new ArgumentException(SR.SqlLocalDbApi_NoInstanceName, nameof(instanceName));
             }
 
             Logger.Verbose(Logger.TraceEvent.ShareInstance, SR.SqlLocalDbApi_LogSharingInstanceFormat, instanceName, ownerSid, sharedInstanceName);
@@ -716,7 +713,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             Logger.Verbose(Logger.TraceEvent.StartInstance, SR.SqlLocalDbApi_LogStartingFormat, instanceName);
@@ -837,16 +834,16 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             if (timeout < TimeSpan.Zero)
             {
                 string message = SRHelper.Format(
                     SR.SqlLocalDbApi_TimeoutTooSmallFormat,
-                    "timeout");
+                    nameof(timeout));
 
-                throw new ArgumentOutOfRangeException("timeout", timeout, message);
+                throw new ArgumentOutOfRangeException(nameof(timeout), timeout, message);
             }
 
             Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppingFormat, instanceName, timeout, options);
@@ -902,7 +899,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppingSharingFormat, instanceName);
@@ -946,7 +943,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);

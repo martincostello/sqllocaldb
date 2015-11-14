@@ -91,35 +91,23 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets a value indicating whether the instance files exist on disk.
         /// </summary>
-        bool ISqlLocalDbVersionInfo.Exists
-        {
-            get { return this.Exists; }
-        }
+        bool ISqlLocalDbVersionInfo.Exists => Exists;
 
         /// <summary>
         /// Gets the version name.
         /// </summary>
-        string ISqlLocalDbVersionInfo.Name
-        {
-            get { return NativeMethods.MarshalString(this.Name); }
-        }
+        string ISqlLocalDbVersionInfo.Name => NativeMethods.MarshalString(Name);
 
         /// <summary>
         /// Gets the version.
         /// </summary>
-        Version ISqlLocalDbVersionInfo.Version
-        {
-            get { return new Version((int)this.Major, (int)this.Minor, (int)this.Build, (int)this.Revision); }
-        }
+        Version ISqlLocalDbVersionInfo.Version => new Version((int)Major, (int)Minor, (int)Build, (int)Revision);
 
         /// <summary>
         /// Gets the name to display in the debugger
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private string DebuggerDisplayName
-        {
-            get { return ((ISqlLocalDbVersionInfo)this).Name; }
-        }
+        [Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private string DebuggerDisplayName => ((ISqlLocalDbVersionInfo)this).Name;
     }
 }

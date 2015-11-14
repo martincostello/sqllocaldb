@@ -74,10 +74,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the type of the <see cref="ILogger"/> implementation to use, if any.
         /// </summary>
-        internal static Type LoggerType
-        {
-            get { return ConfigSection.LoggerType; }
-        }
+        internal static Type LoggerType => ConfigSection.LoggerType;
 
         /// <summary>
         /// Gets the version string of the native SQL LocalDB API to load, if any.
@@ -91,18 +88,12 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the options to use when stopping instances of SQL LocalDB.
         /// </summary>
-        internal static StopInstanceOptions StopOptions
-        {
-            get { return ConfigSection.StopOptions; }
-        }
+        internal static StopInstanceOptions StopOptions => ConfigSection.StopOptions;
 
         /// <summary>
         /// Gets the default timeout to use when stopping instances of SQL LocalDB.
         /// </summary>
-        internal static TimeSpan StopTimeout
-        {
-            get { return ConfigSection.StopTimeout; }
-        }
+        internal static TimeSpan StopTimeout => ConfigSection.StopTimeout;
 
         /// <summary>
         /// Loads the default value of the <see cref="AutomaticallyDeleteInstanceFiles"/> property from the application setting section of the configuration file.

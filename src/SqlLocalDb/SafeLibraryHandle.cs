@@ -39,9 +39,6 @@ namespace System.Data.SqlLocalDb
         /// Managed Debugging Assistant.
         /// </returns>
         [SecurityCritical]
-        protected override bool ReleaseHandle()
-        {
-            return NativeMethods.FreeLibrary(this.handle);
-        }
+        protected override bool ReleaseHandle() => NativeMethods.FreeLibrary(handle);
     }
 }

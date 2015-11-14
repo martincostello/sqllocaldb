@@ -185,10 +185,7 @@ namespace System.Data.SqlLocalDb
         /// element is added to the <c>&lt;connectionStrings&gt;</c> section of your application configuration file to
         /// prevent the default connection strings from being inherited.
         /// </remarks>
-        public static DbConnectionStringBuilder GetConnectionStringForDefaultModel(this ISqlLocalDbInstance instance)
-        {
-            return instance.GetConnectionStringForDefaultModel(null);
-        }
+        public static DbConnectionStringBuilder GetConnectionStringForDefaultModel(this ISqlLocalDbInstance instance) => instance.GetConnectionStringForDefaultModel(null);
 
         /// <summary>
         /// Creates an instance of <see cref="DbConnectionStringBuilder"/> that can be used to connect to the SQL LocalDB instance
@@ -218,7 +215,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instance == null)
             {
-                throw new ArgumentNullException("instance");
+                throw new ArgumentNullException(nameof(instance));
             }
 
             var connectionStrings = ConfigurationManager.ConnectionStrings
@@ -251,10 +248,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="instance"/> is <see langword="null"/>.
         /// </exception>
-        public static DbConnectionStringBuilder GetConnectionStringForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName)
-        {
-            return instance.GetConnectionStringForModel(modelConnectionStringName, null);
-        }
+        public static DbConnectionStringBuilder GetConnectionStringForModel(this ISqlLocalDbInstance instance, string modelConnectionStringName) => instance.GetConnectionStringForModel(modelConnectionStringName, null);
 
         /// <summary>
         /// Creates an instance of <see cref="DbConnectionStringBuilder"/> that can be used to connect to the SQL LocalDB instance.
@@ -278,7 +272,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instance == null)
             {
-                throw new ArgumentNullException("instance");
+                throw new ArgumentNullException(nameof(instance));
             }
 
             var connectionStringSettings = ConfigurationManager.ConnectionStrings
@@ -288,7 +282,7 @@ namespace System.Data.SqlLocalDb
 
             if (connectionStringSettings == null)
             {
-                throw new ArgumentException(SRHelper.Format(SR.Extensions_NoConnectionStringFormat, modelConnectionStringName), "modelConnectionStringName");
+                throw new ArgumentException(SRHelper.Format(SR.Extensions_NoConnectionStringFormat, modelConnectionStringName), nameof(modelConnectionStringName));
             }
 
             return CreateBuilder(connectionStringSettings, instance.NamedPipe, initialCatalog);
@@ -304,10 +298,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public static ISqlLocalDbInstance GetDefaultInstance(this ISqlLocalDbProvider value)
-        {
-            return value.GetOrCreateInstance(SqlLocalDbApi.DefaultInstanceName);
-        }
+        public static ISqlLocalDbInstance GetDefaultInstance(this ISqlLocalDbProvider value) => value.GetOrCreateInstance(SqlLocalDbApi.DefaultInstanceName);
 
         /// <summary>
         /// Gets the Initial Catalog name from the specified <see cref="DbConnectionStringBuilder"/>, if present.
@@ -319,10 +310,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public static string GetInitialCatalogName(this DbConnectionStringBuilder value)
-        {
-            return value.ExtractStringValueFromConnectionString(InitialCatalogKeywordName);
-        }
+        public static string GetInitialCatalogName(this DbConnectionStringBuilder value) => value.ExtractStringValueFromConnectionString(InitialCatalogKeywordName);
 
         /// <summary>
         /// Gets the physical file name from the specified <see cref="DbConnectionStringBuilder"/>, if present.
@@ -334,10 +322,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public static string GetPhysicalFileName(this DbConnectionStringBuilder value)
-        {
-            return value.ExtractStringValueFromConnectionString(AttachDBFilenameKeywordName);
-        }
+        public static string GetPhysicalFileName(this DbConnectionStringBuilder value) => value.ExtractStringValueFromConnectionString(AttachDBFilenameKeywordName);
 
         /// <summary>
         /// Gets an SQL Local DB instance with the specified name if it exists, otherwise a new instance with the specified name is created.
@@ -357,12 +342,12 @@ namespace System.Data.SqlLocalDb
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             bool instanceExists = false;
@@ -409,7 +394,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instance == null)
             {
-                throw new ArgumentNullException("instance");
+                throw new ArgumentNullException(nameof(instance));
             }
 
             instance.Stop();
@@ -456,11 +441,11 @@ namespace System.Data.SqlLocalDb
                 }
                 catch (ArgumentException ex)
                 {
-                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), "fileName", ex);
+                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), nameof(fileName), ex);
                 }
                 catch (NotSupportedException ex)
                 {
-                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), "fileName", ex);
+                    throw new ArgumentException(SRHelper.Format(SR.Extensions_InvalidPathFormat, ex.Message), nameof(fileName), ex);
                 }
             }
 
@@ -586,7 +571,7 @@ namespace System.Data.SqlLocalDb
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             // N.B. Keywords are used here rather than the strongly-typed derived classes
@@ -661,7 +646,7 @@ namespace System.Data.SqlLocalDb
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             // N.B. Keywords are used here rather than the strongly-typed derived classes

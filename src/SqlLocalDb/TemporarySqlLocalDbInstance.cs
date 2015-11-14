@@ -81,12 +81,12 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             if (provider == null)
             {
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
             }
 
             _instance = provider.CreateInstance(instanceName);
@@ -126,35 +126,23 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the name of the LocalDB instance.
         /// </summary>
-        public string Name
-        {
-            get { return _instance.Name; }
-        }
+        public string Name => _instance.Name;
 
         /// <summary>
         /// Gets the named pipe that should be used
         /// to connect to the LocalDB instance.
         /// </summary>
-        public string NamedPipe
-        {
-            get { return _instance.NamedPipe; }
-        }
+        public string NamedPipe => _instance.NamedPipe;
 
         /// <summary>
         /// Gets a value indicating whether to delete the instance file(s) when the instance is disposed of.
         /// </summary>
-        internal bool DeleteFiles
-        {
-            get { return _deleteFiles; }
-        }
+        internal bool DeleteFiles => _deleteFiles;
 
         /// <summary>
         /// Gets the temporary SQL LocalDB instance associated with this instance.
         /// </summary>
-        internal ISqlLocalDbInstance Instance
-        {
-            get { return _instance; }
-        }
+        internal ISqlLocalDbInstance Instance => _instance;
 
         /// <summary>
         /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
@@ -162,10 +150,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// The created instance of <see cref="TemporarySqlLocalDbInstance"/>.
         /// </returns>
-        public static TemporarySqlLocalDbInstance Create()
-        {
-            return Create(SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
-        }
+        public static TemporarySqlLocalDbInstance Create() => Create(SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
 
         /// <summary>
         /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
@@ -342,7 +327,7 @@ namespace System.Data.SqlLocalDb
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(this.GetType().FullName);
+                throw new ObjectDisposedException(GetType().FullName);
             }
         }
     }

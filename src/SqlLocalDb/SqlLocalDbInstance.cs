@@ -68,7 +68,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instanceName == null)
             {
-                throw new ArgumentNullException("instanceName");
+                throw new ArgumentNullException(nameof(instanceName));
             }
 
             Debug.Assert(localDB != null, "localDB cannot be  null.");
@@ -93,27 +93,18 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets a value indicating whether the LocalDB instance is running.
         /// </summary>
-        public bool IsRunning
-        {
-            get { return !string.IsNullOrEmpty(_namedPipe); }
-        }
+        public bool IsRunning => !string.IsNullOrEmpty(_namedPipe);
 
         /// <summary>
         /// Gets the name of the LocalDB instance.
         /// </summary>
-        public string Name
-        {
-            get { return _instanceName; }
-        }
+        public string Name => _instanceName;
 
         /// <summary>
         /// Gets the named pipe that should be used
         /// to connect to the LocalDB instance.
         /// </summary>
-        public string NamedPipe
-        {
-            get { return _namedPipe; }
-        }
+        public string NamedPipe => _namedPipe;
 
         /// <summary>
         /// Deletes the specified <see cref="ISqlLocalDbInstance"/> instance.
@@ -186,10 +177,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// An instance of <see cref="ISqlLocalDbInstanceInfo"/> containing information about the LocalDB instance.
         /// </returns>
-        public virtual ISqlLocalDbInstanceInfo GetInstanceInfo()
-        {
-            return SqlLocalDbApi.GetInstanceInfo(_instanceName);
-        }
+        public virtual ISqlLocalDbInstanceInfo GetInstanceInfo() => SqlLocalDbApi.GetInstanceInfo(_instanceName);
 
         /// <summary>
         /// Shares the LocalDB instance using the specified name.
@@ -205,7 +193,7 @@ namespace System.Data.SqlLocalDb
         {
             if (sharedName == null)
             {
-                throw new ArgumentNullException("sharedName");
+                throw new ArgumentNullException(nameof(sharedName));
             }
 
             try
@@ -354,7 +342,7 @@ namespace System.Data.SqlLocalDb
         {
             if (instance == null)
             {
-                throw new ArgumentNullException("instance");
+                throw new ArgumentNullException(nameof(instance));
             }
 
             try

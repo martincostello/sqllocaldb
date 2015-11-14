@@ -676,7 +676,7 @@ namespace System.Data.SqlLocalDb
         {
             Debug.Assert(callback != null, "callback cannot be null.");
 
-            function = EnsureFunction<T>(functionName, ref function);
+            function = EnsureFunction(functionName, ref function);
 
             return function == null ? SqlLocalDbErrors.NotInstalled : callback(function);
         }
@@ -1056,16 +1056,10 @@ namespace System.Data.SqlLocalDb
             }
 
             /// <inheritdoc />
-            public string[] GetSubKeyNames()
-            {
-                return _key.GetSubKeyNames();
-            }
+            public string[] GetSubKeyNames() => _key.GetSubKeyNames();
 
             /// <inheritdoc />
-            public string GetValue(string name)
-            {
-                return _key.GetValue(name, null, RegistryValueOptions.None) as string;
-            }
+            public string GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
 
             /// <inheritdoc />
             public IRegistryKey OpenSubKey(string keyName)

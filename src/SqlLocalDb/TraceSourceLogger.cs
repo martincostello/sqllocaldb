@@ -68,10 +68,7 @@ namespace System.Data.SqlLocalDb
         /// Gets the trace source used for the <c>System.Data.SqlLocalDb</c> assembly
         /// if logging is enabled; otherwise <see langword="null"/>.
         /// </summary>
-        private static TraceSource Source
-        {
-            get { return EnsureInitialized() ? _traceSource : null; }
-        }
+        private static TraceSource Source => EnsureInitialized() ? _traceSource : null;
 
         /// <summary>
         /// Gets the synchronization object used by the class.

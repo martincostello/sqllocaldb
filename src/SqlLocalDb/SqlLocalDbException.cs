@@ -87,7 +87,7 @@ namespace System.Data.SqlLocalDb
         public SqlLocalDbException(string message, int errorCode, string instanceName)
             : base(message, errorCode)
         {
-            this.InstanceName = instanceName;
+            InstanceName = instanceName;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace System.Data.SqlLocalDb
         {
             // Set local value as no way to pass both errorCode and innerException to base class
             _errorCode = errorCode;
-            this.InstanceName = instanceName;
+            InstanceName = instanceName;
         }
 
         /// <summary>
@@ -122,16 +122,13 @@ namespace System.Data.SqlLocalDb
             : base(info, context)
         {
             _errorCode = (int?)info.GetValue(ErrorCodeKey, typeof(int?));
-            this.InstanceName = info.GetString(InstanceNameKey);
+            InstanceName = info.GetString(InstanceNameKey);
         }
 
         /// <summary>
         /// Gets the HRESULT of the error.
         /// </summary>
-        public override int ErrorCode
-        {
-            get { return _errorCode.HasValue ? _errorCode.Value : base.ErrorCode; }
-        }
+        public override int ErrorCode => _errorCode.HasValue ? _errorCode.Value : base.ErrorCode;
 
         /// <summary>
         /// Gets or sets the name of the SQL Server LocalDB
@@ -156,13 +153,13 @@ namespace System.Data.SqlLocalDb
         {
             if (info == null)
             {
-                throw new ArgumentNullException("info");
+                throw new ArgumentNullException(nameof(info));
             }
 
             base.GetObjectData(info, context);
 
             info.AddValue(ErrorCodeKey, _errorCode);
-            info.AddValue(InstanceNameKey, this.InstanceName);
+            info.AddValue(InstanceNameKey, InstanceName);
         }
     }
 }

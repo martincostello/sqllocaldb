@@ -52,7 +52,7 @@ namespace System.Data.SqlLocalDb
         {
             if (localDB == null)
             {
-                throw new ArgumentNullException("localDB");
+                throw new ArgumentNullException(nameof(localDB));
             }
 
             _localDB = localDB;
@@ -73,10 +73,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the <see cref="ISqlLocalDbApi"/> in use by the instance.
         /// </summary>
-        internal ISqlLocalDbApi LocalDB
-        {
-            get { return _localDB; }
-        }
+        internal ISqlLocalDbApi LocalDB => _localDB;
 
         /// <summary>
         /// Creates a new instance of <see cref="ISqlLocalDbInstance"/> with a unique random name.
@@ -87,10 +84,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// A new LocalDB instance could not be created.
         /// </exception>
-        public virtual SqlLocalDbInstance CreateInstance()
-        {
-            return CreateInstance(Guid.NewGuid().ToString());
-        }
+        public virtual SqlLocalDbInstance CreateInstance() => CreateInstance(Guid.NewGuid().ToString());
 
         /// <summary>
         /// Creates a new instance of <see cref="ISqlLocalDbInstance"/>.
@@ -162,10 +156,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The LocalDB instance specified by <paramref name="instanceName"/> could not be obtained.
         /// </exception>
-        public virtual SqlLocalDbInstance GetInstance(string instanceName)
-        {
-            return new SqlLocalDbInstance(instanceName, _localDB);
-        }
+        public virtual SqlLocalDbInstance GetInstance(string instanceName) => new SqlLocalDbInstance(instanceName, _localDB);
 
         /// <summary>
         /// Returns information about the available SQL Server LocalDB instances.
@@ -224,10 +215,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// The created instance of <see cref="ISqlLocalDbInstance"/>.
         /// </returns>
-        ISqlLocalDbInstance ISqlLocalDbProvider.CreateInstance(string instanceName)
-        {
-            return CreateInstance(instanceName);
-        }
+        ISqlLocalDbInstance ISqlLocalDbProvider.CreateInstance(string instanceName) => CreateInstance(instanceName);
 
         /// <summary>
         /// Returns an existing instance of <see cref="ISqlLocalDbInstance"/>.
@@ -236,9 +224,6 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// The existing instance of <see cref="ISqlLocalDbInstance"/>.
         /// </returns>
-        ISqlLocalDbInstance ISqlLocalDbProvider.GetInstance(string instanceName)
-        {
-            return GetInstance(instanceName);
-        }
+        ISqlLocalDbInstance ISqlLocalDbProvider.GetInstance(string instanceName) => GetInstance(instanceName);
     }
 }

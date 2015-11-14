@@ -137,7 +137,7 @@ namespace System.Data.SqlLocalDb
                     // This cast is safe as the configuration section validates that the type implements ILogger
                     logger = (ILogger)Activator.CreateInstance(loggerType, nonPublic: true);
                 }
-                catch (System.Reflection.TargetInvocationException ex)
+                catch (Reflection.TargetInvocationException ex)
                 {
                     // Log directly to Trace if we cannot create the custom ILogger
                     Trace.TraceError(SR.Logger_FailedToCreateCustomLoggerFormat, loggerType.AssemblyQualifiedName, (ex.InnerException ?? ex).Message);

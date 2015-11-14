@@ -133,18 +133,12 @@ namespace System.Data.SqlLocalDb.Configuration
         /// <summary>
         /// Gets a value indicating whether <see cref="AutomaticallyDeleteInstanceFiles"/> is set by the application configuration file.
         /// </summary>
-        internal bool IsAutomaticallyDeleteInstanceFilesSpecified
-        {
-            get { return IsPropertySetInConfigurationFile(AutomaticallyDeleteInstanceFilesAttributeName); }
-        }
+        internal bool IsAutomaticallyDeleteInstanceFilesSpecified => IsPropertySetInConfigurationFile(AutomaticallyDeleteInstanceFilesAttributeName);
 
         /// <summary>
         /// Gets a value indicating whether <see cref="NativeApiOverrideVersion"/> is set by the application configuration file.
         /// </summary>
-        internal bool IsNativeApiOverrideVersionSpecified
-        {
-            get { return IsPropertySetInConfigurationFile(NativeApiOverrideVersionAttributeName); }
-        }
+        internal bool IsNativeApiOverrideVersionSpecified => IsPropertySetInConfigurationFile(NativeApiOverrideVersionAttributeName);
 
         /// <summary>
         /// Returns the <see cref="SqlLocalDbConfigurationSection"/> from the current application configuration file.
@@ -177,9 +171,6 @@ namespace System.Data.SqlLocalDb.Configuration
         /// <see langword="true"/> if the configuration property value is defined in the
         /// application configuration file; otherwise <see langword="false"/>.
         /// </returns>
-        private bool IsPropertySetInConfigurationFile(string propertyName)
-        {
-            return this.ElementInformation.Properties[propertyName].ValueOrigin == PropertyValueOrigin.SetHere;
-        }
+        private bool IsPropertySetInConfigurationFile(string propertyName) => ElementInformation.Properties[propertyName].ValueOrigin == PropertyValueOrigin.SetHere;
     }
 }

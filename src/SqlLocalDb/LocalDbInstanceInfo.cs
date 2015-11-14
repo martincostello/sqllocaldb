@@ -165,42 +165,27 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets a value indicating whether the Registry configuration is corrupt.
         /// </summary>
-        bool ISqlLocalDbInstanceInfo.ConfigurationCorrupt
-        {
-            get { return this.ConfigurationCorrupted; }
-        }
+        bool ISqlLocalDbInstanceInfo.ConfigurationCorrupt => ConfigurationCorrupted;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ISqlLocalDbInstanceInfo"/> is exists.
         /// </summary>
-        bool ISqlLocalDbInstanceInfo.Exists
-        {
-            get { return this.Exists; }
-        }
+        bool ISqlLocalDbInstanceInfo.Exists => Exists;
 
         /// <summary>
         /// Gets a value indicating whether the instance is automatic.
         /// </summary>
-        bool ISqlLocalDbInstanceInfo.IsAutomatic
-        {
-            get { return this.IsAutomatic; }
-        }
+        bool ISqlLocalDbInstanceInfo.IsAutomatic => IsAutomatic;
 
         /// <summary>
         /// Gets a value indicating whether the instance is currently running.
         /// </summary>
-        bool ISqlLocalDbInstanceInfo.IsRunning
-        {
-            get { return this.IsRunning; }
-        }
+        bool ISqlLocalDbInstanceInfo.IsRunning => IsRunning;
 
         /// <summary>
         /// Gets a value indicating whether the instance is shared.
         /// </summary>
-        bool ISqlLocalDbInstanceInfo.IsShared
-        {
-            get { return this.IsShared; }
-        }
+        bool ISqlLocalDbInstanceInfo.IsShared => IsShared;
 
         /// <summary>
         /// Gets the UTC date and time the instance was last started.
@@ -210,64 +195,46 @@ namespace System.Data.SqlLocalDb
             get
             {
                 // Return DateTime.MinValue equivalent, rather than 01/01/1600
-                if (this.LastStartUtc.dwHighDateTime == 0 &&
-                    this.LastStartUtc.dwLowDateTime == 0)
+                if (LastStartUtc.dwHighDateTime == 0 &&
+                    LastStartUtc.dwLowDateTime == 0)
                 {
                     return new DateTime(0, DateTimeKind.Utc);
                 }
 
-                return DateTime.FromFileTimeUtc(((long)this.LastStartUtc.dwHighDateTime << 32) | (uint)this.LastStartUtc.dwLowDateTime);
+                return DateTime.FromFileTimeUtc(((long)LastStartUtc.dwHighDateTime << 32) | (uint)LastStartUtc.dwLowDateTime);
             }
         }
 
         /// <summary>
         /// Gets the LocalDB version for the instance.
         /// </summary>
-        Version ISqlLocalDbInstanceInfo.LocalDbVersion
-        {
-            get { return new Version((int)this.Major, (int)this.Minor, (int)this.Build, (int)this.Revision); }
-        }
+        Version ISqlLocalDbInstanceInfo.LocalDbVersion => new Version((int)Major, (int)Minor, (int)Build, (int)Revision);
 
         /// <summary>
         /// Gets the name of the instance.
         /// </summary>
-        string ISqlLocalDbInstanceInfo.Name
-        {
-            get { return NativeMethods.MarshalString(this.InstanceName); }
-        }
+        string ISqlLocalDbInstanceInfo.Name => NativeMethods.MarshalString(InstanceName);
 
         /// <summary>
         /// Gets the named pipe that should be used to communicate with the instance.
         /// </summary>
-        string ISqlLocalDbInstanceInfo.NamedPipe
-        {
-            get { return NativeMethods.MarshalString(this.Connection); }
-        }
+        string ISqlLocalDbInstanceInfo.NamedPipe => NativeMethods.MarshalString(Connection);
 
         /// <summary>
         /// Gets the SID of the LocalDB instance owner if the instance is shared.
         /// </summary>
-        string ISqlLocalDbInstanceInfo.OwnerSid
-        {
-            get { return NativeMethods.MarshalString(this.OwnerSID); }
-        }
+        string ISqlLocalDbInstanceInfo.OwnerSid => NativeMethods.MarshalString(OwnerSID);
 
         /// <summary>
         /// Gets the shared name of the LocalDB instance if the instance is shared.
         /// </summary>
-        string ISqlLocalDbInstanceInfo.SharedName
-        {
-            get { return NativeMethods.MarshalString(this.SharedInstanceName); }
-        }
+        string ISqlLocalDbInstanceInfo.SharedName => NativeMethods.MarshalString(SharedInstanceName);
 
         /// <summary>
         /// Gets the name to display in the debugger
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private string DebuggerDisplayName
-        {
-            get { return ((ISqlLocalDbInstanceInfo)this).Name; }
-        }
+        [Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private string DebuggerDisplayName => ((ISqlLocalDbInstanceInfo)this).Name;
     }
 }
