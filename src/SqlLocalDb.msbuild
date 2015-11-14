@@ -145,6 +145,7 @@
       <_TestCommand Condition="'$(EnableCodeCoverage)' == 'true'">$(_TestCommand) /EnableCodeCoverage</_TestCommand>
       <_TestCommand Condition="'$(TestInIsolation)' == 'true'">$(_TestCommand) /InIsolation</_TestCommand>
       <_TestCommand Condition="'$(SpecifyTestFramework)' == 'true' and '$(TestFramework)' != ''">$(_TestCommand) %22/Framework:$(TestFramework)%22</_TestCommand>
+      <_TestCommand Condition="'$(UseConsoleTestLogger)' == 'true'">$(_TestCommand) /logger:Console</_TestCommand>
     </PropertyGroup>
     <!--
       Run MSTest for each test assembly.
