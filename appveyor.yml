@@ -47,10 +47,3 @@ deploy:
     skip_symbols: false
     on:
       appveyor_repo_tag: true
-
-  - provider: NuGet
-    server: https://ci.appveyor.com/nuget/martincostello-9fmhxpne2mas/api/v2/package
-    api_key:
-      secure: LiR+w6IXAHDke0ybiPQQkWSypbzpsIHCPjFVJFWwEog=
-    artifact: /.*\.nupkg/
-    skip_symbols: false
