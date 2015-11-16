@@ -1,7 +1,6 @@
 version: 1.15.{build}.0
 
 environment:
-  EnableCodeCoverage: false
   CoverallsRepoToken:
     secure: t/5ID5XZAyFKZNmgVJIrcs2Ah7Bn1Kr2cmAZcmEbvl/lGHHl6F4sxSLHK89z7I7E
 
@@ -48,10 +47,3 @@ deploy:
     skip_symbols: false
     on:
       appveyor_repo_tag: true
-
-  - provider: NuGet
-    server: https://ci.appveyor.com/nuget/martincostello-9fmhxpne2mas/api/v2/package
-    api_key:
-      secure: LiR+w6IXAHDke0ybiPQQkWSypbzpsIHCPjFVJFWwEog=
-    artifact: /.*\.nupkg/
-    skip_symbols: false
