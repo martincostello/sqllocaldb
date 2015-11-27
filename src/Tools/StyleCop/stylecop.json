@@ -16,6 +16,9 @@
         "year": "2015"
       }
     },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require"
+    },
     "maintainabilityRules": {
     },
     "namingRules": {
@@ -24,6 +27,15 @@
       ]
     },
     "orderingRules": {
+      "elementOrder": [
+        "kind",
+        "accessibility",
+        "constant",
+        "static",
+        "readonly"
+      ],
+      "systemUsingDirectivesFirst": true,
+      "usingDirectivesPlacement": "outsideNamespace"
     },
     "readabilityRules": {
     },

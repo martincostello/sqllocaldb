@@ -6,23 +6,21 @@
     <StyleCopEnabled>true</StyleCopEnabled>
   </PropertyGroup>
   <PropertyGroup>
-    <StyleCopAnalyzersVersion>1.0.0-beta015</StyleCopAnalyzersVersion>
+    <StyleCopAnalyzersVersion>1.0.0-beta017</StyleCopAnalyzersVersion>
     <StyleCopAnalyzersPackagePath>$(SolutionDir)packages\StyleCop.Analyzers.$(StyleCopAnalyzersVersion)\</StyleCopAnalyzersPackagePath>
-    <StyleCopAnalyzersTargetsPath>$(StyleCopAnalyzersPackagePath)build\StyleCop.Analyzers.targets</StyleCopAnalyzersTargetsPath>
+    <StyleCopAnalyzersAnalyzersPath>$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs</StyleCopAnalyzersAnalyzersPath>
   </PropertyGroup>
-  <ItemGroup Condition="'$(StyleCopEnabled)' != 'false'">
-    <None Include="$(MSBuildThisFileDirectory)stylecop.json">
-      <Link>stylecop.json</Link>
-    </None>
-    <Analyzer Include="$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
   <Target Name="EnsureStyleCopAnalyzersInstalled"
-          Condition="'$(BuildingInsideVisualStudio)' != '' and !Exists('$(StyleCopAnalyzersTargetsPath)')"
-          BeforeTargets="BeforeBuild">
+        Condition="'$(BuildingInsideVisualStudio)' != '' and !Exists('$(StyleCopAnalyzersAnalyzersPath)')"
+        BeforeTargets="BeforeBuild">
     <Error Text="Due to a bug in NuGet (https://github.com/NuGet/Home/issues/1521), Visual Studio does not currently support restoring solution-level packages. To install the StyleCop.Analyzers NuGet package, run 'Build.cmd /t:RestorePackages' from the command line." />
   </Target>
-  <Import Condition="'$(StyleCopEnabled)' != 'false' and Exists('$(StyleCopAnalyzersTargetsPath)')"
-          Project="$(StyleCopAnalyzersTargetsPath)" />
+  <ItemGroup Condition="'$(StyleCopEnabled)' != 'false'">
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <Analyzer Include="$(StyleCopAnalyzersAnalyzersPath)\Newtonsoft.Json.dll" />
+    <Analyzer Include="$(StyleCopAnalyzersAnalyzersPath)\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="$(StyleCopAnalyzersAnalyzersPath)\StyleCop.Analyzers.dll" />
+  </ItemGroup>
 </Project>
