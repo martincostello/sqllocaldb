@@ -8,6 +8,7 @@
   <PropertyGroup>
     <StyleCopAnalyzersVersion>1.0.0-beta015</StyleCopAnalyzersVersion>
     <StyleCopAnalyzersPackagePath>$(SolutionDir)packages\StyleCop.Analyzers.$(StyleCopAnalyzersVersion)\</StyleCopAnalyzersPackagePath>
+    <StyleCopAnalyzersTargetsPath>$(StyleCopAnalyzersPackagePath)build\StyleCop.Analyzers.targets</StyleCopAnalyzersTargetsPath>
   </PropertyGroup>
   <ItemGroup Condition="'$(StyleCopEnabled)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)stylecop.json">
@@ -17,6 +18,11 @@
     <Analyzer Include="$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <Import Condition="'$(StyleCopEnabled)' != 'false' and Exists('$(StyleCopAnalyzersPackagePath)build\StyleCop.Analyzers.targets')"
-          Project="$(StyleCopAnalyzersPackagePath)build\StyleCop.Analyzers.targets" />
+  <Target Name="EnsureStyleCopAnalyzersInstalled"
+          Condition="'$(BuildingInsideVisualStudio)' != '' and !Exists('$(StyleCopAnalyzersTargetsPath)')"
+          BeforeTargets="BeforeBuild">
+    <Error Text="Due to a bug in NuGet (https://github.com/NuGet/Home/issues/1521), Visual Studio does not currently support restoring solution-level packages. To install the StyleCop.Analyzers NuGet package, run 'Build.cmd /t:RestorePackages' from the command line." />
+  </Target>
+  <Import Condition="'$(StyleCopEnabled)' != 'false' and Exists('$(StyleCopAnalyzersTargetsPath)')"
+          Project="$(StyleCopAnalyzersTargetsPath)" />
 </Project>
