@@ -387,7 +387,7 @@
     -->
     <ComputeMD5Hash Condition="Exists('$(CoverityToolZipFile)')" FileName="$(CoverityToolZipFile)">
       <Output TaskParameter="MD5Hash" PropertyName="CoverityLocalMD5" />
-    </ComputeMD5Hash>    
+    </ComputeMD5Hash>
     <!--
       Determine whether the ZIP file we already have locally is up-to-date.
     -->
@@ -414,7 +414,7 @@
     <!--
       Download the latest ZIP file.
     -->
-    <Exec Condition="!Exists('$(CoverityToolZipFile)') or '$(_IsLatestCoverityTool)' == 'false'" Command="$(CoverityDownloadCommand)" WorkingDirectory="$(CoverityToolDir)" />    
+    <Exec Condition="!Exists('$(CoverityToolZipFile)') or '$(_IsLatestCoverityTool)' == 'false'" Command="$(CoverityDownloadCommand)" WorkingDirectory="$(CoverityToolDir)" />
     <!--
       Extract the tool if the ZIP file exists and we just downloaded
       it or it it exists but the extracted directory does not.
@@ -436,7 +436,7 @@
     </ItemGroup>
     <PropertyGroup>
       <CoverityTool>@(CoverityTool)</CoverityTool>
-    </PropertyGroup>    
+    </PropertyGroup>
     <Error Condition="!Exists('$(CoverityTool)')" Text="The Coverity Build Tool cannot be found." />
     <Exec Command="%22$(CoverityTool)%22 --dir %22$(CoverityOutputDir)%22 %22$(SqlLocalDbRoot)..\Build.cmd%22 /t:Rebuild /p:RunTests=false" />
     <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(CoverityOutputDir)" RemoveRoot="$(OutDir)" ZipFileName="$(CoverityZipFile)" />
@@ -544,7 +544,7 @@
         Version lastReleasedVersion = new Version(lastReleasedVersionString);
         Version thisVersion = new Version(AssemblyVersion);
         int thisBuildNumber = int.Parse(CIBuildNumber, System.Globalization.CultureInfo.InvariantCulture);
-        
+
         if (lastReleasedVersion.Major == thisVersion.Major &&
             lastReleasedVersion.Minor == thisVersion.Minor)
         {
@@ -578,9 +578,9 @@
         using (Stream stream = File.OpenRead(FileName))
         {
             using (HashAlgorithm algorithm = MD5.Create())
-            {             
+            {
                 byte[] hashBytes = algorithm.ComputeHash(stream);
-                
+
                 var builder = new System.Text.StringBuilder();
 
                 foreach (byte b in hashBytes)

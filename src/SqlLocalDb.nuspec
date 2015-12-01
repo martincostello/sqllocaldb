@@ -20,7 +20,7 @@
     </frameworkAssemblies>
     <references>
       <group targetFramework="net40">
-        <reference file="System.Data.SqlLocalDb.dll" />  
+        <reference file="System.Data.SqlLocalDb.dll" />
       </group>
     </references>
   </metadata>
