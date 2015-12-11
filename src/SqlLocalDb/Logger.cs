@@ -22,9 +22,9 @@ namespace System.Data.SqlLocalDb
     public static class Logger
     {
         /// <summary>
-        /// The default <see cref="ILogger"/> to use. This field is read-only.
+        /// The lazily-initialized default <see cref="ILogger"/> to use. This field is read-only.
         /// </summary>
-        internal static readonly ILogger DefaultLogger = CreateDefaultLogger();
+        internal static readonly Lazy<ILogger> DefaultLogger = new Lazy<ILogger>(CreateDefaultLogger);
 
         /// <summary>
         /// The Trace condition string.
@@ -34,7 +34,15 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// The <see cref="ILogger"/> to use.
         /// </summary>
-        private static ILogger _logger = DefaultLogger;
+        private static ILogger _logger;
+
+        /// <summary>
+        /// Gets the current <see cref="ILogger"/>.
+        /// </summary>
+        private static ILogger Current
+        {
+            get { return _logger ?? DefaultLogger.Value; }
+        }
 
         /// <summary>
         /// Sets the <see cref="ILogger"/> implementation in use by the assembly.
@@ -43,7 +51,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void SetLogger(ILogger logger)
         {
-            _logger = logger ?? DefaultLogger;
+            _logger = logger ?? DefaultLogger.Value;
         }
 
         /// <summary>
@@ -60,7 +68,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void Error(int id, string format, params object[] args)
         {
-            _logger.WriteError(id, format, args);
+            Current.WriteError(id, format, args);
         }
 
         /// <summary>
@@ -77,7 +85,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void Information(int id, string format, params object[] args)
         {
-            _logger.WriteInformation(id, format, args);
+            Current.WriteInformation(id, format, args);
         }
 
         /// <summary>
@@ -94,7 +102,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void Verbose(int id, string format, params object[] args)
         {
-            _logger.WriteVerbose(id, format, args);
+            Current.WriteVerbose(id, format, args);
         }
 
         /// <summary>
@@ -111,7 +119,7 @@ namespace System.Data.SqlLocalDb
         [Conditional(TraceCondition)]
         public static void Warning(int id, string format, params object[] args)
         {
-            _logger.WriteWarning(id, format, args);
+            Current.WriteWarning(id, format, args);
         }
 
         /// <summary>

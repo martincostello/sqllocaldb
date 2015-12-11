@@ -89,14 +89,16 @@ namespace System.Data.SqlLocalDb
                     }
                 }
 
-                if (Logger.DefaultLogger.GetType().IsMarshalByRef)
+                ILogger logger = Logger.DefaultLogger.Value;
+
+                if (logger.GetType().IsMarshalByRef)
                 {
                     // Create an instance of the type that configures logging in the new AppDomain
                     Type helperType = typeof(LoggingHelper);
                     var handle = domain.CreateInstanceFrom(helperType.Assembly.Location, helperType.FullName);
 
                     var helper = (LoggingHelper)handle.Unwrap();
-                    helper.SetLogger(Logger.DefaultLogger);
+                    helper.SetLogger(logger);
                 }
 
                 domain.DoCallBack(callBackDelegate);
