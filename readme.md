@@ -87,7 +87,7 @@ The simplest way to build and test the assembly from the source code is by using
 
 Building the project from the command-line using [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```) for both the x86 and x64 platforms.
 
-The standard build process also includes running [StyleCop](https://stylecop.codeplex.com/) and FxCop.
+The standard build process also includes running [StyleCop](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) and FxCop.
 
 To only compile the source code and not run the tests, use the following command: ```Build.cmd /p:RunTests=false```
 
