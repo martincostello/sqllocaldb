@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb", "SqlLocalDb\System.Data.SqlLocalDb.csproj", "{B235F2A6-A8A2-4CE6-B3B0-54FFB89DE7DD}"
 EndProject
@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\readme.md = ..\readme.md
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
+		SqlLocalDb.Coverage.runsettings = SqlLocalDb.Coverage.runsettings
 		SqlLocalDb.msbuild = SqlLocalDb.msbuild
 		SqlLocalDb.nuspec = SqlLocalDb.nuspec
 		SqlLocalDb.ruleset = SqlLocalDb.ruleset
