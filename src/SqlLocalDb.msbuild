@@ -130,7 +130,10 @@
       <_IsVSEnterprise Condition="'$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@ProductDir)' != ''">true</_IsVSEnterprise>
       <_IsVSEnterprise Condition="'$(_IsVSEnterprise)' == '' and '$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@ProductDir)' != ''">true</_IsVSEnterprise>
       <_IsVSEnterprise Condition="'$(_IsVSEnterprise)' == ''">false</_IsVSEnterprise>
-      <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == '' and '$(_IsVSEnterprise)' == 'true'">true</EnableCodeCoverage>
+      <!--
+        AppVeyor has Visual Studio Test Agents installed, so can provide code coverage.
+      -->
+      <EnableCodeCoverage Condition="'$(EnableCodeCoverage)' == '' and ('$(_IsVSEnterprise)' == 'true' or '$(APPVEYOR)' != '')">true</EnableCodeCoverage>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' == 'true'">/EnableCodeCoverage </CodeCoverageCommand>
       <CodeCoverageCommand Condition="'$(EnableCodeCoverage)' != 'true'"></CodeCoverageCommand>
       <TestSettings Condition="'$(TestSettings)' == '' and '$(EnableCodeCoverage)' == 'true'">$(SolutionDir)SqlLocalDb.coverage.runsettings</TestSettings>
