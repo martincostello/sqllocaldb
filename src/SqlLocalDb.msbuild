@@ -127,8 +127,8 @@
       <!--
         SKUs of Visual Studio 2015 below Enterprise do not have the appropriate code coverage adapter installed.
       -->
-      <_IsVSEnterprise Condition="'$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@ProductDir)' != ''">true</_IsVSEnterprise>
-      <_IsVSEnterprise Condition="'$(_IsVSEnterprise)' == '' and '$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@ProductDir)' != ''">true</_IsVSEnterprise>
+      <_IsVSEnterprise Condition="'$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@InstallResult)' != ''">true</_IsVSEnterprise>
+      <_IsVSEnterprise Condition="'$(_IsVSEnterprise)' == '' and '$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\14.0\Setup\vs\Enterprise@InstallResult)' != ''">true</_IsVSEnterprise>
       <_IsVSEnterprise Condition="'$(_IsVSEnterprise)' == ''">false</_IsVSEnterprise>
       <!--
         AppVeyor has Visual Studio Test Agents installed, so can provide code coverage.
