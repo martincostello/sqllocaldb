@@ -6,7 +6,7 @@
     <StyleCopEnabled>true</StyleCopEnabled>
   </PropertyGroup>
   <PropertyGroup>
-    <StyleCopAnalyzersVersion>1.0.0-rc3</StyleCopAnalyzersVersion>
+    <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
     <StyleCopAnalyzersPackagePath>$(SolutionDir)packages\StyleCop.Analyzers.$(StyleCopAnalyzersVersion)\</StyleCopAnalyzersPackagePath>
     <StyleCopAnalyzersAnalyzersPath>$(StyleCopAnalyzersPackagePath)analyzers\dotnet\cs</StyleCopAnalyzersAnalyzersPath>
   </PropertyGroup>
