@@ -36,13 +36,13 @@ Install-Package System.Data.SqlLocalDb
 
 Add the appropriate namespace:
 
-```
+```csharp
 using System.Data.SqlLocalDb;
 ```
 
 Then create an instance, start it and connect to it:
 
-```
+```csharp
 ISqlLocalDbProvider provider = new SqlLocalDbProvider();
 ISqlLocalDbInstance instance = provider.GetOrCreateInstance("MyInstance");
 
