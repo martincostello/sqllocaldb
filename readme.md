@@ -4,7 +4,7 @@
 
 [![Open GitHub Issues](https://img.shields.io/github/issues/martincostello/sqllocaldb.svg?label=Open%20Issues)](https://github.com/martincostello/sqllocaldb/issues) [![Latest GitHub Release](https://img.shields.io/github/release/martincostello/sqllocaldb.svg?label=Latest%20Release)](https://github.com/martincostello/sqllocaldb/releases/latest) [![License](https://img.shields.io/github/license/martincostello/sqllocaldb.svg?label=License)](https://github.com/martincostello/sqllocaldb/blob/master/license.txt)
 
-[![NuGet Downloads](https://img.shields.io/nuget/dt/System.Data.SqlLocalDb.svg?label=NuGet%20Downloads)](http://www.nuget.org/packages/System.Data.SqlLocalDb/) [![Latest NuGet Package Version](https://img.shields.io/nuget/v/System.Data.SqlLocalDb.svg?label=Latest%20NuGet%20Package)](http://www.nuget.org/packages/System.Data.SqlLocalDb/)
+[![NuGet](https://buildstats.info/nuget/System.Data.SqlLocalDb)](http://www.nuget.org/packages/System.Data.SqlLocalDb)
 
 [![Join the chat at https://gitter.im/martincostello/sqllocaldb](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/martincostello/sqllocaldb?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
