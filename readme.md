@@ -30,7 +30,9 @@ Alternatively, a ZIP file containing the assembly can be downloaded from [GitHub
 
 First install the [NuGet package](https://www.nuget.org/packages/System.Data.SqlLocalDb/):
 
-```Install-Package System.Data.SqlLocalDb```
+```batchfile
+Install-Package System.Data.SqlLocalDb
+```
 
 Add the appropriate namespace:
 
