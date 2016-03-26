@@ -130,6 +130,9 @@
     <None Include="SqlLocalDbApiTests.DefaultInstanceName.2012.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SqlLocalDbApiTests.DefaultInstanceName.2016.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SqlLocalDbApiTests.DefaultInstanceName.2014.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

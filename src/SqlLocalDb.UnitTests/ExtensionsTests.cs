@@ -863,8 +863,9 @@ namespace System.Data.SqlLocalDb
 
         [TestMethod]
         [TestCategory(TestCategories.SqlServer2014)]
-        [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2014 default instance name.")]
-        public void Extensions_GetOrCreateInstance_For_2014_Default_Instance_Name()
+        [TestCategory(TestCategories.SqlServer2016)]
+        [Description("Tests GetOrCreateInstance() if instanceName is the SQL LocalDB 2014 and 2016 default instance name.")]
+        public void Extensions_GetOrCreateInstance_For_2014_And_2016_Default_Instance_Name()
         {
             // Arrange
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
