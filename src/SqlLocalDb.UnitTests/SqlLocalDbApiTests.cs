@@ -1394,6 +1394,7 @@ namespace System.Data.SqlLocalDb
         [TestMethod]
         [TestCategory(TestCategories.SqlServer2012)]
         [TestCategory(TestCategories.SqlServer2014)]
+        [TestCategory(TestCategories.SqlServer2016)]
         [Description("Tests that the DefaultInstanceName property returns the correct value.")]
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value()
         {
@@ -1445,6 +1446,25 @@ namespace System.Data.SqlLocalDb
                     Assert.AreEqual("MSSQLLocalDB", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
                 },
                 configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2014.config");
+        }
+
+        [Ignore] // Not yet installed in AppVeyor CI
+        [TestMethod]
+        [TestCategory(TestCategories.SqlServer2016)]
+        [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2016.")]
+        public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2016()
+        {
+            // Arrange
+            Helpers.InvokeInNewAppDomain(
+                () =>
+                {
+                    // Act
+                    string result = SqlLocalDbApi.DefaultInstanceName;
+
+                    // Assert
+                    Assert.AreEqual("MSSQLLocalDB", result, "SqlLocalDbApi.DefaultInstanceName returned incorrect value.");
+                },
+                configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2016.config");
         }
 
         [TestMethod]

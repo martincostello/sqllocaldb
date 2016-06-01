@@ -16,7 +16,7 @@ SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft
 
 It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other data access providers defined under the System.Data namespaces.
 
-The assembly supports using SQL Server LocalDB 2012 and 2014 for both the x86 and x64 platforms.
+The assembly supports using SQL Server LocalDB 2012 and 2014 for both the x86 and x64 platforms and SQL Server LocalDB 2016 for the x64 platform.
 
 ## Downloads
 
