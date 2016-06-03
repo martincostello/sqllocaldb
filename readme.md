@@ -12,7 +12,7 @@
 
 ## Overview
 
-SQL LocalDB Wrapper is a .NET 3.5 assembly providing interop with the [Microsoft SQL Server LocalDB](http://msdn.microsoft.com/en-us/library/hh510202.aspx) native API from managed code using .NET APIs.
+SQL LocalDB Wrapper is a .NET 4.0 assembly providing interop with the [Microsoft SQL Server LocalDB](http://msdn.microsoft.com/en-us/library/hh510202.aspx) native API from managed code using .NET APIs.
 
 It is designed to support use of dependency injection by consumers by implementing interfaces, and is also designed to fit with the other data access providers defined under the System.Data namespaces.
 
