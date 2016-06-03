@@ -35,7 +35,7 @@ deploy:
     release: "SQL LocalDB Wrapper $(APPVEYOR_REPO_TAG_NAME)"
     description: "$(GitHubReleaseDescription)"
     auth_token:
-      secure: mLFHRaYb30++8z/i4iDEkwLI3XzuAfbdbzyWVsxANtzs2aGWMWMuClfUC+QSU6YF
+      secure: h9fLtmesz0AoFVrhv2oYqGvBQnwY7+Io0uASRjts8yFv5dUzks/go0BpVpUeM9tA
     artifact: /.*\.zip/
     draft: true
     prerelease: false
