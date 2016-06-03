@@ -1,4 +1,4 @@
-version: 1.15.{build}.0
+version: 1.16.{build}.0
 
 os: Visual Studio 2015
 
@@ -9,7 +9,7 @@ environment:
 assembly_info:
   patch: true
   file: AssemblyVersion.cs
-  assembly_version: "1.15.0.0"
+  assembly_version: "1.16.0.0"
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
