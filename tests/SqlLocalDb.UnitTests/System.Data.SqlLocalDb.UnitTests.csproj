@@ -11,7 +11,7 @@
     <None Include=".\*.config;.\Configuration\*.config;.\*.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SqlLocalDb\System.Data.SqlLocalDb.csproj" />
+    <ProjectReference Include="..\..\src\SqlLocalDb\System.Data.SqlLocalDb.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
