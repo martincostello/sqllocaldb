@@ -1,6 +1,6 @@
 version: 1.16.{build}.0
 
-os: Visual Studio 2015
+os: Visual Studio 2017
 
 environment:
   CoverallsRepoToken:
