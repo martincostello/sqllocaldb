@@ -9,11 +9,7 @@
     <Company>https://github.com/martincostello/sqllocaldb</Company>
     <Copyright>Martin Costello (c) 2015-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <DefineConstants>$(DefineConstants)</DefineConstants>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NeutralLanguage>en-US</NeutralLanguage>
