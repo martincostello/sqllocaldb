@@ -104,10 +104,9 @@ namespace System.Data.SqlLocalDb
         private static bool LoadAutomaticDeletionValueFromConfig()
         {
             string value = ConfigurationManager.AppSettings[LegacyDeleteInstanceFilesSettingName];
-            bool automaticallyDeleteInstanceFiles;
 
             if (string.IsNullOrEmpty(value) ||
-                !bool.TryParse(value, out automaticallyDeleteInstanceFiles))
+                !bool.TryParse(value, out bool automaticallyDeleteInstanceFiles))
             {
                 automaticallyDeleteInstanceFiles = false;
             }
