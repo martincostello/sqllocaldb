@@ -12,15 +12,11 @@
 
 using System;
 using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("https://github.com/martincostello/sqllocaldb")]
-[assembly: AssemblyCopyright("Copyright © Martin Costello 2012-2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyProduct("System.Data.SqlLocalDb")]
+[assembly: AssemblyTrademark("")]
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: NeutralResourcesLanguage("en-US")]

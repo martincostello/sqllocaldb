@@ -11,13 +11,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-[assembly: AssemblyTitle("System.Data.SqlLocalDb")]
-[assembly: AssemblyDescription("SQL Server LocalDB API")]
-[assembly: AssemblyProduct("System.Data.SqlLocalDb")]
 
 [assembly: Guid("963628d3-b23b-4b98-9cec-b0a13b00ddef")]
 

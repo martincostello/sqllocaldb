@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb", "SqlLocalDb\System.Data.SqlLocalDb.csproj", "{B235F2A6-A8A2-4CE6-B3B0-54FFB89DE7DD}"
 EndProject
@@ -12,55 +12,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		..\appveyor.yml = ..\appveyor.yml
-		AssemblyVersion.cs = AssemblyVersion.cs
-		AssemblyVersion.targets = AssemblyVersion.targets
 		..\Build.cmd = ..\Build.cmd
 		..\changelog.md = ..\changelog.md
-		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		..\CommonAssemblyInfo.cs = ..\CommonAssemblyInfo.cs
 		..\contributing.md = ..\contributing.md
 		FxCopDictionary.xml = FxCopDictionary.xml
-		..\LICENSE.txt = ..\LICENSE.txt
 		..\readme.md = ..\readme.md
+		..\SqlLocalDb.Common.props = ..\SqlLocalDb.Common.props
 		SqlLocalDb.Common.targets = SqlLocalDb.Common.targets
 		SqlLocalDb.Coverage.runsettings = SqlLocalDb.Coverage.runsettings
 		SqlLocalDb.msbuild = SqlLocalDb.msbuild
 		SqlLocalDb.nuspec = SqlLocalDb.nuspec
-		SqlLocalDb.ruleset = SqlLocalDb.ruleset
+		..\SqlLocalDb.ruleset = ..\SqlLocalDb.ruleset
 		SqlLocalDb.runsettings = SqlLocalDb.runsettings
-		SqlLocalDb.snk = SqlLocalDb.snk
+		..\SqlLocalDb.snk = ..\SqlLocalDb.snk
+		..\stylecop.json = ..\stylecop.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Data.SqlLocalDb.TestApp", "TestApp\System.Data.SqlLocalDb.TestApp.csproj", "{FB9017DA-0F3C-4A17-AF09-55F6AAE48B7B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B415E9C5-3B98-4F05-A71A-BF8FF9A696AB}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\NuGet\NuGet.config = Tools\NuGet\NuGet.config
-		Tools\NuGet\NuGet.exe = Tools\NuGet\NuGet.exe
-		.nuget\packages.config = .nuget\packages.config
-		packages\repositories.config = packages\repositories.config
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{5F16D00C-39D3-45C2-A7A9-18A01E323809}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\StyleCop\stylecop.json = Tools\StyleCop\stylecop.json
-		Tools\StyleCop\StyleCop.Targets = Tools\StyleCop\StyleCop.Targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{C1285F26-933A-4A35-9AF1-1F35A3CE25AF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuildExtensionPack", "MSBuildExtensionPack", "{42978B8C-754C-4144-A45D-4141B22A84DF}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\MSBuildExtensionPack\Ionic.Zip.dll = Tools\MSBuildExtensionPack\Ionic.Zip.dll
-		Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll = Tools\MSBuildExtensionPack\MSBuild.ExtensionPack.dll
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Curl", "Curl", "{2C273D35-E10C-4C20-A534-BF19BC5FFB87}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Curl\curl.exe = Tools\Curl\curl.exe
-		Tools\Curl\libcurl.dll = Tools\Curl\libcurl.dll
-		Tools\Curl\libidn-11.dll = Tools\Curl\libidn-11.dll
-		Tools\Curl\ssleay32.dll = Tools\Curl\ssleay32.dll
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,12 +52,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B415E9C5-3B98-4F05-A71A-BF8FF9A696AB} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
-		{5F16D00C-39D3-45C2-A7A9-18A01E323809} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
-		{C1285F26-933A-4A35-9AF1-1F35A3CE25AF} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
-		{42978B8C-754C-4144-A45D-4141B22A84DF} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
-		{2C273D35-E10C-4C20-A534-BF19BC5FFB87} = {C1285F26-933A-4A35-9AF1-1F35A3CE25AF}
 	EndGlobalSection
 EndGlobal
