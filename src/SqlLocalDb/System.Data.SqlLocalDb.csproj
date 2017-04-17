@@ -6,6 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <OutputType>Library</OutputType>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RootNamespace>System.Data.SqlLocalDb</RootNamespace>
     <TargetFrameworks>net451</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
