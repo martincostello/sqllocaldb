@@ -651,7 +651,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private sealed class SqlLocalDbInstanceThatCannotBeStarted : SqlLocalDbInstance, ISqlLocalDbInstance
         {
-            /// <inheritdoc />
             internal SqlLocalDbInstanceThatCannotBeStarted(string instanceName)
                 : base(instanceName)
             {
@@ -669,7 +668,6 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         private sealed class SqlLocalDbInstanceThatCannotBeStopped : SqlLocalDbInstance, ISqlLocalDbInstance
         {
-            /// <inheritdoc />
             internal SqlLocalDbInstanceThatCannotBeStopped(string instanceName)
                 : base(instanceName)
             {

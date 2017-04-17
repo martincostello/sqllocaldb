@@ -644,12 +644,11 @@ namespace System.Data.SqlLocalDb
             Assert.IsNotNull(result.Name, "ISqlLocalDbVersionInfo.Name is null.");
             Assert.IsNotNull(result.Version, "ISqlLocalDbVersionInfo.Version is null.");
 
-            StringAssert.StartsWith(result.Name, version, "ISqlLocalDbVersionInfo.Name is incorrect.");
+            StringAssert.StartsWith(result.Name, version.Split('.').FirstOrDefault(), "ISqlLocalDbVersionInfo.Name is incorrect.");
 
             Version versionFromString = new Version(version);
 
             Assert.AreEqual(versionFromString.Major, result.Version.Major, "ISqlLocalDbVersionInfo.Version.Major is incorrect.");
-            Assert.AreEqual(versionFromString.Minor, result.Version.Minor, "ISqlLocalDbVersionInfo.Version.Minor is incorrect.");
         }
 
         [TestMethod]

@@ -10,8 +10,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.InteropServices;
 
+[assembly: CLSCompliant(true)]
 [assembly: Guid("b6649785-36c9-46d4-8f86-85bb6ee60c7e")]
 
 [assembly: log4net.Config.XmlConfigurator]

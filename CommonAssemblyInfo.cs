@@ -10,7 +10,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -18,5 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("System.Data.SqlLocalDb")]
 [assembly: AssemblyTrademark("")]
 
-[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]

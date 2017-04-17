@@ -95,8 +95,8 @@ namespace System.Data.SqlLocalDb
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
                 Assert.AreEqual(
-                    new Version(target.Version),
-                    new Version(info.LocalDbVersion.Major, info.LocalDbVersion.Minor),
+                    new Version(target.Version).Major,
+                    info.LocalDbVersion.Major,
                     "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
 
                 Guid guid;
@@ -134,8 +134,8 @@ namespace System.Data.SqlLocalDb
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
                 Assert.AreEqual(
-                    new Version(target.Version),
-                    new Version(info.LocalDbVersion.Major, info.LocalDbVersion.Minor),
+                    new Version(target.Version).Major,
+                    info.LocalDbVersion.Major,
                     "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
             }
             finally
