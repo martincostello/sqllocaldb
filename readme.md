@@ -67,7 +67,7 @@ You can also check out the [examples below](https://github.com/martincostello/sq
 ## Examples
 
   1. An example of using the API can be found [here](https://github.com/martincostello/sqllocaldb/blob/master/src/TestApp/Program.cs) in the TestApp project in the source code.
-  1. An runnable example solution using the API to test an ASP.NET MVC application using SQL Server with MSTest is included as [BlogSample.sln](https://github.com/martincostello/sqllocaldb/blob/master/src/BlogSample.sln) in the source code.
+  1. ~~An runnable example solution using the API to test an ASP.NET MVC application using SQL Server with MSTest is included as [BlogSample.sln](https://github.com/martincostello/sqllocaldb/blob/master/src/BlogSample.sln) in the source code.~~
 
 ## Feedback
 
@@ -83,24 +83,24 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Building and testing the project is supported using Microsoft Visual Studio 2013 and 2015.
+Building and testing the project is supported using Microsoft Visual Studio 2017.
 
-The simplest way to build and test the assembly from the source code is by using the [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) batch file in the root of the repository like so:
+The simplest way to build and test the assembly from the source code is by using the [Build.ps1](https://github.com/martincostello/sqllocaldb/blob/master/Build.ps1) script in the root of the repository like so:
 
- ```batchfile
- Build.cmd
- ```
+```batchfile
+.\Build.ps1
+```
 
 The project can also be built and tested from Visual Studio.
 
-Building the project from the command-line using [Build.cmd](https://github.com/martincostello/sqllocaldb/blob/master/Build.cmd) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```) for both the x86 and x64 platforms.
+Building the project from the command-line using [Build.ps1](https://github.com/martincostello/sqllocaldb/blob/master/Build.ps1) invokes MSBuild to compile the source, examples and tests (including running the configured static analysis tools), and then uses MSTest to test the compiled assembly (```System.Data.SqlLocalDb.dll```).
 
-The standard build process also includes running [StyleCop](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) and FxCop.
+The standard build process also includes running [StyleCop](https://github.com/DotNetAnalyzers/StyleCopAnalyzers).
 
 To only compile the source code and not run the tests, use the following command:
 
 ```batchfile
-Build.cmd /p:RunTests=false
+.\Build.ps1 -RunTests $False
 ```
 
-__Note__: To run all the tests, you must run either ```Build.cmd``` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be marked as Inconclusive by MSTest.
+__Note__: To run all the tests, you must run either ```Build.ps1``` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be marked as Inconclusive by MSTest.

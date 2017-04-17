@@ -582,10 +582,9 @@ namespace System.Data.SqlLocalDb
             // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
 
             // First assume it's an SQL connection string
-            object resultAsObject;
             string result = null;
 
-            if (value.TryGetValue(keyword, out resultAsObject))
+            if (value.TryGetValue(keyword, out object resultAsObject))
             {
                 result = resultAsObject as string;
             }
@@ -595,12 +594,11 @@ namespace System.Data.SqlLocalDb
                 return result;
             }
 
-            object providerConnectionStringAsObject;
             string providerConnectionString = null;
 
             // If it wasn't SQL, see if it's an entity connection string
             // by trying to extract the provider connection string
-            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out object providerConnectionStringAsObject))
             {
                 // It wasn't an entity connection string, nothing further to try
                 providerConnectionString = providerConnectionStringAsObject as string;
@@ -614,10 +612,8 @@ namespace System.Data.SqlLocalDb
                     ConnectionString = providerConnectionString,
                 };
 
-                object resultFromProviderAsObject;
-
                 // Try and extract the initial catalog from the provider's connection string
-                if (builder.TryGetValue(keyword, out resultFromProviderAsObject))
+                if (builder.TryGetValue(keyword, out object resultFromProviderAsObject))
                 {
                     result = resultFromProviderAsObject as string;
                 }
@@ -655,9 +651,7 @@ namespace System.Data.SqlLocalDb
             // can be used without using reflection and hard-coded type names:
             // 1) System.Data.EntityClient.EntityClientConnectionStringBuilder (System.Data.Entity.dll)
             // 2) System.Data.Entity.Core.EntityClient.EntityClientConnectionStringBuilder (EntityFramework.dll)
-            object providerConnectionStringAsObject;
-
-            if (value.TryGetValue(ProviderConnectionStringKeywordName, out providerConnectionStringAsObject))
+            if (value.TryGetValue(ProviderConnectionStringKeywordName, out object providerConnectionStringAsObject))
             {
                 string providerConnectionString = providerConnectionStringAsObject as string;
 

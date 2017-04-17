@@ -50,12 +50,7 @@ namespace System.Data.SqlLocalDb
         /// </exception>
         public SqlLocalDbProvider(ISqlLocalDbApi localDB)
         {
-            if (localDB == null)
-            {
-                throw new ArgumentNullException(nameof(localDB));
-            }
-
-            _localDB = localDB;
+            _localDB = localDB ?? throw new ArgumentNullException(nameof(localDB));
         }
 
         /// <summary>

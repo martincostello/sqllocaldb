@@ -22,8 +22,6 @@ namespace System.Data.SqlLocalDb
     /// </summary>
     internal static class ErrorHelper
     {
-        #region Methods
-
         /// <summary>
         /// Determines whether the specified exception is fatal.
         /// </summary>
@@ -54,7 +52,5 @@ namespace System.Data.SqlLocalDb
 
             return false;
         }
-
-        #endregion
     }
 }

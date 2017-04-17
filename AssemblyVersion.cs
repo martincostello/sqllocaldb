@@ -1,19 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="https://github.com/martincostello/sqllocaldb">
+// <copyright file="AssemblyVersion.cs" company="https://github.com/martincostello/sqllocaldb">
 //   Martin Costello (c) 2012-2015
 // </copyright>
 // <license>
 //   See license.txt in the project root for license information.
 // </license>
 // <summary>
-//   AssemblyInfo.cs
+//   AssemblyVersion.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Runtime.InteropServices;
+using System.Reflection;
 
-[assembly: CLSCompliant(true)]
-[assembly: Guid("b6649785-36c9-46d4-8f86-85bb6ee60c7e")]
-
-[assembly: log4net.Config.XmlConfigurator]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0.0")]

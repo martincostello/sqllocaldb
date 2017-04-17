@@ -128,7 +128,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets the HRESULT of the error.
         /// </summary>
-        public override int ErrorCode => _errorCode.HasValue ? _errorCode.Value : base.ErrorCode;
+        public override int ErrorCode => _errorCode ?? base.ErrorCode;
 
         /// <summary>
         /// Gets or sets the name of the SQL Server LocalDB

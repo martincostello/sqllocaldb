@@ -166,9 +166,10 @@ namespace System.Data.SqlLocalDb
                 throw new InvalidOperationException(message);
             }
 
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = _namedPipe;
-            return builder;
+            return new SqlConnectionStringBuilder()
+            {
+                DataSource = _namedPipe
+            };
         }
 
         /// <summary>
