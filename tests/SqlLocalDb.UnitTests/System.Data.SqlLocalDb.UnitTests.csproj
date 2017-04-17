@@ -7,7 +7,7 @@
     <TargetFramework>net451</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\CommonAssemblyInfo.cs" />
+    <Compile Include="..\..\AssemblyVersion.cs;..\..\CommonAssemblyInfo.cs" />
     <None Include=".\*.config;.\Configuration\*.config;.\*.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>

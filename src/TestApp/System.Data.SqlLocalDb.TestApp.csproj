@@ -9,7 +9,7 @@
     <TargetFrameworks>net451</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\CommonAssemblyInfo.cs" />
+    <Compile Include="..\..\AssemblyVersion.cs;..\..\CommonAssemblyInfo.cs" />
     <Content Include="**\*.cs" Exclude="bin\**;obj\**;**\*.csproj;packages\**" PackagePath="%(Identity)" />
   </ItemGroup>
   <ItemGroup>
