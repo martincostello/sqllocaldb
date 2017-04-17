@@ -6,13 +6,6 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   NUGET_XMLDOC_MODE: skip
 
-assembly_info:
-  patch: true
-  file: AssemblyVersion.cs
-  assembly_version: "3.0.0.0"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
-
 branches:
   only:
     - master
