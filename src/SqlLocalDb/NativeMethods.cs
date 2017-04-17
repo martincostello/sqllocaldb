@@ -696,9 +696,7 @@ namespace System.Data.SqlLocalDb
                 {
                     if (_localDB == null)
                     {
-                        string fileName;
-
-                        if (!TryGetLocalDbApiPath(out fileName))
+                        if (!TryGetLocalDbApiPath(out string fileName))
                         {
                             return null;
                         }
@@ -771,7 +769,7 @@ namespace System.Data.SqlLocalDb
                 return null;
             }
 
-            return Marshal.GetDelegateForFunctionPointer(ptr, typeof(T)) as T;
+            return Marshal.GetDelegateForFunctionPointer<T>(ptr);
         }
 
         /// <summary>
