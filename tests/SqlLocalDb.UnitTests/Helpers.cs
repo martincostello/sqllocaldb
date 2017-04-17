@@ -11,6 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,6 +50,24 @@ namespace System.Data.SqlLocalDb
             if (!SqlLocalDbApi.IsLocalDBInstalled())
             {
                 Assert.Inconclusive("SQL Server LocalDB is not installed on {0}.", Environment.MachineName);
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the specified SQL Server LocalDB version is installed on the current machine.
+        /// </summary>
+        /// <param name="majorVersion">The major version of SQL Server LocalDB required.</param>
+        /// <remarks>
+        /// Any unit test calling this method is marked as Inconclusive if the required version of
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </remarks>
+        public static void EnsureLocalDBVersionInstalled(int majorVersion)
+        {
+            ISqlLocalDbProvider provider = new SqlLocalDbProvider();
+
+            if (!provider.GetVersions().Any((p) => p.Version.Major == majorVersion))
+            {
+                Assert.Inconclusive($"SQL Server LocalDB v{majorVersion} is not installed on {Environment.MachineName}.");
             }
         }
 

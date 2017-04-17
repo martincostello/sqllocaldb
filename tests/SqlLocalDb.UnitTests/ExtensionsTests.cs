@@ -850,6 +850,8 @@ namespace System.Data.SqlLocalDb
         public void Extensions_GetOrCreateInstance_For_2012_Default_Instance_Name()
         {
             // Arrange
+            Helpers.EnsureLocalDBVersionInstalled(11);
+
             ISqlLocalDbProvider value = new SqlLocalDbProvider();
             string instanceName = "v11.0";
 

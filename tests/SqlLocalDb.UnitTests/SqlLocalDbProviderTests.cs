@@ -271,6 +271,8 @@ namespace System.Data.SqlLocalDb
         public void SqlLocalDbProvider_CreateInstance_Specifies_No_Version_If_Default_Instance_Name_Specified_2012()
         {
             // Arrange
+            Helpers.EnsureLocalDBVersionInstalled(11);
+
             string instanceName = "v11.0";
             string version = "1.2.3.4";
 

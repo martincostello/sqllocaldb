@@ -1435,6 +1435,8 @@ namespace System.Data.SqlLocalDb
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2014()
         {
             // Arrange
+            Helpers.EnsureLocalDBVersionInstalled(12);
+
             Helpers.InvokeInNewAppDomain(
                 () =>
                 {
@@ -1447,13 +1449,14 @@ namespace System.Data.SqlLocalDb
                 configurationFile: "SqlLocalDbApiTests.DefaultInstanceName.2014.config");
         }
 
-        [Ignore] // Not yet installed in AppVeyor CI
         [TestMethod]
         [TestCategory(TestCategories.SqlServer2016)]
         [Description("Tests that the DefaultInstanceName property returns the correct value for SQL LocalDB 2016.")]
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2016()
         {
             // Arrange
+            Helpers.EnsureLocalDBVersionInstalled(13);
+
             Helpers.InvokeInNewAppDomain(
                 () =>
                 {
