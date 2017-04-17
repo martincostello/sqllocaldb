@@ -1417,6 +1417,8 @@ namespace System.Data.SqlLocalDb
         public void SqlLocalDbApi_DefaultInstanceName_Returns_Correct_Value_2012()
         {
             // Arrange
+            Helpers.EnsureLocalDBVersionInstalled(11);
+
             Helpers.InvokeInNewAppDomain(
                 () =>
                 {
