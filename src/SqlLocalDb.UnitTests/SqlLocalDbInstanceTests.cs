@@ -192,8 +192,10 @@ namespace System.Data.SqlLocalDb
 
             try
             {
-                Mock<SqlLocalDbInstance> mock = new Mock<SqlLocalDbInstance>(instanceName);
-                mock.CallBase = true;
+                var mock = new Mock<SqlLocalDbInstance>(instanceName)
+                {
+                    CallBase = true,
+                };
 
                 mock.Setup((p) => p.CreateConnectionStringBuilder())
                     .Returns(null as SqlConnectionStringBuilder);

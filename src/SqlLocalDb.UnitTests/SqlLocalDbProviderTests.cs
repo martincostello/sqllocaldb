@@ -99,8 +99,7 @@ namespace System.Data.SqlLocalDb
                     info.LocalDbVersion.Major,
                     "ISqlLocalDbInstanceInfo.LocalDbVersion is incorrect.");
 
-                Guid guid;
-                Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
+                Assert.IsTrue(Guid.TryParse(result.Name, out Guid unused), "SqlLocalDbInstance.Name is not a valid GUID.");
             }
             finally
             {
@@ -254,8 +253,10 @@ namespace System.Data.SqlLocalDb
 
             ISqlLocalDbApi localDB = mock.Object;
 
-            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
-            target.Version = version;
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB)
+            {
+                Version = version,
+            };
 
             // Act
             target.CreateInstance(instanceName);
@@ -291,8 +292,10 @@ namespace System.Data.SqlLocalDb
 
             ISqlLocalDbApi localDB = mock.Object;
 
-            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
-            target.Version = version;
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB)
+            {
+                Version = version,
+            };
 
             // Act
             target.CreateInstance(instanceName);
@@ -329,8 +332,10 @@ namespace System.Data.SqlLocalDb
 
             ISqlLocalDbApi localDB = mock.Object;
 
-            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB);
-            target.Version = version;
+            SqlLocalDbProvider target = new SqlLocalDbProvider(localDB)
+            {
+                Version = version,
+            };
 
             // Act
             target.CreateInstance(instanceName);
@@ -365,8 +370,7 @@ namespace System.Data.SqlLocalDb
                 Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
-                Guid guid;
-                Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
+                Assert.IsTrue(Guid.TryParse(result.Name, out Guid unused), "SqlLocalDbInstance.Name is not a valid GUID.");
             }
             finally
             {
@@ -461,8 +465,7 @@ namespace System.Data.SqlLocalDb
                 Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
-                Guid guid;
-                Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
+                Assert.IsTrue(Guid.TryParse(result.Name, out Guid unused), "SqlLocalDbInstance.Name is not a valid GUID.");
             }
             finally
             {
@@ -496,8 +499,7 @@ namespace System.Data.SqlLocalDb
                 Assert.IsTrue(info.Exists, "ISqlLocalDbInstanceInfo.Exists is incorrect.");
                 Assert.IsFalse(info.IsRunning, "ISqlLocalDbInstanceInfo.IsRunning is incorrect.");
 
-                Guid guid;
-                Assert.IsTrue(Guid.TryParse(result.Name, out guid), "SqlLocalDbInstance.Name is not a valid GUID.");
+                Assert.IsTrue(Guid.TryParse(result.Name, out Guid unused), "SqlLocalDbInstance.Name is not a valid GUID.");
             }
             finally
             {

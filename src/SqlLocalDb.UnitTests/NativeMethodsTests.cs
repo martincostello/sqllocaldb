@@ -163,8 +163,7 @@ namespace System.Data.SqlLocalDb
                     NativeMethods.Registry = CreateRegistry(versions);
 
                     // Act
-                    string fileName;
-                    bool result = NativeMethods.TryGetLocalDbApiPath(out fileName);
+                    bool result = NativeMethods.TryGetLocalDbApiPath(out string fileName);
 
                     // Assert
                     Assert.IsTrue(result, "TryGetLocalDbApiPath() returned incorrect result.");
@@ -188,8 +187,7 @@ namespace System.Data.SqlLocalDb
                     NativeMethods.Registry = CreateRegistry(versions);
 
                     // Act
-                    string fileName;
-                    bool result = NativeMethods.TryGetLocalDbApiPath(out fileName);
+                    bool result = NativeMethods.TryGetLocalDbApiPath(out string fileName);
 
                     // Assert
                     Assert.IsFalse(result, "TryGetLocalDbApiPath() returned incorrect result.");

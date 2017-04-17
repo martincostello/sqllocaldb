@@ -229,9 +229,11 @@ namespace System.Data.SqlLocalDb
 
                     if (currentUserIsAdmin)
                     {
-                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                        builder.DataSource = string.Format(CultureInfo.InvariantCulture, "(localdb)\\.\\{0}", sharedInstanceName);
-                        builder.IntegratedSecurity = true;
+                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
+                        {
+                            DataSource = $@"(localdb)\.\{sharedInstanceName}",
+                            IntegratedSecurity = true
+                        };
 
                         using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                         {

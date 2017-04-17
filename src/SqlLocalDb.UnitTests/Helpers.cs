@@ -31,9 +31,7 @@ namespace System.Data.SqlLocalDb
         /// </remarks>
         public static void EnsureUserIsAdmin()
         {
-            string name;
-
-            if (!IsCurrentUserAdmin(out name))
+            if (!IsCurrentUserAdmin(out string name))
             {
                 Assert.Inconclusive("The current user '{0}' does not have administrative privileges.", name);
             }
@@ -118,8 +116,7 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         public static bool IsCurrentUserAdmin()
         {
-            string name;
-            return IsCurrentUserAdmin(out name);
+            return IsCurrentUserAdmin(out string name);
         }
 
         /// <summary>

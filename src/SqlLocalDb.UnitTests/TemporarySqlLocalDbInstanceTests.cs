@@ -233,8 +233,7 @@ namespace System.Data.SqlLocalDb
 
                 instanceName = target.Instance.Name;
 
-                Guid notUsed;
-                Assert.IsTrue(Guid.TryParse(instanceName, out notUsed), "The random instance name is not a valid GUID.");
+                Assert.IsTrue(Guid.TryParse(instanceName, out Guid unused), "The random instance name is not a valid GUID.");
 
                 // Check the instance was created
                 AssertExistence(instanceName, exists: true);
@@ -281,8 +280,7 @@ namespace System.Data.SqlLocalDb
 
                         instanceName = target.Instance.Name;
 
-                        Guid notUsed;
-                        Assert.IsTrue(Guid.TryParse(instanceName, out notUsed), "The random instance name is not a valid GUID.");
+                        Assert.IsTrue(Guid.TryParse(instanceName, out Guid unused), "The random instance name is not a valid GUID.");
 
                         // Check the instance was created
                         AssertExistence(instanceName, exists: true);
@@ -322,8 +320,7 @@ namespace System.Data.SqlLocalDb
 
                         instanceName = target.Instance.Name;
 
-                        Guid notUsed;
-                        Assert.IsTrue(Guid.TryParse(instanceName, out notUsed), "The random instance name is not a valid GUID.");
+                        Assert.IsTrue(Guid.TryParse(instanceName, out Guid unused), "The random instance name is not a valid GUID.");
 
                         // Check the instance was created
                         AssertExistence(instanceName, exists: true);
