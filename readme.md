@@ -1,6 +1,6 @@
 # SQL LocalDB Wrapper
 
-[![Build Status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverage Status](https://coveralls.io/repos/martincostello/sqllocaldb/badge.svg?branch=master)](https://coveralls.io/r/martincostello/sqllocaldb?branch=master) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2424/badge.svg)](https://scan.coverity.com/projects/2424)
+[![Build Status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Coverage Status](https://coveralls.io/repos/martincostello/sqllocaldb/badge.svg?branch=master)](https://coveralls.io/r/martincostello/sqllocaldb?branch=master)
 
 <!--[![Open GitHub Issues](https://img.shields.io/github/issues/martincostello/sqllocaldb.svg?label=Open%20Issues)](https://github.com/martincostello/sqllocaldb/issues) [![Latest GitHub Release](https://img.shields.io/github/release/martincostello/sqllocaldb.svg?label=Latest%20Release)](https://github.com/martincostello/sqllocaldb/releases/latest) [![License](https://img.shields.io/github/license/martincostello/sqllocaldb.svg?label=License)](https://github.com/martincostello/sqllocaldb/blob/master/license.txt)-->
 
