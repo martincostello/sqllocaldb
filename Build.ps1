@@ -6,9 +6,7 @@ param(
     [Parameter(Mandatory = $false)][switch] $DisableCodeCoverage
 )
 
-if ($null -eq $env:CI) {
-    $ErrorActionPreference = "Stop"
-}
+$ErrorActionPreference = "Stop"
 
 $solutionPath = Split-Path $MyInvocation.MyCommand.Definition
 $solutionFile = Join-Path $solutionPath "SqlLocalDb.sln"
