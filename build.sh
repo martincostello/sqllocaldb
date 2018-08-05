@@ -39,7 +39,7 @@ if [ "$dotnet_version" != "$CLI_VERSION" ]; then
     curl -sSL https://raw.githubusercontent.com/dotnet/cli/v$CLI_VERSION/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
 fi
 
-dotnet publish ./src/SqlLocalDb/MartinCostello.SqlLocalDb.csproj --output $artifacts/publish --configuration $configuration || exit 1
+dotnet pack ./src/SqlLocalDb/MartinCostello.SqlLocalDb.csproj --output $artifacts --configuration $configuration || exit 1
 
 if [ $skipTests == 0 ]; then
     dotnet test ./tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj --output $artifacts --configuration $configuration || exit 1
