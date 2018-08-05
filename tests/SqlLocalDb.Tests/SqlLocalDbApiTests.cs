@@ -144,7 +144,6 @@ namespace MartinCostello.SqlLocalDb
             {
                 // Act and Assert
                 Assert.Throws<PlatformNotSupportedException>(() => actual.CreateInstance("name"));
-                Assert.Throws<PlatformNotSupportedException>(() => actual.CreateTemporaryInstance());
                 Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteInstance("name"));
                 Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteUserInstances());
                 Assert.Throws<PlatformNotSupportedException>(() => actual.GetDefaultInstance());
