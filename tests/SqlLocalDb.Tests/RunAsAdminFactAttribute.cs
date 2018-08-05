@@ -28,15 +28,7 @@ namespace MartinCostello.SqlLocalDb
         /// <see langword="true"/> if the current user has Administrative
         /// privileges; otherwise <see langword="false"/>.
         /// </returns>
-        internal static bool IsCurrentUserAdmin()
-        {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return false;
-            }
-
-            return IsCurrentUserAdmin(out string name);
-        }
+        internal static bool IsCurrentUserAdmin() => IsCurrentUserAdmin(out string _);
 
         /// <summary>
         /// Returns whether the current user has Administrative privileges.
@@ -48,6 +40,12 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         private static bool IsCurrentUserAdmin(out string name)
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                name = Environment.UserName;
+                return false;
+            }
+
             using (var identity = WindowsIdentity.GetCurrent())
             {
                 name = identity.Name;

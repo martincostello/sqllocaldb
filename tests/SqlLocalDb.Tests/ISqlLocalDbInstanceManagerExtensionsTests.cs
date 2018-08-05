@@ -31,7 +31,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("manager", () => manager.CreateConnection());
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public async Task CreateConnection_Creates_A_Sql_Connection()
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("manager", () => manager.Restart());
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void Restart_Stops_And_Starts_Instance()
         {
             // Arrange

@@ -19,6 +19,52 @@ namespace MartinCostello.SqlLocalDb
             _loggerFactory = outputHelper.AsLoggerFactory();
         }
 
+        [WindowsOnlyFact]
+        public static void Share_Shares_Instance()
+        {
+            // Act
+            string sharedName = Guid.NewGuid().ToString();
+
+            var mock = new Mock<ISqlLocalDbApi>();
+            ISqlLocalDbInstanceInfo instance = CreateInstance();
+            ISqlLocalDbApi api = mock.Object;
+
+            var target = new SqlLocalDbInstanceManager(instance, api);
+
+            // Act
+            target.Share(sharedName);
+
+            // Assert
+            mock.Verify((p) => p.ShareInstance(It.IsNotNull<string>(), "Name", sharedName), Times.Once());
+        }
+
+        [WindowsOnlyFact]
+        public static void Share_Throws_If_SqlLocalDbEception_Is_Thrown()
+        {
+            // Act
+            var innerException = new SqlLocalDbException(
+                "It broke",
+                123,
+                "Name");
+
+            var mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.ShareInstance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(innerException);
+
+            ISqlLocalDbInstanceInfo instance = CreateInstance();
+            ISqlLocalDbApi api = mock.Object;
+
+            var target = new SqlLocalDbInstanceManager(instance, api);
+
+            var exception = Assert.Throws<SqlLocalDbException>(() => target.Share("SharedName"));
+
+            exception.ErrorCode.ShouldBe(123);
+            exception.InstanceName.ShouldBe("Name");
+            exception.Message.ShouldBe("Failed to share SQL LocalDB instance 'Name'.");
+            exception.InnerException.ShouldBeSameAs(innerException);
+        }
+
         [Fact]
         public void Constructor_Validates_Arguments()
         {
@@ -55,52 +101,6 @@ namespace MartinCostello.SqlLocalDb
             var target = new SqlLocalDbInstanceManager(instance, api);
 
             Assert.Throws<ArgumentNullException>("sharedName", () => target.Share(null));
-        }
-
-        [Fact]
-        public void Share_Throws_If_SqlLocalDbEception_Is_Thrown()
-        {
-            // Act
-            var innerException = new SqlLocalDbException(
-                "It broke",
-                123,
-                "Name");
-
-            var mock = new Mock<ISqlLocalDbApi>();
-
-            mock.Setup((p) => p.ShareInstance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Throws(innerException);
-
-            ISqlLocalDbInstanceInfo instance = CreateInstance();
-            ISqlLocalDbApi api = mock.Object;
-
-            var target = new SqlLocalDbInstanceManager(instance, api);
-
-            var exception = Assert.Throws<SqlLocalDbException>(() => target.Share("SharedName"));
-
-            exception.ErrorCode.ShouldBe(123);
-            exception.InstanceName.ShouldBe("Name");
-            exception.Message.ShouldBe("Failed to share SQL LocalDB instance 'Name'.");
-            exception.InnerException.ShouldBeSameAs(innerException);
-        }
-
-        [Fact]
-        public void Share_Shares_Instance()
-        {
-            // Act
-            string sharedName = Guid.NewGuid().ToString();
-
-            var mock = new Mock<ISqlLocalDbApi>();
-            ISqlLocalDbInstanceInfo instance = CreateInstance();
-            ISqlLocalDbApi api = mock.Object;
-
-            var target = new SqlLocalDbInstanceManager(instance, api);
-
-            // Act
-            target.Share(sharedName);
-
-            // Assert
-            mock.Verify((p) => p.ShareInstance(It.IsNotNull<string>(), "Name", sharedName), Times.Once());
         }
 
         [Fact]

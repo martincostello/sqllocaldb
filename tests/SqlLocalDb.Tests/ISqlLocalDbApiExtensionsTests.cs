@@ -20,6 +20,71 @@ namespace MartinCostello.SqlLocalDb
             _loggerFactory = outputHelper.AsLoggerFactory();
         }
 
+        [Theory]
+        [InlineData(SqlLocalDbErrors.InstanceBusy)]
+        [InlineData(SqlLocalDbErrors.InternalError)]
+        public static void TemporaryInstance_Ignores_Exception_If_Delete_Fails(int errorCode)
+        {
+            // Arrange
+            if (!SqlLocalDbApi.IsWindows)
+            {
+                // HACK Theories dont seem to work correctly with subclasses now
+                // so cannot make a derived class for a "Windows-only" theory.
+                return;
+            }
+
+            // Arrange
+            var mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.LatestVersion)
+                .Returns("v99.9");
+
+            mock.Setup((p) => p.CreateInstance(It.IsAny<string>(), "v99.9"))
+                .Verifiable();
+
+            mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
+                .Verifiable();
+
+            mock.Setup((p) => p.StopInstance(It.IsAny<string>(), null))
+                .Verifiable();
+
+            mock.Setup((p) => p.DeleteInstance(It.IsAny<string>()))
+                .Throws(new SqlLocalDbException("Error", errorCode))
+                .Verifiable();
+
+            ISqlLocalDbApi api = mock.Object;
+
+            // Act
+            using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance())
+            {
+                target.GetInstanceInfo();
+            }
+
+            // Assert
+            mock.Verify();
+        }
+
+        [WindowsOnlyFact]
+        public static void ShareInstance_Uses_SID_For_Current_User()
+        {
+            // Arrange
+            string instanceName = "SomeName";
+            string sharedInstanceName = "SomeSharedName";
+
+            var mock = new Mock<ISqlLocalDbApi>();
+
+            mock.Setup((p) => p.ShareInstance(It.IsNotNull<string>(), instanceName, sharedInstanceName))
+                .Verifiable();
+
+            ISqlLocalDbApi api = mock.Object;
+
+            // Act
+            api.ShareInstance(instanceName, sharedInstanceName);
+
+            // Assert
+            mock.Verify();
+        }
+
         [Fact]
         public void CreateTemporaryInstance_Throws_If_Api_Is_Null()
         {
@@ -36,6 +101,13 @@ namespace MartinCostello.SqlLocalDb
         public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
         {
             // Arrange
+            if (!SqlLocalDbApi.IsWindows)
+            {
+                // HACK Theories dont seem to work correctly with subclasses now
+                // so cannot make a derived class for a "Windows-only" theory.
+                return;
+            }
+
             using (var api = new SqlLocalDbApi(_loggerFactory))
             {
                 ISqlLocalDbInstanceInfo info;
@@ -166,42 +238,6 @@ namespace MartinCostello.SqlLocalDb
             mock.Verify();
         }
 
-        [Theory]
-        [InlineData(SqlLocalDbErrors.InstanceBusy)]
-        [InlineData(SqlLocalDbErrors.InternalError)]
-        public void TemporaryInstance_Ignores_Exception_If_Delete_Fails(int errorCode)
-        {
-            // Arrange
-            var mock = new Mock<ISqlLocalDbApi>();
-
-            mock.Setup((p) => p.LatestVersion)
-                .Returns("v99.9");
-
-            mock.Setup((p) => p.CreateInstance(It.IsAny<string>(), "v99.9"))
-                .Verifiable();
-
-            mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
-                .Verifiable();
-
-            mock.Setup((p) => p.StopInstance(It.IsAny<string>(), null))
-                .Verifiable();
-
-            mock.Setup((p) => p.DeleteInstance(It.IsAny<string>()))
-                .Throws(new SqlLocalDbException("Error", errorCode))
-                .Verifiable();
-
-            ISqlLocalDbApi api = mock.Object;
-
-            // Act
-            using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance())
-            {
-                target.GetInstanceInfo();
-            }
-
-            // Assert
-            mock.Verify();
-        }
-
         [Fact]
         public void GetDefaultInstance_Throws_If_Api_Is_Null()
         {
@@ -212,7 +248,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("api", () => api.GetDefaultInstance());
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GetDefaultInstance_Returns_The_Default_Instance()
         {
             // Arrange
@@ -239,7 +275,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("api", () => api.GetInstances());
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GetInstances_Returns_All_The_Named_Instances()
         {
             // Arrange
@@ -282,7 +318,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("api", () => api.GetVersions());
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void GetVersions_Returns_All_The_Installed_Versions()
         {
             // Arrange
@@ -446,27 +482,6 @@ namespace MartinCostello.SqlLocalDb
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("api", () => api.ShareInstance(instanceName, sharedInstanceName));
-        }
-
-        [Fact]
-        public void ShareInstance_Uses_SID_For_Current_User()
-        {
-            // Arrange
-            string instanceName = "SomeName";
-            string sharedInstanceName = "SomeSharedName";
-
-            var mock = new Mock<ISqlLocalDbApi>();
-
-            mock.Setup((p) => p.ShareInstance(It.IsNotNull<string>(), instanceName, sharedInstanceName))
-                .Verifiable();
-
-            ISqlLocalDbApi api = mock.Object;
-
-            // Act
-            api.ShareInstance(instanceName, sharedInstanceName);
-
-            // Assert
-            mock.Verify();
         }
 
         [RunAsAdminFact]

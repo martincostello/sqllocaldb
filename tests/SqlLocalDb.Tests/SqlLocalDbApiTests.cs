@@ -30,7 +30,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("loggerFactory", () => new SqlLocalDbApi(options, null));
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public void Constructor_Initializes_Instance()
         {
             // Arrange
