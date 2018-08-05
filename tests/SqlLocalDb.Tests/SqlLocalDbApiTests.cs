@@ -161,7 +161,6 @@ namespace MartinCostello.SqlLocalDb
                 Assert.Throws<PlatformNotSupportedException>(() => actual.StopInstance("name"));
                 Assert.Throws<PlatformNotSupportedException>(() => actual.StopTracing());
                 Assert.Throws<PlatformNotSupportedException>(() => actual.UnshareInstance("name"));
-                Assert.Throws<PlatformNotSupportedException>(() => actual.Versions);
             }
         }
     }
