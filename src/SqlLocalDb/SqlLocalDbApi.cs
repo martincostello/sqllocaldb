@@ -191,6 +191,8 @@ namespace MartinCostello.SqlLocalDb
         {
             get
             {
+                EnsurePlatformSupported();
+
                 // Access through property to ensure initialized
                 IReadOnlyList<string> versions = Versions;
 
