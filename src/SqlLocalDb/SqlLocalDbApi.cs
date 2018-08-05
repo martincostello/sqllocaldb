@@ -45,6 +45,11 @@ namespace MartinCostello.SqlLocalDb
         private const int ReservedValue = 0;
 
         /// <summary>
+        /// Returns whether the executing platform is Microsoft Windows.
+        /// </summary>
+        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        /// <summary>
         /// The native API. This field is read-only.
         /// </summary>
         private readonly LocalDbInstanceApi _api;
@@ -637,6 +642,12 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         public bool IsLocalDBInstalled()
         {
+            // SQL LocalDB is only supported on Windows, so shortcut
+            if (!IsWindows)
+            {
+                return false;
+            }
+
             // Call one of the "get info" functions with a zero buffer.
             // If LocalDB is installed, it will return a "buffer too small" HRESULT,
             // otherwise it will return the "not installed" HRESULT.
