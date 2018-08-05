@@ -289,6 +289,6 @@
     <value>SQL Server LocalDB is not installed.</value>
   </data>
   <data name="SqlLocalDbApi_PlatformNotSupported" xml:space="preserve">
-    <value>The SQL LocalDB Instance API is only supported on Windows operating systems.</value>
+    <value>The SQL LocalDB Instance API is not supported on this platform.</value>
   </data>
 </root>

@@ -511,7 +511,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB Instance API is only supported on Windows operating systems..
+        ///   Looks up a localized string similar to The SQL LocalDB Instance API is not supported on this platform..
         /// </summary>
         internal static string SqlLocalDbApi_PlatformNotSupported {
             get {
