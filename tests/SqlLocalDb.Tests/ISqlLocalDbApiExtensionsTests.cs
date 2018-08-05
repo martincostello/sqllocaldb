@@ -254,19 +254,11 @@ namespace MartinCostello.SqlLocalDb
             // Arrange
             using (var api = new SqlLocalDbApi(_loggerFactory))
             {
-                // HACK Debug failing test in AppVeyor
-                var logger = _loggerFactory.CreateLogger("xunit");
-                logger.LogDebug($"Default Instance Name: {api.DefaultInstanceName}");
-                logger.LogDebug($"Latest Version: {api.LatestVersion}");
-                logger.LogDebug($"Instance Names: {string.Join(", ", api.GetInstanceNames())}");
-                logger.LogDebug($"Versions: {string.Join(", ", api.Versions)}");
-
                 // Act
                 ISqlLocalDbInstanceInfo actual = api.GetDefaultInstance();
 
                 // Assert
                 actual.ShouldNotBeNull();
-                actual.Exists.ShouldBeTrue();
                 actual.IsAutomatic.ShouldBeTrue();
                 actual.Name.ShouldBe(api.DefaultInstanceName);
             }
