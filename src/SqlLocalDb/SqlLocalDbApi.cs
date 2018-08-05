@@ -247,9 +247,6 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
-        /// <exception cref="PlatformNotSupportedException">
-        /// The method is called from a non-Windows operating system.
-        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The installed versions of SQL LocalDB could not be determined.
         /// </exception>
@@ -257,6 +254,11 @@ namespace MartinCostello.SqlLocalDb
         {
             get
             {
+                if (!IsWindows)
+                {
+                    return Array.Empty<string>();
+                }
+
                 if (_versions == null)
                 {
                     // Use lazy initialization to allow some functionality to be

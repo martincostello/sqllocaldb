@@ -122,5 +122,48 @@ namespace MartinCostello.SqlLocalDb
                 }
             }
         }
+
+        [NotWindowsFact]
+        public void Does_Not_Throw_PlatformNotSupportedException()
+        {
+            // Arrange
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act and Assert
+                actual.DefaultInstanceName.ShouldBe(string.Empty);
+                actual.IsLocalDBInstalled().ShouldBeFalse();
+                actual.Versions.ShouldBeEmpty();
+            }
+        }
+
+        [NotWindowsFact]
+        public void Throws_PlatformNotSupportedException()
+        {
+            // Arrange
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act and Assert
+                Assert.Throws<PlatformNotSupportedException>(() => actual.CreateInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.CreateTemporaryInstance());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteUserInstances());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetDefaultInstance());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstanceInfo("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstanceNames());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstances());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetOrCreateInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.GetVersionInfo("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.InstanceExists("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.LatestVersion);
+                Assert.Throws<PlatformNotSupportedException>(() => actual.ShareInstance("name", "sharedName"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.ShareInstance("sid", "name", "sharedName"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.StartInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.StartTracing());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.StopInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.StopTracing());
+                Assert.Throws<PlatformNotSupportedException>(() => actual.UnshareInstance("name"));
+                Assert.Throws<PlatformNotSupportedException>(() => actual.Versions);
+            }
+        }
     }
 }
