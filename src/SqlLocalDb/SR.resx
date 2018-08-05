@@ -291,4 +291,7 @@
   <data name="SqlLocalDbApi_PlatformNotSupported" xml:space="preserve">
     <value>The SQL LocalDB Instance API is not supported on this platform.</value>
   </data>
+  <data name="ILoggerExtensions_NativeApiUnloadedFormat" xml:space="preserve">
+    <value>Unloaded SQL LocalDB Instance API library '{0}'.</value>
+  </data>
 </root>

@@ -295,6 +295,15 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unloaded SQL LocalDB Instance API library &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_NativeApiUnloadedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiUnloadedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0:X}..
         /// </summary>
         internal static string ILoggerExtensions_NativeResultFormat {

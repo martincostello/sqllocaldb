@@ -220,6 +220,14 @@ namespace MartinCostello.SqlLocalDb
             SR.ILoggerExtensions_NativeApiNotFoundFormat);
 
         /// <summary>
+        /// Logging delegate for when the SQL LocalDB Instance API DLL was unloaded.
+        /// </summary>
+        private static readonly Action<ILogger, string, Exception> _nativeApiUnloaded = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            EventIds.NativeApiUnloaded,
+            SR.ILoggerExtensions_NativeApiUnloadedFormat);
+
+        /// <summary>
         /// Logging delegate for when the version of the SQL LocalDB Instance API to use was overridden by the user.
         /// </summary>
         private static readonly Action<ILogger, Version, Exception> _nativeApiVersionOverriddenByUser = LoggerMessage.Define<Version>(
@@ -566,6 +574,14 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="logger">The logger to use.</param>
         internal static void NativeApiNotLoaded(this ILogger logger)
             => _nativeApiNotLoaded(logger, null);
+
+        /// <summary>
+        /// Logs that the SQL LocalDB Instance API DLL was unloaded.
+        /// </summary>
+        /// <param name="logger">The logger to use.</param>
+        /// <param name="fileName">The full path to the DLL that was unloaded.</param>
+        internal static void NativeApiUnloaded(this ILogger logger, string fileName)
+            => _nativeApiUnloaded(logger, fileName, null);
 
         /// <summary>
         /// Logs that the version of the SQL LocalDB Instance API to use was overridden by the user.

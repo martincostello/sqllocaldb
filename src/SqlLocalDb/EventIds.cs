@@ -283,6 +283,11 @@ namespace MartinCostello.SqlLocalDb
         internal static readonly EventId UnsharedInstance = new EventId(++Id, nameof(UnsharedInstance));
 
         /// <summary>
+        /// The <see cref="EventId"/> for when the SQL LocalDB Instance API is unloaded. This field is read-only.
+        /// </summary>
+        internal static readonly EventId NativeApiUnloaded = new EventId(++Id, nameof(NativeApiUnloaded));
+
+        /// <summary>
         /// The base Id for the event Ids.
         /// </summary>
         private const int BaseId = 0;

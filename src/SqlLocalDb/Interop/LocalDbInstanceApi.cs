@@ -57,6 +57,11 @@ namespace MartinCostello.SqlLocalDb.Interop
         private bool _disposed;
 
         /// <summary>
+        /// The path of the library that was loaded.
+        /// </summary>
+        private string _libraryPath;
+
+        /// <summary>
         /// The handle to the native SQL LocalDB API.
         /// </summary>
         private SafeLibraryHandle _handle;
@@ -628,6 +633,7 @@ namespace MartinCostello.SqlLocalDb.Interop
                         else
                         {
                             Logger.NativeApiLoaded(fileName);
+                            _libraryPath = fileName;
                         }
                     }
                 }
@@ -686,7 +692,15 @@ namespace MartinCostello.SqlLocalDb.Interop
                 }
 
                 // Dispose of unmanaged resources
-                _handle?.Dispose();
+                if (_handle != null)
+                {
+                    _handle.Dispose();
+
+                    Logger.NativeApiUnloaded(_libraryPath);
+
+                    _libraryPath = null;
+                }
+
                 _disposed = true;
             }
         }
