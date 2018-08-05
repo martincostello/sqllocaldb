@@ -1115,6 +1115,8 @@ namespace MartinCostello.SqlLocalDb
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
+            EnsurePlatformSupported();
+
             Logger.DeletingInstance(instanceName);
 
             int hr = _api.DeleteInstance(instanceName, ReservedValue);
