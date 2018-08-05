@@ -55,6 +55,9 @@ namespace MartinCostello.SqlLocalDb
         /// <inheritdoc />
         public string SharedName { get; internal set; }
 
+        /// <inheritdoc />
+        public override string ToString() => Name;
+
         /// <summary>
         /// Updates the state of the instance from the specified value.
         /// </summary>

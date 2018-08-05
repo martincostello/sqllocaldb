@@ -107,5 +107,31 @@ namespace MartinCostello.SqlLocalDb
             // Act (no Assert)
             actual.Update(actual);
         }
+
+        [Fact]
+        public static void ToString_Returns_The_Name()
+        {
+            // Arrange
+            var info = new SqlLocalDbInstanceInfo()
+            {
+                ConfigurationCorrupt = true,
+                Exists = true,
+                IsAutomatic = true,
+                IsRunning = true,
+                IsShared = true,
+                LastStartTimeUtc = DateTime.UtcNow,
+                LocalDbVersion = new Version(2, 1),
+                Name = "Name",
+                NamedPipe = "NamedPipe",
+                OwnerSid = "OwnerSid",
+                SharedName = "SharedName",
+            };
+
+            // Act and Assert
+            string actual = info.ToString();
+
+            // Assert
+            actual.ShouldBe("Name");
+        }
     }
 }

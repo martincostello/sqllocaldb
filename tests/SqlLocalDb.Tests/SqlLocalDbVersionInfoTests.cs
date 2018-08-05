@@ -77,5 +77,23 @@ namespace MartinCostello.SqlLocalDb
             actual.Name.ShouldBe("Name");
             actual.Version.ShouldBe(new Version(2, 0));
         }
+
+        [Fact]
+        public static void ToString_Returns_The_Name()
+        {
+            // Arrange
+            var version = new SqlLocalDbVersionInfo()
+            {
+                Exists = false,
+                Name = "Name",
+                Version = new Version(2, 0),
+            };
+
+            // Act and Assert
+            string actual = version.ToString();
+
+            // Assert
+            actual.ShouldBe("Name");
+        }
     }
 }
