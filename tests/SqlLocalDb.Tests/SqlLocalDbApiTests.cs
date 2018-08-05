@@ -4,7 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Extensions.Logging;
+using Moq;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -29,6 +31,7 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("options", () => new SqlLocalDbApi(null, _loggerFactory));
             Assert.Throws<ArgumentNullException>("loggerFactory", () => new SqlLocalDbApi(null));
             Assert.Throws<ArgumentNullException>("loggerFactory", () => new SqlLocalDbApi(options, null));
+            Assert.Throws<ArgumentNullException>("registry", () => new SqlLocalDbApi(options, null, _loggerFactory));
         }
 
         [WindowsOnlyFact]
@@ -161,6 +164,229 @@ namespace MartinCostello.SqlLocalDb
                 Assert.Throws<PlatformNotSupportedException>(() => actual.StopInstance("name"));
                 Assert.Throws<PlatformNotSupportedException>(() => actual.StopTracing());
                 Assert.Throws<PlatformNotSupportedException>(() => actual.UnshareInstance("name"));
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Can_Start_And_Stop_Tracing()
+        {
+            // Arrange
+            using (var api = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act (no Assert)
+                api.StartTracing();
+                api.StopTracing();
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Throws_InvalidOperationException_If_SQL_LocalDB_Not_Installed()
+        {
+            // Arrange
+            var options = new SqlLocalDbOptions();
+            var registry = Mock.Of<Interop.IRegistry>();
+
+            using (var actual = new SqlLocalDbApi(options, registry, _loggerFactory))
+            {
+                // Act and Assert
+                Assert.Throws<InvalidOperationException>(() => actual.CreateInstance("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.DeleteInstance("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.DeleteUserInstances());
+                Assert.Throws<InvalidOperationException>(() => actual.GetDefaultInstance());
+                Assert.Throws<InvalidOperationException>(() => actual.GetInstanceInfo("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.GetInstanceNames());
+                Assert.Throws<InvalidOperationException>(() => actual.GetInstances());
+                Assert.Throws<InvalidOperationException>(() => actual.GetOrCreateInstance("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.GetVersionInfo("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.InstanceExists("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.LatestVersion);
+                Assert.Throws<InvalidOperationException>(() => actual.ShareInstance("name", "sharedName"));
+                Assert.Throws<InvalidOperationException>(() => actual.StartInstance("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.StartTracing());
+                Assert.Throws<InvalidOperationException>(() => actual.StopInstance("name"));
+                Assert.Throws<InvalidOperationException>(() => actual.StopTracing());
+                Assert.Throws<InvalidOperationException>(() => actual.UnshareInstance("name"));
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void StopTimeout_Throws_If_Value_Is_Negative()
+        {
+            // Arrange
+            TimeSpan value = TimeSpan.Zero.Add(TimeSpan.FromTicks(-1));
+
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act and Assert
+                var exception = Assert.Throws<ArgumentOutOfRangeException>("value", () => actual.StopTimeout = value);
+                exception.ActualValue.ShouldBe(value);
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Methods_Validate_Parameters()
+        {
+            // Arrange
+            TimeSpan timeout = TimeSpan.Zero.Add(TimeSpan.FromTicks(-1));
+
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act and Assert
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.CreateInstance(null, "version"));
+                Assert.Throws<ArgumentNullException>("version", () => actual.CreateInstance("instanceName", null));
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.DeleteInstance(null));
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.GetInstanceInfo(null));
+                Assert.Throws<ArgumentNullException>("version", () => actual.GetVersionInfo(null));
+                Assert.Throws<ArgumentNullException>("ownerSid", () => actual.ShareInstance(null, "instanceName", "sharedInstanceName"));
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.ShareInstance("ownerSid", null, "sharedInstanceName"));
+                Assert.Throws<ArgumentNullException>("sharedInstanceName", () => actual.ShareInstance("ownerSid", "instanceName", null));
+                Assert.Throws<ArgumentException>("instanceName", () => actual.ShareInstance("sid", string.Empty, "sharedInstanceName"));
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.StartInstance(null));
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.StopInstance(null, TimeSpan.Zero));
+                Assert.Throws<ArgumentOutOfRangeException>("timeout", () => actual.StopInstance("instanceName", timeout)).ActualValue.ShouldBe(timeout);
+                Assert.Throws<ArgumentNullException>("instanceName", () => actual.UnshareInstance(null));
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void DeleteInstanceInternal_Returns_False_If_ThrownIfNotFound_Is_False_And_Instance_Does_Not_Exist()
+        {
+            // Arrange
+            TimeSpan timeout = TimeSpan.Zero.Add(TimeSpan.FromTicks(-1));
+
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act and Assert
+                actual.DeleteInstanceInternal("NotARealInstance", throwIfNotFound: false).ShouldBeFalse();
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Can_Manage_SqlLocalDB_Instances()
+        {
+            // Arrange
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                string instanceName = Guid.NewGuid().ToString();
+
+                // Act
+                ISqlLocalDbInstanceInfo instance = actual.GetInstanceInfo(instanceName);
+
+                // Assert
+                instance.ShouldNotBeNull();
+                instance.Name.ShouldBe(instanceName);
+                instance.Exists.ShouldBeFalse();
+                instance.IsRunning.ShouldBeFalse();
+
+                // Act and Assert
+                actual.InstanceExists(instanceName).ShouldBeFalse();
+
+                // Act
+                actual.CreateInstance(instanceName);
+
+                // Assert
+                instance = actual.GetInstanceInfo(instanceName);
+                instance.ShouldNotBeNull();
+                instance.Name.ShouldBe(instanceName);
+                instance.Exists.ShouldBeTrue();
+                instance.IsRunning.ShouldBeFalse();
+
+                // Act
+                actual.StartInstance(instanceName);
+
+                // Assert
+                instance = actual.GetInstanceInfo(instanceName);
+                instance.ShouldNotBeNull();
+                instance.Name.ShouldBe(instanceName);
+                instance.Exists.ShouldBeTrue();
+                instance.IsRunning.ShouldBeTrue();
+
+                // Act and Assert
+                actual.InstanceExists(instanceName).ShouldBeTrue();
+
+                // Act
+                actual.StopInstance(instanceName);
+
+                // Assert
+                instance = actual.GetInstanceInfo(instanceName);
+                instance.ShouldNotBeNull();
+                instance.Name.ShouldBe(instanceName);
+                instance.Exists.ShouldBeTrue();
+                instance.IsRunning.ShouldBeFalse();
+
+                // Act
+                actual.DeleteInstance(instanceName);
+
+                // Assert
+                instance = actual.GetInstanceInfo(instanceName);
+                instance.ShouldNotBeNull();
+                instance.Name.ShouldBe(instanceName);
+                instance.Exists.ShouldBeFalse();
+                instance.IsRunning.ShouldBeFalse();
+
+                // Act and Assert
+                actual.InstanceExists(instanceName).ShouldBeFalse();
+
+                // Act (no Assert)
+                actual.DeleteInstanceFiles(instanceName);
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Can_Create_SqlLocalDB_Instances_With_Different_Versions()
+        {
+            // Arrange
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                foreach (string version in actual.Versions)
+                {
+                    // Act
+                    ISqlLocalDbVersionInfo versionInfo = actual.GetVersionInfo(version);
+
+                    // Assert
+                    versionInfo.ShouldNotBeNull();
+                    versionInfo.Name.ShouldStartWith(version.Split('.').First());
+                    versionInfo.Exists.ShouldBeTrue();
+                    versionInfo.Version.ShouldNotBeNull();
+                    versionInfo.Version.ShouldNotBe(new Version());
+
+                    string instanceName = Guid.NewGuid().ToString();
+
+                    // Act
+                    actual.CreateInstance(instanceName, version);
+
+                    // Assert
+                    ISqlLocalDbInstanceInfo instanceInfo = actual.GetInstanceInfo(instanceName);
+                    instanceInfo.ShouldNotBeNull();
+                    instanceInfo.Name.ShouldBe(instanceName);
+                    instanceInfo.Exists.ShouldBeTrue();
+                    instanceInfo.IsRunning.ShouldBeFalse();
+                    instanceInfo.LocalDbVersion.ShouldBe(versionInfo.Version);
+
+                    // Act (no Assert)
+                    actual.DeleteInstance(instanceName);
+                    actual.DeleteInstanceFiles(instanceName);
+                }
+            }
+        }
+
+        [WindowsCIOnlyFact]
+        public void Can_Delete_User_Instances()
+        {
+            // Arrange
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                actual.CreateInstance(Guid.NewGuid().ToString());
+
+                IReadOnlyList<string> namesBefore = actual.GetInstanceNames();
+
+                // Act
+                int deleted = actual.DeleteUserInstances(deleteFiles: true);
+
+                // Assert
+                deleted.ShouldBeGreaterThanOrEqualTo(1);
+                IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
+                namesAfter.ShouldBeSubsetOf(namesBefore);
             }
         }
     }
