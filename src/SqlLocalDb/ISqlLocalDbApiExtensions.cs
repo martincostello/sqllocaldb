@@ -146,9 +146,14 @@ namespace MartinCostello.SqlLocalDb
                 // so need to query that separately to verify whether to get or create.
                 ISqlLocalDbInstanceInfo info = api.GetInstanceInfo(instanceName);
 
-                if (info?.Exists == true)
+                if (info != null)
                 {
-                    return info;
+                    // If it exists (or it's a default instance), we can't create
+                    // it so just return the information about it immediately.
+                    if (info.Exists || info.IsAutomatic)
+                    {
+                        return info;
+                    }
                 }
             }
             else
