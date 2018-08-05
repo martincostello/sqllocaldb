@@ -116,6 +116,7 @@ function DotNetTest {
             `"-target:$dotnetPath`" `
             `"-targetargs:test $Project --output $OutputPath`" `
             -output:$coverageOutput `
+            `"-excludebyattribute:System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage*`" `
             -hideskipped:All `
             -mergebyhash `
             -mergeoutput `
