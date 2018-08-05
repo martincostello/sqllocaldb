@@ -184,12 +184,17 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="api"/>, <paramref name="instanceName"/> or <paramref name="sharedInstanceName"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         public static void ShareInstance(this ISqlLocalDbApi api, string instanceName, string sharedInstanceName)
         {
             if (api == null)
             {
                 throw new ArgumentNullException(nameof(api));
             }
+
+            SqlLocalDbApi.EnsurePlatformSupported();
 
             string ownerSid;
 

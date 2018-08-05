@@ -45,11 +45,6 @@ namespace MartinCostello.SqlLocalDb
         private const int ReservedValue = 0;
 
         /// <summary>
-        /// Returns whether the executing platform is Microsoft Windows.
-        /// </summary>
-        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-        /// <summary>
         /// The native API. This field is read-only.
         /// </summary>
         private readonly LocalDbInstanceApi _api;
@@ -272,6 +267,11 @@ namespace MartinCostello.SqlLocalDb
                 return (string[])_versions.Clone();
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the executing platform is Microsoft Windows.
+        /// </summary>
+        internal static bool IsWindows { get; } = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         /// <summary>
         /// Gets the <see cref="ILoggerFactory"/> to use.
@@ -579,10 +579,7 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         public IReadOnlyList<string> GetInstanceNames()
         {
-            if (!IsWindows)
-            {
-                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
-            }
+            EnsurePlatformSupported();
 
             Logger.GettingInstanceNames();
 
@@ -1017,6 +1014,20 @@ namespace MartinCostello.SqlLocalDb
         }
 
         /// <summary>
+        /// Throws an exception if the SQL LocalDB Instance API is not supported by the current platform.
+        /// </summary>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        internal static void EnsurePlatformSupported()
+        {
+            if (!IsWindows)
+            {
+                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
+            }
+        }
+
+        /// <summary>
         /// Returns whether the specified SQL LocalDB instance name is one of the default instance names.
         /// </summary>
         /// <param name="instanceName">The instance name to test.</param>
@@ -1258,10 +1269,7 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         private string[] GetLocalDbVersions()
         {
-            if (!IsWindows)
-            {
-                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
-            }
+            EnsurePlatformSupported();
 
             string[] versions;
 
@@ -1325,10 +1333,7 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         private void InvokeThrowOnError(Func<int> func, EventId eventId, string instanceName = "")
         {
-            if (!IsWindows)
-            {
-                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
-            }
+            EnsurePlatformSupported();
 
             int hr = func();
 
