@@ -579,6 +579,11 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         public IReadOnlyList<string> GetInstanceNames()
         {
+            if (!IsWindows)
+            {
+                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
+            }
+
             Logger.GettingInstanceNames();
 
             // Query the LocalDB API to get the number of instances
