@@ -1,4 +1,4 @@
-﻿param(
+param(
     [Parameter(Mandatory = $false)][string] $Configuration = "Release",
     [Parameter(Mandatory = $false)][string] $VersionSuffix = "",
     [Parameter(Mandatory = $false)][string] $OutputPath = "",
@@ -76,10 +76,10 @@ function DotNetPack {
     param([string]$Project)
 
     if ($VersionSuffix) {
-        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --version-suffix "$VersionSuffix" --include-symbols --include-source --no-build
+        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --version-suffix "$VersionSuffix" --include-symbols --include-source
     }
     else {
-        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --include-symbols --include-source --no-build
+        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --include-symbols --include-source
     }
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
@@ -114,7 +114,7 @@ function DotNetTest {
 
         & $openCoverPath `
             `"-target:$dotnetPath`" `
-            `"-targetargs:test $Project --output $OutputPath --no-build`" `
+            `"-targetargs:test $Project --output $OutputPath`" `
             -output:$coverageOutput `
             -hideskipped:All `
             -mergebyhash `
