@@ -117,7 +117,7 @@ namespace MartinCostello.SqlLocalDb
         {
             if (!_disposed)
             {
-                if (_instanceName.IsValueCreated)
+                if (_instanceName != null && _instanceName.IsValueCreated)
                 {
                     string instanceName = _instanceName.Value;
 
