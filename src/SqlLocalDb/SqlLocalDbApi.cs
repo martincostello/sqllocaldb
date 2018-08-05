@@ -189,6 +189,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// No versions of SQL Server LocalDB are installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         public string LatestVersion
         {
             get
@@ -248,6 +251,9 @@ namespace MartinCostello.SqlLocalDb
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The installed versions of SQL LocalDB could not be determined.
@@ -315,6 +321,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// No versions of SQL Server LocalDB are installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could
         /// not be stopped or the installed versions of SQL LocalDB could not be determined.
@@ -334,6 +343,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> and <paramref name="version"/> could not be created.
@@ -374,6 +386,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
@@ -394,6 +409,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
@@ -412,6 +430,12 @@ namespace MartinCostello.SqlLocalDb
         /// The default instance(s) of any version(s) of SQL LocalDB that are
         /// installed on the local machine are not deleted.
         /// </remarks>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         public int DeleteUserInstances() => DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
 
         /// <summary>
@@ -429,6 +453,12 @@ namespace MartinCostello.SqlLocalDb
         /// The default instance(s) of any version(s) of SQL LocalDB that are
         /// installed on the local machine are not deleted.
         /// </remarks>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         public int DeleteUserInstances(bool deleteFiles)
         {
             int instancesDeleted = 0;
@@ -489,6 +519,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The information for the SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not obtained.
         /// </exception>
@@ -537,6 +570,9 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance names could not be determined.
@@ -593,6 +629,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The information for the SQL Server LocalDB version specified by <paramref name="version"/> could not be obtained.
@@ -669,6 +708,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be shared.
         /// </exception>
@@ -740,6 +782,9 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be started.
         /// </exception>
@@ -771,6 +816,12 @@ namespace MartinCostello.SqlLocalDb
         /// Enables tracing of native API calls for all the SQL Server
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// Tracing could not be initialized.
         /// </exception>
@@ -795,6 +846,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
@@ -824,6 +878,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
@@ -859,6 +916,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
@@ -898,6 +958,12 @@ namespace MartinCostello.SqlLocalDb
         /// Disables tracing of native API calls for all the SQL Server
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// Tracing could not be disabled.
         /// </exception>
@@ -921,6 +987,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be unshared.
@@ -980,6 +1049,9 @@ namespace MartinCostello.SqlLocalDb
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
         /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
@@ -1173,11 +1245,19 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The installed LocalDB versions could not be enumerated.
         /// </exception>
         private string[] GetLocalDbVersions()
         {
+            if (!IsWindows)
+            {
+                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
+            }
+
             string[] versions;
 
             try
@@ -1235,8 +1315,16 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="func">A delegate to a method to invoke.</param>
         /// <param name="eventId">The trace event Id if a non-zero value is returned.</param>
         /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         private void InvokeThrowOnError(Func<int> func, EventId eventId, string instanceName = "")
         {
+            if (!IsWindows)
+            {
+                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
+            }
+
             int hr = func();
 
             if (hr != 0)

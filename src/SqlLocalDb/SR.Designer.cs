@@ -511,6 +511,15 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The SQL LocalDB Instance API is only supported on Windows operating systems..
+        /// </summary>
+        internal static string SqlLocalDbApi_PlatformNotSupported {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_PlatformNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} cannot be less than TimeSpan.Zero..
         /// </summary>
         internal static string SqlLocalDbApi_TimeoutTooSmallFormat {
