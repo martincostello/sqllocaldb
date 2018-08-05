@@ -73,6 +73,16 @@ namespace MartinCostello.SqlLocalDb
         ISqlLocalDbVersionInfo GetVersionInfo(string version);
 
         /// <summary>
+        /// Returns whether the specified LocalDB instance exists.
+        /// </summary>
+        /// <param name="instanceName">The name of the LocalDB instance to check for existence.</param>
+        /// <returns>
+        /// <see langword="true"/> if the LocalDB instance specified by
+        /// <paramref name="instanceName"/> exists; otherwise <see langword="false"/>.
+        /// </returns>
+        bool InstanceExists(string instanceName);
+
+        /// <summary>
         /// Returns whether SQL LocalDB is installed on the current machine.
         /// </summary>
         /// <returns>

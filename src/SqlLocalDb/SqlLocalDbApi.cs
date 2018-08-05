@@ -675,6 +675,38 @@ namespace MartinCostello.SqlLocalDb
         }
 
         /// <summary>
+        /// Returns whether the specified LocalDB instance exists.
+        /// </summary>
+        /// <param name="instanceName">The name of the LocalDB instance to check for existence.</param>
+        /// <returns>
+        /// <see langword="true"/> if the LocalDB instance specified by
+        /// <paramref name="instanceName"/> exists; otherwise <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// Whether the SQL Server LocalDB instance specified by <paramref name="instanceName"/> exists could not be determined.
+        /// </exception>
+        public bool InstanceExists(string instanceName)
+        {
+            try
+            {
+                return GetInstanceInfo(instanceName).Exists;
+            }
+            catch (SqlLocalDbException ex) when (ex.ErrorCode == SqlLocalDbErrors.UnknownInstance)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Returns whether SQL LocalDB is installed on the current machine.
         /// </summary>
         /// <returns>

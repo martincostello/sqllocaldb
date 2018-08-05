@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Shouldly;
@@ -55,6 +56,60 @@ namespace MartinCostello.SqlLocalDb
                 actual.Versions.ShouldNotBeNull();
                 actual.Versions.ShouldNotBeEmpty();
                 actual.Versions.ShouldBeUnique();
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Can_Get_Instances_From_Names()
+        {
+            // Arrange
+            using (var api = new SqlLocalDbApi(_loggerFactory))
+            {
+                IReadOnlyList<string> names = api.GetInstanceNames();
+
+                foreach (string name in names)
+                {
+                    // Act
+                    ISqlLocalDbInstanceInfo info = api.GetInstanceInfo(name);
+
+                    // Assert
+                    info.ShouldNotBeNull();
+                }
+
+                // Arrange
+                string instanceName = Guid.NewGuid().ToString();
+
+                // Act
+                bool actual = api.InstanceExists(instanceName);
+
+                // Assert
+                actual.ShouldBeFalse();
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void Can_Test_Whether_Instances_Exist()
+        {
+            // Arrange
+            using (var api = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Arrange
+                string instanceName = api.DefaultInstanceName;
+
+                // Act
+                bool actual = api.InstanceExists(instanceName);
+
+                // Assert
+                actual.ShouldBeTrue();
+
+                // Arrange
+                instanceName = Guid.NewGuid().ToString();
+
+                // Act
+                actual = api.InstanceExists(instanceName);
+
+                // Assert
+                actual.ShouldBeFalse();
             }
         }
     }

@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Security.Principal;
 
 namespace MartinCostello.SqlLocalDb
@@ -138,9 +137,9 @@ namespace MartinCostello.SqlLocalDb
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            bool instanceExists = false;
-
-            if (string.Equals(api.DefaultInstanceName, instanceName, StringComparison.Ordinal) || SqlLocalDbApi.IsDefaultInstanceName(instanceName))
+            // Instance names in SQL Local DB are case-insensitive
+            if (string.Equals(api.DefaultInstanceName, instanceName, StringComparison.OrdinalIgnoreCase) ||
+                SqlLocalDbApi.IsDefaultInstanceName(instanceName))
             {
                 // The default instance is always listed, even if it does not exist,
                 // so need to query that separately to verify whether to get or create.
@@ -156,20 +155,8 @@ namespace MartinCostello.SqlLocalDb
                     }
                 }
             }
-            else
-            {
-                IReadOnlyList<string> instanceNames = api.GetInstanceNames();
 
-                if (instanceNames != null)
-                {
-                    // Instance names in SQL Local DB are case-insensitive
-                    instanceExists = instanceNames
-                        .Where((p) => string.Equals(p, instanceName, StringComparison.OrdinalIgnoreCase))
-                        .Any();
-                }
-            }
-
-            if (instanceExists)
+            if (api.InstanceExists(instanceName))
             {
                 return api.GetInstanceInfo(instanceName);
             }

@@ -430,8 +430,8 @@ namespace MartinCostello.SqlLocalDb
             mock.Setup((p) => p.DefaultInstanceName)
                 .Returns("Blah");
 
-            mock.Setup((p) => p.GetInstanceNames())
-                .Returns(new[] { "a", "b", instanceName });
+            mock.Setup((p) => p.InstanceExists(instanceName))
+                .Returns(true);
 
             mock.Setup((p) => p.GetInstanceInfo(instanceName))
                 .Returns(new SqlLocalDbInstanceInfo());
