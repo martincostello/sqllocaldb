@@ -93,23 +93,33 @@ namespace MartinCostello.SqlLocalDb
             // Arrange
             using (var api = new SqlLocalDbApi(_loggerFactory))
             {
-                // Arrange
-                string instanceName = api.DefaultInstanceName;
+                // Start the default instance to ensure it exists
+                api.StartInstance(api.DefaultInstanceName);
 
-                // Act
-                bool actual = api.InstanceExists(instanceName);
+                try
+                {
+                    // Arrange
+                    string instanceName = api.DefaultInstanceName;
 
-                // Assert
-                actual.ShouldBeTrue();
+                    // Act
+                    bool actual = api.InstanceExists(instanceName);
 
-                // Arrange
-                instanceName = Guid.NewGuid().ToString();
+                    // Assert
+                    actual.ShouldBeTrue();
 
-                // Act
-                actual = api.InstanceExists(instanceName);
+                    // Arrange
+                    instanceName = Guid.NewGuid().ToString();
 
-                // Assert
-                actual.ShouldBeFalse();
+                    // Act
+                    actual = api.InstanceExists(instanceName);
+
+                    // Assert
+                    actual.ShouldBeFalse();
+                }
+                finally
+                {
+                    api.StopInstance(api.DefaultInstanceName);
+                }
             }
         }
     }
