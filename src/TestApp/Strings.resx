@@ -125,12 +125,11 @@ Assembly Version:               {2}
 Assembly File Version:          {3}
 Assembly Informational Version: {4}
 Assembly Configuration:         {5}
-Image Runtime Version:          {6}
-Windows User:                   {7}\{8}
-Does User Have Admin Token?     {9}
-Operating System:               {10}
-Is 64-bit Operating System?     {11}
-Is 64-bit Process?              {12}
+User:                           {6}\{7}
+Does User Have Admin Token?     {8}
+Operating System:               {9}
+Is 64-bit Operating System?     {10}
+Is 64-bit Process?              {11}
 </value>
   </data>
   <data name="Program_ExitPrompt" xml:space="preserve">

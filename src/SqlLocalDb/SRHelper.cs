@@ -1,16 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SRHelper.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   SRHelper.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-namespace System.Data.SqlLocalDb
+using System;
+
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
     /// A static class containing helper methods for use with the <see cref="SR"/> class.
@@ -34,22 +27,7 @@ namespace System.Data.SqlLocalDb
         /// <paramref name="format"/> is invalid or the index of a format item is less than zero,
         /// or greater than or equal to the length of the <paramref name="args"/> array.
         /// </exception>
-        public static string Format(string format, params object[] args)
-        {
-            if (format == null)
-            {
-                throw new ArgumentNullException(nameof(format));
-            }
-
-            if (args == null)
-            {
-                throw new ArgumentNullException(nameof(args));
-            }
-
-            return string.Format(
-                SR.Culture,
-                format,
-                args);
-        }
+        internal static string Format(string format, params object[] args)
+            => string.Format(SR.Culture, format, args);
     }
 }

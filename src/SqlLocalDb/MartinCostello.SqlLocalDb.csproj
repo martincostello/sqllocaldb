@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
+    <DebugType>full</DebugType>
+    <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA2235</NoWarn>
+    <OutputType>Library</OutputType>
+    <PackageId>MartinCostello.SqlLocalDb</PackageId>
+    <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
+    <Summary>$(Description)</Summary>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="SR.Designer.cs" AutoGen="True" DependentUpon="SR.resx" DesignTime="True" />
+    <EmbeddedResource Update="SR.resx" Generator="ResXFileCodeGenerator" LastGenOutput="SR.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.0" />
+  </ItemGroup>
+</Project>

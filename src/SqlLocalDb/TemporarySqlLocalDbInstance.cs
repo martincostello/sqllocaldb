@@ -1,42 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemporarySqlLocalDbInstance.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   TemporarySqlLocalDbInstance.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System.Data.SqlClient;
+using System;
+using Microsoft.Extensions.Logging;
 
-namespace System.Data.SqlLocalDb
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
-    /// A class representing a temporary SQL LocalDB instance.
+    /// A class representing a temporary SQL LocalDB instance. This class cannot be inherited.
     /// </summary>
     /// <remarks>
     /// The temporary SQL LocalDB instances that are created by instances of this class are automatically
     /// started when they are instantiated, and are then subsequently deleted when they are disposed of.
     /// </remarks>
-    public class TemporarySqlLocalDbInstance : ISqlLocalDbInstance, IDisposable
+    public sealed class TemporarySqlLocalDbInstance : IDisposable
     {
         /// <summary>
-        /// The default <see cref="ISqlLocalDbProvider"/> instance to use to create temporary instances.
+        /// The lazily initialized name of the temporary SQL LocalDB instance. This field is read-only.
         /// </summary>
-        private static readonly ISqlLocalDbProvider DefaultProvider = new SqlLocalDbProvider();
-
-        /// <summary>
-        /// Whether to delete the files associated with the instance when disposed.
-        /// </summary>
-        private readonly bool _deleteFiles;
-
-        /// <summary>
-        /// The temporary SQL LocalDB instance.
-        /// </summary>
-        private readonly ISqlLocalDbInstance _instance;
+        private readonly Lazy<string> _instanceName;
 
         /// <summary>
         /// Whether the instance has been disposed.
@@ -44,250 +26,104 @@ namespace System.Data.SqlLocalDb
         private bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
+        /// The <see cref="ILogger"/> to use, if any.
         /// </summary>
-        /// <param name="instanceName">The name of the temporary SQL LocalDB instance.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> is <see langword="null"/>.
-        /// </exception>
-        public TemporarySqlLocalDbInstance(string instanceName)
-            : this(instanceName, DefaultProvider)
-        {
-        }
+        private ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
         /// </summary>
-        /// <param name="instanceName">The name of the temporary SQL LocalDB instance.</param>
-        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to use to create the temporary instance.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> or <paramref name="provider"/> is <see langword="null"/>.
-        /// </exception>
-        public TemporarySqlLocalDbInstance(string instanceName, ISqlLocalDbProvider provider)
-            : this(instanceName, provider, SqlLocalDbApi.AutomaticallyDeleteInstanceFiles)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
-        /// </summary>
-        /// <param name="instanceName">The name of the temporary SQL LocalDB instance.</param>
-        /// <param name="provider">The <see cref="ISqlLocalDbProvider"/> to use to create the temporary instance.</param>
+        /// <param name="api">The <see cref="ISqlLocalDbApi"/> to use to create the temporary instance.</param>
         /// <param name="deleteFiles">Whether to delete the file(s) associated with the SQL LocalDB instance when deleted.</param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> or <paramref name="provider"/> is <see langword="null"/>.
+        /// <paramref name="api"/> is <see langword="null"/>.
         /// </exception>
-        public TemporarySqlLocalDbInstance(string instanceName, ISqlLocalDbProvider provider, bool deleteFiles)
+        internal TemporarySqlLocalDbInstance(ISqlLocalDbApi api, bool deleteFiles)
         {
-            if (instanceName == null)
-            {
-                throw new ArgumentNullException(nameof(instanceName));
-            }
-
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-
-            _instance = provider.CreateInstance(instanceName);
-            _deleteFiles = deleteFiles;
-
-            try
-            {
-                _instance.Start();
-            }
-            catch (Exception)
-            {
-                SqlLocalDbInstance.Delete(_instance, throwIfNotFound: true, deleteFiles: _deleteFiles);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
-        /// </summary>
-        /// <param name="instance">The <see cref="ISqlLocalDbInstance"/> instance to use.</param>
-        /// <remarks>
-        /// Used for unit testing.
-        /// </remarks>
-        internal TemporarySqlLocalDbInstance(ISqlLocalDbInstance instance)
-        {
-            _instance = instance;
+            Api = api ?? throw new ArgumentNullException(nameof(api));
+            DeleteFiles = deleteFiles;
+            _instanceName = new Lazy<string>(EnsureInitialized);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
         /// </summary>
-        ~TemporarySqlLocalDbInstance()
+        ~TemporarySqlLocalDbInstance() => DisposeInternal();
+
+        /// <summary>
+        /// Gets the name of the temporary SQL LocalDB instance.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// Thrown if the instance has been disposed of.
+        /// </exception>
+        public string Name
         {
-            Dispose(false);
+            get
+            {
+                EnsureNotDisposed();
+                return _instanceName.Value;
+            }
         }
 
         /// <summary>
-        /// Gets the name of the LocalDB instance.
+        /// Gets the <see cref="ISqlLocalDbApi"/> to use.
         /// </summary>
-        public string Name => _instance.Name;
-
-        /// <summary>
-        /// Gets the named pipe that should be used
-        /// to connect to the LocalDB instance.
-        /// </summary>
-        public string NamedPipe => _instance.NamedPipe;
+        private ISqlLocalDbApi Api { get; }
 
         /// <summary>
         /// Gets a value indicating whether to delete the instance file(s) when the instance is disposed of.
         /// </summary>
-        internal bool DeleteFiles => _deleteFiles;
-
-        /// <summary>
-        /// Gets the temporary SQL LocalDB instance associated with this instance.
-        /// </summary>
-        internal ISqlLocalDbInstance Instance => _instance;
-
-        /// <summary>
-        /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
-        /// </summary>
-        /// <returns>
-        /// The created instance of <see cref="TemporarySqlLocalDbInstance"/>.
-        /// </returns>
-        public static TemporarySqlLocalDbInstance Create() => Create(SqlLocalDbApi.AutomaticallyDeleteInstanceFiles);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="TemporarySqlLocalDbInstance"/> with a randomly assigned name.
-        /// </summary>
-        /// <param name="deleteFiles">Whether to delete the file(s) associated with the SQL LocalDB instance when deleted.</param>
-        /// <returns>
-        /// The created instance of <see cref="TemporarySqlLocalDbInstance"/>.
-        /// </returns>
-        public static TemporarySqlLocalDbInstance Create(bool deleteFiles)
-        {
-            string instanceName = Guid.NewGuid().ToString();
-            return new TemporarySqlLocalDbInstance(instanceName, DefaultProvider, deleteFiles);
-        }
-
-        /// <summary>
-        /// Creates a connection to the LocalDB instance.
-        /// </summary>
-        /// <returns>
-        /// An instance of <see cref="SqlConnection" /> that
-        /// can be used to connect to the LocalDB instance.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public SqlConnection CreateConnection()
-        {
-            EnsureNotDisposed();
-            return _instance.CreateConnection();
-        }
-
-        /// <summary>
-        /// Creates an instance of <see cref="SqlConnectionStringBuilder" /> containing
-        /// the default SQL connection string to connect to the LocalDB instance.
-        /// </summary>
-        /// <returns>
-        /// An instance of <see cref="SqlConnectionStringBuilder" /> containing
-        /// the default SQL connection string to connect to the LocalDB instance.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public SqlConnectionStringBuilder CreateConnectionStringBuilder()
-        {
-            EnsureNotDisposed();
-            return _instance.CreateConnectionStringBuilder();
-        }
-
-        /// <summary>
-        /// Returns information about the LocalDB instance.
-        /// </summary>
-        /// <returns>
-        /// An instance of <see cref="ISqlLocalDbInstanceInfo" /> containing
-        /// information about the LocalDB instance.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public ISqlLocalDbInstanceInfo GetInstanceInfo()
-        {
-            EnsureNotDisposed();
-            return _instance.GetInstanceInfo();
-        }
-
-        /// <summary>
-        /// Shares the LocalDB instance using the specified name.
-        /// </summary>
-        /// <param name="sharedName">The name to use to share the instance.</param>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public void Share(string sharedName)
-        {
-            EnsureNotDisposed();
-            _instance.Share(sharedName);
-        }
-
-        /// <summary>
-        /// Starts the LocalDB instance.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public void Start()
-        {
-            EnsureNotDisposed();
-            _instance.Start();
-        }
-
-        /// <summary>
-        /// Stops the LocalDB instance.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public void Stop()
-        {
-            EnsureNotDisposed();
-            _instance.Stop();
-        }
-
-        /// <summary>
-        /// Stops sharing the LocalDB instance.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The instance has been disposed.
-        /// </exception>
-        public void Unshare()
-        {
-            EnsureNotDisposed();
-            _instance.Unshare();
-        }
+        private bool DeleteFiles { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            DisposeInternal();
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Gets the temporary SQL LocalDB instance.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceInfo"/> representing the temporary SQL LocalDB instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// Thrown if the instance has been disposed of.
+        /// </exception>
+        public ISqlLocalDbInstanceInfo GetInstanceInfo() => Api.GetInstanceInfo(Name);
+
+        /// <summary>
+        /// Returns an <see cref="ISqlLocalDbInstanceManager"/> that can be used to manage the instance.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceManager"/> that can be used to manage the temporary SQL LocalDB instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// Thrown if the instance has been disposed of.
+        /// </exception>
+        public ISqlLocalDbInstanceManager Manage()
+        {
+            ISqlLocalDbInstanceInfo instance = GetInstanceInfo();
+            return new SqlLocalDbInstanceManager(instance, Api);
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <param name="disposing">
-        /// <see langword="true" /> to release both managed and unmanaged resources;
-        /// <see langword="false" /> to release only unmanaged resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
+        private void DisposeInternal()
         {
             if (!_disposed)
             {
-                if (_instance != null)
+                if (_instanceName.IsValueCreated)
                 {
+                    string instanceName = _instanceName.Value;
+
                     try
                     {
-                        _instance.Stop();
+                        Api.StopInstance(instanceName, timeout: null);
                     }
                     catch (SqlLocalDbException ex)
                     {
@@ -295,25 +131,64 @@ namespace System.Data.SqlLocalDb
                         // because it does not exist, otherwise log the error.
                         if (ex.ErrorCode != SqlLocalDbErrors.UnknownInstance)
                         {
-                            Logger.Error(Logger.TraceEvent.StopFailed, SR.TemporarySqlLocalDbInstance_StopFailedFormat, _instance.Name, ex.ErrorCode);
+                            _logger?.StoppingTemporaryInstanceFailed(instanceName, ex.ErrorCode);
                         }
                     }
 
                     try
                     {
-                        SqlLocalDbInstance.Delete(_instance, throwIfNotFound: false, deleteFiles: _deleteFiles);
+                        if (Api is SqlLocalDbApi localDB)
+                        {
+                            localDB.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: DeleteFiles);
+                        }
+                        else
+                        {
+                            Api.DeleteInstance(instanceName);
+                        }
                     }
                     catch (SqlLocalDbException ex)
                     {
-                        // Ignore the exception if we could not delete the instance because it was in use
+                        // Ignore the exception if we could not delete the instance because it was still in use
                         if (ex.ErrorCode != SqlLocalDbErrors.InstanceBusy)
                         {
-                            Logger.Error(Logger.TraceEvent.DeleteFailed, SR.TemporarySqlLocalDbInstance_DeleteFailedFormat, _instance.Name, ex.ErrorCode);
+                            _logger?.DeletingInstanceFailed(instanceName, ex.ErrorCode);
                         }
                     }
                 }
 
                 _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the instance has been initialized.
+        /// </summary>
+        /// <returns>
+        /// The name of the SQL LocalDB instance that was created.
+        /// </returns>
+        private string EnsureInitialized()
+        {
+            ILoggerFactory loggerFactory = null;
+
+            if (Api is SqlLocalDbApi localDB)
+            {
+                loggerFactory = localDB.LoggerFactory;
+            }
+
+            _logger = loggerFactory?.CreateLogger<TemporarySqlLocalDbInstance>();
+
+            string instanceName = Guid.NewGuid().ToString();
+            Api.CreateInstance(instanceName, Api.LatestVersion);
+
+            try
+            {
+                Api.StartInstance(instanceName);
+                return instanceName;
+            }
+            catch (Exception)
+            {
+                Api.DeleteInstance(instanceName);
+                throw;
             }
         }
 

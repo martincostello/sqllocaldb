@@ -1,24 +1,18 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   Program.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 
-namespace System.Data.SqlLocalDb
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
-    /// An application that acts as a test harness for the <c>System.Data.SqlLocalDb</c> assembly.  This class cannot be inherited.
+    /// An application that acts as a test harness for the <c>MartinCostello.SqlLocalDb</c> assembly.  This class cannot be inherited.
     /// </summary>
     internal static class Program
     {
@@ -26,15 +20,20 @@ namespace System.Data.SqlLocalDb
         /// The main entry point to the application.
         /// </summary>
         /// <param name="args">The command-line arguments passed to the application.</param>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Usage",
-            "CA2202:Do not dispose objects multiple times",
-            Justification = "It isn't.")]
         internal static void Main(string[] args)
         {
             PrintBanner();
 
-            ISqlLocalDbApi localDB = new SqlLocalDbApiWrapper();
+            var options = new SqlLocalDbOptions()
+            {
+                AutomaticallyDeleteInstanceFiles = true,
+                StopOptions = StopInstanceOptions.NoWait,
+            };
+
+            var loggerFactory = new LoggerFactory()
+                .AddConsole(LogLevel.Debug);
+
+            var localDB = new SqlLocalDbApi(options, loggerFactory);
 
             if (!localDB.IsLocalDBInstalled())
             {
@@ -42,14 +41,14 @@ namespace System.Data.SqlLocalDb
                 return;
             }
 
-            if (args?.Length == 1 && string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase))
+            if (args?.Length == 1 &&
+                (string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(args[0], "--delete-user-instances", StringComparison.OrdinalIgnoreCase)))
             {
-                SqlLocalDbApi.DeleteUserInstances(deleteFiles: true);
+                localDB.DeleteUserInstances(deleteFiles: true);
             }
 
-            ISqlLocalDbProvider provider = new SqlLocalDbProvider();
-
-            IList<ISqlLocalDbVersionInfo> versions = provider.GetVersions();
+            IReadOnlyList<ISqlLocalDbVersionInfo> versions = localDB.GetVersions();
 
             Console.WriteLine(Strings.Program_VersionsListHeader);
             Console.WriteLine();
@@ -61,7 +60,7 @@ namespace System.Data.SqlLocalDb
 
             Console.WriteLine();
 
-            IList<ISqlLocalDbInstanceInfo> instances = provider.GetInstances();
+            IReadOnlyList<ISqlLocalDbInstanceInfo> instances = localDB.GetInstances();
 
             Console.WriteLine(Strings.Program_InstancesListHeader);
             Console.WriteLine();
@@ -75,20 +74,21 @@ namespace System.Data.SqlLocalDb
 
             string instanceName = Guid.NewGuid().ToString();
 
-            ISqlLocalDbInstance instance = provider.CreateInstance(instanceName);
+            ISqlLocalDbInstanceInfo instance = localDB.CreateInstance(instanceName);
 
-            instance.Start();
+            var manager = new SqlLocalDbInstanceManager(instance, localDB);
+            manager.Start();
 
             try
             {
                 if (IsCurrentUserAdmin())
                 {
-                    instance.Share(Guid.NewGuid().ToString());
+                    manager.Share(Guid.NewGuid().ToString());
                 }
 
                 try
                 {
-                    using (SqlConnection connection = instance.CreateConnection())
+                    using (SqlConnection connection = manager.CreateConnection())
                     {
                         connection.Open();
 
@@ -114,7 +114,7 @@ namespace System.Data.SqlLocalDb
                 {
                     if (IsCurrentUserAdmin())
                     {
-                        instance.Unshare();
+                        manager.Unshare();
                     }
                 }
             }
@@ -124,7 +124,7 @@ namespace System.Data.SqlLocalDb
             }
             finally
             {
-                instance.Stop();
+                manager.Stop();
                 localDB.DeleteInstance(instance.Name);
             }
 
@@ -142,6 +142,11 @@ namespace System.Data.SqlLocalDb
         /// </returns>
         private static bool IsCurrentUserAdmin()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return false;
+            }
+
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
@@ -165,7 +170,6 @@ namespace System.Data.SqlLocalDb
                 assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version,
                 assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
                 assembly.GetCustomAttribute<AssemblyConfigurationAttribute>().Configuration,
-                assembly.ImageRuntimeVersion,
                 Environment.UserDomainName,
                 Environment.UserName,
                 IsCurrentUserAdmin(),

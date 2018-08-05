@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Data.SqlLocalDb {
+namespace MartinCostello.SqlLocalDb {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace System.Data.SqlLocalDb {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SR {
@@ -39,7 +39,7 @@ namespace System.Data.SqlLocalDb {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Data.SqlLocalDb.SR", typeof(SR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MartinCostello.SqlLocalDb.SR", typeof(SR).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,155 +61,407 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified database file name is invalid: {0}.
-        /// </summary>
-        internal static string Extensions_InvalidPathFormat {
-            get {
-                return ResourceManager.GetString("Extensions_InvalidPathFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The current AppDomain has no value set for the Data Directory..
-        /// </summary>
-        internal static string Extensions_NoAppDomainDataDirectory {
-            get {
-                return ResourceManager.GetString("Extensions_NoAppDomainDataDirectory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No connection string named &apos;{0}&apos; can be found in the application configuration file..
-        /// </summary>
-        internal static string Extensions_NoConnectionStringFormat {
-            get {
-                return ResourceManager.GetString("Extensions_NoConnectionStringFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No connection strings are configured in the application configuration file..
-        /// </summary>
-        internal static string Extensions_NoConnectionStrings {
-            get {
-                return ResourceManager.GetString("Extensions_NoConnectionStrings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No named pipe is associated with the specified SQL LocalDB instance..
-        /// </summary>
-        internal static string Extensions_NoNamedPipe {
-            get {
-                return ResourceManager.GetString("Extensions_NoNamedPipe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to More than one connection string is configured in the application configuration file.  The connection string name must be explicitly specified.  Other connection strings may be inherited from higher-level configuration files such as machine.config..
-        /// </summary>
-        internal static string Extensions_NoSingleConnectionString {
-            get {
-                return ResourceManager.GetString("Extensions_NoSingleConnectionString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to create an instance of type &apos;{0}&apos;: {1}.
-        /// </summary>
-        internal static string Logger_FailedToCreateCustomLoggerFormat {
-            get {
-                return ResourceManager.GetString("Logger_FailedToCreateCustomLoggerFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB native API version to load was overridden by the user to {0}..
         /// </summary>
-        internal static string NativeMethods_ApiVersionOverriddenByUserFormat {
+        internal static string ILoggerExtensions_ApiVersionOverriddenByUserFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_ApiVersionOverriddenByUserFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_ApiVersionOverriddenByUserFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_CreatedInstanceFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_CreatedInstanceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_CreatingInstanceFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_CreatingInstanceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_DeletedInstanceFilesFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeletedInstanceFilesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted named instance of SQL LocalDB &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_DeletedInstanceFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeletedInstanceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; could not be deleted as it is currently in use..
+        /// </summary>
+        internal static string ILoggerExtensions_DeleteFailedAsInUseFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeleteFailedAsInUseFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
+        /// </summary>
+        internal static string ILoggerExtensions_DeleteFailedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeleteFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting named instance of SQL LocalDB &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_DeletingFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeletingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_DeletingInstanceFilesFailedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeletingInstanceFilesFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_DeletingInstanceFilesFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_DeletingInstanceFilesFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB function {0} could not be found..
         /// </summary>
-        internal static string NativeMethods_FunctionNotFoundFormat {
+        internal static string ILoggerExtensions_FunctionNotFoundFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_FunctionNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_FunctionNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtaining instance names for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_GetInstances {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GetInstances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtaining information for SQL LocalDB instance &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_GettingInfoFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GettingInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtaining version information for SQL LocalDB version &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_GetVersionInfoFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GetVersionInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtaining versions for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_GetVersions {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GetVersions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtained information for SQL LocalDB instance &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_GotInfoFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GotInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtained {0} instance names for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_GotInstancesFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GotInstancesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtained version information for SQL LocalDB version &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_GotVersionInfoFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GotVersionInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtained {0} versions for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_GotVersionsFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_GotVersionsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL LocalDB instance &apos;{0}&apos; cannot be found so was not deleted..
+        /// </summary>
+        internal static string ILoggerExtensions_InstanceDoesNotExistFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_InstanceDoesNotExistFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current Language Id {0} is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults..
+        /// </summary>
+        internal static string ILoggerExtensions_InvalidLanguageIdFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_InvalidLanguageIdFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ignoring invalid registry key name &apos;{0}&apos;..
         /// </summary>
-        internal static string NativeMethods_InvalidRegistryKeyNameFormat {
+        internal static string ILoggerExtensions_InvalidRegistryKeyNameFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_InvalidRegistryKeyNameFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_InvalidRegistryKeyNameFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loaded SQL LocalDB API from &apos;{0}&apos;..
         /// </summary>
-        internal static string NativeMethods_NativeApiLoadedFormat {
+        internal static string ILoggerExtensions_NativeApiLoadedFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_NativeApiLoadedFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiLoadedFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed to load SQL LocalDB API from &apos;{0}&apos;. Error: {1}..
         /// </summary>
-        internal static string NativeMethods_NativeApiLoadFailedFormat {
+        internal static string ILoggerExtensions_NativeApiLoadFailedFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_NativeApiLoadFailedFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiLoadFailedFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Could not find SQL LocalDB API DLL &apos;{0}&apos;..
         /// </summary>
-        internal static string NativeMethods_NativeApiNotFoundFormat {
+        internal static string ILoggerExtensions_NativeApiNotFoundFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_NativeApiNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiNotFoundFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB API was not loaded..
         /// </summary>
-        internal static string NativeMethods_NativeApiNotLoaded {
+        internal static string ILoggerExtensions_NativeApiNotLoaded {
             get {
-                return ResourceManager.GetString("NativeMethods_NativeApiNotLoaded", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0:X}..
+        /// </summary>
+        internal static string ILoggerExtensions_NativeResultFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_NativeResultFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No SQL LocalDB API DLL path could be found..
         /// </summary>
-        internal static string NativeMethods_NoNativeApiFound {
+        internal static string ILoggerExtensions_NoNativeApiFound {
             get {
-                return ResourceManager.GetString("NativeMethods_NoNativeApiFound", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NoNativeApiFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL Server LocalDB is not installed..
+        /// </summary>
+        internal static string ILoggerExtensions_NotInstalled {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_NotInstalled", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The configured SQL LocalDB Instance API override version &apos;{0}&apos; cannot be found on {1}..
         /// </summary>
-        internal static string NativeMethods_OverrideVersionNotFoundFormat {
+        internal static string ILoggerExtensions_OverrideVersionNotFoundFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_OverrideVersionNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_OverrideVersionNotFoundFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Could not open registry key &apos;{0}&apos;..
         /// </summary>
-        internal static string NativeMethods_RegistryKeyNotFoundFormat {
+        internal static string ILoggerExtensions_RegistryKeyNotFoundFormat {
             get {
-                return ResourceManager.GetString("NativeMethods_RegistryKeyNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_RegistryKeyNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos; as &apos;{2}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_SharedInstanceFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_SharedInstanceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos;. Shared instance name: &apos;{2}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_SharingInstanceFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_SharingInstanceFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started SQL LocalDB instance &apos;{0}&apos; using named pipe &apos;{1}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_StartedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StartedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tracing started for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_StartedTracing {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StartedTracing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting SQL LocalDB instance &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_StartingFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StartingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting tracing for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_StartTracing {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StartTracing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to stop SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
+        /// </summary>
+        internal static string ILoggerExtensions_StopFailedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StopFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped SQL LocalDB instance &apos;{0}&apos; after {1}..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppedFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped sharing SQL LocalDB instance &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppedSharingFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppedSharingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tracing stopped for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppedTracing {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppedTracing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;. Timeout: {1}; Option(s): {2}..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppingFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping sharing SQL LocalDB instance &apos;{0}&apos;..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppingSharingFormat {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppingSharingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping tracing for SQL LocalDB..
+        /// </summary>
+        internal static string ILoggerExtensions_StoppingTracing {
+            get {
+                return ResourceManager.GetString("ILoggerExtensions_StoppingTracing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; is not running..
+        /// </summary>
+        internal static string ISqlLocalDbInstanceInfoExtensions_NotRunningFormat {
+            get {
+                return ResourceManager.GetString("ISqlLocalDbInstanceInfoExtensions_NotRunningFormat", resourceCulture);
             }
         }
         
@@ -223,272 +475,20 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB instance &apos;{0}&apos; cannot be found so was not deleted..
-        /// </summary>
-        internal static string SqlLocalDbApi_InstanceDoesNotExistFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_InstanceDoesNotExistFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The current value ({0}) of the {1}.LanguageId property is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults..
-        /// </summary>
-        internal static string SqlLocalDbApi_InvalidLanguageIdFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_InvalidLanguageIdFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogCreatedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogCreatedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creating named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogCreatingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogCreatingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleted named instance of SQL LocalDB &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeletedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeletedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleted file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeletedInstanceFilesFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeletedInstanceFilesFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; could not be deleted as it is currently in use..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeleteFailedAsInUseFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeleteFailedAsInUseFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleting named instance of SQL LocalDB &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeletingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeletingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to delete file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;: {2}.
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleting file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogDeletingInstanceFilesFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogDeletingInstanceFilesFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtaining instance names for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGetInstances {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGetInstances", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtaining information for SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGettingInfoFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGettingInfoFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtaining version information for SQL LocalDB version &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGetVersionInfoFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGetVersionInfoFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtained information for SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGotInfoFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGotInfoFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtained {0} instance names for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGotInstancesFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGotInstancesFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Obtained version information for SQL LocalDB version &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogGotVersionInfoFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogGotVersionInfoFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0:X}..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogNativeResultFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogNativeResultFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Shared SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos; as &apos;{2}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogSharedInstanceFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogSharedInstanceFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos;. Shared instance name: &apos;{2}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogSharingInstanceFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogSharingInstanceFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Started SQL LocalDB instance &apos;{0}&apos; using named pipe &apos;{1}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStartedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStartedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tracing started for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStartedTracing {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStartedTracing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStartingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStartingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting tracing for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStartTracing {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStartTracing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopped SQL LocalDB instance &apos;{0}&apos; after {1}..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopped sharing SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppedSharingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppedSharingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tracing stopped for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppedTracing {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppedTracing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;. Timeout: {1}; Option(s): {2}..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopping sharing SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppingSharingFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppingSharingFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopping tracing for SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbApi_LogStoppingTracing {
-            get {
-                return ResourceManager.GetString("SqlLocalDbApi_LogStoppingTracing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No SQL LocalDB instance name specified..
         /// </summary>
         internal static string SqlLocalDbApi_NoInstanceName {
             get {
                 return ResourceManager.GetString("SqlLocalDbApi_NoInstanceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logger was provided for the {0} instance..
+        /// </summary>
+        internal static string SqlLocalDbApi_NoLoggerFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_NoLoggerFormat", resourceCulture);
             }
         }
         
@@ -520,6 +520,15 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to enumerate the installed versions of SQL LocalDB..
+        /// </summary>
+        internal static string SqlLocalDbApi_VersionEnumerationFailed {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_VersionEnumerationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred with a SQL Server LocalDB instance..
         /// </summary>
         internal static string SqlLocalDbException_DefaultMessage {
@@ -529,110 +538,38 @@ namespace System.Data.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to enumerate the installed versions of SQL LocalDB..
-        /// </summary>
-        internal static string SqlLocalDbException_VersionEnumerationFailed {
-            get {
-                return ResourceManager.GetString("SqlLocalDbException_VersionEnumerationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB instance &apos;{0}&apos; already exists..
-        /// </summary>
-        internal static string SqlLocalDbFactory_InstanceExistsFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbFactory_InstanceExistsFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to delete SQL LocalDB instance &apos;{0}&apos;..
-        /// </summary>
-        internal static string SqlLocalDbInstance_DeleteFailedFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbInstance_DeleteFailedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; does not exist..
-        /// </summary>
-        internal static string SqlLocalDbInstance_InstanceNotFoundFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbInstance_InstanceNotFoundFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; is not running..
-        /// </summary>
-        internal static string SqlLocalDbInstance_NotRunningFormat {
-            get {
-                return ResourceManager.GetString("SqlLocalDbInstance_NotRunningFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Failed to share SQL LocalDB instance &apos;{0}&apos;..
         /// </summary>
-        internal static string SqlLocalDbInstance_ShareFailedFormat {
+        internal static string SqlLocalDbInstanceManager_ShareFailedFormat {
             get {
-                return ResourceManager.GetString("SqlLocalDbInstance_ShareFailedFormat", resourceCulture);
+                return ResourceManager.GetString("SqlLocalDbInstanceManager_ShareFailedFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed to start SQL LocalDB instance &apos;{0}&apos;..
         /// </summary>
-        internal static string SqlLocalDbInstance_StartFailedFormat {
+        internal static string SqlLocalDbInstanceManager_StartFailedFormat {
             get {
-                return ResourceManager.GetString("SqlLocalDbInstance_StartFailedFormat", resourceCulture);
+                return ResourceManager.GetString("SqlLocalDbInstanceManager_StartFailedFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed to stop SQL LocalDB instance &apos;{0}&apos;..
         /// </summary>
-        internal static string SqlLocalDbInstance_StopFailedFormat {
+        internal static string SqlLocalDbInstanceManager_StopFailedFormat {
             get {
-                return ResourceManager.GetString("SqlLocalDbInstance_StopFailedFormat", resourceCulture);
+                return ResourceManager.GetString("SqlLocalDbInstanceManager_StopFailedFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed to stop sharing SQL LocalDB instance &apos;{0}&apos;..
         /// </summary>
-        internal static string SqlLocalDbInstance_UnshareFailedFormat {
+        internal static string SqlLocalDbInstanceManager_UnshareFailedFormat {
             get {
-                return ResourceManager.GetString("SqlLocalDbInstance_UnshareFailedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No SQL LocalDB instance returned by underlying SQL LocalDB API..
-        /// </summary>
-        internal static string SqlLocalDbProvider_NoInstance {
-            get {
-                return ResourceManager.GetString("SqlLocalDbProvider_NoInstance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to delete SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
-        /// </summary>
-        internal static string TemporarySqlLocalDbInstance_DeleteFailedFormat {
-            get {
-                return ResourceManager.GetString("TemporarySqlLocalDbInstance_DeleteFailedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to stop SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
-        /// </summary>
-        internal static string TemporarySqlLocalDbInstance_StopFailedFormat {
-            get {
-                return ResourceManager.GetString("TemporarySqlLocalDbInstance_StopFailedFormat", resourceCulture);
+                return ResourceManager.GetString("SqlLocalDbInstanceManager_UnshareFailedFormat", resourceCulture);
             }
         }
     }
