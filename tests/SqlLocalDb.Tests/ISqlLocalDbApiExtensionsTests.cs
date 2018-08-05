@@ -252,8 +252,15 @@ namespace MartinCostello.SqlLocalDb
         public void GetDefaultInstance_Returns_The_Default_Instance()
         {
             // Arrange
-            using (SqlLocalDbApi api = new SqlLocalDbApi(_loggerFactory))
+            using (var api = new SqlLocalDbApi(_loggerFactory))
             {
+                // HACK Debug failing test in AppVeyor
+                var logger = _loggerFactory.CreateLogger("xunit");
+                logger.LogDebug($"Default Instance Name: {api.DefaultInstanceName}");
+                logger.LogDebug($"Latest Version: {api.LatestVersion}");
+                logger.LogDebug($"Instance Names: {string.Join(", ", api.GetInstanceNames())}");
+                logger.LogDebug($"Versions: {string.Join(", ", api.Versions)}");
+
                 // Act
                 ISqlLocalDbInstanceInfo actual = api.GetDefaultInstance();
 
@@ -279,7 +286,7 @@ namespace MartinCostello.SqlLocalDb
         public void GetInstances_Returns_All_The_Named_Instances()
         {
             // Arrange
-            using (SqlLocalDbApi api = new SqlLocalDbApi(_loggerFactory))
+            using (var api = new SqlLocalDbApi(_loggerFactory))
             {
                 // Act
                 IReadOnlyList<ISqlLocalDbInstanceInfo> actual = api.GetInstances();
@@ -322,7 +329,7 @@ namespace MartinCostello.SqlLocalDb
         public void GetVersions_Returns_All_The_Installed_Versions()
         {
             // Arrange
-            using (SqlLocalDbApi api = new SqlLocalDbApi(_loggerFactory))
+            using (var api = new SqlLocalDbApi(_loggerFactory))
             {
                 // Act
                 IReadOnlyList<ISqlLocalDbVersionInfo> actual = api.GetVersions();
