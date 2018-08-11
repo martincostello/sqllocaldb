@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SqlLocalDbApi_GenericFailureFormat" xml:space="preserve">
-    <value>An error occurred with SQL Server LocalDB. HRESULT = {0:X}</value>
+    <value>An error occurred calling the SQL Server LocalDB with HRESULT {0:X}.</value>
   </data>
   <data name="SqlLocalDbApi_NotInstalledFormat" xml:space="preserve">
     <value>SQL Server LocalDB is not installed on {0}.</value>
@@ -154,85 +154,85 @@
     <value>No SQL LocalDB instance name specified.</value>
   </data>
   <data name="ILoggerExtensions_CreatedInstanceFormat" xml:space="preserve">
-    <value>Created named instance of SQL LocalDB. Instance name: '{0}'; version: '{1}'.</value>
+    <value>Created named instance {InstanceName} of SQL LocalDB with version {InstanceVersion}.</value>
   </data>
   <data name="ILoggerExtensions_CreatingInstanceFormat" xml:space="preserve">
-    <value>Creating named instance of SQL LocalDB. Instance name: '{0}'; version: '{1}'.</value>
+    <value>Creating named instance {InstanceName} of SQL LocalDB with version {InstanceVersion}.</value>
   </data>
   <data name="ILoggerExtensions_DeletedInstanceFormat" xml:space="preserve">
-    <value>Deleted named instance of SQL LocalDB '{0}'.</value>
+    <value>Deleted named instance {InstanceName} of SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_DeletingFormat" xml:space="preserve">
-    <value>Deleting named instance of SQL LocalDB '{0}'.</value>
+    <value>Deleting named instance {InstanceName} of SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_GetInstances" xml:space="preserve">
     <value>Obtaining instance names for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_GettingInfoFormat" xml:space="preserve">
-    <value>Obtaining information for SQL LocalDB instance '{0}'.</value>
+    <value>Obtaining information for SQL LocalDB instance {InstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_GetVersionInfoFormat" xml:space="preserve">
-    <value>Obtaining version information for SQL LocalDB version '{0}'.</value>
+    <value>Obtaining version information for SQL LocalDB version {Version}.</value>
   </data>
   <data name="ILoggerExtensions_GotInfoFormat" xml:space="preserve">
-    <value>Obtained information for SQL LocalDB instance '{0}'.</value>
+    <value>Obtained information for SQL LocalDB instance {InstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_GotInstancesFormat" xml:space="preserve">
-    <value>Obtained {0} instance names for SQL LocalDB.</value>
+    <value>Obtained {InstanceCount} instance names for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_GotVersionInfoFormat" xml:space="preserve">
-    <value>Obtained version information for SQL LocalDB version '{0}'.</value>
+    <value>Obtained version information for SQL LocalDB version {Version}.</value>
   </data>
-  <data name="ILoggerExtensions_NativeResultFormat" xml:space="preserve">
-    <value>SQL LocalDB returned HRESULT {0:X}.</value>
+  <data name="SqlLocalDbApi_NativeResultFormat" xml:space="preserve">
+    <value>SQL LocalDB returned HRESULT {HResult}.</value>
   </data>
   <data name="ILoggerExtensions_SharedInstanceFormat" xml:space="preserve">
-    <value>Shared SQL LocalDB instance '{0}' for owner SID '{1}' as '{2}'.</value>
+    <value>Shared SQL LocalDB instance {InstanceName} for owner SID {OwnerSid} as {SharedInstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_SharingInstanceFormat" xml:space="preserve">
-    <value>Sharing SQL LocalDB instance '{0}' for owner SID '{1}'. Shared instance name: '{2}'.</value>
+    <value>Sharing SQL LocalDB instance {InstanceName} for owner SID {OwnerSid} as shared instance name {SharedInstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_StartedFormat" xml:space="preserve">
-    <value>Started SQL LocalDB instance '{0}' using named pipe '{1}'.</value>
+    <value>Started SQL LocalDB instance {InstanceName} using named pipe {NamedPipe}.</value>
   </data>
   <data name="ILoggerExtensions_StartedTracing" xml:space="preserve">
     <value>Tracing started for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_StartingFormat" xml:space="preserve">
-    <value>Starting SQL LocalDB instance '{0}'.</value>
+    <value>Starting SQL LocalDB instance {InstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_StartTracing" xml:space="preserve">
     <value>Starting tracing for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_StoppedFormat" xml:space="preserve">
-    <value>Stopped SQL LocalDB instance '{0}' after {1}.</value>
+    <value>Stopped SQL LocalDB instance {InstanceName} after {Timeout}.</value>
   </data>
   <data name="ILoggerExtensions_StoppedSharingFormat" xml:space="preserve">
-    <value>Stopped sharing SQL LocalDB instance '{0}'.</value>
+    <value>Stopped sharing SQL LocalDB instance {InstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_StoppedTracing" xml:space="preserve">
     <value>Tracing stopped for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_StoppingFormat" xml:space="preserve">
-    <value>Stopping SQL LocalDB instance '{0}'. Timeout: {1}; Option(s): {2}.</value>
+    <value>Stopping SQL LocalDB instance {InstanceName} with timeout: {Timeout} and option(s) {StopOptions}.</value>
   </data>
   <data name="ILoggerExtensions_StoppingSharingFormat" xml:space="preserve">
-    <value>Stopping sharing SQL LocalDB instance '{0}'.</value>
+    <value>Stopping sharing SQL LocalDB instance {InstanceName}.</value>
   </data>
   <data name="ILoggerExtensions_StoppingTracing" xml:space="preserve">
     <value>Stopping tracing for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_FunctionNotFoundFormat" xml:space="preserve">
-    <value>The SQL LocalDB function {0} could not be found.</value>
+    <value>The SQL LocalDB function {LocalDBFunctionName} could not be found.</value>
   </data>
   <data name="ILoggerExtensions_InvalidRegistryKeyNameFormat" xml:space="preserve">
-    <value>Ignoring invalid registry key name '{0}'.</value>
+    <value>Ignoring invalid registry key name {RegistryKeyName}.</value>
   </data>
   <data name="ILoggerExtensions_NativeApiLoadFailedFormat" xml:space="preserve">
-    <value>Failed to load SQL LocalDB API from '{0}'. Error: {1}.</value>
+    <value>Failed to load SQL LocalDB API from {InstanceApiPath}. Error: {ErrorCode}.</value>
   </data>
   <data name="ILoggerExtensions_NativeApiNotFoundFormat" xml:space="preserve">
-    <value>Could not find SQL LocalDB API DLL '{0}'.</value>
+    <value>Could not find SQL LocalDB API DLL {InstanceApiPath}.</value>
   </data>
   <data name="ILoggerExtensions_NativeApiNotLoaded" xml:space="preserve">
     <value>The SQL LocalDB API was not loaded.</value>
@@ -241,40 +241,40 @@
     <value>No SQL LocalDB API DLL path could be found.</value>
   </data>
   <data name="ILoggerExtensions_RegistryKeyNotFoundFormat" xml:space="preserve">
-    <value>Could not open registry key '{0}'.</value>
+    <value>Could not open registry key {RegistryKeyName}.</value>
   </data>
   <data name="ILoggerExtensions_NativeApiLoadedFormat" xml:space="preserve">
-    <value>Loaded SQL LocalDB API from '{0}'.</value>
+    <value>Loaded SQL LocalDB API from {InstanceApiPath}.</value>
   </data>
   <data name="ILoggerExtensions_InstanceDoesNotExistFormat" xml:space="preserve">
-    <value>SQL LocalDB instance '{0}' cannot be found so was not deleted.</value>
+    <value>SQL LocalDB instance {InstanceName} cannot be found so was not deleted.</value>
   </data>
-  <data name="ILoggerExtensions_ApiVersionOverriddenByUserFormat" xml:space="preserve">
-    <value>The SQL LocalDB native API version to load was overridden by the user to {0}.</value>
+  <data name="ILoggerExtensions_NativeApiVersionOverriddenByUserFormat" xml:space="preserve">
+    <value>The SQL LocalDB native API version to load was overridden by the user to {InstanceApiOverrideVersion}.</value>
   </data>
   <data name="ILoggerExtensions_DeleteFailedAsInUseFormat" xml:space="preserve">
-    <value>The SQL LocalDB instance '{0}' could not be deleted as it is currently in use.</value>
+    <value>The SQL LocalDB instance {InstanceName} could not be deleted as it is currently in use.</value>
   </data>
   <data name="ILoggerExtensions_DeletedInstanceFilesFormat" xml:space="preserve">
-    <value>Deleted file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
+    <value>Deleted file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}.</value>
   </data>
   <data name="ILoggerExtensions_DeletingInstanceFilesFailedFormat" xml:space="preserve">
-    <value>Failed to delete file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
+    <value>Failed to delete file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}.</value>
   </data>
   <data name="ILoggerExtensions_DeletingInstanceFilesFormat" xml:space="preserve">
-    <value>Deleting file(s) for SQL LocalDB instance '{0}' from '{1}'.</value>
+    <value>Deleting file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}.</value>
   </data>
   <data name="ILoggerExtensions_InvalidLanguageIdFormat" xml:space="preserve">
-    <value>The current Language Id {0} is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
+    <value>The current Language Id {LanguageId} is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
   </data>
   <data name="ILoggerExtensions_OverrideVersionNotFoundFormat" xml:space="preserve">
-    <value>The configured SQL LocalDB Instance API override version '{0}' cannot be found on {1}.</value>
+    <value>The configured SQL LocalDB Instance API override version {InstanceApiOverrideVersion} cannot be found.</value>
   </data>
   <data name="ILoggerExtensions_DeleteFailedFormat" xml:space="preserve">
-    <value>Failed to delete SQL LocalDB instance '{0}'. HRESULT = {1:X}.</value>
+    <value>Failed to delete SQL LocalDB instance {InstanceName} with HRESULT {HResult}.</value>
   </data>
   <data name="ILoggerExtensions_StopFailedFormat" xml:space="preserve">
-    <value>Failed to stop SQL LocalDB instance '{0}'. HRESULT = {1:X}.</value>
+    <value>Failed to stop SQL LocalDB instance {InstanceName} with HRESULT {HResult}.</value>
   </data>
   <data name="SqlLocalDbApi_NoLoggerFormat" xml:space="preserve">
     <value>No logger was provided for the {0} instance.</value>
@@ -283,7 +283,7 @@
     <value>Obtaining versions for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_GotVersionsFormat" xml:space="preserve">
-    <value>Obtained {0} versions for SQL LocalDB.</value>
+    <value>Obtained {VersionCount} versions for SQL LocalDB.</value>
   </data>
   <data name="ILoggerExtensions_NotInstalled" xml:space="preserve">
     <value>SQL Server LocalDB is not installed.</value>
@@ -292,6 +292,9 @@
     <value>The SQL LocalDB Instance API is not supported on this platform.</value>
   </data>
   <data name="ILoggerExtensions_NativeApiUnloadedFormat" xml:space="preserve">
-    <value>Unloaded SQL LocalDB Instance API library '{0}'.</value>
+    <value>Unloaded SQL LocalDB Instance API library {InstanceApiPath}.</value>
+  </data>
+  <data name="SqlLocalDbApi_LogGenericFailureFormat" xml:space="preserve">
+    <value>An error occurred calling the SQL Server LocalDB with HRESULT {HResult}.</value>
   </data>
 </root>

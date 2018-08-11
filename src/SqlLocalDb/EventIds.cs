@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
@@ -286,6 +286,11 @@ namespace MartinCostello.SqlLocalDb
         /// The <see cref="EventId"/> for when the SQL LocalDB Instance API is unloaded. This field is read-only.
         /// </summary>
         internal static readonly EventId NativeApiUnloaded = new EventId(++Id, nameof(NativeApiUnloaded));
+
+        /// <summary>
+        /// The <see cref="EventId"/> for when the SQL LocalDB Instance API returns a generic error. This field is read-only.
+        /// </summary>
+        internal static readonly EventId GenericError = new EventId(++Id, nameof(GenericError));
 
         /// <summary>
         /// The base Id for the event Ids.

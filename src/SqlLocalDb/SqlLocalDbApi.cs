@@ -1,9 +1,10 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -1185,7 +1186,7 @@ namespace MartinCostello.SqlLocalDb
         {
             string message;
 
-            Logger.LogError(eventId, SR.ILoggerExtensions_NativeResultFormat, hr);
+            Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
 
             if (hr == SqlLocalDbErrors.NotInstalled)
             {
@@ -1206,9 +1207,15 @@ namespace MartinCostello.SqlLocalDb
             if (hr2 == 0)
             {
                 message = buffer.ToString();
+                Logger.LogError(eventId, message);
             }
             else if (hr2 == SqlLocalDbErrors.UnknownLanguageId)
             {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+
                 // If the value of DefaultLanguageId was not understood by the API,
                 // then log an error informing the user. Do not throw an exception in
                 // this case as otherwise we will mask the original exception from the user.
@@ -1219,16 +1226,17 @@ namespace MartinCostello.SqlLocalDb
             }
             else
             {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+
                 // Use a generic message if getting the message from the API failed.
                 // N.B. That if this occurs, then the original error is masked (although it is logged).
                 message = SRHelper.Format(SR.SqlLocalDbApi_GenericFailureFormat, hr2);
 
-                Logger.LogError(eventId, message);
-
                 return new SqlLocalDbException(message, hr2, instanceName);
             }
-
-            Logger.LogError(eventId, message);
 
             return new SqlLocalDbException(message, hr, instanceName);
         }

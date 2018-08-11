@@ -1,7 +1,8 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.SqlLocalDb
@@ -46,7 +47,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance that could not be deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, int, Exception> _deletingInstanceFailed = LoggerMessage.Define<string, int>(
+        private static readonly Action<ILogger, string, string, Exception> _deletingInstanceFailed = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.DeletingInstanceFailed,
             SR.ILoggerExtensions_DeleteFailedFormat);
@@ -233,12 +234,12 @@ namespace MartinCostello.SqlLocalDb
         private static readonly Action<ILogger, Version, Exception> _nativeApiVersionOverriddenByUser = LoggerMessage.Define<Version>(
             LogLevel.Debug,
             EventIds.NativeApiVersionOverriddenByUser,
-            SR.ILoggerExtensions_ApiVersionOverriddenByUserFormat);
+            SR.ILoggerExtensions_NativeApiVersionOverriddenByUserFormat);
 
         /// <summary>
         /// Logging delegate for when the version of the SQL LocalDB Instance API specified by the user could not be found.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _nativeApiVersionOverrideNotFound = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, Exception> _nativeApiVersionOverrideNotFound = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.NativeApiVersionOverrideNotFound,
             SR.ILoggerExtensions_OverrideVersionNotFoundFormat);
@@ -326,7 +327,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a temporary SQL LocalDB instance failed to stop.
         /// </summary>
-        private static readonly Action<ILogger, string, int, Exception> _stoppingTemporaryInstanceFailed = LoggerMessage.Define<string, int>(
+        private static readonly Action<ILogger, string, string, Exception> _stoppingTemporaryInstanceFailed = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.StopTemporaryInstanceFailed,
             SR.ILoggerExtensions_StopFailedFormat);
@@ -404,7 +405,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="instanceName">The name of the instance that could not be deleted.</param>
         /// <param name="error">The error code.</param>
         internal static void DeletingInstanceFailed(this ILogger logger, string instanceName, int error)
-            => _deletingInstanceFailed(logger, instanceName, error, null);
+            => _deletingInstanceFailed(logger, instanceName, error.ToString("X", CultureInfo.InvariantCulture), null);
 
         /// <summary>
         /// Logs that a SQL LocalDB instance could not be deleted because it is still in use.
@@ -597,7 +598,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="logger">The logger to use.</param>
         /// <param name="version">The version specified to be used.</param>
         internal static void NativeApiVersionOverrideNotFound(this ILogger logger, string version)
-            => _nativeApiVersionOverrideNotFound(logger, version, Environment.MachineName, null);
+            => _nativeApiVersionOverrideNotFound(logger, version, null);
 
         /// <summary>
         /// Logs that SQL LocalDB is not installed.
@@ -691,7 +692,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="instanceName">The name of the instance that failed to stop.</param>
         /// <param name="error">The error code.</param>
         internal static void StoppingTemporaryInstanceFailed(this ILogger logger, string instanceName, int error)
-            => _stoppingTemporaryInstanceFailed(logger, instanceName, error, null);
+            => _stoppingTemporaryInstanceFailed(logger, instanceName, error.ToString("X", CultureInfo.InvariantCulture), null);
 
         /// <summary>
         /// Logs that SQL LocalDB tracing was stopped.

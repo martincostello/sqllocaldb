@@ -61,16 +61,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB native API version to load was overridden by the user to {0}..
-        /// </summary>
-        internal static string ILoggerExtensions_ApiVersionOverriddenByUserFormat {
-            get {
-                return ResourceManager.GetString("ILoggerExtensions_ApiVersionOverriddenByUserFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Created named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Created named instance {InstanceName} of SQL LocalDB with version {InstanceVersion}..
         /// </summary>
         internal static string ILoggerExtensions_CreatedInstanceFormat {
             get {
@@ -79,7 +70,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating named instance of SQL LocalDB. Instance name: &apos;{0}&apos;; version: &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Creating named instance {InstanceName} of SQL LocalDB with version {InstanceVersion}..
         /// </summary>
         internal static string ILoggerExtensions_CreatingInstanceFormat {
             get {
@@ -88,7 +79,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Deleted file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}..
         /// </summary>
         internal static string ILoggerExtensions_DeletedInstanceFilesFormat {
             get {
@@ -97,7 +88,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted named instance of SQL LocalDB &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Deleted named instance {InstanceName} of SQL LocalDB..
         /// </summary>
         internal static string ILoggerExtensions_DeletedInstanceFormat {
             get {
@@ -106,7 +97,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; could not be deleted as it is currently in use..
+        ///   Looks up a localized string similar to The SQL LocalDB instance {InstanceName} could not be deleted as it is currently in use..
         /// </summary>
         internal static string ILoggerExtensions_DeleteFailedAsInUseFormat {
             get {
@@ -115,7 +106,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to delete SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
+        ///   Looks up a localized string similar to Failed to delete SQL LocalDB instance {InstanceName} with HRESULT {HResult}..
         /// </summary>
         internal static string ILoggerExtensions_DeleteFailedFormat {
             get {
@@ -124,7 +115,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting named instance of SQL LocalDB &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Deleting named instance {InstanceName} of SQL LocalDB..
         /// </summary>
         internal static string ILoggerExtensions_DeletingFormat {
             get {
@@ -133,7 +124,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to delete file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Failed to delete file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}..
         /// </summary>
         internal static string ILoggerExtensions_DeletingInstanceFilesFailedFormat {
             get {
@@ -142,7 +133,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting file(s) for SQL LocalDB instance &apos;{0}&apos; from &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Deleting file(s) for SQL LocalDB instance {InstanceName} from {InstanceFilesPath}..
         /// </summary>
         internal static string ILoggerExtensions_DeletingInstanceFilesFormat {
             get {
@@ -151,7 +142,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SQL LocalDB function {0} could not be found..
+        ///   Looks up a localized string similar to The SQL LocalDB function {LocalDBFunctionName} could not be found..
         /// </summary>
         internal static string ILoggerExtensions_FunctionNotFoundFormat {
             get {
@@ -169,7 +160,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtaining information for SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtaining information for SQL LocalDB instance {InstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_GettingInfoFormat {
             get {
@@ -178,7 +169,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtaining version information for SQL LocalDB version &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtaining version information for SQL LocalDB version {Version}..
         /// </summary>
         internal static string ILoggerExtensions_GetVersionInfoFormat {
             get {
@@ -196,7 +187,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtained information for SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtained information for SQL LocalDB instance {InstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_GotInfoFormat {
             get {
@@ -205,7 +196,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtained {0} instance names for SQL LocalDB..
+        ///   Looks up a localized string similar to Obtained {InstanceCount} instance names for SQL LocalDB..
         /// </summary>
         internal static string ILoggerExtensions_GotInstancesFormat {
             get {
@@ -214,7 +205,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtained version information for SQL LocalDB version &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Obtained version information for SQL LocalDB version {Version}..
         /// </summary>
         internal static string ILoggerExtensions_GotVersionInfoFormat {
             get {
@@ -223,7 +214,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtained {0} versions for SQL LocalDB..
+        ///   Looks up a localized string similar to Obtained {VersionCount} versions for SQL LocalDB..
         /// </summary>
         internal static string ILoggerExtensions_GotVersionsFormat {
             get {
@@ -232,7 +223,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB instance &apos;{0}&apos; cannot be found so was not deleted..
+        ///   Looks up a localized string similar to SQL LocalDB instance {InstanceName} cannot be found so was not deleted..
         /// </summary>
         internal static string ILoggerExtensions_InstanceDoesNotExistFormat {
             get {
@@ -241,7 +232,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current Language Id {0} is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults..
+        ///   Looks up a localized string similar to The current Language Id {LanguageId} is not recognized by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults..
         /// </summary>
         internal static string ILoggerExtensions_InvalidLanguageIdFormat {
             get {
@@ -250,7 +241,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignoring invalid registry key name &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Ignoring invalid registry key name {RegistryKeyName}..
         /// </summary>
         internal static string ILoggerExtensions_InvalidRegistryKeyNameFormat {
             get {
@@ -259,7 +250,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loaded SQL LocalDB API from &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Loaded SQL LocalDB API from {InstanceApiPath}..
         /// </summary>
         internal static string ILoggerExtensions_NativeApiLoadedFormat {
             get {
@@ -268,7 +259,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load SQL LocalDB API from &apos;{0}&apos;. Error: {1}..
+        ///   Looks up a localized string similar to Failed to load SQL LocalDB API from {InstanceApiPath}. Error: {ErrorCode}..
         /// </summary>
         internal static string ILoggerExtensions_NativeApiLoadFailedFormat {
             get {
@@ -277,7 +268,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find SQL LocalDB API DLL &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not find SQL LocalDB API DLL {InstanceApiPath}..
         /// </summary>
         internal static string ILoggerExtensions_NativeApiNotFoundFormat {
             get {
@@ -295,7 +286,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unloaded SQL LocalDB Instance API library &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Unloaded SQL LocalDB Instance API library {InstanceApiPath}..
         /// </summary>
         internal static string ILoggerExtensions_NativeApiUnloadedFormat {
             get {
@@ -304,11 +295,11 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {0:X}..
+        ///   Looks up a localized string similar to The SQL LocalDB native API version to load was overridden by the user to {InstanceApiOverrideVersion}..
         /// </summary>
-        internal static string ILoggerExtensions_NativeResultFormat {
+        internal static string ILoggerExtensions_NativeApiVersionOverriddenByUserFormat {
             get {
-                return ResourceManager.GetString("ILoggerExtensions_NativeResultFormat", resourceCulture);
+                return ResourceManager.GetString("ILoggerExtensions_NativeApiVersionOverriddenByUserFormat", resourceCulture);
             }
         }
         
@@ -331,7 +322,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The configured SQL LocalDB Instance API override version &apos;{0}&apos; cannot be found on {1}..
+        ///   Looks up a localized string similar to The configured SQL LocalDB Instance API override version {InstanceApiOverrideVersion} cannot be found..
         /// </summary>
         internal static string ILoggerExtensions_OverrideVersionNotFoundFormat {
             get {
@@ -340,7 +331,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not open registry key &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not open registry key {RegistryKeyName}..
         /// </summary>
         internal static string ILoggerExtensions_RegistryKeyNotFoundFormat {
             get {
@@ -349,7 +340,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shared SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos; as &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Shared SQL LocalDB instance {InstanceName} for owner SID {OwnerSid} as {SharedInstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_SharedInstanceFormat {
             get {
@@ -358,7 +349,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sharing SQL LocalDB instance &apos;{0}&apos; for owner SID &apos;{1}&apos;. Shared instance name: &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Sharing SQL LocalDB instance {InstanceName} for owner SID {OwnerSid} as shared instance name {SharedInstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_SharingInstanceFormat {
             get {
@@ -367,7 +358,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Started SQL LocalDB instance &apos;{0}&apos; using named pipe &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Started SQL LocalDB instance {InstanceName} using named pipe {NamedPipe}..
         /// </summary>
         internal static string ILoggerExtensions_StartedFormat {
             get {
@@ -385,7 +376,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Starting SQL LocalDB instance {InstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_StartingFormat {
             get {
@@ -403,7 +394,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to stop SQL LocalDB instance &apos;{0}&apos;. HRESULT = {1:X}..
+        ///   Looks up a localized string similar to Failed to stop SQL LocalDB instance {InstanceName} with HRESULT {HResult}..
         /// </summary>
         internal static string ILoggerExtensions_StopFailedFormat {
             get {
@@ -412,7 +403,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopped SQL LocalDB instance &apos;{0}&apos; after {1}..
+        ///   Looks up a localized string similar to Stopped SQL LocalDB instance {InstanceName} after {Timeout}..
         /// </summary>
         internal static string ILoggerExtensions_StoppedFormat {
             get {
@@ -421,7 +412,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopped sharing SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Stopped sharing SQL LocalDB instance {InstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_StoppedSharingFormat {
             get {
@@ -439,7 +430,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping SQL LocalDB instance &apos;{0}&apos;. Timeout: {1}; Option(s): {2}..
+        ///   Looks up a localized string similar to Stopping SQL LocalDB instance {InstanceName} with timeout: {Timeout} and option(s) {StopOptions}..
         /// </summary>
         internal static string ILoggerExtensions_StoppingFormat {
             get {
@@ -448,7 +439,7 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping sharing SQL LocalDB instance &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Stopping sharing SQL LocalDB instance {InstanceName}..
         /// </summary>
         internal static string ILoggerExtensions_StoppingSharingFormat {
             get {
@@ -475,11 +466,29 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred with SQL Server LocalDB. HRESULT = {0:X}.
+        ///   Looks up a localized string similar to An error occurred calling the SQL Server LocalDB with HRESULT {0:X}..
         /// </summary>
         internal static string SqlLocalDbApi_GenericFailureFormat {
             get {
                 return ResourceManager.GetString("SqlLocalDbApi_GenericFailureFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred calling the SQL Server LocalDB with HRESULT {HResult}..
+        /// </summary>
+        internal static string SqlLocalDbApi_LogGenericFailureFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_LogGenericFailureFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL LocalDB returned HRESULT {HResult}..
+        /// </summary>
+        internal static string SqlLocalDbApi_NativeResultFormat {
+            get {
+                return ResourceManager.GetString("SqlLocalDbApi_NativeResultFormat", resourceCulture);
             }
         }
         
