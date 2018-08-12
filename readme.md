@@ -57,6 +57,7 @@ Further examples of using the library can be found by following the links below:
 
   1. The [wiki](https://github.com/martincostello/sqllocaldb/wiki/Examples "Examples in the SQL LocalDB Wrapper wiki").
   1. The [sample application](https://github.com/martincostello/sqllocaldb/tree/master/samples "TodoApp sample").
+  1. The [examples written as tests](https://github.com/martincostello/sqllocaldb/blob/master/tests/SqlLocalDb.Tests/Examples.cs "Examples as tests").
   1. The library's [own tests](https://github.com/martincostello/sqllocaldb/tree/master/tests/SqlLocalDb.Tests "View MartinCostello.SqlLocalDb's tests").
 
 ## Migrating from System.Data.SqlLocalDb
