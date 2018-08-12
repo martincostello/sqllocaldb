@@ -14,7 +14,7 @@
   <PropertyGroup>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
-    <Authors>Martin Costello</Authors>
+    <Authors>martin_costello</Authors>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>

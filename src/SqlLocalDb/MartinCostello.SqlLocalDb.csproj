@@ -10,6 +10,7 @@
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Title>SQL LocalDB Wrapper</Title>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>True</DebugSymbols>

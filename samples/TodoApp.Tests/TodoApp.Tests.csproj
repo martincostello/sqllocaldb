@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1707;CA2007</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>
