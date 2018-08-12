@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -387,6 +387,38 @@ namespace MartinCostello.SqlLocalDb
                 deleted.ShouldBeGreaterThanOrEqualTo(1);
                 IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
                 namesAfter.ShouldBeSubsetOf(namesBefore);
+            }
+        }
+
+        [Fact]
+        public void SqlLocalDbApi_Is_ISqlLocalDbApiAdapter()
+        {
+            // Arrange
+            using (var instance = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act
+                ISqlLocalDbApiAdapter adapter = instance;
+
+                // Assert
+                adapter.LocalDb.ShouldBeSameAs(instance);
+            }
+        }
+
+        [WindowsOnlyFact]
+        public void SqlLocalDbApi_Throws_Exception_For_Native_Errors()
+        {
+            // Arrange
+            string instanceName = new string('$', 10000);
+
+            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            {
+                // Act
+                var exception = Assert.Throws<SqlLocalDbException>(() => actual.CreateInstance(instanceName));
+
+                // Assert
+                exception.ErrorCode.ShouldBe(SqlLocalDbErrors.InvalidParameter);
+                exception.Message.ShouldStartWith("The parameter for the LocalDB Instance API method is incorrect. Consult the API documentation.");
+                exception.InstanceName.ShouldBe(instanceName);
             }
         }
     }

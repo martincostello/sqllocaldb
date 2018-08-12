@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System.Reflection;
@@ -65,6 +65,8 @@ namespace MartinCostello.SqlLocalDb
         [InlineData("UnsharingInstance", 52)]
         [InlineData("UnsharingInstanceFailed", 53)]
         [InlineData("UnsharedInstance", 54)]
+        [InlineData("NativeApiUnloaded", 55)]
+        [InlineData("GenericError", 56)]
         public static void EventId_Name_And_Value_Is_Correct(string name, int expected)
         {
             // Arrange

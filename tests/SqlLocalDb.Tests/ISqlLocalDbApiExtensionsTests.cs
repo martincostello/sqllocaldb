@@ -174,6 +174,22 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [Fact]
+        public void TemporaryInstance_Is_ISqlLocalDbApiAdapter()
+        {
+            // Arrange
+            var api = Mock.Of<ISqlLocalDbApi>();
+
+            using (TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance())
+            {
+                // Act
+                ISqlLocalDbApiAdapter adapter = instance;
+
+                // Assert
+                adapter.LocalDb.ShouldBeSameAs(api);
+            }
+        }
+
+        [Fact]
         public void TemporaryInstance_Deletes_Instance_If_Start_Fails()
         {
             // Arrange
