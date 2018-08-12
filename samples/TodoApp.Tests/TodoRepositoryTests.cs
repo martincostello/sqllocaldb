@@ -35,9 +35,8 @@ namespace TodoApp.Tests
             {
                 using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
                 {
-                    string connectionString = instance.GetInstanceInfo().GetConnectionString();
-
-                    var builder = new DbContextOptionsBuilder<TodoContext>().UseSqlServer(connectionString);
+                    var builder = new DbContextOptionsBuilder<TodoContext>()
+                        .UseSqlServer(instance.ConnectionString);
 
                     using (var context = new TodoContext(builder.Options))
                     {

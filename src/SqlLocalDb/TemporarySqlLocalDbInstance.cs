@@ -51,6 +51,14 @@ namespace MartinCostello.SqlLocalDb
         ~TemporarySqlLocalDbInstance() => DisposeInternal();
 
         /// <summary>
+        /// Gets the connection string for the temporary SQL LocalDB instance.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// Thrown if the instance has been disposed of.
+        /// </exception>
+        public string ConnectionString => GetInstanceInfo().GetConnectionString();
+
+        /// <summary>
         /// Gets the name of the temporary SQL LocalDB instance.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
