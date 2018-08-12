@@ -8,7 +8,7 @@ _TodoApp_ is an [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/ "In
 
 The list is stored in a SQL Server database backed by a SQL Server LocalDB Instance on the local machine.
 
-The application is configured to create the LocalDB instance if it does not already exist, start it if necessary, and then [configure the Entity Framework data context](https://github.com/martincostello/sqllocaldb/blob/a6c901eec68c05c78ad26eef7c41bc2fc37e564f/samples/TodoApp/Startup.cs#L61-L85 "View Startup.cs") with the connection string for the LocalDB instance.
+The application is configured to create the LocalDB instance if it does not already exist, start it if necessary, and then [configure the Entity Framework data context](https://github.com/martincostello/sqllocaldb/blob/ef6c1e2918ce084274cbc1e7d173371a7fbaebd3/samples/TodoApp/Startup.cs#L62-L85 "View Startup.cs") with the connection string for the LocalDB instance.
 
 ## TodoApp.Tests
 
