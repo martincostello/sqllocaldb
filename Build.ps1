@@ -13,7 +13,11 @@ $solutionFile = Join-Path $solutionPath "SqlLocalDb.sln"
 $sdkFile = Join-Path $solutionPath "global.json"
 
 $libraryProject = Join-Path $solutionPath "src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj"
-$testProject = Join-Path $solutionPath "tests\SqlLocalDb.Tests\MartinCostello.SqlLocalDb.Tests.csproj"
+
+$testProjects = @(
+    (Join-Path $solutionPath "tests\SqlLocalDb.Tests\MartinCostello.SqlLocalDb.Tests.csproj"),
+    (Join-Path $solutionPath "samples\TodoApp.Tests\TodoApp.Tests.csproj")
+)
 
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
 
@@ -143,4 +147,6 @@ Write-Host "Packaging library..." -ForegroundColor Green
 DotNetPack $libraryProject
 
 Write-Host "Running tests..." -ForegroundColor Green
-DotNetTest $testProject
+ForEach ($testProject in $testProjects) {
+    DotNetTest $testProject
+}
