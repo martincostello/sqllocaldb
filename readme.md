@@ -25,10 +25,30 @@ To install the library from [NuGet](https://www.nuget.org/packages/MartinCostell
 dotnet add package MartinCostello.SqlLocalDb
 ```
 
-### Basic Examples
+### Basic Example
 
-```cs
-// TODO
+```csharp
+// using MartinCostello.SqlLocalDb;
+
+using (var localDB = new SqlLocalDbApi())
+{
+    ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
+    ISqlLocalDbInstanceManager manager = instance.Manage();
+
+    if (!instance.IsRunning)
+    {
+        manager.Start();
+    }
+
+    using (SqlConnection connection = instance.CreateConnection())
+    {
+        connection.Open();
+
+        // Use the SQL connection...
+    }
+
+    manager.Stop();
+}
 ```
 
 ### Further Examples
