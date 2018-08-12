@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Test application for MartinCostello.SqlLocalDb.</Description>
+    <IsPackable>false</IsPackable>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>

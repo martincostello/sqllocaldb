@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Tests for MartinCostello.SqlLocalDb.</Description>
+    <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1707;CA2007;CA2234</NoWarn>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
