@@ -31,7 +31,7 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<TodoItem> AddItemAsync(string text, CancellationToken cancellationToken)
+        public async Task<TodoItem> AddItemAsync(string text, CancellationToken cancellationToken = default)
         {
             var item = new TodoItem()
             {
@@ -47,7 +47,7 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken)
+        public async Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken = default)
         {
             TodoItem item = await _context.Items.FindAsync(new[] { id }, cancellationToken);
 
@@ -71,7 +71,7 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken)
+        public async Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken = default)
         {
             TodoItem item = await _context.Items.FindAsync(new[] { id }, cancellationToken);
 
@@ -88,7 +88,7 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<TodoItem>> GetItemsAsync(CancellationToken cancellationToken)
+        public async Task<IList<TodoItem>> GetItemsAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Items
                 .OrderBy((p) => p.CompletedAt.HasValue)
