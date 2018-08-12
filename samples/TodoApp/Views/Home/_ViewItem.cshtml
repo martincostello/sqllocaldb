@@ -1,0 +1,29 @@
+@model TodoItemModel
+<tr data-id="@Model.Id">
+    <td>
+        @if (Model.IsCompleted)
+        {
+            <s>@Model.Text</s>
+        }
+        else
+        {
+            @Model.Text
+        }
+    </td>
+    <td>@Model.LastUpdated</td>
+    <td>
+        @if (!Model.IsCompleted)
+        {
+            <form asp-controller="Home" asp-action="CompleteItem" method="post" role="form">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="submit" value="Done" class="btn btn-success" />
+            </form>
+        }
+    </td>
+    <td>
+        <form asp-controller="Home" asp-action="DeleteItem" method="post" role="form">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+    </td>
+</tr>

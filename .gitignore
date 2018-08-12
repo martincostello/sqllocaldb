@@ -18,6 +18,7 @@ obj
 packages
 project.lock.json
 samples/TodoApp/wwwroot/**/*.min.css
+samples/TodoApp/wwwroot/**/*.min.js
 TestResults
 typings
 UpgradeLog*.htm
