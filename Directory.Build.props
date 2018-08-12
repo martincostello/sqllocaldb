@@ -17,7 +17,7 @@
     <Authors>Martin Costello</Authors>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
-    <Copyright>Martin Costello (c) 2015-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateGitMetadata Condition=" '$(CI)' == 'true' and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
