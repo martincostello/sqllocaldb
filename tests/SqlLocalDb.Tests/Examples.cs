@@ -13,7 +13,7 @@ namespace MartinCostello.SqlLocalDb
     /// </summary>
     public static class Examples
     {
-        [Fact]
+        [WindowsOnlyFact]
         public static void Create_A_Sql_LocalDB_Instance()
         {
             using (var localDB = new SqlLocalDbApi())
@@ -37,7 +37,7 @@ namespace MartinCostello.SqlLocalDb
             }
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public static void Create_A_Temporary_Sql_LocalDB_Instance()
         {
             using (var localDB = new SqlLocalDbApi())
@@ -54,7 +54,7 @@ namespace MartinCostello.SqlLocalDb
             }
         }
 
-        [Fact]
+        [WindowsOnlyFact]
         public static void Use_With_Dependency_Injection()
         {
             // Register with SQL LocalDB services
