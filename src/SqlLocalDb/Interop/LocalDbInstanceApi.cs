@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -442,14 +442,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         {
             fileName = null;
 
-            bool isWow64Process = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
-
-            // Open the appropriate Registry key if running as a 32-bit process on a 64-bit machine
-            string keyName = string.Format(
-                CultureInfo.InvariantCulture,
-                @"SOFTWARE\{0}Microsoft\Microsoft SQL Server Local DB\Installed Versions",
-                isWow64Process ? @"Wow6432Node\" : string.Empty);
-
+            string keyName = DeriveLocalDbRegistryKey();
             IRegistryKey key = Registry.OpenSubKey(keyName);
 
             if (key == null)
@@ -469,13 +462,7 @@ namespace MartinCostello.SqlLocalDb.Interop
 
                 foreach (string versionString in key.GetSubKeyNames())
                 {
-                    Version version;
-
-                    try
-                    {
-                        version = new Version(versionString);
-                    }
-                    catch (Exception ex) when (ex is ArgumentException || ex is FormatException || ex is OverflowException)
+                    if (!Version.TryParse(versionString, out Version version))
                     {
                         Logger.InvalidRegistryKey(versionString);
                         continue;
@@ -532,6 +519,23 @@ namespace MartinCostello.SqlLocalDb.Interop
 
             fileName = Path.GetFullPath(path);
             return true;
+        }
+
+        /// <summary>
+        /// Derives the name of the Windows registry key name to use to locate the SQL LocalDB Instance API.
+        /// </summary>
+        /// <returns>
+        /// The registry key name to use for the current process.
+        /// </returns>
+        private static string DeriveLocalDbRegistryKey()
+        {
+            // Open the appropriate Registry key if running as a 32-bit process on a 64-bit machine
+            bool isWow64Process = Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess;
+
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                @"SOFTWARE\{0}Microsoft\Microsoft SQL Server Local DB\Installed Versions",
+                isWow64Process ? @"Wow6432Node\" : string.Empty);
         }
 
         /// <summary>
