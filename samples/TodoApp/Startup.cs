@@ -54,12 +54,13 @@ namespace TodoApp
             app.UseCookiePolicy();
             app.UseMvcWithDefaultRoute();
 
+            // Ensure that the database and schema exists
             TodoInitializer.Initialize(app.ApplicationServices);
         }
 
         private static void AddTodoContext(IServiceProvider serviceProvider, DbContextOptionsBuilder options)
         {
-            IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
+            // Check that SQL Server LocalDB is installed
             ISqlLocalDbApi localDB = serviceProvider.GetRequiredService<ISqlLocalDbApi>();
 
             if (!localDB.IsLocalDBInstalled())
@@ -67,17 +68,19 @@ namespace TodoApp
                 throw new NotSupportedException("SQL LocalDB is not installed.");
             }
 
-            string instanceName = config["SqlLocalDbInstance"];
-            ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance(instanceName);
+            // Get the configured SQL LocalDB instance to store the TODO items in, creating it if it does not exist
+            IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
+            ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance(config["SqlLocalDbInstance"]);
 
+            // Ensure that the SQL LocalDB instance is running and start it if not already running
             if (!instance.IsRunning)
             {
                 var manager = new SqlLocalDbInstanceManager(instance, localDB);
                 manager.Start();
             }
 
+            // Get the SQL connection string to use to connect to the LocalDB instance
             string connectionString = instance.GetConnectionString();
-
             options.UseSqlServer(connectionString);
         }
     }
