@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -22,6 +22,9 @@ namespace MartinCostello.SqlLocalDb
         /// Gets or sets a value indicating whether to automatically delete the
         /// files associated with SQL LocalDB instances when they are deleted.
         /// </summary>
+        /// <remarks>
+        /// The default value is <see langword="false"/>.
+        /// </remarks>
         public bool AutomaticallyDeleteInstanceFiles { get; set; }
 
         /// <summary>
@@ -37,11 +40,17 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Gets or sets the options to use when stopping instances of SQL LocalDB.
         /// </summary>
+        /// <remarks>
+        /// The default value is <see cref="StopInstanceOptions.None"/>.
+        /// </remarks>
         public StopInstanceOptions StopOptions { get; set; } = StopInstanceOptions.None;
 
         /// <summary>
         /// Gets or sets the default timeout to use when stopping instances of SQL LocalDB.
         /// </summary>
+        /// <remarks>
+        /// The default value is 1 minute.
+        /// </remarks>
         public TimeSpan StopTimeout { get; set; } = TimeSpan.FromMinutes(1);
 
         /// <summary>

@@ -12,6 +12,7 @@ using System.Security.Principal;
 using System.Text;
 using MartinCostello.SqlLocalDb.Interop;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MartinCostello.SqlLocalDb
 {
@@ -64,6 +65,14 @@ namespace MartinCostello.SqlLocalDb
         /// The timeout for stopping an instance of LocalDB.
         /// </summary>
         private TimeSpan _stopTimeout;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
+        /// </summary>
+        public SqlLocalDbApi()
+            : this(new SqlLocalDbOptions(), NullLoggerFactory.Instance)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
