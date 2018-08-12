@@ -386,7 +386,18 @@ namespace MartinCostello.SqlLocalDb
                 // Assert
                 deleted.ShouldBeGreaterThanOrEqualTo(1);
                 IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
-                namesAfter.ShouldBeSubsetOf(namesBefore);
+
+                int instancesDeleted = 0;
+
+                foreach (string name in namesBefore)
+                {
+                    if (!namesAfter.Contains(name))
+                    {
+                        instancesDeleted++;
+                    }
+                }
+
+                instancesDeleted.ShouldBeGreaterThanOrEqualTo(1);
             }
         }
 
