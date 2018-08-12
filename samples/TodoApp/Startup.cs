@@ -26,8 +26,9 @@ namespace TodoApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSqlLocalDB();
+
             services.AddSingleton<IClock>((_) => SystemClock.Instance);
-            services.AddSingleton<ISqlLocalDbApi, SqlLocalDbApi>();
             services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddScoped<ITodoService, TodoService>();
 
