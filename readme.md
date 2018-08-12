@@ -6,8 +6,8 @@ SQL LocalDB Wrapper is a .NET Standard 2.0 library providing interop with the [M
 
 | | Windows | Linux |
 |:-:|:-:|:-:|
-| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Code coverage](https://codecov.io/gh/martincostello/sqllocaldb/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb) | [![Linux build status](https://img.shields.io/travis/martincostello/sqllocaldb/master.svg)](https://travis-ci.org/martincostello/sqllocaldb) |
-| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/sqllocaldb) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.org/martincostello/sqllocaldb) |
+| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Code coverage](https://codecov.io/gh/martincostello/sqllocaldb/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb) | [![Linux build status](https://img.shields.io/travis-ci/com/martincostello/sqllocaldb/master.svg)](https://travis-ci.com/martincostello/sqllocaldb) |
+| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/sqllocaldb) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/sqllocaldb) |
 
 ## Introduction
 
