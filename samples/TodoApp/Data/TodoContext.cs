@@ -17,7 +17,6 @@ namespace TodoApp.Data
         public TodoContext(DbContextOptions<TodoContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         /// <summary>
