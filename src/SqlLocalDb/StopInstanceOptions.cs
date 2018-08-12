@@ -1,16 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StopInstanceOptions.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   StopInstanceOptions.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-namespace System.Data.SqlLocalDb
+using System;
+
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
     /// An enumeration of options to control the behavior when stopping a SQL LocalDB instance.

@@ -1,4 +1,4 @@
-﻿.DS_Store
+.DS_Store
 .dotnetcli
 .metadata
 .settings
@@ -17,6 +17,8 @@ node_modules
 obj
 packages
 project.lock.json
+samples/TodoApp/wwwroot/**/*.min.css
+samples/TodoApp/wwwroot/**/*.min.js
 TestResults
 typings
 UpgradeLog*.htm

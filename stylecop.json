@@ -3,17 +3,19 @@
   "settings": {
     "documentationRules": {
       "companyName": "https://github.com/martincostello/sqllocaldb",
-      "copyrightText": "{ownerName} (c) 2012-{year}",
+      "copyrightText": "Copyright (c) {ownerName}, {year}. All rights reserved.\nLicensed under the {licenseName} license. See the {licenseFile} file in the project root for full license information.",
       "documentExposedElements": true,
       "documentInterfaces": true,
       "documentInternalElements": true,
       "documentPrivateElements": true,
       "documentPrivateFields": true,
       "fileNamingConvention": "metadata",
-      "xmlHeader": true,
+      "xmlHeader": false,
       "variables": {
+        "licenseFile": "LICENSE",
+        "licenseName": "Apache 2.0",
         "ownerName": "Martin Costello",
-        "year": "2015"
+        "year": "2012-2018"
       }
     },
     "layoutRules": {

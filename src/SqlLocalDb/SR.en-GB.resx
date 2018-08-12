@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SqlLocalDbApi_InvalidLanguageIdFormat" xml:space="preserve">
-    <value>The current value ({0}) of the {1}.LanguageId property is not recognised by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
+  <data name="ILoggerExtensions_InvalidLanguageIdFormat" xml:space="preserve">
+    <value>The current Language Id {LanguageId} is not recognised by SQL LocalDB. Use a valid Windows Locale ID (LCID) or set the value to zero to use the Windows defaults.</value>
   </data>
 </root>

@@ -1,0 +1,40 @@
+@model TodoListViewModel
+
+@{
+    ViewData["Title"] = "My List";
+}
+
+<h1>Things To Do</h1>
+<hr />
+@if (Model.Items.Count == 0)
+{
+    <div class="alert alert-success lead" role="alert">
+        <em>Relax</em> - You've done everything! 🌈
+    </div>
+}
+else
+{
+    <h2>
+        My List
+    </h2>
+    <div>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th class="w-50" scope="col">Item</th>
+                    <th class="w-25" scope="col">Last Updated</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <partial name="_ViewItem" model="item" />
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<hr/>
+<partial name="_AddItem" />

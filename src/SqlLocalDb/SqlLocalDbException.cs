@@ -1,19 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlLocalDbException.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   SqlLocalDbException.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Data.Common;
 using System.Runtime.Serialization;
 
-namespace System.Data.SqlLocalDb
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
     /// The exception that is thrown when SQL Server LocalDB returns an error.
@@ -111,13 +103,16 @@ namespace System.Data.SqlLocalDb
         /// the specified serialization information and context.
         /// </summary>
         /// <param name="info">
-        /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds
+        /// The <see cref="SerializationInfo"/> that holds
         /// the serialized object data about the exception being thrown.
         /// </param>
         /// <param name="context">
-        /// The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains
+        /// The <see cref="StreamingContext"/> that contains
         /// contextual information about the source or destination.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="info"/> is <see langword="null"/>.
+        /// </exception>
         protected SqlLocalDbException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -134,11 +129,7 @@ namespace System.Data.SqlLocalDb
         /// Gets or sets the name of the SQL Server LocalDB
         /// instance that caused the exception, if any.
         /// </summary>
-        public string InstanceName
-        {
-            get;
-            protected set;
-        }
+        public string InstanceName { get; protected set; }
 
         /// <summary>
         /// Sets the <see cref="SerializationInfo"/> with information about the exception.
@@ -148,7 +139,6 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="info"/> parameter is <see langword="null"/>.
         /// </exception>
-        [Security.SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)

@@ -1,46 +1,40 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISqlLocalDbApi.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   ISqlLocalDbApi.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 
-namespace System.Data.SqlLocalDb
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
-    /// Defines the interface to the SQL LocalDB API.
+    /// Defines the interface to the SQL LocalDB Instance API.
     /// </summary>
     public interface ISqlLocalDbApi
     {
         /// <summary>
-        /// Gets the version string for the latest installed version of SQL Server LocalDB.
+        /// Gets the name of the default SQL LocalDB instance.
         /// </summary>
-        string LatestVersion
-        {
-            get;
-        }
+        string DefaultInstanceName { get; }
 
         /// <summary>
-        /// Gets an <see cref="IList{T}"/> of <see cref="string"/> containing the available version(s) of SQL LocalDB.
+        /// Gets the version string for the latest installed version of SQL Server LocalDB.
         /// </summary>
-        IList<string> Versions
-        {
-            get;
-        }
+        string LatestVersion { get; }
+
+        /// <summary>
+        /// Gets an <see cref="IReadOnlyList{T}"/> of <see cref="string"/> containing the available version(s) of SQL LocalDB.
+        /// </summary>
+        IReadOnlyList<string> Versions { get; }
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
         /// </summary>
         /// <param name="instanceName">The name of the LocalDB instance.</param>
         /// <param name="version">The version of SQL Server LocalDB to use.</param>
-        void CreateInstance(string instanceName, string version);
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceInfo"/> containing information about the instance that was created.
+        /// </returns>
+        ISqlLocalDbInstanceInfo CreateInstance(string instanceName, string version);
 
         /// <summary>
         /// Deletes the specified SQL Server LocalDB instance.
@@ -66,11 +60,7 @@ namespace System.Data.SqlLocalDb
         /// <returns>
         /// The names of the the SQL Server LocalDB instances for the current user.
         /// </returns>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Design",
-            "CA1024:UsePropertiesWhereAppropriate",
-            Justification = "Requires enumerating the API which is non-trivial.")]
-        IList<string> GetInstanceNames();
+        IReadOnlyList<string> GetInstanceNames();
 
         /// <summary>
         /// Returns information about the specified LocalDB version.
@@ -81,6 +71,16 @@ namespace System.Data.SqlLocalDb
         /// about the LocalDB version specified by <paramref name="version"/>.
         /// </returns>
         ISqlLocalDbVersionInfo GetVersionInfo(string version);
+
+        /// <summary>
+        /// Returns whether the specified LocalDB instance exists.
+        /// </summary>
+        /// <param name="instanceName">The name of the LocalDB instance to check for existence.</param>
+        /// <returns>
+        /// <see langword="true"/> if the LocalDB instance specified by
+        /// <paramref name="instanceName"/> exists; otherwise <see langword="false"/>.
+        /// </returns>
+        bool InstanceExists(string instanceName);
 
         /// <summary>
         /// Returns whether SQL LocalDB is installed on the current machine.
@@ -122,19 +122,14 @@ namespace System.Data.SqlLocalDb
         /// The name of the LocalDB instance to stop.
         /// </param>
         /// <param name="timeout">
-        /// The amount of time to give the LocalDB instance to stop.
-        /// If the value is <see cref="TimeSpan.Zero"/>, the method will
-        /// return immediately and not wait for the instance to stop.
+        /// The optional amount of time to give the LocalDB instance to stop.
         /// </param>
-        void StopInstance(string instanceName, TimeSpan timeout);
+        void StopInstance(string instanceName, TimeSpan? timeout);
 
         /// <summary>
         /// Disables tracing of native API calls for all the SQL Server
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
-        /// <exception cref="SqlLocalDbException">
-        /// Tracing could not be disabled.
-        /// </exception>
         void StopTracing();
 
         /// <summary>
@@ -143,11 +138,6 @@ namespace System.Data.SqlLocalDb
         /// <param name="instanceName">
         /// The private name for the LocalDB instance to stop sharing.
         /// </param>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly",
-            MessageId = "Unshare",
-            Justification = "Matches the name of the native LocalDB API function.")]
         void UnshareInstance(string instanceName);
     }
 }

@@ -1,0 +1,17 @@
+<h2>Add New Item</h2>
+
+<form asp-controller="Home" asp-action="AddItem" method="post" role="form" class="form-inline">
+
+    <label class="sr-only" for="new-item-text">Thing to do</label>
+
+    <input autocomplete="off"
+           autofocus
+           class="form-control form-control-lg mr-sm-2 w-75"
+           id="new-item-text"
+           name="text"
+           placeholder="Buy eggs 🥚"
+           type="text">
+
+    <button class="btn  btn-lg btn-primary" disabled id="add-new-item" type="submit">Add</button>
+
+</form>

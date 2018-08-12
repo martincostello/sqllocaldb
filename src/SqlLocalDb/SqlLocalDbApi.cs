@@ -1,30 +1,24 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlLocalDbApi.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   SqlLocalDbApi.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using MartinCostello.SqlLocalDb.Interop;
+using Microsoft.Extensions.Logging;
 
-namespace System.Data.SqlLocalDb
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
-    /// A class representing a wrapper to the SQL Server LocalDB native API.
-    /// This class cannot be inherited.
+    /// A class representing a wrapper to the SQL Server LocalDB Instance API. This class cannot be inherited.
     /// </summary>
-    public static class SqlLocalDbApi
+    public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisposable
     {
         /// <summary>
         /// The name of the default instance in SQL LocalDB 2012.
@@ -37,14 +31,14 @@ namespace System.Data.SqlLocalDb
         private const string DefaultInstanceName2014AndLater = "MSSQLLocalDB";
 
         /// <summary>
-        /// The maximum length of an SQL LocalDB instance name, in bytes.
+        /// The maximum length of a SQL LocalDB instance name, in bytes.
         /// </summary>
-        private const int MaxInstanceNameLength = (NativeMethods.MAX_LOCALDB_INSTANCE_NAME_LENGTH + 1) * sizeof(char);
+        private const int MaxInstanceNameLength = (LocalDbInstanceApi.MaximumInstanceNameLength + 1) * sizeof(char);
 
         /// <summary>
-        /// The maximum length of an SQL LocalDB version string, in bytes.
+        /// The maximum length of a SQL LocalDB version string, in bytes.
         /// </summary>
-        private const int MaxVersionLength = (NativeMethods.MAX_LOCALDB_VERSION_LENGTH + 1) * sizeof(char);
+        private const int MaxVersionLength = (LocalDbInstanceApi.MaximumInstanceVersionLength + 1) * sizeof(char);
 
         /// <summary>
         /// The value to pass to functions which have a reserved parameter for future use.
@@ -52,29 +46,91 @@ namespace System.Data.SqlLocalDb
         private const int ReservedValue = 0;
 
         /// <summary>
+        /// The native API. This field is read-only.
+        /// </summary>
+        private readonly LocalDbInstanceApi _api;
+
+        /// <summary>
+        /// Whether the instance has been disposed of.
+        /// </summary>
+        private bool _disposed;
+
+        /// <summary>
         /// The available versions of SQL Server LocalDB installed on the local machine.
         /// </summary>
-        private static string[] _versions;
-
-        /// <summary>
-        /// Whether to automatically delete the files associated with SQL LocalDB instances when they are deleted.
-        /// </summary>
-        private static bool _automaticallyDeleteInstanceFiles = SqlLocalDbConfig.AutomaticallyDeleteInstanceFiles;
-
-        /// <summary>
-        /// The locale ID (LCID) to use for formatting error messages.
-        /// </summary>
-        private static int _languageId = SqlLocalDbConfig.LanguageId;
-
-        /// <summary>
-        /// The options to use when stopping instances of SQL LocalDB.
-        /// </summary>
-        private static StopInstanceOptions _stopOptions = SqlLocalDbConfig.StopOptions;
+        private string[] _versions;
 
         /// <summary>
         /// The timeout for stopping an instance of LocalDB.
         /// </summary>
-        private static TimeSpan _stopTimeout = SqlLocalDbConfig.StopTimeout;
+        private TimeSpan _stopTimeout;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="loggerFactory"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="loggerFactory"/> did create the required loggers.
+        /// </exception>
+        public SqlLocalDbApi(ILoggerFactory loggerFactory)
+            : this(new SqlLocalDbOptions(), loggerFactory)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
+        /// </summary>
+        /// <param name="options">The <see cref="SqlLocalDbOptions"/> to use.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="options"/> or <paramref name="loggerFactory"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="loggerFactory"/> did create the required loggers.
+        /// </exception>
+        public SqlLocalDbApi(SqlLocalDbOptions options, ILoggerFactory loggerFactory)
+            : this(options, new WindowsRegistry(), loggerFactory)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
+        /// </summary>
+        /// <param name="options">The <see cref="SqlLocalDbOptions"/> to use.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to use.</param>
+        /// <param name="registry">The <see cref="IRegistry"/> to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="options"/>, <paramref name="registry"/> or <paramref name="loggerFactory"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="loggerFactory"/> did not create the required loggers.
+        /// </exception>
+        internal SqlLocalDbApi(SqlLocalDbOptions options, IRegistry registry, ILoggerFactory loggerFactory)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (registry == null)
+            {
+                throw new ArgumentNullException(nameof(registry));
+            }
+
+            LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+            Logger = loggerFactory.CreateLogger<SqlLocalDbApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(SqlLocalDbApi)));
+            var apiLogger = loggerFactory.CreateLogger<LocalDbInstanceApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(LocalDbInstanceApi)));
+
+            AutomaticallyDeleteInstanceFiles = options.AutomaticallyDeleteInstanceFiles;
+            LanguageId = options.LanguageId;
+            StopOptions = options.StopOptions;
+            StopTimeout = options.StopTimeout;
+
+            _api = new LocalDbInstanceApi(options.NativeApiOverrideVersion, registry, apiLogger);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to automatically delete the
@@ -87,16 +143,12 @@ namespace System.Data.SqlLocalDb
         /// used. The default value is <see langword="false"/>, unless overridden
         /// by the <c>SQLLocalDB:AutomaticallyDeleteInstanceFiles</c> application configuration setting.
         /// </remarks>
-        public static bool AutomaticallyDeleteInstanceFiles
-        {
-            get { return _automaticallyDeleteInstanceFiles; }
-            set { _automaticallyDeleteInstanceFiles = value; }
-        }
+        public bool AutomaticallyDeleteInstanceFiles { get; set; }
 
         /// <summary>
         /// Gets the name of the default SQL LocalDB instance.
         /// </summary>
-        public static string DefaultInstanceName
+        public string DefaultInstanceName
         {
             get
             {
@@ -107,7 +159,7 @@ namespace System.Data.SqlLocalDb
                     return string.Empty;
                 }
 
-                if (NativeMethods.NativeApiVersion.Major == 11)
+                if (_api.NativeApiVersion.Major == 11)
                 {
                     return DefaultInstanceName2012;
                 }
@@ -125,11 +177,7 @@ namespace System.Data.SqlLocalDb
         /// order is used. This property is provided for integrators to specifically override the language used from
         /// the defaults used by the local installed operating system.
         /// </remarks>
-        public static int LanguageId
-        {
-            get { return _languageId; }
-            set { _languageId = value; }
-        }
+        public int LanguageId { get; set; }
 
         /// <summary>
         /// Gets the version string for the latest installed version of SQL Server LocalDB.
@@ -137,19 +185,21 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// No versions of SQL Server LocalDB are installed on the local machine.
         /// </exception>
-        public static string LatestVersion
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        public string LatestVersion
         {
             get
             {
+                EnsurePlatformSupported();
+
                 // Access through property to ensure initialized
-                IList<string> versions = Versions;
+                IReadOnlyList<string> versions = Versions;
 
                 if (versions.Count < 1)
                 {
-                    string message = SRHelper.Format(
-                        SR.SqlLocalDbApi_NoVersionsFormat,
-                        Environment.MachineName);
-
+                    string message = SRHelper.Format(SR.SqlLocalDbApi_NoVersionsFormat, Environment.MachineName);
                     throw new InvalidOperationException(message);
                 }
 
@@ -165,11 +215,7 @@ namespace System.Data.SqlLocalDb
         /// <summary>
         /// Gets or sets the options to use when stopping instances of SQL LocalDB.
         /// </summary>
-        public static StopInstanceOptions StopOptions
-        {
-            get { return _stopOptions; }
-            set { _stopOptions = value; }
-        }
+        public StopInstanceOptions StopOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the default timeout to use when
@@ -178,7 +224,7 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="value"/> is less than <see cref="TimeSpan.Zero"/>.
         /// </exception>
-        public static TimeSpan StopTimeout
+        public TimeSpan StopTimeout
         {
             get
             {
@@ -189,10 +235,7 @@ namespace System.Data.SqlLocalDb
             {
                 if (value < TimeSpan.Zero)
                 {
-                    string message = SRHelper.Format(
-                        SR.SqlLocalDbApi_TimeoutTooSmallFormat,
-                        nameof(value));
-
+                    string message = SRHelper.Format(SR.SqlLocalDbApi_TimeoutTooSmallFormat, nameof(value));
                     throw new ArgumentOutOfRangeException(nameof(value), value, message);
                 }
 
@@ -210,10 +253,15 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="SqlLocalDbException">
         /// The installed versions of SQL LocalDB could not be determined.
         /// </exception>
-        public static IList<string> Versions
+        public IReadOnlyList<string> Versions
         {
             get
             {
+                if (!IsWindows)
+                {
+                    return Array.Empty<string>();
+                }
+
                 if (_versions == null)
                 {
                     // Use lazy initialization to allow some functionality to be
@@ -225,41 +273,92 @@ namespace System.Data.SqlLocalDb
             }
         }
 
+        /// <inheritdoc />
+        ISqlLocalDbApi ISqlLocalDbApiAdapter.LocalDb => this;
+
         /// <summary>
-        /// Creates a new instance of SQL Server LocalDB.
+        /// Gets a value indicating whether the executing platform is Microsoft Windows.
         /// </summary>
-        /// <param name="instanceName">The name of the LocalDB instance.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// No versions of SQL Server LocalDB are installed on the local machine.
-        /// </exception>
-        /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could
-        /// not be stopped or the installed versions of SQL LocalDB could not be determined.
-        /// </exception>
-        public static void CreateInstance(string instanceName)
+        internal static bool IsWindows { get; } = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        /// <summary>
+        /// Gets the <see cref="ILoggerFactory"/> to use.
+        /// </summary>
+        internal ILoggerFactory LoggerFactory { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ILogger"/> to use.
+        /// </summary>
+        private ILogger Logger { get; }
+
+        /// <summary>
+        /// Gets the full path of the directory containing the SQL LocalDB instance files for the current user.
+        /// </summary>
+        /// <returns>
+        /// The full path of the directory containing the SQL LocalDB instance files for the current user.
+        /// </returns>
+        /// <remarks>
+        /// The folder usually used to store SQL LocalDB instance files is <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances</c>.
+        /// </remarks>
+        public static string GetInstancesFolderPath()
         {
-            // Use the latest version
-            CreateInstance(instanceName, LatestVersion);
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft",
+                "Microsoft SQL Server Local DB",
+                "Instances");
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.
         /// </summary>
         /// <param name="instanceName">The name of the LocalDB instance.</param>
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceInfo"/> containing information about the instance that was created.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// No versions of SQL Server LocalDB are installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could
+        /// not be stopped or the installed versions of SQL LocalDB could not be determined.
+        /// </exception>
+        public ISqlLocalDbInstanceInfo CreateInstance(string instanceName) => CreateInstance(instanceName, LatestVersion);
+
+        /// <summary>
+        /// Creates a new instance of SQL Server LocalDB.
+        /// </summary>
+        /// <param name="instanceName">The name of the LocalDB instance.</param>
         /// <param name="version">The version of SQL Server LocalDB to use.</param>
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceInfo"/> containing information about the instance that was created.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="instanceName"/> or <paramref name="version"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> and <paramref name="version"/> could not be created.
         /// </exception>
-        public static void CreateInstance(string instanceName, string version)
+        public ISqlLocalDbInstanceInfo CreateInstance(string instanceName, string version)
         {
             if (instanceName == null)
             {
@@ -271,14 +370,16 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentNullException(nameof(version));
             }
 
-            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatingFormat, instanceName, version);
+            Logger.CreatingInstance(instanceName, version);
 
             InvokeThrowOnError(
-                () => NativeMethods.CreateInstance(version, instanceName, ReservedValue),
-                Logger.TraceEvent.CreateInstance,
+                () => _api.CreateInstance(version, instanceName, ReservedValue),
+                EventIds.CreatingInstanceFailed,
                 instanceName);
 
-            Logger.Verbose(Logger.TraceEvent.CreateInstance, SR.SqlLocalDbApi_LogCreatedFormat, instanceName, version);
+            Logger.CreatedInstance(instanceName, version);
+
+            return GetInstanceInfo(instanceName);
         }
 
         /// <summary>
@@ -293,13 +394,13 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
-        public static void DeleteInstance(string instanceName)
-        {
-            DeleteInstance(instanceName, deleteFiles: AutomaticallyDeleteInstanceFiles);
-        }
+        public void DeleteInstance(string instanceName) => DeleteInstance(instanceName, deleteFiles: AutomaticallyDeleteInstanceFiles);
 
         /// <summary>
         /// Deletes the specified SQL Server LocalDB instance.
@@ -316,10 +417,13 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
-        public static void DeleteInstance(string instanceName, bool deleteFiles)
+        public void DeleteInstance(string instanceName, bool deleteFiles)
         {
             DeleteInstanceInternal(instanceName, throwIfNotFound: true, deleteFiles: deleteFiles);
         }
@@ -334,7 +438,13 @@ namespace System.Data.SqlLocalDb
         /// The default instance(s) of any version(s) of SQL LocalDB that are
         /// installed on the local machine are not deleted.
         /// </remarks>
-        public static int DeleteUserInstances() => DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        public int DeleteUserInstances() => DeleteUserInstances(deleteFiles: AutomaticallyDeleteInstanceFiles);
 
         /// <summary>
         /// Deletes all user instances of SQL LocalDB on the current machine,
@@ -351,53 +461,52 @@ namespace System.Data.SqlLocalDb
         /// The default instance(s) of any version(s) of SQL LocalDB that are
         /// installed on the local machine are not deleted.
         /// </remarks>
-        public static int DeleteUserInstances(bool deleteFiles)
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        public int DeleteUserInstances(bool deleteFiles)
         {
             int instancesDeleted = 0;
 
-            IList<string> instanceNames = GetInstanceNames();
+            IReadOnlyList<string> instanceNames = GetInstanceNames();
 
-            if (instanceNames != null)
+            foreach (string instanceName in instanceNames)
             {
-                foreach (string instanceName in instanceNames)
-                {
-                    ISqlLocalDbInstanceInfo info = GetInstanceInfo(instanceName);
+                ISqlLocalDbInstanceInfo info = GetInstanceInfo(instanceName);
 
-                    // Do not try to delete automatic instances.
-                    // These are the default instances created for each version.
-                    // As of SQL LocalDB 2014, the default instance is named 'MSSQLLocalDB'.
-                    if (!info.Exists ||
-                        info.IsAutomatic ||
-                        string.Equals(info.Name, DefaultInstanceName2014AndLater, StringComparison.Ordinal))
+                // Do not try to delete automatic instances.
+                // These are the default instances created for each version.
+                // As of SQL LocalDB 2014, the default instance is named 'MSSQLLocalDB'.
+                if (!info.Exists ||
+                    info.IsAutomatic ||
+                    string.Equals(info.Name, DefaultInstanceName2014AndLater, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                // In some cases, SQL LocalDB may report instance names in calls
+                // to enumerate the instances that do not actually exist. Presumably
+                // this can occur if the installation/instances become corrupted.
+                // Such failures to delete an instance should be ignored
+                try
+                {
+                    if (DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: deleteFiles))
                     {
+                        instancesDeleted++;
+                    }
+                }
+                catch (SqlLocalDbException ex)
+                {
+                    if (ex.ErrorCode == SqlLocalDbErrors.InstanceBusy)
+                    {
+                        Logger.DeletingInstanceFailedAsInUse(ex, ex.InstanceName);
                         continue;
                     }
 
-                    // In some cases, SQL LocalDB may report instance names in calls
-                    // to enumerate the instances that do not actually exist. Presumably
-                    // this can occur if the installation/instances become corrupted.
-                    // Such failures to delete an instance should be ignored
-                    try
-                    {
-                        if (DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: deleteFiles))
-                        {
-                            instancesDeleted++;
-                        }
-                    }
-                    catch (SqlLocalDbException ex)
-                    {
-                        if (ex.ErrorCode == SqlLocalDbErrors.InstanceBusy)
-                        {
-                            Logger.Warning(
-                                Logger.TraceEvent.DeleteFailedAsInstanceInUse,
-                                SR.SqlLocalDbApi_LogDeleteFailedAsInUseFormat,
-                                ex.InstanceName);
-
-                            continue;
-                        }
-
-                        throw;
-                    }
+                    throw;
                 }
             }
 
@@ -418,17 +527,22 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The information for the SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not obtained.
         /// </exception>
-        public static ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName)
+        public ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGettingInfoFormat, instanceName);
+            Logger.GettingInstanceInfo(instanceName);
+
+            LocalDbInstanceInfo info;
 
             int size = LocalDbInstanceInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
@@ -436,20 +550,24 @@ namespace System.Data.SqlLocalDb
             try
             {
                 InvokeThrowOnError(
-                    () => NativeMethods.GetInstanceInfo(instanceName, ptrInfo, size),
-                    Logger.TraceEvent.GetInstanceInfo,
+                    () => _api.GetInstanceInfo(instanceName, ptrInfo, size),
+                    EventIds.GettingInstanceInfoFailed,
                     instanceName);
 
-                LocalDbInstanceInfo info = MarshalStruct<LocalDbInstanceInfo>(ptrInfo);
-
-                Logger.Verbose(Logger.TraceEvent.GetInstanceInfo, SR.SqlLocalDbApi_LogGotInfoFormat, instanceName);
-
-                return info;
+                info = MarshalStruct<LocalDbInstanceInfo>(ptrInfo);
             }
             finally
             {
                 Marshal.FreeHGlobal(ptrInfo);
             }
+
+            Logger.GotInstanceInfo(instanceName);
+
+            var result = new SqlLocalDbInstanceInfo(this);
+
+            result.Update(info);
+
+            return result;
         }
 
         /// <summary>
@@ -461,26 +579,29 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance names could not be determined.
         /// </exception>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Design",
-            "CA1024:UsePropertiesWhereAppropriate",
-            Justification = "Requires enumeration of native API and allocating unmanaged memory.")]
-        public static IList<string> GetInstanceNames()
+        public IReadOnlyList<string> GetInstanceNames()
         {
-            Logger.Verbose(Logger.TraceEvent.GetInstanceNames, SR.SqlLocalDbApi_LogGetInstances);
+            EnsurePlatformSupported();
+
+            Logger.GettingInstanceNames();
 
             // Query the LocalDB API to get the number of instances
             int count = 0;
-            int hr = NativeMethods.GetInstanceNames(IntPtr.Zero, ref count);
+            int hr = _api.GetInstanceNames(IntPtr.Zero, ref count);
 
             if (hr != 0 &&
                 hr != SqlLocalDbErrors.InsufficientBuffer)
             {
-                throw GetLocalDbError(hr, Logger.TraceEvent.GetInstanceNames);
+                throw GetLocalDbError(hr, EventIds.GettingInstanceNamesFailed);
             }
+
+            string[] names;
 
             // Allocate enough memory to receive the instance name array
             int nameLength = MaxInstanceNameLength;
@@ -489,42 +610,20 @@ namespace System.Data.SqlLocalDb
             try
             {
                 InvokeThrowOnError(
-                    () => NativeMethods.GetInstanceNames(ptrNames, ref count),
-                    Logger.TraceEvent.GetInstanceNames);
+                    () => _api.GetInstanceNames(ptrNames, ref count),
+                    EventIds.GettingInstanceNamesFailed);
 
                 // Read the instance names back from unmanaged memory
-                string[] names = MarshalStringArray(ptrNames, nameLength, count);
-
-                Logger.Verbose(Logger.TraceEvent.GetInstanceNames, SR.SqlLocalDbApi_LogGotInstancesFormat, names.Length);
-
-                return names;
+                names = MarshalStringArray(ptrNames, nameLength, count);
             }
             finally
             {
                 Marshal.FreeHGlobal(ptrNames);
             }
-        }
 
-        /// <summary>
-        /// Gets the full path of the directory containing the SQL LocalDB instance files for the current user.
-        /// </summary>
-        /// <returns>
-        /// The full path of the directory containing the SQL LocalDB instance files for the current user.
-        /// </returns>
-        /// <remarks>
-        /// The folder usually used to store SQL LocalDB instance files is <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances</c>.
-        /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Design",
-            "CA1024:UsePropertiesWhereAppropriate",
-            Justification = "Calls a number of methods so is more appropriate as a method.")]
-        public static string GetInstancesFolderPath()
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft",
-                "Microsoft SQL Server Local DB",
-                "Instances");
+            Logger.GotInstanceNames(names.Length);
+
+            return names;
         }
 
         /// <summary>
@@ -541,17 +640,22 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The information for the SQL Server LocalDB version specified by <paramref name="version"/> could not be obtained.
         /// </exception>
-        public static ISqlLocalDbVersionInfo GetVersionInfo(string version)
+        public ISqlLocalDbVersionInfo GetVersionInfo(string version)
         {
             if (version == null)
             {
                 throw new ArgumentNullException(nameof(version));
             }
 
-            Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGetVersionInfoFormat, version);
+            Logger.GettingVersionInfo(version);
+
+            LocalDbVersionInfo info;
 
             int size = LocalDbVersionInfo.MarshalSize;
             IntPtr ptrInfo = Marshal.AllocHGlobal(size);
@@ -559,18 +663,54 @@ namespace System.Data.SqlLocalDb
             try
             {
                 InvokeThrowOnError(
-                    () => NativeMethods.GetVersionInfo(version, ptrInfo, size),
-                    Logger.TraceEvent.GetVersionInfo);
+                    () => _api.GetVersionInfo(version, ptrInfo, size),
+                    EventIds.GettingVersionInfoFailed);
 
-                LocalDbVersionInfo info = MarshalStruct<LocalDbVersionInfo>(ptrInfo);
-
-                Logger.Verbose(Logger.TraceEvent.GetVersionInfo, SR.SqlLocalDbApi_LogGotVersionInfoFormat, version);
-
-                return info;
+                info = MarshalStruct<LocalDbVersionInfo>(ptrInfo);
             }
             finally
             {
                 Marshal.FreeHGlobal(ptrInfo);
+            }
+
+            Logger.GotVersionInfo(version);
+
+            var result = new SqlLocalDbVersionInfo();
+
+            result.Update(info);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns whether the specified LocalDB instance exists.
+        /// </summary>
+        /// <param name="instanceName">The name of the LocalDB instance to check for existence.</param>
+        /// <returns>
+        /// <see langword="true"/> if the LocalDB instance specified by
+        /// <paramref name="instanceName"/> exists; otherwise <see langword="false"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instanceName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// Whether the SQL Server LocalDB instance specified by <paramref name="instanceName"/> exists could not be determined.
+        /// </exception>
+        public bool InstanceExists(string instanceName)
+        {
+            try
+            {
+                return GetInstanceInfo(instanceName).Exists;
+            }
+            catch (SqlLocalDbException ex) when (ex.ErrorCode == SqlLocalDbErrors.UnknownInstance)
+            {
+                return false;
             }
         }
 
@@ -581,43 +721,20 @@ namespace System.Data.SqlLocalDb
         /// <see langword="true"/> if SQL Server LocalDB is installed on the
         /// current machine; otherwise <see langword="false"/>.
         /// </returns>
-        public static bool IsLocalDBInstalled()
+        public bool IsLocalDBInstalled()
         {
+            // SQL LocalDB is only supported on Windows, so shortcut
+            if (!IsWindows)
+            {
+                return false;
+            }
+
             // Call one of the "get info" functions with a zero buffer.
             // If LocalDB is installed, it will return a "buffer too small" HRESULT,
             // otherwise it will return the "not installed" HRESULT.
-            int dummy = 0;
-            int hr = NativeMethods.GetVersions(IntPtr.Zero, ref dummy);
+            int notUsed = 0;
+            int hr = _api.GetVersions(IntPtr.Zero, ref notUsed);
             return hr != SqlLocalDbErrors.NotInstalled;
-        }
-
-        /// <summary>
-        /// Shares the specified SQL Server LocalDB instance with other users of the computer,
-        /// using the specified shared name for the current Windows user.
-        /// </summary>
-        /// <param name="instanceName">The private name for the LocalDB instance to share.</param>
-        /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="instanceName"/> or <paramref name="sharedInstanceName"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// SQL Server LocalDB is not installed on the local machine.
-        /// </exception>
-        /// <exception cref="SqlLocalDbException">
-        /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be shared.
-        /// </exception>
-        public static void ShareInstance(
-            string instanceName,
-            string sharedInstanceName)
-        {
-            string ownerSid;
-
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-            {
-                ownerSid = identity.User.Value;
-            }
-
-            ShareInstance(ownerSid, instanceName, sharedInstanceName);
         }
 
         /// <summary>
@@ -626,17 +743,20 @@ namespace System.Data.SqlLocalDb
         /// </summary>
         /// <param name="ownerSid">The SID of the instance owner.</param>
         /// <param name="instanceName">The private name for the LocalDB instance to share.</param>
-        /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share.</param>
+        /// <param name="sharedInstanceName">The shared name for the LocalDB instance to share as.</param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="ownerSid"/>, <paramref name="instanceName"/> or <paramref name="sharedInstanceName"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be shared.
         /// </exception>
-        public static void ShareInstance(
+        public void ShareInstance(
             string ownerSid,
             string instanceName,
             string sharedInstanceName)
@@ -666,12 +786,10 @@ namespace System.Data.SqlLocalDb
                 throw new ArgumentException(SR.SqlLocalDbApi_NoInstanceName, nameof(instanceName));
             }
 
-            Logger.Verbose(Logger.TraceEvent.ShareInstance, SR.SqlLocalDbApi_LogSharingInstanceFormat, instanceName, ownerSid, sharedInstanceName);
+            Logger.SharingInstance(instanceName, ownerSid, sharedInstanceName);
 
             // Get the binary version of the SID from its string
-            SecurityIdentifier sid = new SecurityIdentifier(ownerSid);
-            byte[] binaryForm = new byte[SecurityIdentifier.MaxBinaryLength];
-            sid.GetBinaryForm(binaryForm, 0);
+            byte[] binaryForm = GetOwnerSidAsByteArray(ownerSid);
 
             IntPtr ptrSid = Marshal.AllocHGlobal(binaryForm.Length);
 
@@ -681,11 +799,11 @@ namespace System.Data.SqlLocalDb
                 Marshal.Copy(binaryForm, 0, ptrSid, binaryForm.Length);
 
                 InvokeThrowOnError(
-                    () => NativeMethods.ShareInstance(ptrSid, instanceName, sharedInstanceName, ReservedValue),
-                    Logger.TraceEvent.ShareInstance,
+                    () => _api.ShareInstance(ptrSid, instanceName, sharedInstanceName, ReservedValue),
+                    EventIds.SharingInstanceFailed,
                     instanceName);
 
-                Logger.Verbose(Logger.TraceEvent.ShareInstance, SR.SqlLocalDbApi_LogSharedInstanceFormat, instanceName, ownerSid, sharedInstanceName);
+                Logger.SharedInstance(instanceName, ownerSid, sharedInstanceName);
             }
             finally
             {
@@ -706,29 +824,32 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be started.
         /// </exception>
-        public static string StartInstance(string instanceName)
+        public string StartInstance(string instanceName)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            Logger.Verbose(Logger.TraceEvent.StartInstance, SR.SqlLocalDbApi_LogStartingFormat, instanceName);
+            Logger.StartingInstance(instanceName);
 
-            StringBuilder buffer = new StringBuilder(NativeMethods.LOCALDB_MAX_SQLCONNECTION_BUFFER_SIZE + 1);
-            int size = buffer.Capacity;
+            int size = LocalDbInstanceApi.MaximumSqlConnectionStringBufferLength + 1;
+            var buffer = new StringBuilder(size);
 
             InvokeThrowOnError(
-                () => NativeMethods.StartInstance(instanceName, ReservedValue, buffer, ref size),
-                Logger.TraceEvent.StartInstance,
+                () => _api.StartInstance(instanceName, ReservedValue, buffer, ref size),
+                EventIds.StartingInstanceFailed,
                 instanceName);
 
             string namedPipe = buffer.ToString();
 
-            Logger.Verbose(Logger.TraceEvent.StartInstance, SR.SqlLocalDbApi_LogStartedFormat, instanceName, namedPipe);
+            Logger.StartedInstance(instanceName, namedPipe);
 
             return namedPipe;
         }
@@ -737,16 +858,22 @@ namespace System.Data.SqlLocalDb
         /// Enables tracing of native API calls for all the SQL Server
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// Tracing could not be initialized.
         /// </exception>
-        public static void StartTracing()
+        public void StartTracing()
         {
-            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStartTracing);
+            Logger.StartingTracing();
 
-            InvokeThrowOnError(NativeMethods.StartTracing, Logger.TraceEvent.StartTracing);
+            InvokeThrowOnError(_api.StartTracing, EventIds.StartingTracingFailed);
 
-            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStartedTracing);
+            Logger.StartedTracing();
         }
 
         /// <summary>
@@ -762,10 +889,13 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
         /// </exception>
-        public static void StopInstance(string instanceName)
+        public void StopInstance(string instanceName)
         {
             StopInstance(instanceName, _stopTimeout);
         }
@@ -777,8 +907,9 @@ namespace System.Data.SqlLocalDb
         /// The name of the LocalDB instance to stop.
         /// </param>
         /// <param name="timeout">
-        /// The amount of time to give the LocalDB instance to stop.
-        /// If the value is <see cref="TimeSpan.Zero"/>, the method will
+        /// The optional amount of time to give the LocalDB instance to stop.
+        /// If no value is specified, the value of <see cref="StopTimeout"/> will
+        /// be used. If the value is <see cref="TimeSpan.Zero"/>, the method will
         /// return immediately and not wait for the instance to stop.
         /// </param>
         /// <exception cref="ArgumentNullException">
@@ -790,13 +921,16 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
         /// </exception>
         /// <remarks>
         /// The <paramref name="timeout"/> parameter is rounded to the nearest second.
         /// </remarks>
-        public static void StopInstance(string instanceName, TimeSpan timeout)
+        public void StopInstance(string instanceName, TimeSpan? timeout)
         {
             StopInstance(instanceName, StopOptions, timeout);
         }
@@ -812,7 +946,8 @@ namespace System.Data.SqlLocalDb
         /// </param>
         /// <param name="timeout">
         /// The amount of time to give the LocalDB instance to stop.
-        /// If the value is <see cref="TimeSpan.Zero"/>, the method will
+        /// If no value is specified, the value of <see cref="StopTimeout"/> will
+        /// be used. If the value is <see cref="TimeSpan.Zero"/>, the method will
         /// return immediately and not wait for the instance to stop.
         /// </param>
         /// <exception cref="ArgumentNullException">
@@ -824,55 +959,63 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be stopped.
         /// </exception>
         /// <remarks>
         /// The <paramref name="timeout"/> parameter is rounded to the nearest second.
         /// </remarks>
-        public static void StopInstance(string instanceName, StopInstanceOptions options, TimeSpan timeout)
+        public void StopInstance(string instanceName, StopInstanceOptions options, TimeSpan? timeout)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            if (timeout < TimeSpan.Zero)
-            {
-                string message = SRHelper.Format(
-                    SR.SqlLocalDbApi_TimeoutTooSmallFormat,
-                    nameof(timeout));
+            TimeSpan theTimeout = timeout ?? StopTimeout;
 
+            if (theTimeout < TimeSpan.Zero)
+            {
+                string message = SRHelper.Format(SR.SqlLocalDbApi_TimeoutTooSmallFormat, nameof(timeout));
                 throw new ArgumentOutOfRangeException(nameof(timeout), timeout, message);
             }
 
-            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppingFormat, instanceName, timeout, options);
+            Logger.StoppingInstance(instanceName, theTimeout, options);
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             InvokeThrowOnError(
-                () => NativeMethods.StopInstance(instanceName, options, (int)timeout.TotalSeconds),
-                Logger.TraceEvent.StopInstance,
+                () => _api.StopInstance(instanceName, options, (int)theTimeout.TotalSeconds),
+                EventIds.StoppingInstanceFailed,
                 instanceName);
 
             stopwatch.Stop();
 
-            Logger.Verbose(Logger.TraceEvent.StopInstance, SR.SqlLocalDbApi_LogStoppedFormat, instanceName, stopwatch.Elapsed);
+            Logger.StoppedInstance(instanceName, stopwatch.Elapsed);
         }
 
         /// <summary>
         /// Disables tracing of native API calls for all the SQL Server
         /// LocalDB instances owned by the current Windows user.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// Tracing could not be disabled.
         /// </exception>
-        public static void StopTracing()
+        public void StopTracing()
         {
-            Logger.Verbose(Logger.TraceEvent.StopTracing, SR.SqlLocalDbApi_LogStoppingTracing);
+            Logger.StoppingTracing();
 
-            InvokeThrowOnError(NativeMethods.StopTracing, Logger.TraceEvent.StopTracing);
+            InvokeThrowOnError(_api.StopTracing, EventIds.StoppingTracingFailed);
 
-            Logger.Verbose(Logger.TraceEvent.StartTracing, SR.SqlLocalDbApi_LogStoppedTracing);
+            Logger.StoppedTracing();
         }
 
         /// <summary>
@@ -887,29 +1030,56 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be unshared.
         /// </exception>
-        [Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly",
-            MessageId = "Unshare",
-            Justification = "Matches the name of the native LocalDB API function.")]
-        public static void UnshareInstance(string instanceName)
+        public void UnshareInstance(string instanceName)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppingSharingFormat, instanceName);
+            Logger.UnsharingInstance(instanceName);
 
             InvokeThrowOnError(
-                () => NativeMethods.UnshareInstance(instanceName, ReservedValue),
-                Logger.TraceEvent.UnshareInstance,
+                () => _api.UnshareInstance(instanceName, ReservedValue),
+                EventIds.UnsharingInstanceFailed,
                 instanceName);
 
-            Logger.Verbose(Logger.TraceEvent.UnshareInstance, SR.SqlLocalDbApi_LogStoppedSharingFormat, instanceName);
+            Logger.UnsharedInstance(instanceName);
+        }
+
+        /// <summary>
+        /// Throws an exception if the SQL LocalDB Instance API is not supported by the current platform.
+        /// </summary>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        internal static void EnsurePlatformSupported()
+        {
+            if (!IsWindows)
+            {
+                throw new PlatformNotSupportedException(SR.SqlLocalDbApi_PlatformNotSupported);
+            }
+        }
+
+        /// <summary>
+        /// Returns whether the specified SQL LocalDB instance name is one of the default instance names.
+        /// </summary>
+        /// <param name="instanceName">The instance name to test.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="instanceName"/> is one of the default SQL LocalDB
+        /// instance names; otherwise <see langword="false"/>.
+        /// </returns>
+        internal static bool IsDefaultInstanceName(string instanceName)
+        {
+            return
+                string.Equals(instanceName, DefaultInstanceName2014AndLater, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(instanceName, DefaultInstanceName2012, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -936,29 +1106,34 @@ namespace System.Data.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// SQL Server LocalDB is not installed on the local machine.
         /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
         /// <exception cref="SqlLocalDbException">
         /// The SQL Server LocalDB instance specified by <paramref name="instanceName"/> could not be deleted.
         /// </exception>
-        internal static bool DeleteInstanceInternal(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
+        internal bool DeleteInstanceInternal(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
         {
             if (instanceName == null)
             {
                 throw new ArgumentNullException(nameof(instanceName));
             }
 
-            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletingFormat, instanceName);
+            EnsurePlatformSupported();
 
-            int hr = NativeMethods.DeleteInstance(instanceName, ReservedValue);
+            Logger.DeletingInstance(instanceName);
+
+            int hr = _api.DeleteInstance(instanceName, ReservedValue);
 
             if (hr != 0)
             {
                 if (!throwIfNotFound && hr == SqlLocalDbErrors.UnknownInstance)
                 {
-                    Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_InstanceDoesNotExistFormat, instanceName);
+                    Logger.DeletingInstanceFailedAsNotFound(instanceName);
                     return false;
                 }
 
-                throw GetLocalDbError(hr, Logger.TraceEvent.DeleteInstance, instanceName);
+                throw GetLocalDbError(hr, EventIds.DeletingInstanceFailed, instanceName);
             }
 
             if (deleteFiles)
@@ -966,7 +1141,7 @@ namespace System.Data.SqlLocalDb
                 DeleteInstanceFiles(instanceName);
             }
 
-            Logger.Verbose(Logger.TraceEvent.DeleteInstance, SR.SqlLocalDbApi_LogDeletedFormat, instanceName);
+            Logger.DeletedInstance(instanceName);
             return true;
         }
 
@@ -974,7 +1149,7 @@ namespace System.Data.SqlLocalDb
         /// Deletes the file(s) from disk that are associated with the specified SQL LocalDB instance.
         /// </summary>
         /// <param name="instanceName">The name of the SQL LocalDB instance to delete the file(s) for.</param>
-        internal static void DeleteInstanceFiles(string instanceName)
+        internal void DeleteInstanceFiles(string instanceName)
         {
             Debug.Assert(instanceName != null, "instanceName cannot be null.");
 
@@ -988,217 +1163,101 @@ namespace System.Data.SqlLocalDb
             {
                 if (Directory.Exists(instancePath))
                 {
-                    Logger.Verbose(
-                        Logger.TraceEvent.DeletingInstanceFiles,
-                        SR.SqlLocalDbApi_LogDeletingInstanceFilesFormat,
-                        instanceName,
-                        instancePath);
+                    Logger.DeletingInstanceFiles(instanceName, instancePath);
 
                     Directory.Delete(instancePath, recursive: true);
 
-                    Logger.Verbose(
-                        Logger.TraceEvent.DeletedInstanceFiles,
-                        SR.SqlLocalDbApi_LogDeletedInstanceFilesFormat,
-                        instanceName,
-                        instancePath);
+                    Logger.DeletedInstanceFiles(instanceName, instancePath);
                 }
             }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (ex is ArgumentException || ex is IOException || ex is UnauthorizedAccessException)
             {
-                Logger.Error(
-                    Logger.TraceEvent.DeletingInstanceFilesFailed,
-                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
-                    instanceName,
-                    instancePath,
-                    ex.Message);
+                Logger.DeletingInstanceFilesFailed(instanceName, instancePath);
             }
-            catch (IOException ex)
-            {
-                Logger.Error(
-                    Logger.TraceEvent.DeletingInstanceFilesFailed,
-                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
-                    instanceName,
-                    instancePath,
-                    ex.Message);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Logger.Error(
-                    Logger.TraceEvent.DeletingInstanceFilesFailed,
-                    SR.SqlLocalDbApi_LogDeletingInstanceFilesFailedFormat,
-                    instanceName,
-                    instancePath,
-                    ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Returns whether the specified SQL LocalDB instance name is one of the default instance names.
-        /// </summary>
-        /// <param name="instanceName">The instance name to test.</param>
-        /// <returns>
-        /// <see langword="true"/> if <paramref name="instanceName"/> is one of the default SQL LocalDB
-        /// instance names; otherwise <see langword="false"/>.
-        /// </returns>
-        internal static bool IsDefaultInstanceName(string instanceName)
-        {
-            return
-                string.Equals(instanceName, DefaultInstanceName2014AndLater, StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(instanceName, DefaultInstanceName2012, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// Returns an <see cref="Exception"/> representing the specified LocalDB HRESULT.
         /// </summary>
         /// <param name="hr">The HRESULT returned by the LocalDB API.</param>
-        /// <param name="traceEventId">The trace event Id associated with the error.</param>
+        /// <param name="eventId">The trace event Id associated with the error.</param>
         /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
         /// <returns>
         /// An <see cref="Exception"/> representing <paramref name="hr"/>.
         /// </returns>
-        internal static Exception GetLocalDbError(int hr, int traceEventId, string instanceName = "")
+        internal Exception GetLocalDbError(int hr, EventId eventId, string instanceName = "")
         {
             string message;
 
-            Logger.Error(traceEventId, SR.SqlLocalDbApi_LogNativeResultFormat, hr);
+            Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
 
             if (hr == SqlLocalDbErrors.NotInstalled)
             {
-                message = SRHelper.Format(
-                    SR.SqlLocalDbApi_NotInstalledFormat,
-                    Environment.MachineName);
-
-                Logger.Error(traceEventId, message);
-                throw new InvalidOperationException(message);
+                Logger.NotInstalled();
+                throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NotInstalledFormat, Environment.MachineName));
             }
 
-            StringBuilder buffer = new StringBuilder(NativeMethods.LOCALDB_MAX_SQLCONNECTION_BUFFER_SIZE + 1);
-            int size = buffer.Capacity;
+            int size = LocalDbInstanceApi.MaximumSqlConnectionStringBufferLength + 1;
+            var buffer = new StringBuilder(size);
 
             // Get the description of the error from the LocalDB API.
-            int hr2 = NativeMethods.GetLocalDbError(
+            int hr2 = _api.GetLocalDbError(
                 hr,
-                _languageId,
+                LanguageId,
                 buffer,
                 ref size);
 
             if (hr2 == 0)
             {
                 message = buffer.ToString();
+                Logger.LogError(eventId, message);
             }
             else if (hr2 == SqlLocalDbErrors.UnknownLanguageId)
             {
-                // If the value of DefaultLanaguageId was not understood by the API,
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+
+                // If the value of DefaultLanguageId was not understood by the API,
                 // then log an error informing the user. Do not throw an exception in
                 // this case as otherwise we will mask the original exception from the user.
-                Logger.Error(
-                    Logger.TraceEvent.InvalidLanguageId,
-                    SR.SqlLocalDbApi_InvalidLanguageIdFormat,
-                    LanguageId,
-                    typeof(SqlLocalDbApi).Name);
+                Logger.InvalidLanguageId(LanguageId);
 
                 // Use a generic message if getting the message from the API failed
-                message = SRHelper.Format(
-                    SR.SqlLocalDbApi_GenericFailureFormat,
-                    hr);
+                message = SRHelper.Format(SR.SqlLocalDbApi_GenericFailureFormat, hr);
             }
             else
             {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+
                 // Use a generic message if getting the message from the API failed.
                 // N.B. That if this occurs, then the original error is masked (although it is logged).
-                message = SRHelper.Format(
-                    SR.SqlLocalDbApi_GenericFailureFormat,
-                    hr2);
+                message = SRHelper.Format(SR.SqlLocalDbApi_GenericFailureFormat, hr2);
 
-                Logger.Error(traceEventId, message);
-
-                return new SqlLocalDbException(
-                    message,
-                    hr2,
-                    instanceName);
+                return new SqlLocalDbException(message, hr2, instanceName);
             }
 
-            Logger.Error(traceEventId, message);
-
-            return new SqlLocalDbException(
-                message,
-                hr,
-                instanceName);
+            return new SqlLocalDbException(message, hr, instanceName);
         }
 
         /// <summary>
-        /// Gets the available versions of SQL LocalDB installed on the local machine.
+        /// Converts a <see cref="string"/> representation of a SID to an array of bytes.
         /// </summary>
+        /// <param name="ownerSid">The SID to convert to a byte array.</param>
         /// <returns>
-        /// An <see cref="Array"/> of <see cref="string"/> containing the available versions.
+        /// An <see cref="Array"/> of <see cref="byte"/> containing a representation of <paramref name="ownerSid"/>.
         /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// SQL Server LocalDB is not installed on the local machine.
-        /// </exception>
-        /// <exception cref="SqlLocalDbException">
-        /// The installed LocalDB versions could not be enumerated.
-        /// </exception>
-        private static string[] GetLocalDbVersions()
+        private static byte[] GetOwnerSidAsByteArray(string ownerSid)
         {
-            try
-            {
-                // Query the LocalDB API to get the number of instances
-                int count = 0;
-                int hr = NativeMethods.GetVersions(IntPtr.Zero, ref count);
-
-                if (hr != 0 &&
-                    hr != SqlLocalDbErrors.InsufficientBuffer)
-                {
-                    throw GetLocalDbError(hr, Logger.TraceEvent.GetVersions);
-                }
-
-                // Allocate enough memory to receive the version name array
-                int versionLength = MaxVersionLength;
-                IntPtr ptrVersions = Marshal.AllocHGlobal(versionLength * count);
-
-                try
-                {
-                    hr = NativeMethods.GetVersions(ptrVersions, ref count);
-
-                    if (hr != 0)
-                    {
-                        throw GetLocalDbError(hr, Logger.TraceEvent.GetVersions);
-                    }
-
-                    // Read the version strings back from unmanaged memory
-                    string[] versions = MarshalStringArray(ptrVersions, versionLength, count);
-
-                    return versions;
-                }
-                finally
-                {
-                    Marshal.FreeHGlobal(ptrVersions);
-                }
-            }
-            catch (SqlLocalDbException e)
-            {
-                throw new SqlLocalDbException(
-                    SR.SqlLocalDbException_VersionEnumerationFailed,
-                    e.ErrorCode,
-                    e.InstanceName,
-                    e);
-            }
-        }
-
-        /// <summary>
-        /// Invokes the specified delegate, throwing an exception if the delegate does not return zero.
-        /// </summary>
-        /// <param name="func">A delegate to a method to invoke.</param>
-        /// <param name="traceEventId">The trace event Id if a non-zero value is returned.</param>
-        /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
-        private static void InvokeThrowOnError(Func<int> func, int traceEventId, string instanceName = "")
-        {
-            int hr = func();
-
-            if (hr != 0)
-            {
-                throw GetLocalDbError(hr, traceEventId, instanceName);
-            }
+            // Get the binary version of the SID from its string
+            SecurityIdentifier sid = new SecurityIdentifier(ownerSid);
+            byte[] binaryForm = new byte[SecurityIdentifier.MaxBinaryLength];
+            sid.GetBinaryForm(binaryForm, 0);
+            return binaryForm;
         }
 
         /// <summary>
@@ -1240,6 +1299,117 @@ namespace System.Data.SqlLocalDb
             where T : struct
         {
             return (T)Marshal.PtrToStructure(ptr, typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the available versions of SQL LocalDB installed on the local machine.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="Array"/> of <see cref="string"/> containing the available versions.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// SQL Server LocalDB is not installed on the local machine.
+        /// </exception>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        /// <exception cref="SqlLocalDbException">
+        /// The installed LocalDB versions could not be enumerated.
+        /// </exception>
+        private string[] GetLocalDbVersions()
+        {
+            EnsurePlatformSupported();
+
+            string[] versions;
+
+            try
+            {
+                Logger.GettingVersions();
+
+                // Query the LocalDB API to get the number of instances
+                int count = 0;
+                int hr = _api.GetVersions(IntPtr.Zero, ref count);
+
+                if (hr != 0 &&
+                    hr != SqlLocalDbErrors.InsufficientBuffer)
+                {
+                    throw GetLocalDbError(hr, EventIds.GettingVersionsFailed);
+                }
+
+                // Allocate enough memory to receive the version name array
+                int versionLength = MaxVersionLength;
+                IntPtr ptrVersions = Marshal.AllocHGlobal(versionLength * count);
+
+                try
+                {
+                    hr = _api.GetVersions(ptrVersions, ref count);
+
+                    if (hr != 0)
+                    {
+                        throw GetLocalDbError(hr, EventIds.GettingVersionsFailed);
+                    }
+
+                    // Read the version strings back from unmanaged memory
+                    versions = MarshalStringArray(ptrVersions, versionLength, count);
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(ptrVersions);
+                }
+            }
+            catch (SqlLocalDbException ex)
+            {
+                throw new SqlLocalDbException(
+                    SR.SqlLocalDbApi_VersionEnumerationFailed,
+                    ex.ErrorCode,
+                    ex.InstanceName,
+                    ex);
+            }
+
+            Logger.GotVersions(versions.Length);
+
+            return versions;
+        }
+
+        /// <summary>
+        /// Invokes the specified delegate, throwing an exception if the delegate does not return zero.
+        /// </summary>
+        /// <param name="func">A delegate to a method to invoke.</param>
+        /// <param name="eventId">The trace event Id if a non-zero value is returned.</param>
+        /// <param name="instanceName">The name of the instance that caused the error, if any.</param>
+        /// <exception cref="PlatformNotSupportedException">
+        /// The method is called from a non-Windows operating system.
+        /// </exception>
+        private void InvokeThrowOnError(Func<int> func, EventId eventId, string instanceName = "")
+        {
+            EnsurePlatformSupported();
+
+            int hr = func();
+
+            if (hr != 0)
+            {
+                throw GetLocalDbError(hr, eventId, instanceName);
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <see langword="true" /> to release both managed and unmanaged resources;
+        /// <see langword="false" /> to release only unmanaged resources.
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _api.Dispose();
+                }
+
+                _disposed = true;
+            }
         }
     }
 }

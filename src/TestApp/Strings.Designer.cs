@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Data.SqlLocalDb {
+namespace MartinCostello.SqlLocalDb {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace System.Data.SqlLocalDb {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -39,7 +39,7 @@ namespace System.Data.SqlLocalDb {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Data.SqlLocalDb.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MartinCostello.SqlLocalDb.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -68,12 +68,11 @@ namespace System.Data.SqlLocalDb {
         ///Assembly File Version:          {3}
         ///Assembly Informational Version: {4}
         ///Assembly Configuration:         {5}
-        ///Image Runtime Version:          {6}
-        ///Windows User:                   {7}\{8}
-        ///Does User Have Admin Token?     {9}
-        ///Operating System:               {10}
-        ///Is 64-bit Operating System?     {11}
-        ///Is 64-bit Process?              {12}
+        ///User:                           {6}\{7}
+        ///Does User Have Admin Token?     {8}
+        ///Operating System:               {9}
+        ///Is 64-bit Operating System?     {10}
+        ///Is 64-bit Process?              {11}
         ///.
         /// </summary>
         internal static string Program_BannerFormat {

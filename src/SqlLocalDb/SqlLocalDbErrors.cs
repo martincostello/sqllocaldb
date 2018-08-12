@@ -1,16 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlLocalDbErrors.cs" company="https://github.com/martincostello/sqllocaldb">
-//   Martin Costello (c) 2012-2015
-// </copyright>
-// <license>
-//   See license.txt in the project root for license information.
-// </license>
-// <summary>
-//   SqlLocalDbErrors.cs
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-namespace System.Data.SqlLocalDb
+using System.Diagnostics.CodeAnalysis;
+
+namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
     /// A class containing SQL Server LocalDB errors.  This class cannot be inherited.
@@ -23,7 +16,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_CREATE_INSTANCE_FOLDER</c> error.
         /// </remarks>
-        public static readonly int CannotCreateInstanceFolder = unchecked((int)0x89c50100);
+        public const int CannotCreateInstanceFolder = unchecked((int)0x89c50100);
 
         /// <summary>
         /// The parameter for the LocalDB Instance API method is incorrect.
@@ -31,7 +24,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INVALID_PARAMETER</c> error.
         /// </remarks>
-        public static readonly int InvalidParameter = unchecked((int)0x89c50101);
+        public const int InvalidParameter = unchecked((int)0x89c50101);
 
         /// <summary>
         /// Unable to create the LocalDB instance with specified version.
@@ -41,7 +34,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_EXISTS_WITH_LOWER_VERSION</c> error.
         /// </remarks>
-        public static readonly int InstanceExistsWithLowerVersion = unchecked((int)0x89c50102);
+        public const int InstanceExistsWithLowerVersion = unchecked((int)0x89c50102);
 
         /// <summary>
         /// Cannot access the user profile folder for local application data (<c>&#37;LOCALAPPDATA&#37;</c>).
@@ -49,7 +42,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_GET_USER_PROFILE_FOLDER</c> error.
         /// </remarks>
-        public static readonly int CannotGetUserProfileFolder = unchecked((int)0x89c50103);
+        public const int CannotGetUserProfileFolder = unchecked((int)0x89c50103);
 
         /// <summary>
         /// The full path length of the LocalDB instance folder is longer than
@@ -58,8 +51,8 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_FOLDER_PATH_TOO_LONG</c> error.
         /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
-        public static readonly int InstanceFolderPathTooLong = unchecked((int)0x89c50104);
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        public const int InstanceFolderPathTooLong = unchecked((int)0x89c50104);
 
         /// <summary>
         /// Cannot access LocalDB instance folder: <c>&#37;LOCALAPPDATA&#37;\Microsoft\Microsoft SQL Server Local DB\Instances\&lt;instance name&gt;</c>.
@@ -67,7 +60,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_ACCESS_INSTANCE_FOLDER</c> error.
         /// </remarks>
-        public static readonly int CannotAccessInstanceFolder = unchecked((int)0x89c50105);
+        public const int CannotAccessInstanceFolder = unchecked((int)0x89c50105);
 
         /// <summary>
         /// Unexpected error occurred while trying to access the LocalDB instance
@@ -76,7 +69,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_ACCESS_INSTANCE_REGISTRY</c> error.
         /// </remarks>
-        public static readonly int CannotAccessInstanceRegistry = unchecked((int)0x89c50106);
+        public const int CannotAccessInstanceRegistry = unchecked((int)0x89c50106);
 
         /// <summary>
         /// The specified LocalDB instance does not exist.
@@ -84,7 +77,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_UNKNOWN_INSTANCE</c> error.
         /// </remarks>
-        public static readonly int UnknownInstance = unchecked((int)0x89c50107);
+        public const int UnknownInstance = unchecked((int)0x89c50107);
 
         /// <summary>
         /// Unexpected error occurred inside a LocalDB instance API method call.
@@ -93,7 +86,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INTERNAL_ERROR</c> error.
         /// </remarks>
-        public static readonly int InternalError = unchecked((int)0x89c50108);
+        public const int InternalError = unchecked((int)0x89c50108);
 
         /// <summary>
         /// Unexpected error occurred while trying to modify the registry
@@ -103,7 +96,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_MODIFY_INSTANCE_REGISTRY</c> error.
         /// </remarks>
-        public static readonly int CannotModifyInstanceRegistry = unchecked((int)0x89c50109);
+        public const int CannotModifyInstanceRegistry = unchecked((int)0x89c50109);
 
         /// <summary>
         /// Error occurred during LocalDB instance startup: SQL Server process failed to start.
@@ -111,7 +104,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_SQL_SERVER_STARTUP_FAILED</c> error.
         /// </remarks>
-        public static readonly int ServerStartupFailed = unchecked((int)0x89c5010a);
+        public const int ServerStartupFailed = unchecked((int)0x89c5010a);
 
         /// <summary>
         /// LocalDB instance is corrupted. See the Windows Application event log for error details.
@@ -119,7 +112,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_CONFIGURATION_CORRUPT</c> error.
         /// </remarks>
-        public static readonly int InstanceConfigurationCorrupt = unchecked((int)0x89c5010b);
+        public const int InstanceConfigurationCorrupt = unchecked((int)0x89c5010b);
 
         /// <summary>
         /// Error occurred during LocalDB instance startup: unable to create the SQL Server process.
@@ -127,7 +120,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_CREATE_SQL_PROCESS</c> error.
         /// </remarks>
-        public static readonly int CannotCreateSqlProcess = unchecked((int)0x89c5010c);
+        public const int CannotCreateSqlProcess = unchecked((int)0x89c5010c);
 
         /// <summary>
         /// The specified LocalDB version is not available on this computer.
@@ -135,7 +128,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_UNKNOWN_VERSION</c> error.
         /// </remarks>
-        public static readonly int UnknownVersion = unchecked((int)0x89c5010d);
+        public const int UnknownVersion = unchecked((int)0x89c5010d);
 
         /// <summary>
         /// Error getting the localized error message.
@@ -143,7 +136,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_UNKNOWN_LANGUAGE_ID</c> error.
         /// </remarks>
-        public static readonly int UnknownLanguageId = unchecked((int)0x89c5010e);
+        public const int UnknownLanguageId = unchecked((int)0x89c5010e);
 
         /// <summary>
         /// Stop operation for LocalDB instance failed to complete within the specified time.
@@ -151,7 +144,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_STOP_FAILED</c> error.
         /// </remarks>
-        public static readonly int InstanceStopFailed = unchecked((int)0x89c5010f);
+        public const int InstanceStopFailed = unchecked((int)0x89c5010f);
 
         /// <summary>
         /// Error getting the localized error message. The specified error code is unknown.
@@ -159,7 +152,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_UNKNOWN_ERROR_CODE</c> error.
         /// </remarks>
-        public static readonly int UnknownErrorCode = unchecked((int)0x89c50110);
+        public const int UnknownErrorCode = unchecked((int)0x89c50110);
 
         /// <summary>
         /// The LocalDB version available on this workstation is lower than
@@ -168,7 +161,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_VERSION_REQUESTED_NOT_INSTALLED</c> error.
         /// </remarks>
-        public static readonly int VersionNotInstalled = unchecked((int)0x89c50111);
+        public const int VersionNotInstalled = unchecked((int)0x89c50111);
 
         /// <summary>
         /// Requested operation on LocalDB instance cannot be performed because
@@ -177,7 +170,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_BUSY</c> error.
         /// </remarks>
-        public static readonly int InstanceBusy = unchecked((int)0x89c50112);
+        public const int InstanceBusy = unchecked((int)0x89c50112);
 
         /// <summary>
         /// Default LocalDB instances cannot be created, stopped or deleted manually.
@@ -185,7 +178,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INVALID_OPERATION</c> error.
         /// </remarks>
-        public static readonly int InvalidOperation = unchecked((int)0x89c50113);
+        public const int InvalidOperation = unchecked((int)0x89c50113);
 
         /// <summary>
         /// The buffer passed to the LocalDB instance API method has insufficient size.
@@ -193,7 +186,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSUFFICIENT_BUFFER</c> error.
         /// </remarks>
-        public static readonly int InsufficientBuffer = unchecked((int)0x89c50114);
+        public const int InsufficientBuffer = unchecked((int)0x89c50114);
 
         /// <summary>
         /// Timeout occurred inside the LocalDB instance API method.
@@ -201,7 +194,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_WAIT_TIMEOUT</c> error.
         /// </remarks>
-        public static readonly int WaitTimeout = unchecked((int)0x89c50115);
+        public const int WaitTimeout = unchecked((int)0x89c50115);
 
         /// <summary>
         /// SQL Server LocalDB is not installed.
@@ -209,7 +202,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_NOT_INSTALLED</c> error.
         /// </remarks>
-        public static readonly int NotInstalled = unchecked((int)0x89c50116);
+        public const int NotInstalled = unchecked((int)0x89c50116);
 
         /// <summary>
         /// Failed to start XEvent engine within the LocalDB Instance API.
@@ -217,7 +210,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_XEVENT_FAILED</c> error.
         /// </remarks>
-        public static readonly int XEventFailed = unchecked((int)0x89c50117);
+        public const int XEventFailed = unchecked((int)0x89c50117);
 
         /// <summary>
         /// Cannot create an automatic instance. See the Windows Application event log for error details.
@@ -225,7 +218,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_AUTO_INSTANCE_CREATE_FAILED</c> error.
         /// </remarks>
-        public static readonly int AutoInstanceCreateFailed = unchecked((int)0x89c50118);
+        public const int AutoInstanceCreateFailed = unchecked((int)0x89c50118);
 
         /// <summary>
         /// Cannot create a shared instance. The specified shared instance name is already in use.
@@ -233,7 +226,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_SHARED_NAME_TAKEN</c> error.
         /// </remarks>
-        public static readonly int SharedNameTaken = unchecked((int)0x89c50119);
+        public const int SharedNameTaken = unchecked((int)0x89c50119);
 
         /// <summary>
         /// API caller is not LocalDB instance owner.
@@ -241,7 +234,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CALLER_IS_NOT_OWNER</c> error.
         /// </remarks>
-        public static readonly int CallerIsNotOwner = unchecked((int)0x89c5011a);
+        public const int CallerIsNotOwner = unchecked((int)0x89c5011a);
 
         /// <summary>
         /// Specified LocalDB instance name is invalid.
@@ -249,7 +242,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INVALID_INSTANCE_NAME</c> error.
         /// </remarks>
-        public static readonly int InvalidInstanceName = unchecked((int)0x89c5011b);
+        public const int InvalidInstanceName = unchecked((int)0x89c5011b);
 
         /// <summary>
         /// The specified LocalDB instance is already shared with different shared name.
@@ -257,7 +250,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_ALREADY_SHARED</c> error.
         /// </remarks>
-        public static readonly int InstanceAlreadyShared = unchecked((int)0x89c5011c);
+        public const int InstanceAlreadyShared = unchecked((int)0x89c5011c);
 
         /// <summary>
         /// The specified LocalDB instance is not shared.
@@ -265,7 +258,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_INSTANCE_NOT_SHARED</c> error.
         /// </remarks>
-        public static readonly int InstanceNotShared = unchecked((int)0x89c5011d);
+        public const int InstanceNotShared = unchecked((int)0x89c5011d);
 
         /// <summary>
         /// Administrator privileges are required in order to execute this operation.
@@ -273,7 +266,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_ADMIN_RIGHTS_REQUIRED</c> error.
         /// </remarks>
-        public static readonly int AdminRightsRequired = unchecked((int)0x89c5011e);
+        public const int AdminRightsRequired = unchecked((int)0x89c5011e);
 
         /// <summary>
         /// Unable to share a LocalDB instance - maximum number of shared LocalDB instances reached.
@@ -281,7 +274,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_TOO_MANY_SHARED_INSTANCES</c> error.
         /// </remarks>
-        public static readonly int TooManySharedInstances = unchecked((int)0x89c5011f);
+        public const int TooManySharedInstances = unchecked((int)0x89c5011f);
 
         /// <summary>
         /// The "<c>Parent Instance</c>" registry value is missing in the LocalDB instance registry key.
@@ -289,7 +282,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_GET_LOCAL_APP_DATA_PATH</c> error.
         /// </remarks>
-        public static readonly int CannotGetLocalAppDataPath = unchecked((int)0x89c50120);
+        public const int CannotGetLocalAppDataPath = unchecked((int)0x89c50120);
 
         /// <summary>
         /// Cannot load resources for this DLL. Resources for this DLL should
@@ -299,7 +292,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_ERROR_CANNOT_LOAD_RESOURCES</c> error.
         /// </remarks>
-        public static readonly int CannotLoadResources = unchecked((int)0x89c50121);
+        public const int CannotLoadResources = unchecked((int)0x89c50121);
 
         /// <summary>
         /// The "<c>DataDirectory</c>" registry value is missing in the LocalDB instance registry key.
@@ -307,7 +300,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_DATADIRECTORY_IS_MISSING</c> error.
         /// </remarks>
-        public static readonly int DataDirectoryMissing = unchecked((int)0x89c50200);
+        public const int DataDirectoryMissing = unchecked((int)0x89c50200);
 
         /// <summary>
         /// Cannot access LocalDB instance folder.
@@ -315,7 +308,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_CANNOT_ACCESS_INSTANCE_FOLDER</c> error.
         /// </remarks>
-        public static readonly int CannotAccessInstanceFolderDetail = unchecked((int)0x89c50201);
+        public const int CannotAccessInstanceFolderDetail = unchecked((int)0x89c50201);
 
         /// <summary>
         /// The "<c>DataDirectory</c>" registry value is too long in the LocalDB instance registry key.
@@ -323,8 +316,8 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_DATADIRECTORY_IS_TOO_LONG</c> error.
         /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
-        public static readonly int DataDirectoryIsTooLong = unchecked((int)0x89c50202);
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        public const int DataDirectoryIsTooLong = unchecked((int)0x89c50202);
 
         /// <summary>
         /// The "<c>Parent Instance</c>" registry value is missing in the LocalDB instance registry key.
@@ -332,7 +325,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_PARENT_INSTANCE_IS_MISSING</c> error.
         /// </remarks>
-        public static readonly int ParentInstanceIsMissing = unchecked((int)0x89c50203);
+        public const int ParentInstanceIsMissing = unchecked((int)0x89c50203);
 
         /// <summary>
         /// The "<c>Parent Instance</c>" registry value is too long in the LocalDB instance registry key.
@@ -340,8 +333,8 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_PARENT_INSTANCE_IS_TOO_LONG</c> error.
         /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
-        public static readonly int ParentInstanceIsTooLong = unchecked((int)0x89c50204);
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        public const int ParentInstanceIsTooLong = unchecked((int)0x89c50204);
 
         /// <summary>
         /// Data directory for LocalDB instance is invalid.
@@ -349,7 +342,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_DATA_DIRECTORY_INVALID</c> error.
         /// </remarks>
-        public static readonly int DataDirectoryInvalid = unchecked((int)0x89c50205);
+        public const int DataDirectoryInvalid = unchecked((int)0x89c50205);
 
         /// <summary>
         /// LocalDB instance API: XEvent engine assert.
@@ -357,7 +350,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_ASSERT</c> error.
         /// </remarks>
-        public static readonly int XEventAssert = unchecked((int)0x89c50206);
+        public const int XEventAssert = unchecked((int)0x89c50206);
 
         /// <summary>
         /// LocalDB instance API: XEvent error.
@@ -365,7 +358,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_ERROR</c> error.
         /// </remarks>
-        public static readonly int XEventError = unchecked((int)0x89c50207);
+        public const int XEventError = unchecked((int)0x89c50207);
 
         /// <summary>
         /// LocalDB installation is corrupted. Reinstall the LocalDB.
@@ -373,7 +366,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_INSTALLATION_CORRUPTED</c> error.
         /// </remarks>
-        public static readonly int InstallationCorrupted = unchecked((int)0x89c50208);
+        public const int InstallationCorrupted = unchecked((int)0x89c50208);
 
         /// <summary>
         /// LocalDB XEvent error: cannot determine &#37;ProgramFiles&#37; folder location.
@@ -381,7 +374,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_CANNOT_GET_PROGRAM_FILES_LOCATION</c> error.
         /// </remarks>
-        public static readonly int CannotGetProgramFilesLocation = unchecked((int)0x89c50209);
+        public const int CannotGetProgramFilesLocation = unchecked((int)0x89c50209);
 
         /// <summary>
         /// LocalDB XEvent error: Cannot initialize XEvent engine.
@@ -389,7 +382,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_CANNOT_INITIALIZE</c> error.
         /// </remarks>
-        public static readonly int CannotInitializeXEvent = unchecked((int)0x89c5020a);
+        public const int CannotInitializeXEvent = unchecked((int)0x89c5020a);
 
         /// <summary>
         /// LocalDB XEvent error: Cannot find XEvents configuration file.
@@ -397,7 +390,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_CANNOT_FIND_CONF_FILE</c> error.
         /// </remarks>
-        public static readonly int CannotFindXEventConfigFile = unchecked((int)0x89c5020b);
+        public const int CannotFindXEventConfigFile = unchecked((int)0x89c5020b);
 
         /// <summary>
         /// LocalDB XEvent error: Cannot configure XEvents engine with the configuration file.
@@ -405,7 +398,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_CANNOT_CONFIGURE</c> error.
         /// </remarks>
-        public static readonly int CannotConfigureXEvent = unchecked((int)0x89c5020c);
+        public const int CannotConfigureXEvent = unchecked((int)0x89c5020c);
 
         /// <summary>
         /// LocalDB XEvent error: XEvents engine configuration file too long.
@@ -413,8 +406,8 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_XEVENT_CONF_FILE_NAME_TOO_LONG</c> error.
         /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
-        public static readonly int XEventConfigFileTooLong = unchecked((int)0x89c5020d);
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = "Usage is safe.")]
+        public const int XEventConfigFileTooLong = unchecked((int)0x89c5020d);
 
         /// <summary>
         /// <c>CoInitializeEx</c> API failed.
@@ -422,8 +415,8 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_COINITIALIZEEX_FAILED</c> error.
         /// </remarks>
-        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Co", Justification = "Is part of a function name.")]
-        public static readonly int CoInitializeExFailed = unchecked((int)0x89c5020e);
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Co", Justification = "Is part of a function name.")]
+        public const int CoInitializeExFailed = unchecked((int)0x89c5020e);
 
         /// <summary>
         /// LocalDB parent instance version is invalid.
@@ -431,7 +424,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_PARENT_INSTANCE_VERSION_INVALID</c> error.
         /// </remarks>
-        public static readonly int ParentInstanceVersionInvalid = unchecked((int)0x89c5020f);
+        public const int ParentInstanceVersionInvalid = unchecked((int)0x89c5020f);
 
         /// <summary>
         /// A Windows API call returned an error.
@@ -439,7 +432,7 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_WINAPI_ERROR</c> error.
         /// </remarks>
-        public static readonly int WindowsApiError = unchecked((int)0x89c50210);
+        public const int WindowsApiError = unchecked((int)0x89c50210);
 
         /// <summary>
         /// Unexpected result.
@@ -447,6 +440,6 @@ namespace System.Data.SqlLocalDb
         /// <remarks>
         /// Maps to the <c>LOCALDB_EDETAIL_UNEXPECTED_RESULT</c> error.
         /// </remarks>
-        public static readonly int UnexpectedResult = unchecked((int)0x89c50211);
+        public const int UnexpectedResult = unchecked((int)0x89c50211);
     }
 }
