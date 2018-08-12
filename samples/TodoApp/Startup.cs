@@ -76,8 +76,7 @@ namespace TodoApp
             // Ensure that the SQL LocalDB instance is running and start it if not already running
             if (!instance.IsRunning)
             {
-                var manager = new SqlLocalDbInstanceManager(instance, localDB);
-                manager.Start();
+                instance.Manage().Start();
             }
 
             // Get the SQL connection string to use to connect to the LocalDB instance

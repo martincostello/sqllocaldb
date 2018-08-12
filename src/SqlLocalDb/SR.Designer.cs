@@ -457,6 +457,15 @@ namespace MartinCostello.SqlLocalDb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified instance of {0} does not implement the {1} interface..
+        /// </summary>
+        internal static string ISqlLocalDbInstanceInfoExtensions_DoesNotImplementAdapterFormat {
+            get {
+                return ResourceManager.GetString("ISqlLocalDbInstanceInfoExtensions_DoesNotImplementAdapterFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The SQL LocalDB instance &apos;{0}&apos; is not running..
         /// </summary>
         internal static string ISqlLocalDbInstanceInfoExtensions_NotRunningFormat {

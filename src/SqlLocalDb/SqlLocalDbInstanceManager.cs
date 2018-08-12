@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -10,7 +10,7 @@ namespace MartinCostello.SqlLocalDb
     /// A class that can be used to manage instances of SQL LocalDB. This class cannot be inherited.
     /// </summary>
     [DebuggerDisplay("{Name}")]
-    public sealed class SqlLocalDbInstanceManager : ISqlLocalDbInstanceManager
+    public sealed class SqlLocalDbInstanceManager : ISqlLocalDbInstanceManager, ISqlLocalDbApiAdapter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlLocalDbInstanceManager"/> class.
@@ -31,6 +31,9 @@ namespace MartinCostello.SqlLocalDb
 
         /// <inheritdoc />
         public string NamedPipe => Instance.NamedPipe;
+
+        /// <inheritdoc />
+        ISqlLocalDbApi ISqlLocalDbApiAdapter.LocalDb => Api;
 
         /// <summary>
         /// Gets the <see cref="ISqlLocalDbApi"/> to use.

@@ -18,7 +18,7 @@ namespace MartinCostello.SqlLocalDb
     /// <summary>
     /// A class representing a wrapper to the SQL Server LocalDB Instance API. This class cannot be inherited.
     /// </summary>
-    public sealed class SqlLocalDbApi : ISqlLocalDbApi, IDisposable
+    public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisposable
     {
         /// <summary>
         /// The name of the default instance in SQL LocalDB 2012.
@@ -272,6 +272,9 @@ namespace MartinCostello.SqlLocalDb
                 return (string[])_versions.Clone();
             }
         }
+
+        /// <inheritdoc />
+        ISqlLocalDbApi ISqlLocalDbApiAdapter.LocalDb => this;
 
         /// <summary>
         /// Gets a value indicating whether the executing platform is Microsoft Windows.
@@ -560,7 +563,7 @@ namespace MartinCostello.SqlLocalDb
 
             Logger.GotInstanceInfo(instanceName);
 
-            var result = new SqlLocalDbInstanceInfo();
+            var result = new SqlLocalDbInstanceInfo(this);
 
             result.Update(info);
 

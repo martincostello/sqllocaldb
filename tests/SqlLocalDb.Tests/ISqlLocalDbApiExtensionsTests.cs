@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -383,7 +383,7 @@ namespace MartinCostello.SqlLocalDb
                 .Returns(instanceName);
 
             mock.Setup((p) => p.GetInstanceInfo(instanceName))
-                .Returns(new SqlLocalDbInstanceInfo() { Exists = true });
+                .Returns(CreateInstanceInfo(exists: true));
 
             ISqlLocalDbApi api = mock.Object;
 
@@ -407,7 +407,7 @@ namespace MartinCostello.SqlLocalDb
                 .Returns("Blah");
 
             mock.Setup((p) => p.GetInstanceInfo(instanceName))
-                .Returns(new SqlLocalDbInstanceInfo() { Exists = true });
+                .Returns(CreateInstanceInfo(exists: true));
 
             ISqlLocalDbApi api = mock.Object;
 
@@ -434,7 +434,7 @@ namespace MartinCostello.SqlLocalDb
                 .Returns(true);
 
             mock.Setup((p) => p.GetInstanceInfo(instanceName))
-                .Returns(new SqlLocalDbInstanceInfo());
+                .Returns(CreateInstanceInfo(exists: true));
 
             ISqlLocalDbApi api = mock.Object;
 
@@ -460,7 +460,7 @@ namespace MartinCostello.SqlLocalDb
                 .Returns("v99.0");
 
             mock.Setup((p) => p.CreateInstance(instanceName, "v99.0"))
-                .Returns(new SqlLocalDbInstanceInfo());
+                .Returns(CreateInstanceInfo(exists: false));
 
             ISqlLocalDbApi api = mock.Object;
 
@@ -500,6 +500,15 @@ namespace MartinCostello.SqlLocalDb
                     target.GetInstanceInfo().IsShared.ShouldBeTrue();
                 }
             }
+        }
+
+        private static ISqlLocalDbInstanceInfo CreateInstanceInfo(bool exists)
+        {
+            var mock = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mock.Setup((p) => p.Exists).Returns(exists);
+
+            return mock.Object;
         }
     }
 }

@@ -297,4 +297,7 @@
   <data name="SqlLocalDbApi_LogGenericFailureFormat" xml:space="preserve">
     <value>An error occurred calling the SQL Server LocalDB with HRESULT {HResult}.</value>
   </data>
+  <data name="ISqlLocalDbInstanceInfoExtensions_DoesNotImplementAdapterFormat" xml:space="preserve">
+    <value>The specified instance of {0} does not implement the {1} interface.</value>
+  </data>
 </root>

@@ -1,7 +1,8 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using Moq;
 using Shouldly;
 using Xunit;
 
@@ -13,7 +14,9 @@ namespace MartinCostello.SqlLocalDb
         public static void Update_Copies_State_From_Other_Instance()
         {
             // Arrange
-            var other = new SqlLocalDbInstanceInfo()
+            var api = Mock.Of<ISqlLocalDbApi>();
+
+            var other = new SqlLocalDbInstanceInfo(api)
             {
                 ConfigurationCorrupt = true,
                 Exists = true,
@@ -28,7 +31,7 @@ namespace MartinCostello.SqlLocalDb
                 SharedName = "OtherSharedName",
             };
 
-            var actual = new SqlLocalDbInstanceInfo()
+            var actual = new SqlLocalDbInstanceInfo(api)
             {
                 ConfigurationCorrupt = false,
                 Exists = false,
@@ -64,9 +67,10 @@ namespace MartinCostello.SqlLocalDb
         public static void Update_Does_Not_Copy_State_If_Other_Is_Null()
         {
             // Arrange
+            var api = Mock.Of<ISqlLocalDbApi>();
             ISqlLocalDbInstanceInfo other = null;
 
-            var actual = new SqlLocalDbInstanceInfo()
+            var actual = new SqlLocalDbInstanceInfo(api)
             {
                 ConfigurationCorrupt = true,
                 Exists = true,
@@ -89,7 +93,9 @@ namespace MartinCostello.SqlLocalDb
         public static void Update_Does_Not_Copy_State_If_Other_Is_Self()
         {
             // Arrange
-            var actual = new SqlLocalDbInstanceInfo()
+            var api = Mock.Of<ISqlLocalDbApi>();
+
+            var actual = new SqlLocalDbInstanceInfo(api)
             {
                 ConfigurationCorrupt = true,
                 Exists = true,
@@ -112,7 +118,9 @@ namespace MartinCostello.SqlLocalDb
         public static void ToString_Returns_The_Name()
         {
             // Arrange
-            var info = new SqlLocalDbInstanceInfo()
+            var api = Mock.Of<ISqlLocalDbApi>();
+
+            var info = new SqlLocalDbInstanceInfo(api)
             {
                 ConfigurationCorrupt = true,
                 Exists = true,

@@ -80,5 +80,38 @@ namespace MartinCostello.SqlLocalDb
         /// The SQL LocalDB instance specified by <paramref name="instance"/> is not running.
         /// </exception>
         public static string GetConnectionString(this ISqlLocalDbInstanceInfo instance) => instance.CreateConnectionStringBuilder().ConnectionString;
+
+        /// <summary>
+        /// Returns an <see cref="ISqlLocalDbInstanceManager"/> that can be used to manage the instance.
+        /// </summary>
+        /// <param name="instance">The <see cref="ISqlLocalDbInstanceInfo"/> to manage.</param>
+        /// <returns>
+        /// An <see cref="ISqlLocalDbInstanceManager"/> that can be used to manage the SQL LocalDB instance.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="instance"/> does not implement <see cref="ISqlLocalDbApiAdapter"/>.
+        /// </exception>
+        public static ISqlLocalDbInstanceManager Manage(this ISqlLocalDbInstanceInfo instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (instance is ISqlLocalDbApiAdapter adapter)
+            {
+                return new SqlLocalDbInstanceManager(instance, adapter.LocalDb);
+            }
+
+            string message = SRHelper.Format(
+                SR.ISqlLocalDbInstanceInfoExtensions_DoesNotImplementAdapterFormat,
+                nameof(ISqlLocalDbInstanceInfo),
+                nameof(ISqlLocalDbApiAdapter));
+
+            throw new ArgumentException(message, nameof(instance));
+        }
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -13,7 +13,7 @@ namespace MartinCostello.SqlLocalDb
     /// The temporary SQL LocalDB instances that are created by instances of this class are automatically
     /// started when they are instantiated, and are then subsequently deleted when they are disposed of.
     /// </remarks>
-    public sealed class TemporarySqlLocalDbInstance : IDisposable
+    public sealed class TemporarySqlLocalDbInstance : IDisposable, ISqlLocalDbApiAdapter
     {
         /// <summary>
         /// The lazily initialized name of the temporary SQL LocalDB instance. This field is read-only.
@@ -65,6 +65,9 @@ namespace MartinCostello.SqlLocalDb
             }
         }
 
+        /// <inheritdoc />
+        ISqlLocalDbApi ISqlLocalDbApiAdapter.LocalDb => Api;
+
         /// <summary>
         /// Gets the <see cref="ISqlLocalDbApi"/> to use.
         /// </summary>
@@ -104,11 +107,7 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="ObjectDisposedException">
         /// Thrown if the instance has been disposed of.
         /// </exception>
-        public ISqlLocalDbInstanceManager Manage()
-        {
-            ISqlLocalDbInstanceInfo instance = GetInstanceInfo();
-            return new SqlLocalDbInstanceManager(instance, Api);
-        }
+        public ISqlLocalDbInstanceManager Manage() => GetInstanceInfo().Manage();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
