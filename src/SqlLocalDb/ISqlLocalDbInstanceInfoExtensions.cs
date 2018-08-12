@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -65,5 +65,20 @@ namespace MartinCostello.SqlLocalDb
                 DataSource = instance.NamedPipe,
             };
         }
+
+        /// <summary>
+        /// Gets the default SQL connection string to connect to the LocalDB instance.
+        /// </summary>
+        /// <param name="instance">The SQL LocalDB instance to get the default connection string for.</param>
+        /// <returns>
+        /// The default SQL connection string to connect to the LocalDB instance.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="instance"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The SQL LocalDB instance specified by <paramref name="instance"/> is not running.
+        /// </exception>
+        public static string GetConnectionString(this ISqlLocalDbInstanceInfo instance) => instance.CreateConnectionStringBuilder().ConnectionString;
     }
 }

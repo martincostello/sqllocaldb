@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -65,6 +65,24 @@ namespace MartinCostello.SqlLocalDb
             // Assert
             actual.ShouldNotBeNull();
             actual.DataSource.ShouldBe("MyNamedPipe");
+        }
+
+        [Fact]
+        public static void GetConnectionString_Returns_Sql_Connection_String()
+        {
+            // Arrange
+            var mock = new Mock<ISqlLocalDbInstanceInfo>();
+
+            mock.Setup((p) => p.IsRunning).Returns(true);
+            mock.Setup((p) => p.NamedPipe).Returns("MyNamedPipe");
+
+            ISqlLocalDbInstanceInfo instance = mock.Object;
+
+            // Act
+            string actual = instance.GetConnectionString();
+
+            // Assert
+            actual.ShouldBe("Data Source=MyNamedPipe");
         }
     }
 }
