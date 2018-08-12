@@ -70,7 +70,7 @@ namespace MartinCostello.SqlLocalDb
         /// Initializes a new instance of the <see cref="SqlLocalDbApi"/> class.
         /// </summary>
         public SqlLocalDbApi()
-            : this(new SqlLocalDbOptions(), new NullLoggerFactory())
+            : this(new SqlLocalDbOptions(), NullLoggerFactory.Instance)
         {
         }
 
