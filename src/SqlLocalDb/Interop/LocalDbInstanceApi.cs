@@ -147,7 +147,10 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <summary>
         /// Finalizes an instance of the <see cref="LocalDbInstanceApi"/> class.
         /// </summary>
-        ~LocalDbInstanceApi() => Dispose(false);
+        ~LocalDbInstanceApi()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// Gets the version of the SQL LocalDB native API loaded, if any.

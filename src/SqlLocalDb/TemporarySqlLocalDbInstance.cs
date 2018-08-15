@@ -48,7 +48,10 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Finalizes an instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
         /// </summary>
-        ~TemporarySqlLocalDbInstance() => DisposeInternal();
+        ~TemporarySqlLocalDbInstance()
+        {
+            DisposeInternal();
+        }
 
         /// <summary>
         /// Gets the connection string for the temporary SQL LocalDB instance.
