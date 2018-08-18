@@ -370,37 +370,6 @@ namespace MartinCostello.SqlLocalDb
             }
         }
 
-        [WindowsCIOnlyFact]
-        public void Can_Delete_User_Instances()
-        {
-            // Arrange
-            using (var actual = new SqlLocalDbApi(_loggerFactory))
-            {
-                actual.CreateInstance(Guid.NewGuid().ToString());
-
-                IReadOnlyList<string> namesBefore = actual.GetInstanceNames();
-
-                // Act
-                int deleted = actual.DeleteUserInstances(deleteFiles: true);
-
-                // Assert
-                deleted.ShouldBeGreaterThanOrEqualTo(1);
-                IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
-
-                int instancesDeleted = 0;
-
-                foreach (string name in namesBefore)
-                {
-                    if (!namesAfter.Contains(name))
-                    {
-                        instancesDeleted++;
-                    }
-                }
-
-                instancesDeleted.ShouldBeGreaterThanOrEqualTo(1);
-            }
-        }
-
         [Fact]
         public void SqlLocalDbApi_Is_ISqlLocalDbApiAdapter()
         {
