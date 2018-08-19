@@ -19,7 +19,7 @@ namespace MartinCostello.SqlLocalDb
 
         public SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         {
-            _loggerFactory = outputHelper.AsLoggerFactory();
+            _loggerFactory = outputHelper.ToLoggerFactory();
         }
 
         [Fact]

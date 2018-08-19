@@ -21,7 +21,7 @@ namespace MartinCostello.SqlLocalDb
 
         public NotInParallelTests(ITestOutputHelper outputHelper)
         {
-            _loggerFactory = outputHelper.AsLoggerFactory();
+            _loggerFactory = outputHelper.ToLoggerFactory();
         }
 
         [WindowsCIOnlyFact]
