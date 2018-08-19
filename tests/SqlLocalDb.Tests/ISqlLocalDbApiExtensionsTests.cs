@@ -17,7 +17,7 @@ namespace MartinCostello.SqlLocalDb
 
         public ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
         {
-            _loggerFactory = outputHelper.AsLoggerFactory();
+            _loggerFactory = outputHelper.ToLoggerFactory();
         }
 
         [Theory]

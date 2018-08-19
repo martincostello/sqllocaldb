@@ -11,11 +11,19 @@ using NodaTime;
 using NodaTime.Testing;
 using TodoApp.Data;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace TodoApp.Tests
 {
     public class TodoRepositoryTests
     {
+        public TodoRepositoryTests(ITestOutputHelper outputHelper)
+        {
+            LoggerFactory = outputHelper.ToLoggerFactory();
+        }
+
+        private ILoggerFactory LoggerFactory { get; }
+
         [Fact]
         public async Task Can_Create_Update_And_Delete_Todo_Items()
         {
@@ -23,7 +31,6 @@ namespace TodoApp.Tests
             var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
             var clock = new FakeClock(Instant.FromDateTimeOffset(now));
 
-            var loggerFactory = new LoggerFactory();
             var options = new SqlLocalDbOptions()
             {
                 AutomaticallyDeleteInstanceFiles = true,
@@ -31,7 +38,7 @@ namespace TodoApp.Tests
                 StopTimeout = TimeSpan.FromSeconds(1),
             };
 
-            using (var localDB = new SqlLocalDbApi(options, loggerFactory))
+            using (var localDB = new SqlLocalDbApi(options, LoggerFactory))
             {
                 using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
                 {
