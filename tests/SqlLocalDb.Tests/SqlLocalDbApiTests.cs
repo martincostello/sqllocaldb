@@ -3,8 +3,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
@@ -262,7 +264,7 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [WindowsOnlyFact]
-        public void Can_Manage_SqlLocalDB_Instances()
+        public async Task Can_Manage_SqlLocalDB_Instances()
         {
             // Arrange
             using (var actual = new SqlLocalDbApi(_loggerFactory))
@@ -282,7 +284,7 @@ namespace MartinCostello.SqlLocalDb
                 actual.InstanceExists(instanceName).ShouldBeFalse();
 
                 // Act
-                actual.CreateInstance(instanceName);
+                instance = actual.CreateInstance(instanceName);
 
                 // Assert
                 instance = actual.GetInstanceInfo(instanceName);
@@ -292,10 +294,22 @@ namespace MartinCostello.SqlLocalDb
                 instance.IsRunning.ShouldBeFalse();
 
                 // Act
-                actual.StartInstance(instanceName);
+                string namedPipe = actual.StartInstance(instanceName);
 
                 // Assert
+                namedPipe.ShouldNotBeNullOrWhiteSpace();
+
+                var builder = new SqlConnectionStringBuilder() { DataSource = namedPipe };
+
+                using (var connection = new SqlConnection(builder.ConnectionString))
+                {
+                    await connection.OpenAsync();
+                }
+
+                // Act
                 instance = actual.GetInstanceInfo(instanceName);
+
+                // Assert
                 instance.ShouldNotBeNull();
                 instance.Name.ShouldBe(instanceName);
                 instance.Exists.ShouldBeTrue();
@@ -353,10 +367,9 @@ namespace MartinCostello.SqlLocalDb
                     string instanceName = Guid.NewGuid().ToString();
 
                     // Act
-                    actual.CreateInstance(instanceName, version);
+                    ISqlLocalDbInstanceInfo instanceInfo = actual.CreateInstance(instanceName, version);
 
                     // Assert
-                    ISqlLocalDbInstanceInfo instanceInfo = actual.GetInstanceInfo(instanceName);
                     instanceInfo.ShouldNotBeNull();
                     instanceInfo.Name.ShouldBe(instanceName);
                     instanceInfo.Exists.ShouldBeTrue();
