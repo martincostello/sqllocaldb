@@ -4,19 +4,27 @@
 using System;
 using System.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
 namespace MartinCostello.SqlLocalDb
 {
     /// <summary>
     /// A class that contains examples for using <c>MartinCostello.SqlLocalDb</c>.
     /// </summary>
-    public static class Examples
+    public class Examples
     {
-        [WindowsOnlyFact]
-        public static void Create_A_Sql_LocalDB_Instance()
+        public Examples(ITestOutputHelper outputHelper)
         {
-            using (var localDB = new SqlLocalDbApi())
+            OutputHelper = outputHelper;
+        }
+
+        private ITestOutputHelper OutputHelper { get; }
+
+        [WindowsOnlyFact]
+        public void Create_A_Sql_LocalDB_Instance()
+        {
+            using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
             {
                 ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
                 ISqlLocalDbInstanceManager manager = instance.Manage();
@@ -38,9 +46,9 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [WindowsOnlyFact]
-        public static void Create_A_Temporary_Sql_LocalDB_Instance()
+        public void Create_A_Temporary_Sql_LocalDB_Instance()
         {
-            using (var localDB = new SqlLocalDbApi())
+            using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
             {
                 using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
                 {
@@ -55,11 +63,11 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [WindowsOnlyFact]
-        public static void Use_With_Dependency_Injection()
+        public void Use_With_Dependency_Injection()
         {
             // Register with SQL LocalDB services
             var services = new ServiceCollection()
-                .AddLogging()
+                .AddLogging((builder) => builder.AddXUnit(OutputHelper))
                 .AddSqlLocalDB();
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();

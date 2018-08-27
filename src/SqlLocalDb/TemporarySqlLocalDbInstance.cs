@@ -147,14 +147,7 @@ namespace MartinCostello.SqlLocalDb
 
                     try
                     {
-                        if (Api is SqlLocalDbApi localDB)
-                        {
-                            localDB.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: DeleteFiles);
-                        }
-                        else
-                        {
-                            Api.DeleteInstance(instanceName);
-                        }
+                        DeleteInstance(instanceName);
                     }
                     catch (SqlLocalDbException ex)
                     {
@@ -197,7 +190,7 @@ namespace MartinCostello.SqlLocalDb
             }
             catch (Exception)
             {
-                Api.DeleteInstance(instanceName);
+                DeleteInstance(instanceName);
                 throw;
             }
         }
@@ -213,6 +206,22 @@ namespace MartinCostello.SqlLocalDb
             if (_disposed)
             {
                 throw new ObjectDisposedException(GetType().FullName);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified SQL LocalDB instance.
+        /// </summary>
+        /// <param name="instanceName">The SQL LocalDB instance to delete.</param>
+        private void DeleteInstance(string instanceName)
+        {
+            if (Api is SqlLocalDbApi localDB)
+            {
+                localDB.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: DeleteFiles);
+            }
+            else
+            {
+                Api.DeleteInstance(instanceName);
             }
         }
     }
