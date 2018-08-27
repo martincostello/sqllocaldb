@@ -276,7 +276,7 @@ namespace MartinCostello.SqlLocalDb
                 }
                 catch (Exception)
                 {
-                    api.DeleteInstance(instanceName, deleteFiles: true);
+                    api.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
                     throw;
                 }
             }
