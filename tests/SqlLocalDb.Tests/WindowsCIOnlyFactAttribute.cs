@@ -19,7 +19,8 @@ namespace MartinCostello.SqlLocalDb
         {
             bool isWindowsCI =
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
-                !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI"));
+                (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI")) ||
+                 !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TF_BUILD")));
 
             Skip = isWindowsCI ? string.Empty : $"This test can only be run on Windows CI.";
         }
