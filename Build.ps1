@@ -153,6 +153,8 @@ function DotNetTest {
                 `"-filter:+[MartinCostello.SqlLocalDb]* -[MartinCostello.SqlLocalDb.Tests]*`"
         }
 
+        $dotNetTestExitCode = $LASTEXITCODE
+
         & $dotnet `
             $reportGeneratorPath `
             `"-reports:$coverageOutput`" `
@@ -161,8 +163,8 @@ function DotNetTest {
             -verbosity:Warning
     }
 
-    if ($LASTEXITCODE -ne 0) {
-        throw "dotnet test failed with exit code $LASTEXITCODE"
+    if ($dotNetTestExitCode -ne 0) {
+        throw "dotnet test failed with exit code $dotNetTestExitCode"
     }
 }
 
