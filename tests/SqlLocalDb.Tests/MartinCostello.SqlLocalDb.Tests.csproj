@@ -15,7 +15,7 @@
     <ProjectReference Include="..\..\src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.1.0-alpha4" />
+    <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.1.0-beta1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
