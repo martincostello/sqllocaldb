@@ -12,7 +12,7 @@ namespace MartinCostello.SqlLocalDb.Interop
     /// Defines the native SQL Server LocalDB Instance API.
     /// </summary>
     [NativeSymbols(Prefix = "LocalDB")]
-    public interface ILocalDbInstanceApi : IDisposable
+    internal interface ILocalDbInstanceApi : IDisposable
     {
         /// <summary>
         /// Creates a new instance of SQL Server LocalDB.

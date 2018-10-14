@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("963628d3-b23b-4b98-9cec-b0a13b00ddef")]
 
+[assembly: InternalsVisibleTo("DLSupportDynamicAssembly")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: InternalsVisibleTo("MartinCostello.SqlLocalDb.TestApp")]
 [assembly: InternalsVisibleTo("MartinCostello.SqlLocalDb.Tests")]
