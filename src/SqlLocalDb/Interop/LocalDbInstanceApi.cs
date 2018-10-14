@@ -78,13 +78,16 @@ namespace MartinCostello.SqlLocalDb.Interop
 
             _pathResolver = new LocalDbInstanceApiPathResolver(apiVersion, registry, loaderLogger);
 
-            try
+            if (SqlLocalDbApi.IsWindows)
             {
-                _api = new NativeLibraryBuilder(options, _pathResolver).ActivateInterface<ILocalDbInstanceApi>("SqlLocalDb");
-            }
-            catch (FileNotFoundException)
-            {
-                _api = null; // Not installed
+                try
+                {
+                    _api = new NativeLibraryBuilder(options, _pathResolver).ActivateInterface<ILocalDbInstanceApi>("SqlLocalDb");
+                }
+                catch (FileNotFoundException)
+                {
+                    _api = null; // Not installed
+                }
             }
         }
 
