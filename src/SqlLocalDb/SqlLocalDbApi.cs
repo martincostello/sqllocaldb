@@ -131,14 +131,13 @@ namespace MartinCostello.SqlLocalDb
 
             LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             Logger = loggerFactory.CreateLogger<SqlLocalDbApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(SqlLocalDbApi)));
-            var apiLogger = loggerFactory.CreateLogger<LocalDbInstanceApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(LocalDbInstanceApi)));
 
             AutomaticallyDeleteInstanceFiles = options.AutomaticallyDeleteInstanceFiles;
             LanguageId = options.LanguageId;
             StopOptions = options.StopOptions;
             StopTimeout = options.StopTimeout;
 
-            _api = new LocalDbInstanceApi(options.NativeApiOverrideVersion, registry, apiLogger);
+            _api = new LocalDbInstanceApi(options.NativeApiOverrideVersion, registry, loggerFactory);
         }
 
         /// <summary>
