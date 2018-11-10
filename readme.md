@@ -80,7 +80,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `2.1.402` or later).
+Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `2.1.403` or later).
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
