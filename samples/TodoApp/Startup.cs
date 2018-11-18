@@ -33,7 +33,7 @@ namespace TodoApp
             services.AddScoped<ITodoService, TodoService>();
 
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<TodoContext>(AddTodoContext);
         }
