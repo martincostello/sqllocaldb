@@ -1,4 +1,4 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.SqlLocalDb
@@ -30,8 +31,8 @@ namespace MartinCostello.SqlLocalDb
                 StopOptions = StopInstanceOptions.NoWait,
             };
 
-            var loggerFactory = new LoggerFactory()
-                .AddConsole(LogLevel.Debug);
+            var services = new ServiceCollection().AddLogging((p) => p.AddConsole().SetMinimumLevel(LogLevel.Debug));
+            var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
             var localDB = new SqlLocalDbApi(options, loggerFactory);
 
