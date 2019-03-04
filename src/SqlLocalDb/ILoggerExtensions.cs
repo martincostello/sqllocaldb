@@ -303,7 +303,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB tracing is starting.
         /// </summary>
-        private static readonly Action<ILogger,  Exception> _startingTracing = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception> _startingTracing = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.StartingTracing,
             SR.ILoggerExtensions_StartTracing);
