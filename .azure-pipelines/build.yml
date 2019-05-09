@@ -5,6 +5,9 @@ trigger:
   branches:
     include:
     - master
+  tags:
+    include:
+    - v*
 
 phases:
 - template: build-template.yml
