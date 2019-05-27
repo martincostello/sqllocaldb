@@ -26,7 +26,7 @@ namespace TodoApp.Data
                     Id = table.Column<string>(nullable: false),
                     Text = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    CompletedAt = table.Column<DateTimeOffset>(nullable: true)
+                    CompletedAt = table.Column<DateTimeOffset>(nullable: true),
                 },
                 constraints: (table) =>
                 {

@@ -223,7 +223,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         string ISqlLocalDbInstanceInfo.SharedName => LocalDbInstanceApi.MarshalString(SharedInstanceName);
 
         /// <summary>
-        /// Gets the name to display in the debugger
+        /// Gets the name to display in the debugger.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
