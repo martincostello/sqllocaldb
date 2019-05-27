@@ -95,7 +95,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         Version ISqlLocalDbVersionInfo.Version => new Version((int)Major, (int)Minor, (int)Build, (int)Revision);
 
         /// <summary>
-        /// Gets the name to display in the debugger
+        /// Gets the name to display in the debugger.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
