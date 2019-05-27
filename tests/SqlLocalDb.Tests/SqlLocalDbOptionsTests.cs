@@ -30,7 +30,7 @@ namespace MartinCostello.SqlLocalDb
             // Act
             var actual = new SqlLocalDbOptions()
             {
-                Language = CultureInfo.GetCultureInfo("de-DE")
+                Language = CultureInfo.GetCultureInfo("de-DE"),
             };
 
             // Assert
