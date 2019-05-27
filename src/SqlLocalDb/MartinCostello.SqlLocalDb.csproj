@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
-    <DebugType>full</DebugType>
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CA2235</NoWarn>
@@ -11,9 +10,6 @@
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="SR.Designer.cs" AutoGen="True" DependentUpon="SR.resx" DesignTime="True" />
