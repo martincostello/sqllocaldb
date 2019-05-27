@@ -115,7 +115,7 @@ function DotNetTest {
 
         $nugetPath = Join-Path $env:USERPROFILE ".nuget\packages"
 
-        $openCoverVersion = "4.6.519"
+        $openCoverVersion = "4.7.922"
         $openCoverPath = Join-Path $nugetPath "OpenCover\$openCoverVersion\tools\OpenCover.Console.exe"
 
         $reportGeneratorVersion = "4.1.8"
