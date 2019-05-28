@@ -119,10 +119,12 @@ namespace MartinCostello.SqlLocalDb
                     }
                 }
             }
+#pragma warning disable CA1031
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+#pragma warning restore CA1031
             finally
             {
                 manager.Stop();
