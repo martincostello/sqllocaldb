@@ -34,101 +34,102 @@ namespace MartinCostello.SqlLocalDb
             var services = new ServiceCollection().AddLogging((p) => p.AddConsole().SetMinimumLevel(LogLevel.Debug));
             var loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
-            var localDB = new SqlLocalDbApi(options, loggerFactory);
-
-            if (!localDB.IsLocalDBInstalled())
+            using (var localDB = new SqlLocalDbApi(options, loggerFactory))
             {
-                Console.WriteLine(SR.SqlLocalDbApi_NotInstalledFormat, Environment.MachineName);
-                return;
-            }
-
-            if (args?.Length == 1 &&
-                (string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase) ||
-                 string.Equals(args[0], "--delete-user-instances", StringComparison.OrdinalIgnoreCase)))
-            {
-                localDB.DeleteUserInstances(deleteFiles: true);
-            }
-
-            IReadOnlyList<ISqlLocalDbVersionInfo> versions = localDB.GetVersions();
-
-            Console.WriteLine(Strings.Program_VersionsListHeader);
-            Console.WriteLine();
-
-            foreach (ISqlLocalDbVersionInfo version in versions)
-            {
-                Console.WriteLine(version.Name);
-            }
-
-            Console.WriteLine();
-
-            IReadOnlyList<ISqlLocalDbInstanceInfo> instances = localDB.GetInstances();
-
-            Console.WriteLine(Strings.Program_InstancesListHeader);
-            Console.WriteLine();
-
-            foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
-            {
-                Console.WriteLine(instanceInfo.Name);
-            }
-
-            Console.WriteLine();
-
-            string instanceName = Guid.NewGuid().ToString();
-
-            ISqlLocalDbInstanceInfo instance = localDB.CreateInstance(instanceName);
-
-            var manager = new SqlLocalDbInstanceManager(instance, localDB);
-            manager.Start();
-
-            try
-            {
-                if (IsCurrentUserAdmin())
+                if (!localDB.IsLocalDBInstalled())
                 {
-                    manager.Share(Guid.NewGuid().ToString());
+                    Console.WriteLine(SR.SqlLocalDbApi_NotInstalledFormat, Environment.MachineName);
+                    return;
                 }
+
+                if (args?.Length == 1 &&
+                    (string.Equals(args[0], "/deleteuserinstances", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(args[0], "--delete-user-instances", StringComparison.OrdinalIgnoreCase)))
+                {
+                    localDB.DeleteUserInstances(deleteFiles: true);
+                }
+
+                IReadOnlyList<ISqlLocalDbVersionInfo> versions = localDB.GetVersions();
+
+                Console.WriteLine(Strings.Program_VersionsListHeader);
+                Console.WriteLine();
+
+                foreach (ISqlLocalDbVersionInfo version in versions)
+                {
+                    Console.WriteLine(version.Name);
+                }
+
+                Console.WriteLine();
+
+                IReadOnlyList<ISqlLocalDbInstanceInfo> instances = localDB.GetInstances();
+
+                Console.WriteLine(Strings.Program_InstancesListHeader);
+                Console.WriteLine();
+
+                foreach (ISqlLocalDbInstanceInfo instanceInfo in instances)
+                {
+                    Console.WriteLine(instanceInfo.Name);
+                }
+
+                Console.WriteLine();
+
+                string instanceName = Guid.NewGuid().ToString();
+
+                ISqlLocalDbInstanceInfo instance = localDB.CreateInstance(instanceName);
+
+                var manager = new SqlLocalDbInstanceManager(instance, localDB);
+                manager.Start();
 
                 try
                 {
-                    using (SqlConnection connection = manager.CreateConnection())
-                    {
-                        connection.Open();
-
-                        try
-                        {
-                            using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
-                            {
-                                command.ExecuteNonQuery();
-                            }
-
-                            using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
-                            {
-                                command.ExecuteNonQuery();
-                            }
-                        }
-                        finally
-                        {
-                            connection.Close();
-                        }
-                    }
-                }
-                finally
-                {
                     if (IsCurrentUserAdmin())
                     {
-                        manager.Unshare();
+                        manager.Share(Guid.NewGuid().ToString());
+                    }
+
+                    try
+                    {
+                        using (SqlConnection connection = manager.CreateConnection())
+                        {
+                            connection.Open();
+
+                            try
+                            {
+                                using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+
+                                using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                            finally
+                            {
+                                connection.Close();
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        if (IsCurrentUserAdmin())
+                        {
+                            manager.Unshare();
+                        }
                     }
                 }
-            }
 #pragma warning disable CA1031
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
 #pragma warning restore CA1031
-            finally
-            {
-                manager.Stop();
-                localDB.DeleteInstance(instance.Name);
+                finally
+                {
+                    manager.Stop();
+                    localDB.DeleteInstance(instance.Name);
+                }
             }
 
             Console.WriteLine();
