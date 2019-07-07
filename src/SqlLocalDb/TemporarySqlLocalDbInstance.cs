@@ -194,6 +194,14 @@ namespace MartinCostello.SqlLocalDb
                 throw new SqlLocalDbException(SRHelper.Format(SR.TemporarySqlLocalDbInstance_CreateFailedFormat, instanceName));
             }
 
+            if (instanceInfo != null)
+            {
+                if (instanceInfo.Name != instanceName)
+                {
+                    throw new SqlLocalDbException(SRHelper.Format(SR.TemporarySqlLocalDbInstance_CreateFailedFormat, instanceName));
+                }
+            }
+
             try
             {
                 Api.StartInstance(instanceName);
