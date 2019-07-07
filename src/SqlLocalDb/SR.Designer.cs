@@ -19,7 +19,7 @@ namespace MartinCostello.SqlLocalDb {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SR {
@@ -606,6 +606,15 @@ namespace MartinCostello.SqlLocalDb {
         internal static string SqlLocalDbInstanceManager_UnshareFailedFormat {
             get {
                 return ResourceManager.GetString("SqlLocalDbInstanceManager_UnshareFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create temporary SQL LocalDB instance &apos;{0}&apos;. The SQL LocalDB instance API does not report the instance as existing..
+        /// </summary>
+        internal static string TemporarySqlLocalDbInstance_CreateFailedFormat {
+            get {
+                return ResourceManager.GetString("TemporarySqlLocalDbInstance_CreateFailedFormat", resourceCulture);
             }
         }
     }

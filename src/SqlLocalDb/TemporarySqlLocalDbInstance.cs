@@ -181,7 +181,18 @@ namespace MartinCostello.SqlLocalDb
             _logger = loggerFactory?.CreateLogger<TemporarySqlLocalDbInstance>();
 
             string instanceName = Guid.NewGuid().ToString();
-            Api.CreateInstance(instanceName, Api.LatestVersion);
+
+            ISqlLocalDbInstanceInfo instanceInfo = Api.CreateInstance(instanceName, Api.LatestVersion);
+
+            if (instanceInfo?.Exists == false)
+            {
+                instanceInfo = Api.GetInstanceInfo(instanceName);
+            }
+
+            if (instanceInfo?.Exists == false)
+            {
+                throw new SqlLocalDbException(SRHelper.Format(SR.TemporarySqlLocalDbInstance_CreateFailedFormat, instanceName));
+            }
 
             try
             {

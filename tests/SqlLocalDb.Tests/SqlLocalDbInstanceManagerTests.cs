@@ -244,15 +244,18 @@ namespace MartinCostello.SqlLocalDb
 
             using (var api = new SqlLocalDbApi(_loggerFactory))
             {
-                api.CreateInstance(instanceName);
+                var instance = api.CreateInstance(instanceName);
 
                 try
                 {
+                    instance.Exists.ShouldBeTrue();
+                    instance.Name.ShouldBe(instanceName);
+
                     api.StartInstance(instanceName);
 
                     try
                     {
-                        var instance = api.GetInstanceInfo(instanceName);
+                        instance = api.GetInstanceInfo(instanceName);
 
                         var manager = new SqlLocalDbInstanceManager(instance, api);
 
