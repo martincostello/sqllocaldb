@@ -23,7 +23,7 @@ namespace TodoApp.Data
                 name: nameof(TodoContext.Items),
                 columns: (table) => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Text = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     CompletedAt = table.Column<DateTimeOffset>(nullable: true),
@@ -50,7 +50,7 @@ namespace TodoApp.Data
                 typeof(TodoItem).Name,
                 b =>
                 {
-                    b.Property<string>(nameof(TodoItem.Id)).ValueGeneratedOnAdd();
+                    b.Property<Guid>(nameof(TodoItem.Id)).ValueGeneratedOnAdd();
                     b.Property<string>(nameof(TodoItem.Text));
                     b.Property<DateTimeOffset>(nameof(TodoItem.CreatedAt));
                     b.Property<DateTimeOffset?>(nameof(TodoItem.CompletedAt));

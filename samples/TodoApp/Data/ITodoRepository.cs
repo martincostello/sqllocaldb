@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace TodoApp.Data
         /// <see langword="false"/> if it was already completed, or <see langword="null"/>
         /// if an item with the specified Id cannot be found.
         /// </returns>
-        Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken = default);
+        Task<bool?> CompleteItemAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes an item as an asynchronous operation.
@@ -46,7 +47,7 @@ namespace TodoApp.Data
         /// to delete the item that returns <see langword="true"/> if it was deleted,
         /// otherwise <see langword="false"/> if an item with the specified Id cannot be found.
         /// </returns>
-        Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken = default);
+        Task<bool> DeleteItemAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Returns all items as an asynchronous operation.

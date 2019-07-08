@@ -18,13 +18,10 @@ namespace TodoApp.Data
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> to use.</param>
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (IServiceScope scope = serviceProvider.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetService<TodoContext>();
+            using IServiceScope scope = serviceProvider.CreateScope();
 
-                context.Database.EnsureCreated();
-                context.Database.Migrate();
-            }
+            var context = scope.ServiceProvider.GetService<TodoContext>();
+            context.Database.Migrate();
         }
     }
 }
