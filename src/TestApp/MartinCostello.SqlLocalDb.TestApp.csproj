@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Description>Test application for MartinCostello.SqlLocalDb.</Description>
     <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);CA1031;SA1600</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFramework>netcoreapp2.2</TargetFramework>

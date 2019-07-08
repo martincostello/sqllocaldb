@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
