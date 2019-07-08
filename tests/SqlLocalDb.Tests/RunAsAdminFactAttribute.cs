@@ -1,10 +1,11 @@
-// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Xunit;
+using Xunit.Sdk;
 
 namespace MartinCostello.SqlLocalDb
 {
@@ -13,6 +14,7 @@ namespace MartinCostello.SqlLocalDb
     /// if the user account running the test has administrative privileges. This class cannot be inherited.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [XunitTestCaseDiscoverer("MartinCostello.SqlLocalDb.RetryFactDiscoverer", "MartinCostello.SqlLocalDb.Tests")]
     public sealed class RunAsAdminFactAttribute : FactAttribute
     {
         public RunAsAdminFactAttribute()
@@ -20,6 +22,12 @@ namespace MartinCostello.SqlLocalDb
         {
             Skip = IsCurrentUserAdmin(out string name) ? string.Empty : $"The current user '{name}' does not have administrative privileges.";
         }
+
+        /// <summary>
+        /// Gets or sets the number of retries allowed for a failed test.
+        /// If unset (or set less than 1), will default to 3 attempts.
+        /// </summary>
+        public int MaxRetries { get; set; }
 
         /// <summary>
         /// Returns whether the current user has Administrative privileges.

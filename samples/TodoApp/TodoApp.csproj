@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227</NoWarn>
+    <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>

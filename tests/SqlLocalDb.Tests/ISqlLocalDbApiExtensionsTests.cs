@@ -95,55 +95,6 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("api", () => api.CreateTemporaryInstance());
         }
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
-        {
-            // Arrange
-            if (!SqlLocalDbApi.IsWindows)
-            {
-                // HACK Theories dont seem to work correctly with subclasses now
-                // so cannot make a derived class for a "Windows-only" theory.
-                return;
-            }
-
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                ISqlLocalDbInstanceInfo info;
-                string name;
-
-                // Act
-                using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles))
-                {
-                    // Assert
-                    target.ShouldNotBeNull();
-                    target.Name.ShouldNotBeNull();
-                    target.Name.ShouldNotBeEmpty();
-
-                    Guid.TryParse(target.Name, out Guid nameAsGuid).ShouldBeTrue();
-                    nameAsGuid.ShouldNotBe(Guid.Empty);
-
-                    // Act
-                    info = target.GetInstanceInfo();
-
-                    // Assert
-                    info.ShouldNotBeNull();
-                    info.Exists.ShouldBeTrue();
-                    info.IsRunning.ShouldBeTrue();
-
-                    name = target.Name;
-                }
-
-                // Act
-                info = api.GetInstanceInfo(name);
-
-                // Assert
-                info.ShouldNotBeNull();
-                info.Exists.ShouldBeFalse();
-            }
-        }
-
         [Fact]
         public void TemporaryInstance_Throws_If_Used_After_Disposal()
         {
@@ -499,6 +450,18 @@ namespace MartinCostello.SqlLocalDb
             Assert.Throws<ArgumentNullException>("api", () => api.ShareInstance(instanceName, sharedInstanceName));
         }
 
+        [WindowsOnlyFact]
+        public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Not_Deleted()
+        {
+            CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: false);
+        }
+
+        [WindowsOnlyFact]
+        public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Deleted()
+        {
+            CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: true);
+        }
+
         [RunAsAdminFact]
         public void ShareInstance_Shares_Instance_For_Current_User()
         {
@@ -525,6 +488,45 @@ namespace MartinCostello.SqlLocalDb
             mock.Setup((p) => p.Exists).Returns(exists);
 
             return mock.Object;
+        }
+
+        private void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
+        {
+            // Arrange
+            using (var api = new SqlLocalDbApi(_loggerFactory))
+            {
+                ISqlLocalDbInstanceInfo info;
+                string name;
+
+                // Act
+                using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles))
+                {
+                    // Assert
+                    target.ShouldNotBeNull();
+                    target.Name.ShouldNotBeNull();
+                    target.Name.ShouldNotBeEmpty();
+
+                    Guid.TryParse(target.Name, out Guid nameAsGuid).ShouldBeTrue();
+                    nameAsGuid.ShouldNotBe(Guid.Empty);
+
+                    // Act
+                    info = target.GetInstanceInfo();
+
+                    // Assert
+                    info.ShouldNotBeNull();
+                    info.Exists.ShouldBeTrue();
+                    info.IsRunning.ShouldBeTrue();
+
+                    name = target.Name;
+                }
+
+                // Act
+                info = api.GetInstanceInfo(name);
+
+                // Assert
+                info.ShouldNotBeNull();
+                info.Exists.ShouldBeFalse();
+            }
         }
     }
 }
