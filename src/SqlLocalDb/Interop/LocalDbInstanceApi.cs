@@ -611,6 +611,12 @@ namespace MartinCostello.SqlLocalDb.Interop
                             return null;
                         }
 
+#if NETCOREAPP3_0
+                        if (NativeLibrary.TryLoad(fileName, out IntPtr handle))
+                        {
+                            _handle = new SafeLibraryHandle(handle);
+                        }
+#else
                         int dwFlags = 0;
 
                         // Check if the local machine has KB2533623 installed in order
@@ -630,6 +636,7 @@ namespace MartinCostello.SqlLocalDb.Interop
                         }
 
                         _handle = NativeMethods.LoadLibraryEx(fileName, IntPtr.Zero, dwFlags);
+#endif
 
                         if (_handle == null || _handle.IsInvalid)
                         {
@@ -671,7 +678,14 @@ namespace MartinCostello.SqlLocalDb.Interop
                 return null;
             }
 
+#if NETCOREAPP3_0
+            if (!NativeLibrary.TryGetExport(handle.DangerousGetHandle(), functionName, out IntPtr ptr))
+            {
+                ptr = IntPtr.Zero;
+            }
+#else
             IntPtr ptr = NativeMethods.GetProcAddress(handle, functionName);
+#endif
 
             if (ptr == IntPtr.Zero)
             {
