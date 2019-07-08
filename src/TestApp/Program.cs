@@ -98,11 +98,8 @@ namespace MartinCostello.SqlLocalDb
 
                         try
                         {
-                            using SqlCommand createCommand = new SqlCommand("create database [MyDatabase]", connection);
-                            await createCommand.ExecuteNonQueryAsync();
-
-                            using SqlCommand dropCommand = new SqlCommand("drop database [MyDatabase]", connection);
-                            await dropCommand.ExecuteNonQueryAsync();
+                            await ExecuteCommandAsync(connection, (command) => command.CommandText = "create database [MyDatabase]");
+                            await ExecuteCommandAsync(connection, (command) => command.CommandText = "drop database [MyDatabase]");
                         }
                         finally
                         {
@@ -133,6 +130,18 @@ namespace MartinCostello.SqlLocalDb
             Console.WriteLine();
             Console.Write(Strings.Program_ExitPrompt);
             Console.ReadKey();
+        }
+
+        private static async Task ExecuteCommandAsync(SqlConnection connection, Action<SqlCommand> configure)
+        {
+            using SqlCommand command = new SqlCommand()
+            {
+                Connection = connection,
+            };
+
+            configure(command);
+
+            await command.ExecuteNonQueryAsync();
         }
 
         /// <summary>
