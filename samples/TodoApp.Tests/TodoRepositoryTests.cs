@@ -38,79 +38,72 @@ namespace TodoApp.Tests
                 StopTimeout = TimeSpan.FromSeconds(1),
             };
 
-            using (var localDB = new SqlLocalDbApi(options, LoggerFactory))
-            {
-                using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
-                {
-                    var builder = new DbContextOptionsBuilder<TodoContext>()
-                        .UseSqlServer(instance.ConnectionString);
+            using var localDB = new SqlLocalDbApi(options, LoggerFactory);
+            using TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true);
 
-                    using (var context = new TodoContext(builder.Options))
-                    {
-                        context.Database.EnsureCreated();
-                        context.Database.Migrate();
+            var builder = new DbContextOptionsBuilder<TodoContext>().UseSqlServer(instance.ConnectionString);
+            using var context = new TodoContext(builder.Options);
 
-                        var target = new TodoRepository(clock, context);
+            await context.Database.EnsureCreatedAsync();
 
-                        // Act - Verify the repository is empty
-                        IList<TodoItem> items = await target.GetItemsAsync();
+            var target = new TodoRepository(clock, context);
 
-                        // Assert
-                        Assert.NotNull(items);
-                        Assert.Empty(items);
+            // Act - Verify the repository is empty
+            IList<TodoItem> items = await target.GetItemsAsync();
 
-                        // Arrange - Add a new item
-                        string text = "Buy cheese";
+            // Assert
+            Assert.NotNull(items);
+            Assert.Empty(items);
 
-                        // Act
-                        TodoItem item = await target.AddItemAsync(text);
+            // Arrange - Add a new item
+            string text = "Buy cheese";
 
-                        // Assert
-                        Assert.NotNull(item);
-                        Assert.NotEmpty(item.Id);
-                        Assert.Equal(text, item.Text);
-                        Assert.Equal(now, item.CreatedAt);
-                        Assert.Null(item.CompletedAt);
+            // Act
+            TodoItem item = await target.AddItemAsync(text);
 
-                        // Arrange - Mark the item as completed
-                        string id = item.Id;
+            // Assert
+            Assert.NotNull(item);
+            Assert.NotEmpty(item.Id);
+            Assert.Equal(text, item.Text);
+            Assert.Equal(now, item.CreatedAt);
+            Assert.Null(item.CompletedAt);
 
-                        // Act
-                        bool? completeResult = await target.CompleteItemAsync(id);
+            // Arrange - Mark the item as completed
+            string id = item.Id;
 
-                        // Assert
-                        Assert.True(completeResult);
+            // Act
+            bool? completeResult = await target.CompleteItemAsync(id);
 
-                        // Act - Verify the repository has one item that is completed
-                        items = await target.GetItemsAsync();
+            // Assert
+            Assert.True(completeResult);
 
-                        // Assert
-                        Assert.NotNull(items);
-                        Assert.NotEmpty(items);
-                        Assert.Equal(1, items.Count);
+            // Act - Verify the repository has one item that is completed
+            items = await target.GetItemsAsync();
 
-                        item = items[0];
-                        Assert.NotNull(item);
-                        Assert.NotEmpty(item.Id);
-                        Assert.Equal(text, item.Text);
-                        Assert.Equal(now, item.CreatedAt);
-                        Assert.Equal(now, item.CompletedAt);
+            // Assert
+            Assert.NotNull(items);
+            Assert.NotEmpty(items);
+            Assert.Equal(1, items.Count);
 
-                        // Act - Delete the item
-                        bool deleteResult = await target.DeleteItemAsync(id);
+            item = items[0];
+            Assert.NotNull(item);
+            Assert.NotEmpty(item.Id);
+            Assert.Equal(text, item.Text);
+            Assert.Equal(now, item.CreatedAt);
+            Assert.Equal(now, item.CompletedAt);
 
-                        // Assert
-                        Assert.True(deleteResult);
+            // Act - Delete the item
+            bool deleteResult = await target.DeleteItemAsync(id);
 
-                        // Act - Verify the repository is empty again
-                        items = await target.GetItemsAsync();
+            // Assert
+            Assert.True(deleteResult);
 
-                        // Assert
-                        Assert.NotNull(items);
-                        Assert.Empty(items);
-                    }
-                }
-            }
+            // Act - Verify the repository is empty again
+            items = await target.GetItemsAsync();
+
+            // Assert
+            Assert.NotNull(items);
+            Assert.Empty(items);
         }
     }
 }
