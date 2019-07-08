@@ -47,8 +47,7 @@ namespace TodoApp.Tests
 
                     using (var context = new TodoContext(builder.Options))
                     {
-                        context.Database.EnsureCreated();
-                        context.Database.Migrate();
+                        await context.Database.MigrateAsync();
 
                         var target = new TodoRepository(clock, context);
 
