@@ -2,13 +2,13 @@
   <PropertyGroup>
     <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227</NoWarn>
+    <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.6.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0-preview6.19304.10" />
     <PackageReference Include="NodaTime" Version="2.4.6" />
   </ItemGroup>
   <ItemGroup>

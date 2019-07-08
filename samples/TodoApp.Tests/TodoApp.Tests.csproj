@@ -3,12 +3,13 @@
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1303;CA1707;CA2007;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0-preview6.19304.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="NodaTime.Testing" Version="2.4.6" />
     <PackageReference Include="xunit" Version="2.4.1" />

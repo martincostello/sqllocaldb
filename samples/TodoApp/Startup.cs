@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NodaTime;
 using TodoApp.Data;
 using TodoApp.Services;
@@ -32,13 +33,13 @@ namespace TodoApp
             services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddScoped<ITodoService, TodoService>();
 
-            services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllersWithViews()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddDbContext<TodoContext>(AddTodoContext);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -53,7 +54,8 @@ namespace TodoApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseMvcWithDefaultRoute();
+            app.UseRouting();
+            app.UseEndpoints((endpoints) => endpoints.MapDefaultControllerRoute());
 
             // Ensure that the database and schema exists
             TodoInitializer.Initialize(app.ApplicationServices);

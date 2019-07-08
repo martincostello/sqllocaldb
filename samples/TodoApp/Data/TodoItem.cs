@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoApp.Data
 {
@@ -13,6 +14,7 @@ namespace TodoApp.Data
         /// <summary>
         /// Gets or sets the Id of the item.
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         /// <summary>
