@@ -127,9 +127,11 @@ Assembly Informational Version: {4}
 Assembly Configuration:         {5}
 User:                           {6}\{7}
 Does User Have Admin Token?     {8}
-Operating System:               {9}
-Is 64-bit Operating System?     {10}
-Is 64-bit Process?              {11}
+Operating System Version:       {9}
+Operating System Name:          {10}
+.NET Runtime:                   {11}
+Operating System Architecture:  {12}
+Process Architecture:           {13}
 </value>
   </data>
   <data name="Program_ExitPrompt" xml:space="preserve">
