@@ -254,8 +254,6 @@ namespace MartinCostello.SqlLocalDb
         public void DeleteInstanceInternal_Returns_False_If_ThrownIfNotFound_Is_False_And_Instance_Does_Not_Exist()
         {
             // Arrange
-            TimeSpan timeout = TimeSpan.Zero.Add(TimeSpan.FromTicks(-1));
-
             using (var actual = new SqlLocalDbApi(_loggerFactory))
             {
                 // Act and Assert

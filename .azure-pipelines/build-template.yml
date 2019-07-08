@@ -20,7 +20,7 @@ phases:
       ${{ if and(eq(parameters.queueName, ''), eq(parameters.agentOS, 'macOS')) }}:
         name: Hosted macOS
       ${{ if and(eq(parameters.queueName, ''), eq(parameters.agentOS, 'Windows')) }}:
-        name: Hosted VS2017
+        name: Hosted Windows 2019 with VS2019
     variables:
       AgentOSName: ${{ parameters.agentOS }}
       BuildArgs: ${{ parameters.buildArgs }}
@@ -59,6 +59,7 @@ phases:
         displayName: Publish test results
         condition: always()
         inputs:
+          failTaskOnFailedTests: true
           testRunner: VSTest
           testRunTitle: Unit and integration tests ($(AgentOSName))
           testResultsFiles: $(Build.SourcesDirectory)/**/*.trx
