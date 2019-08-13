@@ -208,8 +208,10 @@ namespace MartinCostello.SqlLocalDb
 
                 if (versions.Count < 1)
                 {
+#pragma warning disable CA1065
                     string message = SRHelper.Format(SR.SqlLocalDbApi_NoVersionsFormat, Environment.MachineName);
                     throw new InvalidOperationException(message);
+#pragma warning restore CA1065
                 }
 
                 // Return the version with the highest number
