@@ -79,7 +79,8 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="InvalidOperationException">
         /// The SQL LocalDB instance specified by <paramref name="instance"/> is not running.
         /// </exception>
-        public static string GetConnectionString(this ISqlLocalDbInstanceInfo instance) => instance.CreateConnectionStringBuilder().ConnectionString;
+        public static string GetConnectionString(this ISqlLocalDbInstanceInfo instance)
+            => instance.CreateConnectionStringBuilder().ConnectionString;
 
         /// <summary>
         /// Returns an <see cref="ISqlLocalDbInstanceManager"/> that can be used to manage the instance.
