@@ -4,6 +4,7 @@
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CA2235</NoWarn>
+    <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>

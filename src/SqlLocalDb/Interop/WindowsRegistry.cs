@@ -11,7 +11,7 @@ namespace MartinCostello.SqlLocalDb.Interop
     internal sealed class WindowsRegistry : IRegistry
     {
         /// <inheritdoc />
-        public IRegistryKey OpenSubKey(string keyName)
+        public IRegistryKey? OpenSubKey(string keyName)
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, writable: false);
             return key == null ? null : new WindowsRegistryKey(key);

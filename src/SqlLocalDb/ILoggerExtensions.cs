@@ -15,7 +15,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance has been created.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _createdInstance = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _createdInstance = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.CreatedInstance,
             SR.ILoggerExtensions_CreatedInstanceFormat);
@@ -23,7 +23,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is being created.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _creatingInstance = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _creatingInstance = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.CreatingInstance,
             SR.ILoggerExtensions_CreatingInstanceFormat);
@@ -31,7 +31,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance has been deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _deletedInstance = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _deletedInstance = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DeletedInstance,
             SR.ILoggerExtensions_DeletedInstanceFormat);
@@ -39,7 +39,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is being deleting.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _deletingInstance = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _deletingInstance = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DeletingInstance,
             SR.ILoggerExtensions_DeletingFormat);
@@ -47,7 +47,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance that could not be deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _deletingInstanceFailed = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _deletingInstanceFailed = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.DeletingInstanceFailed,
             SR.ILoggerExtensions_DeleteFailedFormat);
@@ -55,7 +55,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance that could not be deleted as it is still in use.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _deletingInstanceFailedAsInUse = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string?, Exception> _deletingInstanceFailedAsInUse = LoggerMessage.Define<string?>(
             LogLevel.Warning,
             EventIds.DeletingInstanceFailedAsInUse,
             SR.ILoggerExtensions_DeleteFailedAsInUseFormat);
@@ -63,7 +63,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance that could not be deleted because it could not be found.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _deletingInstanceFailedAsInstanceNotFound = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _deletingInstanceFailedAsInstanceNotFound = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.DeletingInstanceFailedAsCannotBeNotFound,
             SR.ILoggerExtensions_InstanceDoesNotExistFormat);
@@ -71,7 +71,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance files have been deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _deletedInstanceFiles = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _deletedInstanceFiles = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.DeletedInstanceFiles,
             SR.ILoggerExtensions_DeletedInstanceFilesFormat);
@@ -79,7 +79,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance files are being deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _deletingInstanceFiles = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _deletingInstanceFiles = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.DeletingInstanceFiles,
             SR.ILoggerExtensions_DeletingInstanceFilesFormat);
@@ -87,7 +87,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance files could not be deleted.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _deletingInstanceFilesFailed = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string?, Exception?> _deletingInstanceFilesFailed = LoggerMessage.Define<string, string?>(
             LogLevel.Error,
             EventIds.DeletingInstanceFilesFailed,
             SR.ILoggerExtensions_DeletingInstanceFilesFailedFormat);
@@ -95,7 +95,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when getting information about a SQL LocalDB instance.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _gettingInstanceInfo = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _gettingInstanceInfo = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.GettingInstanceInfo,
             SR.ILoggerExtensions_GettingInfoFormat);
@@ -103,7 +103,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when information about a SQL LocalDB instance was got.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _gotInstanceInfo = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _gotInstanceInfo = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.GotInstanceInfo,
             SR.ILoggerExtensions_GotInfoFormat);
@@ -111,7 +111,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when getting SQL LocalDB instance names.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _gettingInstanceNames = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _gettingInstanceNames = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.GettingInstanceNames,
             SR.ILoggerExtensions_GetInstances);
@@ -119,7 +119,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB instance names were got.
         /// </summary>
-        private static readonly Action<ILogger, int, Exception> _gotInstanceNames = LoggerMessage.Define<int>(
+        private static readonly Action<ILogger, int, Exception?> _gotInstanceNames = LoggerMessage.Define<int>(
             LogLevel.Debug,
             EventIds.GotInstanceNames,
             SR.ILoggerExtensions_GotInstancesFormat);
@@ -127,7 +127,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when getting information about a SQL LocalDB version.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _gettingVersionInfo = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _gettingVersionInfo = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.GettingVersionInfo,
             SR.ILoggerExtensions_GetVersionInfoFormat);
@@ -135,7 +135,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when information about a SQL LocalDB version was got.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _gotVersionInfo = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _gotVersionInfo = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.GotVersionInfo,
             SR.ILoggerExtensions_GotVersionInfoFormat);
@@ -143,7 +143,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when getting SQL LocalDB versions.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _gettingVersions = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _gettingVersions = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.GettingVersions,
             SR.ILoggerExtensions_GetVersions);
@@ -151,7 +151,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB versions were got.
         /// </summary>
-        private static readonly Action<ILogger, int, Exception> _gotVersions = LoggerMessage.Define<int>(
+        private static readonly Action<ILogger, int, Exception?> _gotVersions = LoggerMessage.Define<int>(
             LogLevel.Debug,
             EventIds.GotVersions,
             SR.ILoggerExtensions_GotVersionsFormat);
@@ -159,7 +159,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a invalid Language Id is used.
         /// </summary>
-        private static readonly Action<ILogger, int, Exception> _invalidLanguageId = LoggerMessage.Define<int>(
+        private static readonly Action<ILogger, int, Exception?> _invalidLanguageId = LoggerMessage.Define<int>(
             LogLevel.Warning,
             EventIds.InvalidLanguageId,
             SR.ILoggerExtensions_InvalidLanguageIdFormat);
@@ -167,7 +167,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a invalid SQL LocalDB Instance API registry key was found.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _invalidRegistryKey = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _invalidRegistryKey = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.InvalidRegistryKey,
             SR.ILoggerExtensions_InvalidRegistryKeyNameFormat);
@@ -175,7 +175,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB Instance API function could not be found.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _nativeApiFunctionNotFound = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _nativeApiFunctionNotFound = LoggerMessage.Define<string>(
             LogLevel.Error,
             EventIds.NativeFunctionNotFound,
             SR.ILoggerExtensions_FunctionNotFoundFormat);
@@ -183,7 +183,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API DLL was loaded.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _nativeApiLoaded = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _nativeApiLoaded = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.NativeApiLoaded,
             SR.ILoggerExtensions_NativeApiLoadedFormat);
@@ -191,7 +191,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API DLL could not loaded.
         /// </summary>
-        private static readonly Action<ILogger, string, int, Exception> _nativeApiLoadFailed = LoggerMessage.Define<string, int>(
+        private static readonly Action<ILogger, string, int, Exception?> _nativeApiLoadFailed = LoggerMessage.Define<string, int>(
             LogLevel.Error,
             EventIds.NativeApiLoadFailed,
             SR.ILoggerExtensions_NativeApiLoadFailedFormat);
@@ -199,7 +199,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API could not be found.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _nativeApiNotFound = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _nativeApiNotFound = LoggerMessage.Define(
             LogLevel.Warning,
             EventIds.NoNativeApiFound,
             SR.ILoggerExtensions_NoNativeApiFound);
@@ -207,7 +207,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API DLL was not loaded.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _nativeApiNotLoaded = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _nativeApiNotLoaded = LoggerMessage.Define(
             LogLevel.Warning,
             EventIds.NativeApiNotLoaded,
             SR.ILoggerExtensions_NativeApiNotLoaded);
@@ -215,7 +215,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API DLL could not be found at the configured path.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _nativeApiPathNotFound = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _nativeApiPathNotFound = LoggerMessage.Define<string>(
             LogLevel.Error,
             EventIds.NativeApiPathNotFound,
             SR.ILoggerExtensions_NativeApiNotFoundFormat);
@@ -223,7 +223,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API DLL was unloaded.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _nativeApiUnloaded = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _nativeApiUnloaded = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.NativeApiUnloaded,
             SR.ILoggerExtensions_NativeApiUnloadedFormat);
@@ -231,7 +231,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the version of the SQL LocalDB Instance API to use was overridden by the user.
         /// </summary>
-        private static readonly Action<ILogger, Version, Exception> _nativeApiVersionOverriddenByUser = LoggerMessage.Define<Version>(
+        private static readonly Action<ILogger, Version, Exception?> _nativeApiVersionOverriddenByUser = LoggerMessage.Define<Version>(
             LogLevel.Debug,
             EventIds.NativeApiVersionOverriddenByUser,
             SR.ILoggerExtensions_NativeApiVersionOverriddenByUserFormat);
@@ -239,7 +239,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the version of the SQL LocalDB Instance API specified by the user could not be found.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _nativeApiVersionOverrideNotFound = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _nativeApiVersionOverrideNotFound = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.NativeApiVersionOverrideNotFound,
             SR.ILoggerExtensions_OverrideVersionNotFoundFormat);
@@ -247,7 +247,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB is not installed.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _notInstalled = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _notInstalled = LoggerMessage.Define(
             LogLevel.Warning,
             EventIds.NotInstalled,
             SR.ILoggerExtensions_NotInstalled);
@@ -255,7 +255,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when the SQL LocalDB Instance API registry key cannot be found.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _registryKeyNotFound = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _registryKeyNotFound = LoggerMessage.Define<string>(
             LogLevel.Warning,
             EventIds.RegistryKeyNotFound,
             SR.ILoggerExtensions_RegistryKeyNotFoundFormat);
@@ -263,7 +263,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance was shared.
         /// </summary>
-        private static readonly Action<ILogger, string, string, string, Exception> _sharedInstance = LoggerMessage.Define<string, string, string>(
+        private static readonly Action<ILogger, string, string, string, Exception?> _sharedInstance = LoggerMessage.Define<string, string, string>(
             LogLevel.Debug,
             EventIds.SharedInstance,
             SR.ILoggerExtensions_SharedInstanceFormat);
@@ -271,7 +271,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is shared.
         /// </summary>
-        private static readonly Action<ILogger, string, string, string, Exception> _sharingInstance = LoggerMessage.Define<string, string, string>(
+        private static readonly Action<ILogger, string, string, string, Exception?> _sharingInstance = LoggerMessage.Define<string, string, string>(
             LogLevel.Debug,
             EventIds.SharingInstance,
             SR.ILoggerExtensions_SharingInstanceFormat);
@@ -279,7 +279,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is starting.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _startedInstance = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _startedInstance = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
             EventIds.StartedInstance,
             SR.ILoggerExtensions_StartedFormat);
@@ -287,7 +287,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is starting.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _startingInstance = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _startingInstance = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.StartingInstance,
             SR.ILoggerExtensions_StartingFormat);
@@ -295,7 +295,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB tracing has started.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _startedTracing = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _startedTracing = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.StartedTracing,
             SR.ILoggerExtensions_StartedTracing);
@@ -303,7 +303,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB tracing is starting.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _startingTracing = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _startingTracing = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.StartingTracing,
             SR.ILoggerExtensions_StartTracing);
@@ -311,7 +311,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance was stopped.
         /// </summary>
-        private static readonly Action<ILogger, string, TimeSpan, Exception> _stoppedInstance = LoggerMessage.Define<string, TimeSpan>(
+        private static readonly Action<ILogger, string, TimeSpan, Exception?> _stoppedInstance = LoggerMessage.Define<string, TimeSpan>(
             LogLevel.Debug,
             EventIds.StoppedInstance,
             SR.ILoggerExtensions_StoppedFormat);
@@ -319,7 +319,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is stopping.
         /// </summary>
-        private static readonly Action<ILogger, string, TimeSpan, StopInstanceOptions, Exception> _stoppingInstance = LoggerMessage.Define<string, TimeSpan, StopInstanceOptions>(
+        private static readonly Action<ILogger, string, TimeSpan, StopInstanceOptions, Exception?> _stoppingInstance = LoggerMessage.Define<string, TimeSpan, StopInstanceOptions>(
             LogLevel.Debug,
             EventIds.StoppingInstance,
             SR.ILoggerExtensions_StoppingFormat);
@@ -327,7 +327,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a temporary SQL LocalDB instance failed to stop.
         /// </summary>
-        private static readonly Action<ILogger, string, string, Exception> _stoppingTemporaryInstanceFailed = LoggerMessage.Define<string, string>(
+        private static readonly Action<ILogger, string, string, Exception?> _stoppingTemporaryInstanceFailed = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             EventIds.StopTemporaryInstanceFailed,
             SR.ILoggerExtensions_StopFailedFormat);
@@ -335,7 +335,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB instance is stopped.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _stoppedTracing = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _stoppedTracing = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.StoppedTracing,
             SR.ILoggerExtensions_StoppedTracing);
@@ -343,7 +343,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when SQL LocalDB instance is stopping.
         /// </summary>
-        private static readonly Action<ILogger, Exception> _stoppingTracing = LoggerMessage.Define(
+        private static readonly Action<ILogger, Exception?> _stoppingTracing = LoggerMessage.Define(
             LogLevel.Debug,
             EventIds.StoppingTracing,
             SR.ILoggerExtensions_StoppingTracing);
@@ -351,7 +351,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance was unshared.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _unsharedInstance = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _unsharedInstance = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.UnsharedInstance,
             SR.ILoggerExtensions_StoppedSharingFormat);
@@ -359,7 +359,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Logging delegate for when a SQL LocalDB instance is unshared.
         /// </summary>
-        private static readonly Action<ILogger, string, Exception> _unsharingInstance = LoggerMessage.Define<string>(
+        private static readonly Action<ILogger, string, Exception?> _unsharingInstance = LoggerMessage.Define<string>(
             LogLevel.Debug,
             EventIds.UnsharingInstance,
             SR.ILoggerExtensions_StoppingSharingFormat);
@@ -413,7 +413,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="logger">The logger to use.</param>
         /// <param name="exception">The exception that was thrown.</param>
         /// <param name="instanceName">The name of the instance that could not be deleted.</param>
-        internal static void DeletingInstanceFailedAsInUse(this ILogger logger, Exception exception, string instanceName)
+        internal static void DeletingInstanceFailedAsInUse(this ILogger logger, Exception exception, string? instanceName)
             => _deletingInstanceFailedAsInUse(logger, instanceName, exception);
 
         /// <summary>
@@ -448,7 +448,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="logger">The logger to use.</param>
         /// <param name="instanceName">The name of the instance whose files could not be deleted.</param>
         /// <param name="instancePath">The path of the files that failed to be deleted.</param>
-        internal static void DeletingInstanceFilesFailed(this ILogger logger, string instanceName, string instancePath)
+        internal static void DeletingInstanceFilesFailed(this ILogger logger, string instanceName, string? instancePath)
             => _deletingInstanceFilesFailed(logger, instanceName, instancePath, null);
 
         /// <summary>

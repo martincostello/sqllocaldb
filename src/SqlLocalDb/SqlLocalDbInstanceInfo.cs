@@ -44,19 +44,19 @@ namespace MartinCostello.SqlLocalDb
         public DateTime LastStartTimeUtc { get; internal set; }
 
         /// <inheritdoc />
-        public Version LocalDbVersion { get; internal set; }
+        public Version LocalDbVersion { get; internal set; } = new Version();
 
         /// <inheritdoc />
-        public string Name { get; internal set; }
+        public string Name { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public string NamedPipe { get; internal set; }
+        public string NamedPipe { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public string OwnerSid { get; internal set; }
+        public string OwnerSid { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public string SharedName { get; internal set; }
+        public string SharedName { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
         ISqlLocalDbApi ISqlLocalDbApiAdapter.LocalDb => Api;

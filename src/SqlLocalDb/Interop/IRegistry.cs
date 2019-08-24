@@ -15,6 +15,6 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <returns>
         /// The sub-key requested, or <see langword="null"/> if the operation failed.
         /// </returns>
-        IRegistryKey OpenSubKey(string keyName);
+        IRegistryKey? OpenSubKey(string keyName);
     }
 }

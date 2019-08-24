@@ -59,7 +59,9 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// The available versions of SQL Server LocalDB installed on the local machine.
         /// </summary>
-        private string[] _versions;
+#pragma warning disable SA1011 // See https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2989
+        private string[]? _versions;
+#pragma warning restore SA1011
 
         /// <summary>
         /// The timeout for stopping an instance of LocalDB.
@@ -168,7 +170,7 @@ namespace MartinCostello.SqlLocalDb
                     return string.Empty;
                 }
 
-                if (_api.NativeApiVersion.Major == 11)
+                if (_api.NativeApiVersion!.Major == 11)
                 {
                     return DefaultInstanceName2012;
                 }
@@ -1174,16 +1176,16 @@ namespace MartinCostello.SqlLocalDb
             {
                 if (Directory.Exists(instancePath))
                 {
-                    Logger.DeletingInstanceFiles(instanceName, instancePath);
+                    Logger.DeletingInstanceFiles(instanceName!, instancePath);
 
                     Directory.Delete(instancePath, recursive: true);
 
-                    Logger.DeletedInstanceFiles(instanceName, instancePath);
+                    Logger.DeletedInstanceFiles(instanceName!, instancePath);
                 }
             }
             catch (Exception ex) when (ex is ArgumentException || ex is IOException || ex is UnauthorizedAccessException)
             {
-                Logger.DeletingInstanceFilesFailed(instanceName, instancePath);
+                Logger.DeletingInstanceFilesFailed(instanceName!, instancePath);
             }
         }
 

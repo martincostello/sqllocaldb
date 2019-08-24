@@ -59,77 +59,77 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <summary>
         /// The path of the library that was loaded.
         /// </summary>
-        private string _libraryPath;
+        private string? _libraryPath;
 
         /// <summary>
         /// The handle to the native SQL LocalDB API.
         /// </summary>
-        private SafeLibraryHandle _handle;
+        private SafeLibraryHandle? _handle;
 
         /// <summary>
         /// The delegate to the <c>LocalDBCreateInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBCreateInstance _localDBCreateInstance;
+        private Functions.LocalDBCreateInstance? _localDBCreateInstance;
 
         /// <summary>
         /// The delegate to the <c>LocalDBDeleteInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBDeleteInstance _localDBDeleteInstance;
+        private Functions.LocalDBDeleteInstance? _localDBDeleteInstance;
 
         /// <summary>
         /// The delegate to the <c>LocalDBFormatMessage</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBFormatMessage _localDBFormatMessage;
+        private Functions.LocalDBFormatMessage? _localDBFormatMessage;
 
         /// <summary>
         /// The delegate to the <c>LocalDBGetInstanceInfo</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBGetInstanceInfo _localDBGetInstanceInfo;
+        private Functions.LocalDBGetInstanceInfo? _localDBGetInstanceInfo;
 
         /// <summary>
         /// The delegate to the <c>LocalDBGetInstances</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBGetInstances _localDBGetInstances;
+        private Functions.LocalDBGetInstances? _localDBGetInstances;
 
         /// <summary>
         /// The delegate to the <c>LocalDBGetVersionInfo</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBGetVersionInfo _localDBGetVersionInfo;
+        private Functions.LocalDBGetVersionInfo? _localDBGetVersionInfo;
 
         /// <summary>
         /// The delegate to the <c>LocalDBGetVersions</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBGetVersions _localDBGetVersions;
+        private Functions.LocalDBGetVersions? _localDBGetVersions;
 
         /// <summary>
         /// The delegate to the <c>LocalDBShareInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBShareInstance _localDBShareInstance;
+        private Functions.LocalDBShareInstance? _localDBShareInstance;
 
         /// <summary>
         /// The delegate to the <c>LocalDBStartInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBStartInstance _localDBStartInstance;
+        private Functions.LocalDBStartInstance? _localDBStartInstance;
 
         /// <summary>
         /// The delegate to the <c>LocalDBStartTracing</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBStartTracing _localDBStartTracing;
+        private Functions.LocalDBStartTracing? _localDBStartTracing;
 
         /// <summary>
         /// The delegate to the <c>LocalDBStopInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBStopInstance _localDBStopInstance;
+        private Functions.LocalDBStopInstance? _localDBStopInstance;
 
         /// <summary>
         /// The delegate to the <c>LocalDBStopTracing</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBStopTracing _localDBStopTracing;
+        private Functions.LocalDBStopTracing? _localDBStopTracing;
 
         /// <summary>
         /// The delegate to the <c>LocalDBUnshareInstance</c> LocalDB API function.
         /// </summary>
-        private Functions.LocalDBUnshareInstance _localDBUnshareInstance;
+        private Functions.LocalDBUnshareInstance? _localDBUnshareInstance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDbInstanceApi"/> class.
@@ -155,7 +155,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <summary>
         /// Gets the version of the SQL LocalDB native API loaded, if any.
         /// </summary>
-        internal Version NativeApiVersion { get; private set; }
+        internal Version? NativeApiVersion { get; private set; }
 
         /// <summary>
         /// Gets the API version to use.
@@ -204,7 +204,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBCreateInstance",
                 ref _localDBCreateInstance,
-                (function) => function(wszVersion, pInstanceName, dwFlags));
+                (function) => function!(wszVersion, pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBDeleteInstance",
                 ref _localDBDeleteInstance,
-                (function) => function(pInstanceName, dwFlags));
+                (function) => function!(pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBGetInstanceInfo",
                 ref _localDBGetInstanceInfo,
-                (function) => function(wszInstanceName, pInstanceInfo, dwInstanceInfoSize));
+                (function) => function!(wszInstanceName, pInstanceInfo, dwInstanceInfoSize));
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBGetVersionInfo",
                 ref _localDBGetVersionInfo,
-                (function) => function(wszVersionName, pVersionInfo, dwVersionInfoSize));
+                (function) => function!(wszVersionName, pVersionInfo, dwVersionInfoSize));
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBShareInstance",
                 ref _localDBShareInstance,
-                (function) => function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags));
+                (function) => function!(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags));
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBStartTracing",
                 ref _localDBStartTracing,
-                (function) => function());
+                (function) => function!());
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBStopInstance",
                 ref _localDBStopInstance,
-                (function) => function(pInstanceName, (int)options, ulTimeout));
+                (function) => function!(pInstanceName, (int)options, ulTimeout));
         }
 
         /// <summary>
@@ -408,7 +408,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBStopTracing",
                 ref _localDBStopTracing,
-                (function) => function());
+                (function) => function!());
         }
 
         /// <summary>
@@ -426,7 +426,7 @@ namespace MartinCostello.SqlLocalDb.Interop
             return EnsureFunctionAndInvoke(
                 "LocalDBUnshareInstance",
                 ref _localDBUnshareInstance,
-                (function) => function(pInstanceName, dwFlags));
+                (function) => function!(pInstanceName, dwFlags));
         }
 
         /// <summary>
@@ -441,12 +441,12 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <see langword="true"/> if the native API path was successfully found;
         /// otherwise <see langword="false"/>.
         /// </returns>
-        internal bool TryGetLocalDbApiPath(out string fileName)
+        internal bool TryGetLocalDbApiPath(out string? fileName)
         {
             fileName = null;
 
             string keyName = DeriveLocalDbRegistryKey();
-            IRegistryKey key = Registry.OpenSubKey(keyName);
+            IRegistryKey? key = Registry.OpenSubKey(keyName);
 
             if (key == null)
             {
@@ -454,9 +454,9 @@ namespace MartinCostello.SqlLocalDb.Interop
                 return false;
             }
 
-            Version latestVersion = null;
-            Version overrideVersion = null;
-            string path = null;
+            Version? latestVersion = null;
+            Version? overrideVersion = null;
+            string? path = null;
 
             try
             {
@@ -491,13 +491,13 @@ namespace MartinCostello.SqlLocalDb.Interop
                     Logger.NativeApiVersionOverrideNotFound(overrideVersionString);
                 }
 
-                Version versionToUse = overrideVersion ?? latestVersion;
+                Version? versionToUse = overrideVersion ?? latestVersion;
 
                 if (versionToUse != null)
                 {
-                    using (IRegistryKey subkey = key.OpenSubKey(versionToUse.ToString()))
+                    using (IRegistryKey? subkey = key.OpenSubKey(versionToUse.ToString()))
                     {
-                        path = subkey.GetValue("InstanceAPIPath");
+                        path = subkey?.GetValue("InstanceAPIPath");
                     }
 
                     NativeApiVersion = versionToUse;
@@ -516,7 +516,7 @@ namespace MartinCostello.SqlLocalDb.Interop
 
             if (!File.Exists(path))
             {
-                Logger.NativeApiLibraryNotFound(path);
+                Logger.NativeApiLibraryNotFound(path!);
                 return false;
             }
 
@@ -551,8 +551,8 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// An instance of <typeparamref name="T"/> that points to the specified unmanaged
         /// function, if found; otherwise <see langword="null"/>.
         /// </returns>
-        private T EnsureFunction<T>(string functionName, ref T function)
-            where T : Delegate
+        private T? EnsureFunction<T>(string functionName, ref T? function)
+            where T : class, Delegate?
         {
             Debug.Assert(functionName != null, "functionName cannot be null.");
 
@@ -562,7 +562,7 @@ namespace MartinCostello.SqlLocalDb.Interop
                 {
                     if (function == null)
                     {
-                        function = GetDelegate<T>(functionName);
+                        function = GetDelegate<T>(functionName!);
                     }
                 }
             }
@@ -581,14 +581,14 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// The <see cref="int"/> result of invoking <paramref name="callback"/>, if the function was
         /// initialized; otherwise the value of <see cref="SqlLocalDbErrors.NotInstalled"/> is returned.
         /// </returns>
-        private int EnsureFunctionAndInvoke<T>(string functionName, ref T function, Func<T, int> callback)
-            where T : Delegate
+        private int EnsureFunctionAndInvoke<T>(string functionName, ref T? function, Func<T, int> callback)
+            where T : class, Delegate?
         {
             Debug.Assert(callback != null, "callback cannot be null.");
 
             function = EnsureFunction(functionName, ref function);
 
-            return function == null ? SqlLocalDbErrors.NotInstalled : callback(function);
+            return function == null ? SqlLocalDbErrors.NotInstalled : callback!(function);
         }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// A <see cref="SafeLibraryHandle"/> pointing to the loaded
         /// SQL LocalDB API, if successful; otherwise <see langword="null"/>.
         /// </returns>
-        private SafeLibraryHandle EnsureLocalDBLoaded()
+        private SafeLibraryHandle? EnsureLocalDBLoaded()
         {
             if (_handle == null)
             {
@@ -606,7 +606,7 @@ namespace MartinCostello.SqlLocalDb.Interop
                 {
                     if (_handle == null)
                     {
-                        if (!TryGetLocalDbApiPath(out string fileName))
+                        if (!TryGetLocalDbApiPath(out string? fileName) || fileName == null)
                         {
                             return null;
                         }
@@ -658,12 +658,12 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// An instance of <typeparamref name="T"/> that points to the specified unmanaged
         /// function, if found; otherwise <see langword="null"/>.
         /// </returns>
-        private T GetDelegate<T>(string functionName)
-            where T : Delegate
+        private T? GetDelegate<T>(string functionName)
+            where T : class, Delegate?
         {
             Debug.Assert(functionName != null, "functionName cannot be null.");
 
-            SafeLibraryHandle handle = EnsureLocalDBLoaded();
+            SafeLibraryHandle? handle = EnsureLocalDBLoaded();
 
             if (handle == null)
             {
@@ -671,11 +671,11 @@ namespace MartinCostello.SqlLocalDb.Interop
                 return null;
             }
 
-            IntPtr ptr = NativeMethods.GetProcAddress(handle, functionName);
+            IntPtr ptr = NativeMethods.GetProcAddress(handle, functionName!);
 
             if (ptr == IntPtr.Zero)
             {
-                Logger.NativeApiFunctionNotFound(functionName);
+                Logger.NativeApiFunctionNotFound(functionName!);
                 return null;
             }
 
@@ -703,7 +703,7 @@ namespace MartinCostello.SqlLocalDb.Interop
                 {
                     _handle.Dispose();
 
-                    Logger.NativeApiUnloaded(_libraryPath);
+                    Logger.NativeApiUnloaded(_libraryPath!);
 
                     _libraryPath = null;
                 }
