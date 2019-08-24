@@ -1,0 +1,195 @@
+MartinCostello.SqlLocalDb.ISqlLocalDbApi
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.CreateInstance(string instanceName, string version) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.DefaultInstanceName.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.DeleteInstance(string instanceName) -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.GetInstanceInfo(string instanceName) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.GetInstanceNames() -> System.Collections.Generic.IReadOnlyList<string>
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.GetVersionInfo(string version) -> MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.InstanceExists(string instanceName) -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.IsLocalDBInstalled() -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.LatestVersion.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.ShareInstance(string ownerSid, string instanceName, string sharedInstanceName) -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.StartInstance(string instanceName) -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.StartTracing() -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.StopInstance(string instanceName, System.TimeSpan? timeout) -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.StopTracing() -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.UnshareInstance(string instanceName) -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbApi.Versions.get -> System.Collections.Generic.IReadOnlyList<string>
+MartinCostello.SqlLocalDb.ISqlLocalDbApiAdapter
+MartinCostello.SqlLocalDb.ISqlLocalDbApiAdapter.LocalDb.get -> MartinCostello.SqlLocalDb.ISqlLocalDbApi
+MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.ConfigurationCorrupt.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.Exists.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.IsAutomatic.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.IsRunning.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.IsShared.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.LastStartTimeUtc.get -> System.DateTime
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.LocalDbVersion.get -> System.Version
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.Name.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.NamedPipe.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.OwnerSid.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo.SharedName.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfoExtensions
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.GetInstanceInfo() -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.Name.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.NamedPipe.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.Share(string sharedName) -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.Start() -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.Stop() -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager.Unshare() -> void
+MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManagerExtensions
+MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo
+MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo.Exists.get -> bool
+MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo.Name.get -> string
+MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo.Version.get -> System.Version
+MartinCostello.SqlLocalDb.SqlLocalDbApi
+MartinCostello.SqlLocalDb.SqlLocalDbApi.AutomaticallyDeleteInstanceFiles.get -> bool
+MartinCostello.SqlLocalDb.SqlLocalDbApi.AutomaticallyDeleteInstanceFiles.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.CreateInstance(string instanceName) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.SqlLocalDbApi.CreateInstance(string instanceName, string version) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.SqlLocalDbApi.DefaultInstanceName.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbApi.DeleteInstance(string instanceName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.DeleteInstance(string instanceName, bool deleteFiles) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.DeleteUserInstances() -> int
+MartinCostello.SqlLocalDb.SqlLocalDbApi.DeleteUserInstances(bool deleteFiles) -> int
+MartinCostello.SqlLocalDb.SqlLocalDbApi.Dispose() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.GetInstanceInfo(string instanceName) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.SqlLocalDbApi.GetInstanceNames() -> System.Collections.Generic.IReadOnlyList<string>
+MartinCostello.SqlLocalDb.SqlLocalDbApi.GetVersionInfo(string version) -> MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo
+MartinCostello.SqlLocalDb.SqlLocalDbApi.InstanceExists(string instanceName) -> bool
+MartinCostello.SqlLocalDb.SqlLocalDbApi.IsLocalDBInstalled() -> bool
+MartinCostello.SqlLocalDb.SqlLocalDbApi.LanguageId.get -> int
+MartinCostello.SqlLocalDb.SqlLocalDbApi.LanguageId.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.LatestVersion.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbApi.ShareInstance(string ownerSid, string instanceName, string sharedInstanceName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.SqlLocalDbApi() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.SqlLocalDbApi(MartinCostello.SqlLocalDb.SqlLocalDbOptions options, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.SqlLocalDbApi(Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StartInstance(string instanceName) -> string
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StartTracing() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopInstance(string instanceName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopInstance(string instanceName, MartinCostello.SqlLocalDb.StopInstanceOptions options, System.TimeSpan? timeout) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopInstance(string instanceName, System.TimeSpan? timeout) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopOptions.get -> MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopOptions.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopTimeout.get -> System.TimeSpan
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopTimeout.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.StopTracing() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.UnshareInstance(string instanceName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbApi.Versions.get -> System.Collections.Generic.IReadOnlyList<string>
+MartinCostello.SqlLocalDb.SqlLocalDbErrors
+MartinCostello.SqlLocalDb.SqlLocalDbException
+MartinCostello.SqlLocalDb.SqlLocalDbException.InstanceName.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbException.InstanceName.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(string message) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(string message, System.Exception innerException) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(string message, int errorCode) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(string message, int errorCode, string instanceName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbException.SqlLocalDbException(string message, int errorCode, string instanceName, System.Exception innerException) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.GetInstanceInfo() -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.Name.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.NamedPipe.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.Share(string sharedName) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.SqlLocalDbInstanceManager(MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo instance, MartinCostello.SqlLocalDb.ISqlLocalDbApi api) -> void
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.Start() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.Stop() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbInstanceManager.Unshare() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.AutomaticallyDeleteInstanceFiles.get -> bool
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.AutomaticallyDeleteInstanceFiles.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.Language.get -> System.Globalization.CultureInfo
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.Language.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.NativeApiOverrideVersion.get -> string
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.NativeApiOverrideVersion.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.SqlLocalDbOptions() -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.StopOptions.get -> MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.StopOptions.set -> void
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.StopTimeout.get -> System.TimeSpan
+MartinCostello.SqlLocalDb.SqlLocalDbOptions.StopTimeout.set -> void
+MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.StopInstanceOptions.KillProcess = 1 -> MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.StopInstanceOptions.NoWait = 2 -> MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.StopInstanceOptions.None = 0 -> MartinCostello.SqlLocalDb.StopInstanceOptions
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance.ConnectionString.get -> string
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance.Dispose() -> void
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance.GetInstanceInfo() -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance.Manage() -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager
+MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance.Name.get -> string
+Microsoft.Extensions.DependencyInjection.SqlLocalDbServiceCollectionExtensions
+override MartinCostello.SqlLocalDb.SqlLocalDbException.ErrorCode.get -> int
+override MartinCostello.SqlLocalDb.SqlLocalDbException.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) -> void
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.CreateTemporaryInstance(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api, bool deleteFiles = false) -> MartinCostello.SqlLocalDb.TemporarySqlLocalDbInstance
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.GetDefaultInstance(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.GetInstances(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api) -> System.Collections.Generic.IReadOnlyList<MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo>
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.GetOrCreateInstance(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api, string instanceName) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.GetVersions(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api) -> System.Collections.Generic.IReadOnlyList<MartinCostello.SqlLocalDb.ISqlLocalDbVersionInfo>
+static MartinCostello.SqlLocalDb.ISqlLocalDbApiExtensions.ShareInstance(this MartinCostello.SqlLocalDb.ISqlLocalDbApi api, string instanceName, string sharedInstanceName) -> void
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfoExtensions.CreateConnection(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo instance) -> Microsoft.Data.SqlClient.SqlConnection
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfoExtensions.CreateConnectionStringBuilder(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo instance) -> Microsoft.Data.SqlClient.SqlConnectionStringBuilder
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfoExtensions.GetConnectionString(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo instance) -> string
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfoExtensions.Manage(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo instance) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManagerExtensions.CreateConnection(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager manager) -> Microsoft.Data.SqlClient.SqlConnection
+static MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManagerExtensions.Restart(this MartinCostello.SqlLocalDb.ISqlLocalDbInstanceManager manager) -> void
+static MartinCostello.SqlLocalDb.SqlLocalDbApi.GetInstancesFolderPath() -> string
+static Microsoft.Extensions.DependencyInjection.SqlLocalDbServiceCollectionExtensions.AddSqlLocalDB(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection
+static Microsoft.Extensions.DependencyInjection.SqlLocalDbServiceCollectionExtensions.AddSqlLocalDB(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, MartinCostello.SqlLocalDb.SqlLocalDbOptions options) -> Microsoft.Extensions.DependencyInjection.IServiceCollection
+static Microsoft.Extensions.DependencyInjection.SqlLocalDbServiceCollectionExtensions.AddSqlLocalDB(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<MartinCostello.SqlLocalDb.SqlLocalDbOptions> configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection
+static Microsoft.Extensions.DependencyInjection.SqlLocalDbServiceCollectionExtensions.AddSqlLocalDB(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Func<System.IServiceProvider, MartinCostello.SqlLocalDb.SqlLocalDbOptions> configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.AdminRightsRequired -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.AutoInstanceCreateFailed -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CallerIsNotOwner -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotAccessInstanceFolder -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotAccessInstanceFolderDetail -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotAccessInstanceRegistry -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotConfigureXEvent -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotCreateInstanceFolder -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotCreateSqlProcess -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotFindXEventConfigFile -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotGetLocalAppDataPath -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotGetProgramFilesLocation -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotGetUserProfileFolder -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotInitializeXEvent -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotLoadResources -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CannotModifyInstanceRegistry -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.CoInitializeExFailed -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.DataDirectoryInvalid -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.DataDirectoryIsTooLong -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.DataDirectoryMissing -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstallationCorrupted -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceAlreadyShared -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceBusy -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceConfigurationCorrupt -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceExistsWithLowerVersion -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceFolderPathTooLong -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceNotShared -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InstanceStopFailed -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InsufficientBuffer -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InternalError -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InvalidInstanceName -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InvalidOperation -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.InvalidParameter -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.NotInstalled -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.ParentInstanceIsMissing -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.ParentInstanceIsTooLong -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.ParentInstanceVersionInvalid -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.ServerStartupFailed -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.SharedNameTaken -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.TooManySharedInstances -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.UnexpectedResult -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.UnknownErrorCode -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.UnknownInstance -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.UnknownLanguageId -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.UnknownVersion -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.VersionNotInstalled -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.WaitTimeout -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.WindowsApiError -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.XEventAssert -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.XEventConfigFileTooLong -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.XEventError -> int
+static readonly MartinCostello.SqlLocalDb.SqlLocalDbErrors.XEventFailed -> int
