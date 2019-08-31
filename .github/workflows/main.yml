@@ -18,7 +18,8 @@ jobs:
       env:
         CI: true
     - name: Build and test on Windows
-      powershell: .\Build.ps1
+      run: .\Build.ps1
+      shell: powershell
       if: matrix.os == 'windows-latest'
       env:
         CI: true
