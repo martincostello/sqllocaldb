@@ -13,12 +13,12 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build and test on ${{ matrix.os }}
-      run: build.sh
+      run: ./build.sh
       if: matrix.os != 'windows-latest'
       env:
         CI: true
     - name: Build and test on ${{ matrix.os }}
-      run: Build.ps1
+      run: .\Build.ps1
       if: matrix.os == 'windows-latest'
       env:
         CI: true
