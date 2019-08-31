@@ -60,11 +60,17 @@ Further examples of using the library can be found by following the links below:
   1. The [examples written as tests](https://github.com/martincostello/sqllocaldb/blob/master/tests/SqlLocalDb.Tests/Examples.cs "Examples as tests").
   1. The library's [own tests](https://github.com/martincostello/sqllocaldb/tree/master/tests/SqlLocalDb.Tests "View MartinCostello.SqlLocalDb's tests").
 
-## Migrating from System.Data.SqlLocalDb
+## Migrating from System.Data.SqlLocalDb 1.x
 
-Version `1.x.x` of this library was previously published as [`System.Data.SqlLocalDb`](https://www.nuget.org/packages/System.Data.SqlLocalDb/ "System.Data.SqlLocalDb on NuGet"). The current version (`2.x.x`) has been renamed and is a breaking change to the previous version with various changes to namespaces and types.
+Version `1.x.x` of this library was previously published as [`System.Data.SqlLocalDb`](https://www.nuget.org/packages/System.Data.SqlLocalDb/ "System.Data.SqlLocalDb on NuGet"). The current version (`3.x.x`) has been renamed and is a breaking change to the previous version with various changes to namespaces and types.
 
-To migrate a project from using the previous version follow the migration guide: [Migrating to MartinCostello.SqlLocalDb from System.Data.SqlLocalDb](https://github.com/martincostello/sqllocaldb/wiki/Migrating-to-MartinCostello.SqlLocalDb-from-System.Data.SqlLocalDb "Migrating to MartinCostello.SqlLocalDb from System.Data.SqlLocalDb")
+## Migrating from MartinCostello.SqlLocalDb 2.x
+
+Version [`2.x.x`](https://www.nuget.org/packages/MartinCostello.SqlLocalDb/2.0.0 "MartinCostello.SqlLocalDb 2.0.0 on NuGet") of this library uses SQL types from the `System.Data.SqlClient` namespace.
+
+The current version (`3.x.x`) uses the new [Microsoft.Data.SqlClient](https://www.nuget.org/packages/Microsoft.Data.SqlClient/) NuGet package where the same types (such as `SqlConnection`) are now in the `Microsoft.Data.SqlClient` namespace.
+
+To migrate a project from using the previous 2.x release, you should change usage of the `System.Data.SqlClient` namespace to `Microsoft.Data.SqlClient` and recompile your project.
 
 ## Feedback
 

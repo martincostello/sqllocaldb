@@ -141,5 +141,54 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 
 # SqlLocalDb v2.0.0.0
 
-## New Features
-* TODO
+## Changes
+  * The NuGet package name is now `MartinCostello.SqlLocalDb`.
+  * Types are now in the `MartinCostello.SqlLocalDb` namespace.
+  * Core classes and interfaces are now:
+    * `ISqlLocalDbApi`
+    * `ISqlLocalDbInstanceInfo`
+    * `ISqlLocalDbInstanceManager`
+    * `ISqlLocalDbVersionInfo`
+    * `SqlLocalDbApi`
+    * `SqlLocalDbException`
+    * `SqlLocalDbInstanceManager`
+    * `SqlLocalDbOptions`
+    * `TemporarySqlLocalDbInstance`
+  * Various methods on previous classes and interfaces are now extension methods.
+  * Configuration is now via the `SqlLocalDbOptions` class for use with the `SqlLocalDbApi` class.
+  * Uses .NET Standard logging abstractions for logging rather than `TraceSource`.
+  * Now compiled using the .NET Core SDK.
+  * Tests now use xunit instead of MSTest.
+
+## Added
+  * Added new `bool InstanceExists(string)` method to `ISqlLocalDbApi`.
+  * Add support for registration with the built-in ASP.NET Core service container.
+  * Added new [sample Todo list ASP.NET Core web application](https://github.com/martincostello/sqllocaldb/tree/master/samples "Samples") that uses SQL Server LocalDB.
+  * [Continuous integration using Travis CI](https://travis-ci.com/martincostello/sqllocaldb) for Linux and macOS.
+  * [Continuous integration using Azure Pipelines](https://dev.azure.com/martincostello/sqllocaldb/_build?definitionId=66) for Windows, Linux and macOS.
+
+## Fixed/Improved
+  * Improved behaviour when testing for the existence of LocalDB instances.
+  * The SQL Server LocalDB Instance API can now be unloaded from the process.
+  * Logging now uses structured logging and specific event IDs.
+  * Several types now override `ToString()` to return object names.
+  * Improved behaviour if used in an application on Linux or macOS.
+  * Simplified build infrastructure using the .NET Core SDK.
+  * Use various new C# 7.2 language features to simplify the code.
+  * Uses `Version.TryParse()` internally.
+  * Added assets for working on the project in Visual Studio Code.
+
+## Removed
+  * Removed the following types:
+    * `ISqlLocalDbInstance`
+    * `SqlLocalDbApi` (static class)
+  * Configuration no longer via `System.Configuration` and `.config` files.
+  * Removed old "Blog" sample application.
+  * Removed Coverity scan integration.
+
+# SqlLocalDb v3.0.0.0
+
+## Changes
+  * Depend on `Microsoft.Data.SqlClient` instead of `System.Data.SqlClient`.
+  * Add nullable reference type annotations.
+  * Change constants in the `SqlLocalDbErrors` class to fields.
