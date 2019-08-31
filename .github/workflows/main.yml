@@ -9,14 +9,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: macOS-latest
-            script_name: build.sh
-          - os: ubuntu-latest
-            script_name: build.sh
-          - os: windows-latest
-            script_name: Build.ps1
+        os: [macOS-latest, ubuntu-latest, windows-latest]
     steps:
     - uses: actions/checkout@v1
     - name: Build and test on ${{ matrix.os }}
-      run: ${{ matrix.script_name }}
+      run: build.sh
+      if: matrix.os != 'windows-latest'
+      env:
+        CI: true
+    - name: Build and test on ${{ matrix.os }}
+      run: Build.ps1
+      if: matrix.os == 'windows-latest'
+      env:
+        CI: true
