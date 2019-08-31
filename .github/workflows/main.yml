@@ -1,0 +1,22 @@
+name: GitHub CI
+
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macOS-latest
+            script_name: build.sh
+          - os: ubuntu-latest
+            script_name: build.sh
+          - os: windows-latest
+            script_name: Build.ps1
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and test on ${{ matrix.os }}
+      run: ${{ matrix.script_name }}
