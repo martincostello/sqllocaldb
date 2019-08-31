@@ -17,9 +17,15 @@ jobs:
       if: matrix.os != 'windows-latest'
       env:
         CI: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        NUGET_XMLDOC_MODE: skip
     - name: Build and test on Windows
       run: .\Build.ps1
       shell: powershell
       if: matrix.os == 'windows-latest'
       env:
         CI: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        NUGET_XMLDOC_MODE: skip
