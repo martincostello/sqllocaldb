@@ -40,7 +40,7 @@ namespace MartinCostello.SqlLocalDb
         public static void Update_Does_Not_Copy_State_If_Other_Is_Null()
         {
             // Arrange
-            ISqlLocalDbVersionInfo other = null;
+            ISqlLocalDbVersionInfo? other = null;
 
             var actual = new SqlLocalDbVersionInfo()
             {
@@ -50,7 +50,7 @@ namespace MartinCostello.SqlLocalDb
             };
 
             // Act
-            actual.Update(other);
+            actual.Update(other!);
 
             // Assert
             actual.Exists.ShouldBeFalse();

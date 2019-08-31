@@ -73,8 +73,8 @@ namespace MartinCostello.SqlLocalDb
             var api = Mock.Of<ISqlLocalDbApi>();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instance", () => new SqlLocalDbInstanceManager(null, api));
-            Assert.Throws<ArgumentNullException>("api", () => new SqlLocalDbInstanceManager(instance, null));
+            Assert.Throws<ArgumentNullException>("instance", () => new SqlLocalDbInstanceManager(null!, api));
+            Assert.Throws<ArgumentNullException>("api", () => new SqlLocalDbInstanceManager(instance, null!));
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace MartinCostello.SqlLocalDb
             var api = Mock.Of<ISqlLocalDbApi>();
             var target = new SqlLocalDbInstanceManager(instance, api);
 
-            Assert.Throws<ArgumentNullException>("sharedName", () => target.Share(null));
+            Assert.Throws<ArgumentNullException>("sharedName", () => target.Share(null!));
         }
 
         [Fact]
@@ -242,43 +242,41 @@ namespace MartinCostello.SqlLocalDb
             string instanceName = Guid.NewGuid().ToString();
             string sharedName = Guid.NewGuid().ToString();
 
-            using (var api = new SqlLocalDbApi(_loggerFactory))
+            using var api = new SqlLocalDbApi(_loggerFactory);
+            api.CreateInstance(instanceName);
+
+            try
             {
-                api.CreateInstance(instanceName);
+                api.StartInstance(instanceName);
 
                 try
                 {
-                    api.StartInstance(instanceName);
+                    var instance = api.GetInstanceInfo(instanceName);
 
-                    try
-                    {
-                        var instance = api.GetInstanceInfo(instanceName);
+                    var manager = new SqlLocalDbInstanceManager(instance, api);
 
-                        var manager = new SqlLocalDbInstanceManager(instance, api);
+                    // Act
+                    manager.Share(sharedName);
 
-                        // Act
-                        manager.Share(sharedName);
+                    // Assert
+                    instance.IsShared.ShouldBeTrue();
 
-                        // Assert
-                        instance.IsShared.ShouldBeTrue();
+                    // Act
+                    manager.Unshare();
 
-                        // Act
-                        manager.Unshare();
-
-                        // Assert
-                        instance.IsShared.ShouldBeFalse();
-                    }
-                    catch (Exception)
-                    {
-                        api.StopInstance(instanceName);
-                        throw;
-                    }
+                    // Assert
+                    instance.IsShared.ShouldBeFalse();
                 }
                 catch (Exception)
                 {
-                    api.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
+                    api.StopInstance(instanceName);
                     throw;
                 }
+            }
+            catch (Exception)
+            {
+                api.DeleteInstanceInternal(instanceName, throwIfNotFound: false, deleteFiles: true);
+                throw;
             }
         }
 

@@ -68,7 +68,6 @@ namespace MartinCostello.SqlLocalDb
         {
             // Arrange
             var api = Mock.Of<ISqlLocalDbApi>();
-            ISqlLocalDbInstanceInfo other = null;
 
             var actual = new SqlLocalDbInstanceInfo(api)
             {
@@ -86,7 +85,7 @@ namespace MartinCostello.SqlLocalDb
             };
 
             // Act (no Assert)
-            actual.Update(other);
+            actual.Update(null!);
         }
 
         [Fact]

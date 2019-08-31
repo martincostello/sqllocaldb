@@ -5,12 +5,12 @@ namespace TodoApp.Models
 {
     public class TodoItemModel
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         public bool IsCompleted { get; set; }
 
-        public string LastUpdated { get; set; }
+        public string? LastUpdated { get; set; }
     }
 }

@@ -89,10 +89,10 @@ namespace MartinCostello.SqlLocalDb
         public void CreateTemporaryInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.CreateTemporaryInstance());
+            Assert.Throws<ArgumentNullException>("api", () => api!.CreateTemporaryInstance());
         }
 
         [Fact]
@@ -118,10 +118,8 @@ namespace MartinCostello.SqlLocalDb
             var api = Mock.Of<ISqlLocalDbApi>();
 
             // Act and Assert
-            using (TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance())
-            {
-                instance.Dispose();
-            }
+            using TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
+            instance.Dispose();
         }
 
         [Fact]
@@ -208,10 +206,10 @@ namespace MartinCostello.SqlLocalDb
         public void GetDefaultInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetDefaultInstance());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetDefaultInstance());
         }
 
         [WindowsOnlyFact]
@@ -233,10 +231,10 @@ namespace MartinCostello.SqlLocalDb
         public void GetInstances_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetInstances());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetInstances());
         }
 
         [WindowsOnlyFact]
@@ -275,10 +273,10 @@ namespace MartinCostello.SqlLocalDb
         public void GetVersions_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetVersions());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetVersions());
         }
 
         [WindowsOnlyFact]
@@ -316,11 +314,11 @@ namespace MartinCostello.SqlLocalDb
         public void GetOrCreateInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
             string instanceName = "SomeName";
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetOrCreateInstance(instanceName));
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetOrCreateInstance(instanceName));
         }
 
         [Fact]
@@ -328,10 +326,10 @@ namespace MartinCostello.SqlLocalDb
         {
             // Arrange
             ISqlLocalDbApi api = Mock.Of<ISqlLocalDbApi>();
-            string instanceName = null;
+            string? instanceName = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instanceName", () => api.GetOrCreateInstance(instanceName));
+            Assert.Throws<ArgumentNullException>("instanceName", () => api.GetOrCreateInstance(instanceName!));
         }
 
         [Fact]
@@ -438,12 +436,12 @@ namespace MartinCostello.SqlLocalDb
         public void ShareInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
             string instanceName = "SomeName";
             string sharedInstanceName = "SomeSharedName";
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.ShareInstance(instanceName, sharedInstanceName));
+            Assert.Throws<ArgumentNullException>("api", () => api!.ShareInstance(instanceName, sharedInstanceName));
         }
 
         [WindowsOnlyFact]

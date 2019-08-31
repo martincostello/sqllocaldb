@@ -70,10 +70,11 @@ namespace MartinCostello.SqlLocalDb
         public static void EventId_Name_And_Value_Is_Correct(string name, int expected)
         {
             // Arrange
-            FieldInfo field = typeof(EventIds).GetField(name, BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo? field = typeof(EventIds).GetField(name, BindingFlags.NonPublic | BindingFlags.Static);
 
             // Act
-            EventId eventId = (EventId)field.GetValue(null);
+            object? value = field!.GetValue(null);
+            EventId eventId = (EventId)value!;
 
             // Asset
             eventId.ShouldNotBe(default);

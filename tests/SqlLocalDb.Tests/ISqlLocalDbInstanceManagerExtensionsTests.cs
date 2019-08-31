@@ -25,67 +25,60 @@ namespace MartinCostello.SqlLocalDb
         public void CreateConnection_Throws_If_Manager_Is_Null()
         {
             // Arrange
-            ISqlLocalDbInstanceManager manager = null;
+            ISqlLocalDbInstanceManager? manager = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("manager", () => manager.CreateConnection());
+            Assert.Throws<ArgumentNullException>("manager", () => manager!.CreateConnection());
         }
 
         [WindowsOnlyFact]
         public async Task CreateConnection_Creates_A_Sql_Connection()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                using (TemporarySqlLocalDbInstance temporary = api.CreateTemporaryInstance(deleteFiles: true))
-                {
-                    ISqlLocalDbInstanceManager manager = temporary.Manage();
+            using var api = new SqlLocalDbApi(_loggerFactory);
+            using TemporarySqlLocalDbInstance temporary = api.CreateTemporaryInstance(deleteFiles: true);
 
-                    manager.ShouldNotBeNull();
-                    manager.Name.ShouldBe(temporary.Name);
+            ISqlLocalDbInstanceManager manager = temporary.Manage();
 
-                    // Act
-                    using (SqlConnection actual = manager.CreateConnection())
-                    {
-                        // Assert
-                        actual.ShouldNotBeNull();
-                        actual.ConnectionString.ShouldNotBeNull();
-                        actual.State.ShouldBe(ConnectionState.Closed);
+            manager.ShouldNotBeNull();
+            manager.Name.ShouldBe(temporary.Name);
 
-                        await actual.OpenAsync();
-                        actual.Close();
-                    }
-                }
-            }
+            // Act
+            using SqlConnection actual = manager.CreateConnection();
+
+            // Assert
+            actual.ShouldNotBeNull();
+            actual.ConnectionString.ShouldNotBeNull();
+            actual.State.ShouldBe(ConnectionState.Closed);
+
+            await actual.OpenAsync();
+            actual.Close();
         }
 
         [Fact]
         public void Restart_Throws_If_Manager_Is_Null()
         {
             // Arrange
-            ISqlLocalDbInstanceManager manager = null;
+            ISqlLocalDbInstanceManager? manager = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("manager", () => manager.Restart());
+            Assert.Throws<ArgumentNullException>("manager", () => manager!.Restart());
         }
 
         [WindowsOnlyFact]
         public void Restart_Stops_And_Starts_Instance()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                using (TemporarySqlLocalDbInstance temporary = api.CreateTemporaryInstance(deleteFiles: true))
-                {
-                    ISqlLocalDbInstanceManager manager = temporary.Manage();
+            using var api = new SqlLocalDbApi(_loggerFactory);
+            using TemporarySqlLocalDbInstance temporary = api.CreateTemporaryInstance(deleteFiles: true);
 
-                    // Act
-                    manager.Restart();
+            ISqlLocalDbInstanceManager manager = temporary.Manage();
 
-                    // Assert
-                    temporary.GetInstanceInfo().IsRunning.ShouldBeTrue();
-                }
-            }
+            // Act
+            manager.Restart();
+
+            // Assert
+            temporary.GetInstanceInfo().IsRunning.ShouldBeTrue();
         }
     }
 }
