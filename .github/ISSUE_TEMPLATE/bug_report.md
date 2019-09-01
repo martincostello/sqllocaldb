@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a bug report to help us improve the library
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
