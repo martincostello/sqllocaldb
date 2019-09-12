@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Humanizer" Version="2.7.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="NodaTime" Version="2.4.6" />
+    <PackageReference Include="NodaTime" Version="2.4.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj" />
