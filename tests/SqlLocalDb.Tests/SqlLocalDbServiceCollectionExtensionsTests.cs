@@ -15,24 +15,24 @@ namespace MartinCostello.SqlLocalDb
         public static void AddSqlLocalDB_Validates_Parameters()
         {
             // Arrange
-            var services = Mock.Of<IServiceCollection>();
+            IServiceCollection? services = Mock.Of<IServiceCollection>();
 
-            SqlLocalDbOptions options = null;
-            Action<SqlLocalDbOptions> configureAction = null;
-            Func<IServiceProvider, SqlLocalDbOptions> configureFunc = null;
+            SqlLocalDbOptions? options = null;
+            Action<SqlLocalDbOptions>? configureAction = null;
+            Func<IServiceProvider, SqlLocalDbOptions>? configureFunc = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("options", () => services.AddSqlLocalDB(options));
-            Assert.Throws<ArgumentNullException>("configure", () => services.AddSqlLocalDB(configureAction));
-            Assert.Throws<ArgumentNullException>("configure", () => services.AddSqlLocalDB(configureFunc));
+            Assert.Throws<ArgumentNullException>("options", () => services.AddSqlLocalDB(options!));
+            Assert.Throws<ArgumentNullException>("configure", () => services.AddSqlLocalDB(configureAction!));
+            Assert.Throws<ArgumentNullException>("configure", () => services.AddSqlLocalDB(configureFunc!));
 
             services = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("services", () => services.AddSqlLocalDB());
-            Assert.Throws<ArgumentNullException>("services", () => services.AddSqlLocalDB(options));
-            Assert.Throws<ArgumentNullException>("services", () => services.AddSqlLocalDB(configureAction));
-            Assert.Throws<ArgumentNullException>("services", () => services.AddSqlLocalDB(configureFunc));
+            Assert.Throws<ArgumentNullException>("services", () => services!.AddSqlLocalDB());
+            Assert.Throws<ArgumentNullException>("services", () => services!.AddSqlLocalDB(options!));
+            Assert.Throws<ArgumentNullException>("services", () => services!.AddSqlLocalDB(configureAction!));
+            Assert.Throws<ArgumentNullException>("services", () => services!.AddSqlLocalDB(configureFunc!));
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace MartinCostello.SqlLocalDb
             IServiceProvider provider = services.BuildServiceProvider();
 
             var actualOptions = provider.GetRequiredService<SqlLocalDbOptions>();
-            options.ShouldBeSameAs(options);
+            options.ShouldBeSameAs(actualOptions);
 
             var localDB = provider.GetRequiredService<ISqlLocalDbApi>();
             localDB.ShouldNotBeNull();

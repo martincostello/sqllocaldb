@@ -24,7 +24,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         internal WindowsRegistryKey(RegistryKey key)
         {
             Debug.Assert(key != null, "key cannot be null.");
-            _key = key;
+            _key = key!;
         }
 
         /// <inheritdoc />
@@ -34,10 +34,10 @@ namespace MartinCostello.SqlLocalDb.Interop
         public string[] GetSubKeyNames() => _key.GetSubKeyNames();
 
         /// <inheritdoc />
-        public string GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
+        public string? GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
 
         /// <inheritdoc />
-        public IRegistryKey OpenSubKey(string keyName)
+        public IRegistryKey? OpenSubKey(string keyName)
         {
             RegistryKey key = _key.OpenSubKey(keyName);
             return key == null ? null : new WindowsRegistryKey(key);

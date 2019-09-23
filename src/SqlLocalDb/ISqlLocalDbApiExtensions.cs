@@ -25,7 +25,8 @@ namespace MartinCostello.SqlLocalDb
         /// <exception cref="ArgumentNullException">
         /// <paramref name="api"/> is <see langword="null"/>.
         /// </exception>
-        public static TemporarySqlLocalDbInstance CreateTemporaryInstance(this ISqlLocalDbApi api, bool deleteFiles = false) => new TemporarySqlLocalDbInstance(api, deleteFiles);
+        public static TemporarySqlLocalDbInstance CreateTemporaryInstance(this ISqlLocalDbApi api, bool deleteFiles = false)
+            => new TemporarySqlLocalDbInstance(api, deleteFiles);
 
         /// <summary>
         /// Gets the default SQL Local DB instance.

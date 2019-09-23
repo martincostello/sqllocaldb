@@ -47,9 +47,9 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<bool?> CompleteItemAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            TodoItem item = await _context.Items.FindAsync(new[] { id }, cancellationToken);
+            TodoItem item = await _context.Items!.FindAsync(new object[] { id }, cancellationToken);
 
             if (item == null)
             {
@@ -71,9 +71,9 @@ namespace TodoApp.Data
         }
 
         /// <inheritdoc />
-        public async Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteItemAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            TodoItem item = await _context.Items.FindAsync(new[] { id }, cancellationToken);
+            TodoItem item = await _context.Items!.FindAsync(new object[] { id }, cancellationToken);
 
             if (item == null)
             {

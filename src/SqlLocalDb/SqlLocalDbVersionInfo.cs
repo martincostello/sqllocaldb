@@ -23,10 +23,10 @@ namespace MartinCostello.SqlLocalDb
         public bool Exists { get; internal set; }
 
         /// <inheritdoc />
-        public string Name { get; internal set; }
+        public string Name { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public Version Version { get; internal set; }
+        public Version Version { get; internal set; } = new Version();
 
         /// <inheritdoc />
         public override string ToString() => Name;

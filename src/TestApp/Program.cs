@@ -3,10 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,10 @@ namespace MartinCostello.SqlLocalDb
         /// The main entry point to the application.
         /// </summary>
         /// <param name="args">The command-line arguments passed to the application.</param>
-        internal static void Main(string[] args)
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous application.
+        /// </returns>
+        internal static async Task Main(string[] args)
         {
             PrintBanner();
 
@@ -89,26 +93,17 @@ namespace MartinCostello.SqlLocalDb
 
                     try
                     {
-                        using (SqlConnection connection = manager.CreateConnection())
+                        using SqlConnection connection = manager.CreateConnection();
+                        await connection.OpenAsync();
+
+                        try
                         {
-                            connection.Open();
-
-                            try
-                            {
-                                using (SqlCommand command = new SqlCommand("create database [MyDatabase]", connection))
-                                {
-                                    command.ExecuteNonQuery();
-                                }
-
-                                using (SqlCommand command = new SqlCommand("drop database [MyDatabase]", connection))
-                                {
-                                    command.ExecuteNonQuery();
-                                }
-                            }
-                            finally
-                            {
-                                connection.Close();
-                            }
+                            await ExecuteCommandAsync(connection, (command) => command.CommandText = "create database [MyDatabase]");
+                            await ExecuteCommandAsync(connection, (command) => command.CommandText = "drop database [MyDatabase]");
+                        }
+                        finally
+                        {
+                            await connection.CloseAsync();
                         }
                     }
                     finally
@@ -137,6 +132,18 @@ namespace MartinCostello.SqlLocalDb
             Console.ReadKey();
         }
 
+        private static async Task ExecuteCommandAsync(SqlConnection connection, Action<SqlCommand> configure)
+        {
+            using SqlCommand command = new SqlCommand()
+            {
+                Connection = connection,
+            };
+
+            configure(command);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
         /// <summary>
         /// Returns whether the current user is in the administrators group on the local machine.
         /// </summary>
@@ -151,11 +158,10 @@ namespace MartinCostello.SqlLocalDb
                 return false;
             }
 
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-            {
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
-                return principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         /// <summary>
@@ -169,17 +175,19 @@ namespace MartinCostello.SqlLocalDb
             Console.WriteLine(
                 Strings.Program_BannerFormat,
                 assemblyName.Name,
-                assembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright,
+                assembly.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright,
                 assemblyName.Version,
-                assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version,
-                assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
-                assembly.GetCustomAttribute<AssemblyConfigurationAttribute>().Configuration,
+                assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version,
+                assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
+                assembly.GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration,
                 Environment.UserDomainName,
                 Environment.UserName,
                 IsCurrentUserAdmin(),
                 Environment.OSVersion,
-                Environment.Is64BitOperatingSystem,
-                Environment.Is64BitProcess);
+                RuntimeInformation.OSDescription,
+                RuntimeInformation.FrameworkDescription,
+                RuntimeInformation.OSArchitecture,
+                RuntimeInformation.ProcessArchitecture);
         }
     }
 }

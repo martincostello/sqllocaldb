@@ -21,8 +21,8 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [Theory]
-        [InlineData(SqlLocalDbErrors.InstanceBusy)]
-        [InlineData(SqlLocalDbErrors.InternalError)]
+        [InlineData(unchecked((int)0x89c50112))]
+        [InlineData(unchecked((int)0x89c50108))]
         public static void TemporaryInstance_Ignores_Exception_If_Delete_Fails(int errorCode)
         {
             // Arrange
@@ -89,10 +89,10 @@ namespace MartinCostello.SqlLocalDb
         public void CreateTemporaryInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.CreateTemporaryInstance());
+            Assert.Throws<ArgumentNullException>("api", () => api!.CreateTemporaryInstance());
         }
 
         [Fact]
@@ -118,10 +118,8 @@ namespace MartinCostello.SqlLocalDb
             var api = Mock.Of<ISqlLocalDbApi>();
 
             // Act and Assert
-            using (TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance())
-            {
-                instance.Dispose();
-            }
+            using TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
+            instance.Dispose();
         }
 
         [Fact]
@@ -130,14 +128,13 @@ namespace MartinCostello.SqlLocalDb
             // Arrange
             var api = Mock.Of<ISqlLocalDbApi>();
 
-            using (TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance())
-            {
-                // Act
-                ISqlLocalDbApiAdapter adapter = instance;
+            using TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
 
-                // Assert
-                adapter.LocalDb.ShouldBeSameAs(api);
-            }
+            // Act
+            ISqlLocalDbApiAdapter adapter = instance;
+
+            // Assert
+            adapter.LocalDb.ShouldBeSameAs(api);
         }
 
         [Fact]
@@ -170,8 +167,8 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [Theory]
-        [InlineData(SqlLocalDbErrors.InternalError)]
-        [InlineData(SqlLocalDbErrors.UnknownInstance)]
+        [InlineData(unchecked((int)0x89c50108))]
+        [InlineData(unchecked((int)0x89c50107))]
         public void TemporaryInstance_Ignores_Exception_If_Stop_Fails(int errorCode)
         {
             // Arrange
@@ -209,55 +206,53 @@ namespace MartinCostello.SqlLocalDb
         public void GetDefaultInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetDefaultInstance());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetDefaultInstance());
         }
 
         [WindowsOnlyFact]
         public void GetDefaultInstance_Returns_The_Default_Instance()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                // Act
-                ISqlLocalDbInstanceInfo actual = api.GetDefaultInstance();
+            using var api = new SqlLocalDbApi(_loggerFactory);
 
-                // Assert
-                actual.ShouldNotBeNull();
-                actual.IsAutomatic.ShouldBeTrue();
-                actual.Name.ShouldBe(api.DefaultInstanceName);
-            }
+            // Act
+            ISqlLocalDbInstanceInfo actual = api.GetDefaultInstance();
+
+            // Assert
+            actual.ShouldNotBeNull();
+            actual.IsAutomatic.ShouldBeTrue();
+            actual.Name.ShouldBe(api.DefaultInstanceName);
         }
 
         [Fact]
         public void GetInstances_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetInstances());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetInstances());
         }
 
         [WindowsOnlyFact]
         public void GetInstances_Returns_All_The_Named_Instances()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                // Act
-                IReadOnlyList<ISqlLocalDbInstanceInfo> actual = api.GetInstances();
+            using var api = new SqlLocalDbApi(_loggerFactory);
 
-                // Assert
-                actual.ShouldNotBeNull();
-                actual.Count.ShouldBeGreaterThanOrEqualTo(1);
-                actual.ShouldBeUnique();
-                actual.ShouldAllBe((p) => p != null);
-                actual.ShouldContain((p) => p.Name == api.DefaultInstanceName);
-                actual.ShouldContain((p) => p.IsAutomatic);
-            }
+            // Act
+            IReadOnlyList<ISqlLocalDbInstanceInfo> actual = api.GetInstances();
+
+            // Assert
+            actual.ShouldNotBeNull();
+            actual.Count.ShouldBeGreaterThanOrEqualTo(1);
+            actual.ShouldBeUnique();
+            actual.ShouldAllBe((p) => p != null);
+            actual.ShouldContain((p) => p.Name == api.DefaultInstanceName);
+            actual.ShouldContain((p) => p.IsAutomatic);
         }
 
         [Fact]
@@ -278,28 +273,27 @@ namespace MartinCostello.SqlLocalDb
         public void GetVersions_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetVersions());
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetVersions());
         }
 
         [WindowsOnlyFact]
         public void GetVersions_Returns_All_The_Installed_Versions()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                // Act
-                IReadOnlyList<ISqlLocalDbVersionInfo> actual = api.GetVersions();
+            using var api = new SqlLocalDbApi(_loggerFactory);
 
-                // Assert
-                actual.ShouldNotBeNull();
-                actual.Count.ShouldBeGreaterThanOrEqualTo(1);
-                actual.ShouldBeUnique();
-                actual.ShouldAllBe((p) => p != null);
-                actual.ShouldContain((p) => p.Exists);
-            }
+            // Act
+            IReadOnlyList<ISqlLocalDbVersionInfo> actual = api.GetVersions();
+
+            // Assert
+            actual.ShouldNotBeNull();
+            actual.Count.ShouldBeGreaterThanOrEqualTo(1);
+            actual.ShouldBeUnique();
+            actual.ShouldAllBe((p) => p != null);
+            actual.ShouldContain((p) => p.Exists);
         }
 
         [Fact]
@@ -320,11 +314,11 @@ namespace MartinCostello.SqlLocalDb
         public void GetOrCreateInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
             string instanceName = "SomeName";
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.GetOrCreateInstance(instanceName));
+            Assert.Throws<ArgumentNullException>("api", () => api!.GetOrCreateInstance(instanceName));
         }
 
         [Fact]
@@ -332,10 +326,10 @@ namespace MartinCostello.SqlLocalDb
         {
             // Arrange
             ISqlLocalDbApi api = Mock.Of<ISqlLocalDbApi>();
-            string instanceName = null;
+            string? instanceName = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instanceName", () => api.GetOrCreateInstance(instanceName));
+            Assert.Throws<ArgumentNullException>("instanceName", () => api.GetOrCreateInstance(instanceName!));
         }
 
         [Fact]
@@ -442,12 +436,12 @@ namespace MartinCostello.SqlLocalDb
         public void ShareInstance_Throws_If_Api_Is_Null()
         {
             // Arrange
-            ISqlLocalDbApi api = null;
+            ISqlLocalDbApi? api = null;
             string instanceName = "SomeName";
             string sharedInstanceName = "SomeSharedName";
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("api", () => api.ShareInstance(instanceName, sharedInstanceName));
+            Assert.Throws<ArgumentNullException>("api", () => api!.ShareInstance(instanceName, sharedInstanceName));
         }
 
         [WindowsOnlyFact]
@@ -466,19 +460,16 @@ namespace MartinCostello.SqlLocalDb
         public void ShareInstance_Shares_Instance_For_Current_User()
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
-            {
-                using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles: true))
-                {
-                    target.GetInstanceInfo().IsShared.ShouldBeFalse();
+            using var api = new SqlLocalDbApi(_loggerFactory);
+            using TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles: true);
 
-                    // Act
-                    api.ShareInstance(target.Name, Guid.NewGuid().ToString());
+            target.GetInstanceInfo().IsShared.ShouldBeFalse();
 
-                    // Assert
-                    target.GetInstanceInfo().IsShared.ShouldBeTrue();
-                }
-            }
+            // Act
+            api.ShareInstance(target.Name, Guid.NewGuid().ToString());
+
+            // Assert
+            target.GetInstanceInfo().IsShared.ShouldBeTrue();
         }
 
         private static ISqlLocalDbInstanceInfo CreateInstanceInfo(bool exists)
@@ -493,40 +484,39 @@ namespace MartinCostello.SqlLocalDb
         private void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
         {
             // Arrange
-            using (var api = new SqlLocalDbApi(_loggerFactory))
+            using var api = new SqlLocalDbApi(_loggerFactory);
+
+            ISqlLocalDbInstanceInfo info;
+            string name;
+
+            // Act
+            using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles))
             {
-                ISqlLocalDbInstanceInfo info;
-                string name;
+                // Assert
+                target.ShouldNotBeNull();
+                target.Name.ShouldNotBeNull();
+                target.Name.ShouldNotBeEmpty();
+
+                Guid.TryParse(target.Name, out Guid nameAsGuid).ShouldBeTrue();
+                nameAsGuid.ShouldNotBe(Guid.Empty);
 
                 // Act
-                using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles))
-                {
-                    // Assert
-                    target.ShouldNotBeNull();
-                    target.Name.ShouldNotBeNull();
-                    target.Name.ShouldNotBeEmpty();
-
-                    Guid.TryParse(target.Name, out Guid nameAsGuid).ShouldBeTrue();
-                    nameAsGuid.ShouldNotBe(Guid.Empty);
-
-                    // Act
-                    info = target.GetInstanceInfo();
-
-                    // Assert
-                    info.ShouldNotBeNull();
-                    info.Exists.ShouldBeTrue();
-                    info.IsRunning.ShouldBeTrue();
-
-                    name = target.Name;
-                }
-
-                // Act
-                info = api.GetInstanceInfo(name);
+                info = target.GetInstanceInfo();
 
                 // Assert
                 info.ShouldNotBeNull();
-                info.Exists.ShouldBeFalse();
+                info.Exists.ShouldBeTrue();
+                info.IsRunning.ShouldBeTrue();
+
+                name = target.Name;
             }
+
+            // Act
+            info = api.GetInstanceInfo(name);
+
+            // Assert
+            info.ShouldNotBeNull();
+            info.Exists.ShouldBeFalse();
         }
     }
 }

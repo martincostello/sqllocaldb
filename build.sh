@@ -51,6 +51,6 @@ if [ $skipTests == 0 ]; then
     if [ "$TF_BUILD" != "" ]; then
         dotnet test ./tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj --output $artifacts --configuration $configuration --logger trx || exit 1
     else
-        dotnet test ./tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj --output $artifacts --configuration $configuration || exit 1
+        dotnet test ./tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj --output $artifacts --configuration $configuration '--logger:Console;noprogress=true' || exit 1
     fi
 fi

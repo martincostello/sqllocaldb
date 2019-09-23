@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,13 +36,13 @@ namespace TodoApp.Services
         /// <inheritdoc />
         public Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken)
         {
-            return _repository.CompleteItemAsync(id, cancellationToken);
+            return _repository.CompleteItemAsync(new Guid(id), cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken)
         {
-            return _repository.DeleteItemAsync(id, cancellationToken);
+            return _repository.DeleteItemAsync(new Guid(id), cancellationToken);
         }
 
         /// <inheritdoc />
@@ -63,7 +64,7 @@ namespace TodoApp.Services
         {
             return new TodoItemModel()
             {
-                Id = item.Id,
+                Id = item.Id.ToString(),
                 IsCompleted = item.CompletedAt.HasValue,
                 LastUpdated = (item.CompletedAt ?? item.CreatedAt).Humanize(),
                 Text = item.Text,

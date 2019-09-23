@@ -22,6 +22,6 @@ namespace TodoApp.Data
         /// <summary>
         /// Gets or sets the database set containing the Todo items.
         /// </summary>
-        public DbSet<TodoItem> Items { get; set; }
+        public DbSet<TodoItem>? Items { get; set; }
     }
 }

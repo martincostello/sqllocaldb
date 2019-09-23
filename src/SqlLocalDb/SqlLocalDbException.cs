@@ -76,7 +76,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="errorCode">The error code for the exception.</param>
         /// <param name="instanceName">The name of the LocalDB instance that caused the exception, if any.</param>
-        public SqlLocalDbException(string message, int errorCode, string instanceName)
+        public SqlLocalDbException(string message, int errorCode, string? instanceName)
             : base(message, errorCode)
         {
             InstanceName = instanceName;
@@ -90,7 +90,7 @@ namespace MartinCostello.SqlLocalDb
         /// <param name="errorCode">The error code for the exception.</param>
         /// <param name="instanceName">The name of the LocalDB instance that caused the exception, if any.</param>
         /// <param name="innerException">The inner exception reference.</param>
-        public SqlLocalDbException(string message, int errorCode, string instanceName, Exception innerException)
+        public SqlLocalDbException(string message, int errorCode, string? instanceName, Exception innerException)
             : base(message, innerException)
         {
             // Set local value as no way to pass both errorCode and innerException to base class
@@ -129,7 +129,7 @@ namespace MartinCostello.SqlLocalDb
         /// Gets or sets the name of the SQL Server LocalDB
         /// instance that caused the exception, if any.
         /// </summary>
-        public string InstanceName { get; protected set; }
+        public string? InstanceName { get; protected set; }
 
         /// <summary>
         /// Sets the <see cref="SerializationInfo"/> with information about the exception.

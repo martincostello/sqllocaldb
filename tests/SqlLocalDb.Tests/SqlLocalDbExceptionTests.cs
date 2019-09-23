@@ -114,11 +114,11 @@ namespace MartinCostello.SqlLocalDb
             // Arrange
             var target = new SqlLocalDbException();
 
-            SerializationInfo info = null;
+            SerializationInfo? info = null;
             var context = new StreamingContext();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("info", () => target.GetObjectData(info, context));
+            Assert.Throws<ArgumentNullException>("info", () => target.GetObjectData(info!, context));
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace MartinCostello.SqlLocalDb
             var target = new SqlLocalDbException(message, ErrorCode, instanceName, innerException);
             var formatter = new BinaryFormatter();
 
-            SqlLocalDbException deserialized;
+            SqlLocalDbException? deserialized;
 
             using (var stream = new MemoryStream())
             {
@@ -145,7 +145,7 @@ namespace MartinCostello.SqlLocalDb
 
             // Assert
             deserialized.ShouldNotBeNull();
-            deserialized.ErrorCode.ShouldBe(target.ErrorCode);
+            deserialized!.ErrorCode.ShouldBe(target.ErrorCode);
             deserialized.InstanceName.ShouldBe(target.InstanceName);
             deserialized.Message.ShouldBe(target.Message);
         }

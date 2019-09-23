@@ -25,6 +25,6 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <returns>
         /// The value associated with <paramref name="name"/>, or <see langword="null"/> if <paramref name="name"/> is not found.
         /// </returns>
-        string GetValue(string name);
+        string? GetValue(string name);
     }
 }

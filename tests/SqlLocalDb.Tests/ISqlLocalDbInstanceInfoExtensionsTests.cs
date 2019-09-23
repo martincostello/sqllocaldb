@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Moq;
 using Shouldly;
 using Xunit;
@@ -15,20 +15,20 @@ namespace MartinCostello.SqlLocalDb
         public static void CreateConnection_Throws_If_Instance_Is_Null()
         {
             // Arrange
-            ISqlLocalDbInstanceInfo instance = null;
+            ISqlLocalDbInstanceInfo? instance = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instance", () => instance.CreateConnection());
+            Assert.Throws<ArgumentNullException>("instance", () => instance!.CreateConnection());
         }
 
         [Fact]
         public static void CreateConnectionStringBuilder_Throws_If_Instance_Is_Null()
         {
             // Arrange
-            ISqlLocalDbInstanceInfo instance = null;
+            ISqlLocalDbInstanceInfo? instance = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instance", () => instance.CreateConnectionStringBuilder());
+            Assert.Throws<ArgumentNullException>("instance", () => instance!.CreateConnectionStringBuilder());
         }
 
         [Fact]
@@ -89,10 +89,10 @@ namespace MartinCostello.SqlLocalDb
         public static void Manage_Throws_If_Instance_Is_Null()
         {
             // Arrange
-            ISqlLocalDbInstanceInfo instance = null;
+            ISqlLocalDbInstanceInfo? instance = null;
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("instance", () => instance.Manage());
+            Assert.Throws<ArgumentNullException>("instance", () => instance!.Manage());
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace MartinCostello.SqlLocalDb
             var adapter = actual as ISqlLocalDbApiAdapter;
 
             adapter.ShouldNotBeNull();
-            adapter.LocalDb.ShouldBeSameAs(api);
+            adapter!.LocalDb.ShouldBeSameAs(api);
         }
     }
 }

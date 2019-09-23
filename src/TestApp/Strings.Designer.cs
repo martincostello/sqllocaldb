@@ -19,7 +19,7 @@ namespace MartinCostello.SqlLocalDb {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -70,9 +70,11 @@ namespace MartinCostello.SqlLocalDb {
         ///Assembly Configuration:         {5}
         ///User:                           {6}\{7}
         ///Does User Have Admin Token?     {8}
-        ///Operating System:               {9}
-        ///Is 64-bit Operating System?     {10}
-        ///Is 64-bit Process?              {11}
+        ///Operating System Version:       {9}
+        ///Operating System Name:          {10}
+        ///.NET Runtime:                   {11}
+        ///Operating System Architecture:  {12}
+        ///Process Architecture:           {13}
         ///.
         /// </summary>
         internal static string Program_BannerFormat {

@@ -28,7 +28,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// The <see cref="ILogger"/> to use, if any.
         /// </summary>
-        private ILogger _logger;
+        private ILogger? _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporarySqlLocalDbInstance"/> class.
@@ -171,7 +171,7 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         private string EnsureInitialized()
         {
-            ILoggerFactory loggerFactory = null;
+            ILoggerFactory? loggerFactory = null;
 
             if (Api is SqlLocalDbApi localDB)
             {

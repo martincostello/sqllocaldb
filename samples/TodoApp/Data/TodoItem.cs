@@ -13,12 +13,12 @@ namespace TodoApp.Data
         /// <summary>
         /// Gets or sets the Id of the item.
         /// </summary>
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the text of the item.
         /// </summary>
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time the item was created.

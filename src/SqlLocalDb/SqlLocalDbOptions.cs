@@ -30,7 +30,7 @@ namespace MartinCostello.SqlLocalDb
         /// <summary>
         /// Gets or sets the override language to use to format error messages.
         /// </summary>
-        public CultureInfo Language { get; set; }
+        public CultureInfo? Language { get; set; }
 
         /// <summary>
         /// Gets or sets the override version string of the native SQL LocalDB API to load, if any.
@@ -60,7 +60,7 @@ namespace MartinCostello.SqlLocalDb
         {
             get
             {
-                CultureInfo culture = Language;
+                CultureInfo? culture = Language;
 
                 if (culture == null)
                 {
