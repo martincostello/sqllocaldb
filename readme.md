@@ -4,7 +4,7 @@ SQL LocalDB Wrapper is a .NET Standard 2.0 library providing interop with the [M
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.SqlLocalDb?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 
-| | Windows | Linux/OS X | Linux/macOS/Windows |
+| | Windows | Linux/macOS | Linux/macOS/Windows |
 |:-:|:-:|:-:|:-:|
 | **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Code coverage](https://codecov.io/gh/martincostello/sqllocaldb/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb) | [![Linux build status](https://img.shields.io/travis/com/martincostello/sqllocaldb/master.svg)](https://travis-ci.com/martincostello/sqllocaldb) | [![Azure Pipelines build status](https://dev.azure.com/martincostello/sqllocaldb/_apis/build/status/CI)](https://dev.azure.com/martincostello/sqllocaldb/_build/latest?definitionId=66) |
 | **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/sqllocaldb) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/sqllocaldb) | [![Build history](https://buildstats.info/azurepipelines/chart/martincostello/sqllocaldb/66?branch=master&includeBuildsFromPullRequest=false)](https://dev.azure.com/martincostello/sqllocaldb/_build?definitionId=66) |
@@ -86,7 +86,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `2.2.100` or later).
+Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `3.0.100` or later).
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
