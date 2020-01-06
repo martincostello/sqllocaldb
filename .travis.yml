@@ -31,4 +31,4 @@ script:
   - ./build.sh
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -f "./artifacts/coverage.cobertura.xml" -F $TRAVIS_OS_NAME || echo "Codecov did not collect coverage reports"
+  - bash <(curl -s https://codecov.io/bash) -f "./artifacts/coverage.netcoreapp3.1.cobertura.xml" -F $TRAVIS_OS_NAME || echo "Codecov did not collect coverage reports"
