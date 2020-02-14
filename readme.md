@@ -30,25 +30,22 @@ dotnet add package MartinCostello.SqlLocalDb
 ```csharp
 // using MartinCostello.SqlLocalDb;
 
-using (var localDB = new SqlLocalDbApi())
+using var localDB = new SqlLocalDbApi();
+
+ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
+ISqlLocalDbInstanceManager manager = instance.Manage();
+
+if (!instance.IsRunning)
 {
-    ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
-    ISqlLocalDbInstanceManager manager = instance.Manage();
-
-    if (!instance.IsRunning)
-    {
-        manager.Start();
-    }
-
-    using (SqlConnection connection = instance.CreateConnection())
-    {
-        connection.Open();
-
-        // Use the SQL connection...
-    }
-
-    manager.Stop();
+    manager.Start();
 }
+
+using SqlConnection connection = instance.CreateConnection();
+connection.Open();
+
+// Use the SQL connection...
+
+manager.Stop();
 ```
 
 ### Further Examples
