@@ -99,10 +99,10 @@ cd sqllocaldb
 
 **Note**: To run all the tests successfully, you must run either `build.ps1` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be skipped.
 
-**Note**: Several tests are skipped on non-Windows Operating Systems.
+**Note**: Several tests are skipped on non-Windows Operating Systems as SQL LocalDB itself is only supported on Windows.
 
 ## Copyright and Trademarks
 
-This library is copyright (©) Martin Costello 2012-2018.
+This library is copyright (©) Martin Costello 2012-2020.
 
 [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/) is a trademark and copyright of the Microsoft Corporation.
