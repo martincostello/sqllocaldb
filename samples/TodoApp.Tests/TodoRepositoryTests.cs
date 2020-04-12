@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using MartinCostello.SqlLocalDb;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,12 @@ namespace TodoApp.Tests
 
         private ILoggerFactory LoggerFactory { get; }
 
-        [Fact]
+        [SkippableFact]
         public async Task Can_Create_Update_And_Delete_Todo_Items()
         {
             // Arrange
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
             var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
             var clock = new FakeClock(Instant.FromDateTimeOffset(now));
 
