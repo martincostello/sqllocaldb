@@ -19,10 +19,13 @@
     <Authors>martin_costello</Authors>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
+    <ContinuousIntegrationBuild Condition=" '$(CI)' != '' or '$(GITHUB_ACTIONS)' != '' ">true</ContinuousIntegrationBuild>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <!-- Enable deterministic builds for CI once https://github.com/tonerdo/coverlet/issues/363 fixed -->
+    <Deterministic>false</Deterministic>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <GenerateGitMetadata Condition=" ('$(CI)' != '' or '$(TF_BUILD)' != '') and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
+    <GenerateGitMetadata Condition=" ('$(CI)' != '' or '$(GITHUB_ACTIONS)' != '') and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <NoWarn>$(NoWarn);CA1054;CA2234</NoWarn>
@@ -41,10 +44,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <VersionPrefix>3.0.1</VersionPrefix>
-    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(APPVEYOR)' == 'true' AND '$(APPVEYOR_REPO_TAG)' != 'true'">beta$([System.Convert]::ToInt32(`$(APPVEYOR_BUILD_NUMBER)`).ToString(`0000`))</VersionSuffix>
-    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(TF_BUILD)' == 'True'">beta$([System.Convert]::ToInt32(`$(BUILD_BUILDID)`).ToString(`0000`))</VersionSuffix>
-    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(TRAVIS)' == 'true'">beta$([System.Convert]::ToInt32(`$(TRAVIS_BUILD_NUMBER)`).ToString(`0000`))</VersionSuffix>
-    <VersionSuffix Condition=" '$(APPVEYOR_REPO_TAG)' == 'true' AND '$(APPVEYOR_REPO_TAG_NAME)' != '' AND '$(APPVEYOR_REPO_TAG_NAME.Contains(`-`))' == 'true' ">$(APPVEYOR_REPO_TAG_NAME.Substring($(APPVEYOR_REPO_TAG_NAME.IndexOf(`-`))).Substring(1))</VersionSuffix>
+    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(GITHUB_ACTIONS)' != '' ">beta$([System.Convert]::ToInt32(`$(GITHUB_RUN_NUMBER)`).ToString(`0000`))</VersionSuffix>
+    <VersionPrefix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) ">$(GITHUB_REF.Replace('refs/tags/v', ''))</VersionPrefix>
+    <VersionSuffix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) "></VersionSuffix>
+    <FileVersion Condition=" '$(GITHUB_RUN_NUMBER)' != '' ">$(VersionPrefix).$(GITHUB_RUN_NUMBER)</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <CollectCoverage>true</CollectCoverage>

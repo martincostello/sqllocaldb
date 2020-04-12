@@ -4,10 +4,7 @@ SQL LocalDB Wrapper is a .NET Standard 2.0 library providing interop with the [M
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.SqlLocalDb?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 
-| | Windows | Linux/macOS | Linux/macOS/Windows |
-|:-:|:-:|:-:|:-:|
-| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/sqllocaldb/master.svg)](https://ci.appveyor.com/project/martincostello/sqllocaldb) [![Code coverage](https://codecov.io/gh/martincostello/sqllocaldb/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb) | [![Linux build status](https://img.shields.io/travis/com/martincostello/sqllocaldb/master.svg)](https://travis-ci.com/martincostello/sqllocaldb) | [![Azure Pipelines build status](https://dev.azure.com/martincostello/sqllocaldb/_apis/build/status/CI)](https://dev.azure.com/martincostello/sqllocaldb/_build/latest?definitionId=66) |
-| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/sqllocaldb) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/sqllocaldb?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/sqllocaldb) | [![Build history](https://buildstats.info/azurepipelines/chart/martincostello/sqllocaldb/66?branch=master&includeBuildsFromPullRequest=false)](https://dev.azure.com/martincostello/sqllocaldb/_build?definitionId=66) |
+[![Build status](https://github.com/martincostello/sqllocaldb/workflows/build/badge.svg?branch=master&event=push)](https://github.com/martincostello/sqllocaldb/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
 
 ## Introduction
 
@@ -87,30 +84,22 @@ Compiling the library yourself requires Git and the [.NET Core SDK](https://www.
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
-To build and test the library locally from a terminal/command-line, run one of the following set of commands:
+To build and test the library locally from a terminal/command-line, run the following set of commands:
 
 **Windows**
 
 ```powershell
 git clone https://github.com/martincostello/sqllocaldb.git
 cd sqllocaldb
-.\Build.ps1
+./build.ps1
 ```
 
-**Note**: To run all the tests successfully, you must run either `Build.ps1` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be skipped.
+**Note**: To run all the tests successfully, you must run either `build.ps1` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be skipped.
 
-**Linux/macOS**
-
-```sh
-git clone https://github.com/martincostello/sqllocaldb.git
-cd sqllocaldb
-./build.sh
-```
-
-**Note**: Several tests are skipped on non-Windows Operating Systems.
+**Note**: Several tests are skipped on non-Windows Operating Systems as SQL LocalDB itself is only supported on Windows.
 
 ## Copyright and Trademarks
 
-This library is copyright (©) Martin Costello 2012-2018.
+This library is copyright (©) Martin Costello 2012-2020.
 
 [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/) is a trademark and copyright of the Microsoft Corporation.

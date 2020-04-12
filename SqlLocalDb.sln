@@ -8,10 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
-		Build.ps1 = Build.ps1
-		build.sh = build.sh
+		build.ps1 = build.ps1
 		CHANGELOG = CHANGELOG
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
@@ -59,10 +56,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp", "samples\TodoApp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Tests", "samples\TodoApp.Tests\TodoApp.Tests.csproj", "{5B2AD682-C000-45D0-AECE-8DADED1616B7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".azure-pipelines", ".azure-pipelines", "{CB75AAE3-CB43-44D7-A0C1-0FD8D21CD968}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{B3D6F0CC-F49F-424E-B853-FFB0626A38D0}"
 	ProjectSection(SolutionItems) = preProject
-		.azure-pipelines\build-template.yml = .azure-pipelines\build-template.yml
-		.azure-pipelines\build.yml = .azure-pipelines\build.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
 Global
@@ -103,7 +99,7 @@ Global
 		{701E574A-6366-4AF9-9319-237968FA1089} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
 		{1B720E31-3AA8-4010-A3DB-187B2D0BC471} = {825D6F08-8321-4C6E-92A9-92543FDAF965}
 		{5B2AD682-C000-45D0-AECE-8DADED1616B7} = {825D6F08-8321-4C6E-92A9-92543FDAF965}
-		{CB75AAE3-CB43-44D7-A0C1-0FD8D21CD968} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
+		{B3D6F0CC-F49F-424E-B853-FFB0626A38D0} = {D0426D09-1FF8-4E1F-A9AF-38DDEE5D7CCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B9E157C-5E92-4357-B233-281B4530EABD}
