@@ -87,25 +87,17 @@ Compiling the library yourself requires Git and the [.NET Core SDK](https://www.
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
-To build and test the library locally from a terminal/command-line, run one of the following set of commands:
+To build and test the library locally from a terminal/command-line, run the following set of commands:
 
 **Windows**
 
 ```powershell
 git clone https://github.com/martincostello/sqllocaldb.git
 cd sqllocaldb
-.\Build.ps1
+./build.ps1
 ```
 
-**Note**: To run all the tests successfully, you must run either `Build.ps1` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be skipped.
-
-**Linux/macOS**
-
-```sh
-git clone https://github.com/martincostello/sqllocaldb.git
-cd sqllocaldb
-./build.sh
-```
+**Note**: To run all the tests successfully, you must run either `build.ps1` or Visual Studio with administrative privileges. This is because the SQL LocalDB APIs for sharing LocalDB instances can only be used with administrative privileges. Not running the tests with administrative privileges will cause all tests that exercise such functionality to be skipped.
 
 **Note**: Several tests are skipped on non-Windows Operating Systems.
 
