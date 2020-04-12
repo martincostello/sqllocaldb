@@ -29,7 +29,9 @@ namespace TodoApp.Tests
         public async Task Can_Create_Update_And_Delete_Todo_Items()
         {
             // Arrange
-            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+            Skip.IfNot(
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                "This test can only be run on Windows.");
 
             var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
             var clock = new FakeClock(Instant.FromDateTimeOffset(now));
