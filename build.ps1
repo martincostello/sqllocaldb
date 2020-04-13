@@ -6,7 +6,12 @@ param(
     [Parameter(Mandatory = $false)][switch] $SkipTests
 )
 
+# These make CI builds faster
+$env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
+$env:NUGET_XMLDOC_MODE = "skip"
+
 $ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
 
 $solutionPath = Split-Path $MyInvocation.MyCommand.Definition
 $solutionFile = Join-Path $solutionPath "SqlLocalDb.sln"
@@ -46,6 +51,7 @@ else {
 }
 
 if ($installDotNetSdk -eq $true) {
+
     $env:DOTNET_INSTALL_DIR = Join-Path "$(Convert-Path "$PSScriptRoot")" ".dotnetcli"
     $sdkPath = Join-Path $env:DOTNET_INSTALL_DIR "sdk\$dotnetVersion"
 
@@ -54,6 +60,7 @@ if ($installDotNetSdk -eq $true) {
             mkdir $env:DOTNET_INSTALL_DIR | Out-Null
         }
         [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor "Tls12"
+
         if (($PSVersionTable.PSVersion.Major -ge 6) -And !$IsWindows) {
             $installScript = Join-Path $env:DOTNET_INSTALL_DIR "install.sh"
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile $installScript -UseBasicParsing
@@ -66,12 +73,15 @@ if ($installDotNetSdk -eq $true) {
             & $installScript -Version "$dotnetVersion" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath
         }
     }
-
-    $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
-    $dotnet = Join-Path "$env:DOTNET_INSTALL_DIR" "dotnet"
 }
 else {
-    $dotnet = "dotnet"
+    $env:DOTNET_INSTALL_DIR = Split-Path -Path (Get-Command dotnet).Path
+}
+
+$dotnet = Join-Path "$env:DOTNET_INSTALL_DIR" "dotnet"
+
+if ($installDotNetSdk -eq $true) {
+    $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
 }
 
 function DotNetBuild {
@@ -92,10 +102,10 @@ function DotNetPack {
     param([string]$Project)
 
     if ($VersionSuffix) {
-        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --version-suffix "$VersionSuffix" --include-symbols --include-source
+        & $dotnet pack $Project --output (Join-Path $OutputPath "packages") --configuration $Configuration --version-suffix "$VersionSuffix" --include-symbols --include-source
     }
     else {
-        & $dotnet pack $Project --output $OutputPath --configuration $Configuration --include-symbols --include-source
+        & $dotnet pack $Project --output (Join-Path $OutputPath "packages") --configuration $Configuration --include-symbols --include-source
     }
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
@@ -117,12 +127,14 @@ function DotNetTest {
 
     $dotNetTestExitCode = $LASTEXITCODE
 
-    & $dotnet `
-        $reportGeneratorPath `
-        `"-reports:$coverageOutput`" `
-        `"-targetdir:$reportOutput`" `
-        -reporttypes:HTML `
-        -verbosity:Warning
+    if (Test-Path $coverageOutput) {
+        & $dotnet `
+            $reportGeneratorPath `
+            `"-reports:$coverageOutput`" `
+            `"-targetdir:$reportOutput`" `
+            -reporttypes:HTML `
+            -verbosity:Warning
+    }
 
     if ($dotNetTestExitCode -ne 0) {
         throw "dotnet test failed with exit code $dotNetTestExitCode"
