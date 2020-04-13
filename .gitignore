@@ -1,9 +1,9 @@
 .DS_Store
 .dotnetcli
+.idea
 .metadata
 .settings
 .vs
-_Chutzpah*
 _ReSharper*
 _reports
 _UpgradeReport_Files/
@@ -11,8 +11,8 @@ artifacts/
 Backup*/
 bin
 Bin
-BuildOutput
 coverage
+coverage.*
 node_modules
 obj
 packages
@@ -24,8 +24,8 @@ typings
 UpgradeLog*.htm
 UpgradeLog*.XML
 PublishProfiles
+*.coverage
 *.DotSettings
-*.GhostDoc.xml
 *.log
 *.nupkg
 *.opensdf
