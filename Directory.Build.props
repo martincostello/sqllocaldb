@@ -19,13 +19,12 @@
     <Authors>martin_costello</Authors>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
-    <ContinuousIntegrationBuild Condition=" '$(CI)' != '' or '$(GITHUB_ACTIONS)' != '' ">true</ContinuousIntegrationBuild>
+    <ContinuousIntegrationBuild Condition=" '$(CI)' != '' ">true</ContinuousIntegrationBuild>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
-    <!-- Enable deterministic builds for CI once https://github.com/tonerdo/coverlet/issues/363 fixed -->
-    <Deterministic>false</Deterministic>
+    <Deterministic>true</Deterministic>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <GenerateGitMetadata Condition=" ('$(CI)' != '' or '$(GITHUB_ACTIONS)' != '') and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
+    <GenerateGitMetadata Condition=" '$(CI)' != '' and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <NoWarn>$(NoWarn);CA1054;CA2234</NoWarn>
