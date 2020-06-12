@@ -5,6 +5,8 @@ updates:
   schedule:
     interval: daily
     timezone: Europe/London
+  reviewers:
+    - "martincostello"
   open-pull-requests-limit: 99
   ignore:
   - dependency-name: Microsoft.Extensions.DependencyInjection.Abstractions
