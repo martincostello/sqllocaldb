@@ -1,0 +1,18 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    timezone: Europe/London
+  open-pull-requests-limit: 99
+  ignore:
+  - dependency-name: Microsoft.Extensions.DependencyInjection.Abstractions
+    versions:
+    - ">= 2.2.a, < 2.3"
+  - dependency-name: System.Data.SqlClient
+    versions:
+    - "> 4.5.0, < 4.6"
+  - dependency-name: System.Data.SqlClient
+    versions:
+    - ">= 4.6.a, < 4.7"
