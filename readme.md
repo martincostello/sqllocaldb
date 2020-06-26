@@ -4,7 +4,7 @@ SQL LocalDB Wrapper is a .NET Standard 2.0 library providing interop with the [M
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.SqlLocalDb?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 
-[![Build status](https://github.com/martincostello/sqllocaldb/workflows/build/badge.svg?branch=master&event=push)](https://github.com/martincostello/sqllocaldb/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
+[![Build status](https://github.com/martincostello/sqllocaldb/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/sqllocaldb/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
 
 ## Introduction
 
@@ -50,9 +50,9 @@ manager.Stop();
 Further examples of using the library can be found by following the links below:
 
   1. The [wiki](https://github.com/martincostello/sqllocaldb/wiki/Examples "Examples in the SQL LocalDB Wrapper wiki").
-  1. The [sample application](https://github.com/martincostello/sqllocaldb/tree/master/samples "TodoApp sample").
-  1. The [examples written as tests](https://github.com/martincostello/sqllocaldb/blob/master/tests/SqlLocalDb.Tests/Examples.cs "Examples as tests").
-  1. The library's [own tests](https://github.com/martincostello/sqllocaldb/tree/master/tests/SqlLocalDb.Tests "View MartinCostello.SqlLocalDb's tests").
+  1. The [sample application](https://github.com/martincostello/sqllocaldb/tree/main/samples "TodoApp sample").
+  1. The [examples written as tests](https://github.com/martincostello/sqllocaldb/blob/main/tests/SqlLocalDb.Tests/Examples.cs "Examples as tests").
+  1. The library's [own tests](https://github.com/martincostello/sqllocaldb/tree/main/tests/SqlLocalDb.Tests "View MartinCostello.SqlLocalDb's tests").
 
 ## Migrating from System.Data.SqlLocalDb 1.x
 
