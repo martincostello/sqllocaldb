@@ -163,7 +163,7 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 ## Added
   * Added new `bool InstanceExists(string)` method to `ISqlLocalDbApi`.
   * Add support for registration with the built-in ASP.NET Core service container.
-  * Added new [sample Todo list ASP.NET Core web application](https://github.com/martincostello/sqllocaldb/tree/master/samples "Samples") that uses SQL Server LocalDB.
+  * Added new [sample Todo list ASP.NET Core web application](https://github.com/martincostello/sqllocaldb/tree/main/samples "Samples") that uses SQL Server LocalDB.
   * [Continuous integration using Travis CI](https://travis-ci.com/martincostello/sqllocaldb) for Linux and macOS.
   * [Continuous integration using Azure Pipelines](https://dev.azure.com/martincostello/sqllocaldb/_build?definitionId=66) for Windows, Linux and macOS.
 
