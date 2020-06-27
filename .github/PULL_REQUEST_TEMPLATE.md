@@ -1,3 +1,3 @@
-_Summarise the changes this Pull Request makes._
+<!-- Summarise the changes this Pull Request makes. -->
 
-_Please include a reference to a GitHub issue if appropriate._
+<!-- Please include a reference to a GitHub issue if appropriate. -->

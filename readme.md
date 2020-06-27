@@ -18,7 +18,7 @@ While the library can be compiled and referenced in .NET Core applications on no
 
 To install the library from [NuGet](https://www.nuget.org/packages/MartinCostello.SqlLocalDb/ "MartinCostello.SqlLocalDb on NuGet.org") using the .NET SDK run:
 
-```
+```sh
 dotnet add package MartinCostello.SqlLocalDb
 ```
 
@@ -72,7 +72,7 @@ Any feedback or issues can be added to the issues for this project in [GitHub](h
 
 ## Repository
 
-The repository is hosted in [GitHub](https://github.com/martincostello/sqllocaldb "This project on GitHub.com"): https://github.com/martincostello/sqllocaldb.git
+The repository is hosted in [GitHub](https://github.com/martincostello/sqllocaldb "This project on GitHub.com"): [https://github.com/martincostello/sqllocaldb.git](https://github.com/martincostello/sqllocaldb.git)
 
 ## License
 
