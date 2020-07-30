@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 		global.json = global.json
 		LICENSE = LICENSE
 		NuGet.config = NuGet.config
@@ -45,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D042
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{701E574A-6366-4AF9-9319-237968FA1089}"
 	ProjectSection(SolutionItems) = preProject
+		.vscode\extensions.json = .vscode\extensions.json
 		.vscode\launch.json = .vscode\launch.json
 		.vscode\tasks.json = .vscode\tasks.json
 	EndProjectSection
