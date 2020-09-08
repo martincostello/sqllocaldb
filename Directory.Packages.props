@@ -3,10 +3,10 @@
     <PackageVersion Include="coverlet.msbuild" Version="2.9.0" />
     <PackageVersion Include="Humanizer" Version="2.8.26" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.1.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.8" />
     <PackageVersion Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.14.5" />
@@ -27,9 +27,9 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' != 'MartinCostello.SqlLocalDb' ">
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="2.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="3.1.7" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="3.1.7" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="3.1.7" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="3.1.8" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="3.1.8" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
