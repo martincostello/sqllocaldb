@@ -21,7 +21,7 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' ">
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="1.0.19249.1" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="4.5.0" />
   </ItemGroup>
