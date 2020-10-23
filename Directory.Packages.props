@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.14.7" />
-    <PackageVersion Include="NodaTime" Version="3.0.2" />
+    <PackageVersion Include="NodaTime" Version="3.0.3" />
     <PackageVersion Include="NodaTime.Testing" Version="3.0.2" />
     <PackageVersion Include="ReportGenerator" Version="4.7.1" />
     <PackageVersion Include="Shouldly" Version="3.0.2" />
