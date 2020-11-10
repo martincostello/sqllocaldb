@@ -74,8 +74,8 @@ namespace MartinCostello.SqlLocalDb
 
             using (IServiceScope scope = serviceProvider.CreateScope())
             {
-                ISqlLocalDbApi localDB = scope.ServiceProvider.GetService<ISqlLocalDbApi>();
-                ISqlLocalDbInstanceInfo instance = localDB.GetDefaultInstance();
+                ISqlLocalDbApi localDB = scope!.ServiceProvider!.GetRequiredService<ISqlLocalDbApi>();
+                ISqlLocalDbInstanceInfo instance = localDB!.GetDefaultInstance();
                 ISqlLocalDbInstanceManager manager = instance.Manage();
 
                 if (!instance.IsRunning)

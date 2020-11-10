@@ -11,9 +11,12 @@ namespace MartinCostello.SqlLocalDb.Interop
     internal sealed class WindowsRegistry : IRegistry
     {
         /// <inheritdoc />
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         public IRegistryKey? OpenSubKey(string keyName)
         {
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName, writable: false);
+            RegistryKey? key = Registry.LocalMachine.OpenSubKey(keyName, writable: false);
             return key == null ? null : new WindowsRegistryKey(key);
         }
     }

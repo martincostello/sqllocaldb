@@ -210,10 +210,8 @@ namespace MartinCostello.SqlLocalDb
 
                 if (versions.Count < 1)
                 {
-#pragma warning disable CA1065
                     string message = SRHelper.Format(SR.SqlLocalDbApi_NoVersionsFormat, Environment.MachineName);
                     throw new InvalidOperationException(message);
-#pragma warning restore CA1065
                 }
 
                 // Return the version with the highest number
@@ -789,6 +787,8 @@ namespace MartinCostello.SqlLocalDb
                 throw new ArgumentNullException(nameof(sharedInstanceName));
             }
 
+            EnsurePlatformSupported();
+
             if (string.IsNullOrEmpty(instanceName))
             {
                 // There is a bug in the SQL LocalDB native API that
@@ -802,7 +802,9 @@ namespace MartinCostello.SqlLocalDb
             Logger.SharingInstance(instanceName, ownerSid, sharedInstanceName);
 
             // Get the binary version of the SID from its string
+#pragma warning disable CA1416
             byte[] binaryForm = GetOwnerSidAsByteArray(ownerSid);
+#pragma warning restore CA1416
 
             IntPtr ptrSid = Marshal.AllocHGlobal(binaryForm.Length);
 
@@ -1264,6 +1266,9 @@ namespace MartinCostello.SqlLocalDb
         /// <returns>
         /// An <see cref="Array"/> of <see cref="byte"/> containing a representation of <paramref name="ownerSid"/>.
         /// </returns>
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         private static byte[] GetOwnerSidAsByteArray(string ownerSid)
         {
             // Get the binary version of the SID from its string
@@ -1294,7 +1299,7 @@ namespace MartinCostello.SqlLocalDb
             {
                 // Determine the offset of the element, and get the string from the array
                 IntPtr offset = new IntPtr(ptr.ToInt64() + (length * i));
-                result[i] = Marshal.PtrToStringAuto(offset);
+                result[i] = Marshal.PtrToStringAuto(offset) !;
             }
 
             return result;
@@ -1311,7 +1316,7 @@ namespace MartinCostello.SqlLocalDb
         private static T MarshalStruct<T>(IntPtr ptr)
             where T : struct
         {
-            return (T)Marshal.PtrToStructure(ptr, typeof(T));
+            return (T)Marshal.PtrToStructure(ptr, typeof(T)) !;
         }
 
         /// <summary>

@@ -28,18 +28,30 @@ namespace MartinCostello.SqlLocalDb.Interop
         }
 
         /// <inheritdoc />
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         void IDisposable.Dispose() => _key.Dispose();
 
         /// <inheritdoc />
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         public string[] GetSubKeyNames() => _key.GetSubKeyNames();
 
         /// <inheritdoc />
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         public string? GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
 
         /// <inheritdoc />
+#if NET5_0
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
         public IRegistryKey? OpenSubKey(string keyName)
         {
-            RegistryKey key = _key.OpenSubKey(keyName);
+            RegistryKey? key = _key.OpenSubKey(keyName);
             return key == null ? null : new WindowsRegistryKey(key);
         }
     }

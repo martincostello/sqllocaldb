@@ -20,8 +20,8 @@ namespace TodoApp.Data
         {
             using IServiceScope scope = serviceProvider.CreateScope();
 
-            var context = scope.ServiceProvider.GetService<TodoContext>();
-            context.Database.Migrate();
+            var context = scope!.ServiceProvider!.GetService<TodoContext>();
+            context!.Database.Migrate();
         }
     }
 }

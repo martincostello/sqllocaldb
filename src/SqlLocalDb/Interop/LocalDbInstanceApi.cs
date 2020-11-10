@@ -465,7 +465,7 @@ namespace MartinCostello.SqlLocalDb.Interop
 
                 foreach (string versionString in key.GetSubKeyNames())
                 {
-                    if (!Version.TryParse(versionString, out Version version))
+                    if (!Version.TryParse(versionString, out Version? version))
                     {
                         Logger.InvalidRegistryKey(versionString);
                         continue;

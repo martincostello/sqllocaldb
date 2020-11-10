@@ -12,7 +12,7 @@ This library exposes types that wrap the native SQL LocalDB Instance API to perf
 
 Microsoft SQL Server LocalDB 2012 and later is supported for both x86 and x64 on Microsoft Windows and the library targets `netstandard2.0`.
 
-While the library can be compiled and referenced in .NET Core applications on non-Windows Operating Systems, SQL LocalDB is only supported on Windows. Non-Windows Operating Systems can query to determine that the SQL LocalDB Instance API is not installed, but other usage will cause a `PlatformNotSupportedException` to be thrown.
+While the library can be compiled and referenced in .NET applications on non-Windows Operating Systems, SQL LocalDB is only supported on Windows. Non-Windows Operating Systems can query to determine that the SQL LocalDB Instance API is not installed, but other usage will cause a `PlatformNotSupportedException` to be thrown.
 
 ### Installation
 
@@ -80,7 +80,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `3.1.201` or later).
+Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `5.0.100` or later).
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
