@@ -13,7 +13,7 @@
     <PackageVersion Include="NodaTime" Version="3.0.3" />
     <PackageVersion Include="NodaTime.Testing" Version="3.0.3" />
     <PackageVersion Include="ReportGenerator" Version="4.7.1" />
-    <PackageVersion Include="Shouldly" Version="3.0.2" />
+    <PackageVersion Include="Shouldly" Version="4.0.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageVersion Include="xunit" Version="2.4.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
