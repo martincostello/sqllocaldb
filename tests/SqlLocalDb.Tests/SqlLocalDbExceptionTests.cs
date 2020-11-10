@@ -2,9 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Shouldly;
 using Xunit;
 
@@ -119,35 +117,6 @@ namespace MartinCostello.SqlLocalDb
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("info", () => target.GetObjectData(info!, context));
-        }
-
-        [Fact]
-        public static void SqlLocalDbException_Constructor_For_Serialization_Can_Be_Serialized()
-        {
-            // Arrange
-            InvalidOperationException innerException = new InvalidOperationException();
-            const int ErrorCode = 337519;
-            string instanceName = Guid.NewGuid().ToString();
-            string message = Guid.NewGuid().ToString();
-
-            // Act
-            var target = new SqlLocalDbException(message, ErrorCode, instanceName, innerException);
-            var formatter = new BinaryFormatter();
-
-            SqlLocalDbException? deserialized;
-
-            using (var stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, target);
-                stream.Seek(0L, SeekOrigin.Begin);
-                deserialized = formatter.Deserialize(stream) as SqlLocalDbException;
-            }
-
-            // Assert
-            deserialized.ShouldNotBeNull();
-            deserialized!.ErrorCode.ShouldBe(target.ErrorCode);
-            deserialized.InstanceName.ShouldBe(target.InstanceName);
-            deserialized.Message.ShouldBe(target.Message);
         }
     }
 }

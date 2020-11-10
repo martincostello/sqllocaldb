@@ -191,10 +191,12 @@ namespace MartinCostello.SqlLocalDb
 
             string ownerSid;
 
+#pragma warning disable CA1416
             using (var identity = WindowsIdentity.GetCurrent())
             {
-                ownerSid = identity.User.Value;
+                ownerSid = identity.User!.Value;
             }
+#pragma warning restore CA1416
 
             api.ShareInstance(ownerSid, instanceName, sharedInstanceName);
         }

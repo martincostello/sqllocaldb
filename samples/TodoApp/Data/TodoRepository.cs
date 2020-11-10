@@ -90,7 +90,7 @@ namespace TodoApp.Data
         /// <inheritdoc />
         public async Task<IList<TodoItem>> GetItemsAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Items
+            return await _context.Items!
                 .OrderBy((p) => p.CompletedAt.HasValue)
                 .ThenBy((p) => p.CreatedAt)
                 .ToListAsync(cancellationToken);
