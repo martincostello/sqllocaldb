@@ -30,6 +30,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// </summary>
         /// <param name="handle">The handle to the module to free.</param>
         /// <returns>Whether the library was successfully unloaded.</returns>
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
         [DllImport(KernelLibName)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool FreeLibrary(IntPtr handle);
@@ -46,6 +47,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <remarks>
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
         /// </remarks>
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
         internal static extern IntPtr GetProcAddress(
             SafeLibraryHandle hModule,
@@ -65,6 +67,7 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <remarks>
         /// See <c>https://docs.microsoft.com/en-gb/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
         /// </remarks>
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
         internal static extern SafeLibraryHandle LoadLibraryEx(
             [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
