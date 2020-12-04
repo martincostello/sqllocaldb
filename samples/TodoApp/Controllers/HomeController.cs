@@ -81,6 +81,7 @@ namespace TodoApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

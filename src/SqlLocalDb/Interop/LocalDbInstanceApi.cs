@@ -560,7 +560,9 @@ namespace MartinCostello.SqlLocalDb.Interop
             {
                 lock (_syncRoot)
                 {
+#pragma warning disable CA1508
                     if (function == null)
+#pragma warning restore CA1508
                     {
                         function = GetDelegate<T>(functionName!);
                     }

@@ -132,8 +132,11 @@ namespace MartinCostello.SqlLocalDb
             }
 
             LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
+#pragma warning disable CA1508
             Logger = loggerFactory.CreateLogger<SqlLocalDbApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(SqlLocalDbApi)));
             var apiLogger = loggerFactory.CreateLogger<LocalDbInstanceApi>() ?? throw new InvalidOperationException(SRHelper.Format(SR.SqlLocalDbApi_NoLoggerFormat, nameof(LocalDbInstanceApi)));
+#pragma warning restore CA1508
 
             AutomaticallyDeleteInstanceFiles = options.AutomaticallyDeleteInstanceFiles;
             LanguageId = options.LanguageId;
@@ -789,7 +792,7 @@ namespace MartinCostello.SqlLocalDb
 
             EnsurePlatformSupported();
 
-            if (string.IsNullOrEmpty(instanceName))
+            if (instanceName.Length == 0)
             {
                 // There is a bug in the SQL LocalDB native API that
                 // lets you share out an instance with no name, which
