@@ -2,7 +2,6 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Runtime.InteropServices;
 using Xunit;
 
 namespace MartinCostello.SqlLocalDb
@@ -18,10 +17,10 @@ namespace MartinCostello.SqlLocalDb
             : base()
         {
             bool isWindowsCI =
-                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
+                OperatingSystem.IsWindows() &&
                 !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI"));
 
-            Skip = isWindowsCI ? string.Empty : $"This test can only be run on Windows CI.";
+            Skip = isWindowsCI ? string.Empty : "This test can only be run on Windows CI.";
         }
     }
 }

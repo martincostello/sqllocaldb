@@ -153,7 +153,7 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         private static bool IsCurrentUserAdmin()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!OperatingSystem.IsWindows())
             {
                 return false;
             }

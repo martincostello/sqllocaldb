@@ -2,7 +2,6 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Xunit;
 using Xunit.Sdk;
@@ -48,7 +47,7 @@ namespace MartinCostello.SqlLocalDb
         /// </returns>
         private static bool IsCurrentUserAdmin(out string name)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!OperatingSystem.IsWindows())
             {
                 name = Environment.UserName;
                 return false;
