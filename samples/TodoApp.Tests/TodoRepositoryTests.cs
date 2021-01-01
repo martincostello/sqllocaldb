@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using MartinCostello.SqlLocalDb;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,7 @@ namespace TodoApp.Tests
         {
             // Arrange
             Skip.IfNot(
-                RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                OperatingSystem.IsWindows(),
                 "This test can only be run on Windows.");
 
             var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);

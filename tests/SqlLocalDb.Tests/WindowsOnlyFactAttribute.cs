@@ -2,7 +2,6 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Runtime.InteropServices;
 using Xunit;
 using Xunit.Sdk;
 
@@ -19,7 +18,7 @@ namespace MartinCostello.SqlLocalDb
         public WindowsOnlyFactAttribute()
             : base()
         {
-            Skip = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? string.Empty : $"This test can only be run on Windows.";
+            Skip = OperatingSystem.IsWindows() ? string.Empty : "This test can only be run on Windows.";
         }
 
         /// <summary>
