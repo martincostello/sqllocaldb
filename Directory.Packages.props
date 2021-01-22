@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.16.0" />
     <PackageVersion Include="NodaTime" Version="3.0.4" />
-    <PackageVersion Include="NodaTime.Testing" Version="3.0.3" />
+    <PackageVersion Include="NodaTime.Testing" Version="3.0.4" />
     <PackageVersion Include="ReportGenerator" Version="4.8.4" />
     <PackageVersion Include="Shouldly" Version="4.0.3" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
