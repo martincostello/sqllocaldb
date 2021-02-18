@@ -4,7 +4,7 @@
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer" />
