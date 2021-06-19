@@ -33,8 +33,7 @@ namespace TodoApp
             services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddScoped<ITodoService, TodoService>();
 
-            services.AddControllersWithViews()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllersWithViews();
 
             services.AddDbContext<TodoContext>(AddTodoContext);
         }
