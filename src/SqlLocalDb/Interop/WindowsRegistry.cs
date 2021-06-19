@@ -11,7 +11,7 @@ namespace MartinCostello.SqlLocalDb.Interop
     internal sealed class WindowsRegistry : IRegistry
     {
         /// <inheritdoc />
-#if NET5_0
+#if NET5_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
         public IRegistryKey? OpenSubKey(string keyName)

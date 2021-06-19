@@ -47,11 +47,13 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <remarks>
         /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
         /// </remarks>
+#pragma warning disable CA2101
         [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
         internal static extern IntPtr GetProcAddress(
             SafeLibraryHandle hModule,
             [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+#pragma warning restore CA2101
 
         /// <summary>
         /// Loads the specified module into the address space of the calling process.
@@ -67,11 +69,13 @@ namespace MartinCostello.SqlLocalDb.Interop
         /// <remarks>
         /// See <c>https://docs.microsoft.com/en-gb/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
         /// </remarks>
+#pragma warning disable CA2101
         [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
         [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
         internal static extern SafeLibraryHandle LoadLibraryEx(
             [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
             IntPtr hFile,
             int dwFlags);
+#pragma warning restore CA2101
     }
 }

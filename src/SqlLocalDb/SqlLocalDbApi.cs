@@ -1269,7 +1269,7 @@ namespace MartinCostello.SqlLocalDb
         /// <returns>
         /// An <see cref="Array"/> of <see cref="byte"/> containing a representation of <paramref name="ownerSid"/>.
         /// </returns>
-#if NET5_0
+#if NET5_0_OR_GREATER
         [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
         private static byte[] GetOwnerSidAsByteArray(string ownerSid)

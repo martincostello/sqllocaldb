@@ -1,5 +1,5 @@
 @model TodoItemModel
-<tr data-id="@Model.Id">
+<tr data-id="@Model!.Id">
     <td>
         @if (Model.IsCompleted)
         {
