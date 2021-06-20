@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace MartinCostello.SqlLocalDb
         private ITestOutputHelper OutputHelper { get; }
 
         [WindowsOnlyFact]
-        public void Create_A_Sql_LocalDB_Instance()
+        public async Task Create_A_Sql_LocalDB_Instance()
         {
             using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
             {
@@ -34,7 +35,7 @@ namespace MartinCostello.SqlLocalDb
                     manager.Start();
                 }
 
-                using (SqlConnection connection = instance.CreateConnection())
+                await using (SqlConnection connection = instance.CreateConnection())
                 {
                     connection.Open();
 
@@ -46,13 +47,13 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [WindowsOnlyFact]
-        public void Create_A_Temporary_Sql_LocalDB_Instance()
+        public async Task Create_A_Temporary_Sql_LocalDB_Instance()
         {
             using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
             {
                 using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
                 {
-                    using (var connection = new SqlConnection(instance.ConnectionString))
+                    await using (var connection = new SqlConnection(instance.ConnectionString))
                     {
                         connection.Open();
 
@@ -63,7 +64,7 @@ namespace MartinCostello.SqlLocalDb
         }
 
         [WindowsOnlyFact]
-        public void Use_With_Dependency_Injection()
+        public async Task Use_With_Dependency_Injection()
         {
             // Register with SQL LocalDB services
             var services = new ServiceCollection()
@@ -72,7 +73,7 @@ namespace MartinCostello.SqlLocalDb
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            using (IServiceScope scope = serviceProvider.CreateScope())
+            await using (AsyncServiceScope scope = serviceProvider.CreateAsyncScope())
             {
                 ISqlLocalDbApi localDB = scope!.ServiceProvider!.GetRequiredService<ISqlLocalDbApi>();
                 ISqlLocalDbInstanceInfo instance = localDB!.GetDefaultInstance();
@@ -83,7 +84,7 @@ namespace MartinCostello.SqlLocalDb
                     manager.Start();
                 }
 
-                using (SqlConnection connection = instance.CreateConnection())
+                await using (SqlConnection connection = instance.CreateConnection())
                 {
                     connection.Open();
 

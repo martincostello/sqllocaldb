@@ -290,7 +290,7 @@ namespace MartinCostello.SqlLocalDb
 
             var builder = new SqlConnectionStringBuilder() { DataSource = namedPipe };
 
-            using (var connection = new SqlConnection(builder.ConnectionString))
+            await using (var connection = new SqlConnection(builder.ConnectionString))
             {
                 await connection.OpenAsync();
             }
