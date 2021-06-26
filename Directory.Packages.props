@@ -7,6 +7,7 @@
     <PackageVersion Include="Humanizer" Version="2.11.10" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.2.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
+    <PackageVersion Include="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.5.21302.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.5.21301.9" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
