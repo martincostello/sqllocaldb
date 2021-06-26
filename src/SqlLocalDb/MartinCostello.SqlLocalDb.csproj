@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.5.21302.8" />
   <PropertyGroup>
     <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
@@ -6,6 +7,7 @@
     <NoWarn>$(NoWarn);CA2235</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
+    <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
