@@ -8,6 +8,8 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
     <Authors>martin_costello</Authors>
+    <!-- HACK Workaround flaky builds in CI -->
+    <BuildInParallel Condition=" $([MSBuild]::IsOSUnixLike()) and '$(CI)' != '' ">false</BuildInParallel>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
     <ContinuousIntegrationBuild Condition=" '$(CI)' != '' ">true</ContinuousIntegrationBuild>
