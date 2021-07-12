@@ -100,6 +100,6 @@ cd sqllocaldb
 
 ## Copyright and Trademarks
 
-This library is copyright (©) Martin Costello 2012-2020.
+This library is copyright (©) Martin Costello 2012-2021.
 
 [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/) is a trademark and copyright of the Microsoft Corporation.
