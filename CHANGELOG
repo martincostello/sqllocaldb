@@ -186,9 +186,17 @@ Added overloads to support specifying the name of the Initial Catalog using the 
   * Removed old "Blog" sample application.
   * Removed Coverity scan integration.
 
-# SqlLocalDb v3.0.0.0
+# SqlLocalDb v3.0.0
 
 ## Changes
   * Depend on `Microsoft.Data.SqlClient` instead of `System.Data.SqlClient`.
   * Add nullable reference type annotations.
   * Change constants in the `SqlLocalDbErrors` class to fields.
+
+# SqlLocalDb v3.0.1
+
+## Changes
+  * Support deterministics and reproducible builds
+  * Publish symbol packages to NuGet.org.
+  * Use GitHub Actions for CI.
+  * Prepare for .NET 6.
