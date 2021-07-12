@@ -30,7 +30,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core SDK
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
 
     - name: Build, Test and Package
@@ -64,5 +64,5 @@ jobs:
       if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && runner.os == 'Windows' }}
 
     - name: Push NuGet packages to NuGet.org
-      run: dotnet nuget push "artifacts\packages\*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+      run: dotnet nuget push "artifacts\packages\*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source https://api.nuget.org/v3/index.json
       if: ${{ startsWith(github.ref, 'refs/tags/v') && runner.os == 'Windows' }}
