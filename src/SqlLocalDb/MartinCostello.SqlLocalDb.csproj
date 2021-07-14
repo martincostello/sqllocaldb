@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.5.21302.8" />
+  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.6.21355.3" />
   <PropertyGroup>
     <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
@@ -21,6 +21,8 @@
     <PackageReference Include="Microsoft.Data.SqlClient" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="Microsoft.Win32.Registry" />
   </ItemGroup>
   <ItemGroup>

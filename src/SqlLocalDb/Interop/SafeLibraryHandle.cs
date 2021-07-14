@@ -11,9 +11,9 @@ namespace MartinCostello.SqlLocalDb.Interop
     internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         /// <summary>
-        /// Prevents a default instance of the <see cref="SafeLibraryHandle"/> class from being created.
+        /// Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.
         /// </summary>
-        private SafeLibraryHandle()
+        public SafeLibraryHandle()
             : base(true)
         {
         }
