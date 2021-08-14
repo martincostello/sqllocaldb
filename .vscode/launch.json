@@ -10,7 +10,7 @@
       "args": [
         "test"
       ],
-      "cwd": "${workspaceRoot}/tests/SqlLocalDb.Tests",
+      "cwd": "${workspaceFolder}/tests/SqlLocalDb.Tests",
       "console": "internalConsole",
       "stopAtEntry": false,
       "internalConsoleOptions": "openOnSessionStart"

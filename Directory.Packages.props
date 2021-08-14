@@ -36,9 +36,11 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="ReportGenerator" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+    <PackageReference Include="ReportGenerator" PrivateAssets="All" />
   </ItemGroup>
 </Project>
