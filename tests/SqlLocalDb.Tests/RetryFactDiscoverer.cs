@@ -3,32 +3,31 @@
 
 using Xunit.Sdk;
 
-namespace MartinCostello.SqlLocalDb
+namespace MartinCostello.SqlLocalDb;
+
+public sealed class RetryFactDiscoverer : IXunitTestCaseDiscoverer
 {
-    public sealed class RetryFactDiscoverer : IXunitTestCaseDiscoverer
+    private readonly IMessageSink _sink;
+
+    public RetryFactDiscoverer(IMessageSink diagnosticMessageSink)
     {
-        private readonly IMessageSink _sink;
+        _sink = diagnosticMessageSink;
+    }
 
-        public RetryFactDiscoverer(IMessageSink diagnosticMessageSink)
+    public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
+    {
+        int maxRetries = factAttribute.GetNamedArgument<int>("MaxRetries");
+
+        if (maxRetries < 1)
         {
-            _sink = diagnosticMessageSink;
+            maxRetries = 3;
         }
 
-        public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
-        {
-            int maxRetries = factAttribute.GetNamedArgument<int>("MaxRetries");
-
-            if (maxRetries < 1)
-            {
-                maxRetries = 3;
-            }
-
-            yield return new RetryTestCase(
-                _sink,
-                discoveryOptions.MethodDisplayOrDefault(),
-                discoveryOptions.MethodDisplayOptionsOrDefault(),
-                testMethod,
-                maxRetries);
-        }
+        yield return new RetryTestCase(
+            _sink,
+            discoveryOptions.MethodDisplayOrDefault(),
+            discoveryOptions.MethodDisplayOptionsOrDefault(),
+            testMethod,
+            maxRetries);
     }
 }

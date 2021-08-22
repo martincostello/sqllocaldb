@@ -6,122 +6,121 @@ using MartinCostello.SqlLocalDb;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// A class containing extension methods for the <see cref="IServiceCollection"/> interface. This class cannot be inherited.
+/// </summary>
+[EditorBrowsable(EditorBrowsableState.Never)]
+public static class SqlLocalDbServiceCollectionExtensions
 {
     /// <summary>
-    /// A class containing extension methods for the <see cref="IServiceCollection"/> interface. This class cannot be inherited.
+    /// Adds SQL Server LocalDB services.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class SqlLocalDbServiceCollectionExtensions
+    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+    /// <returns>
+    /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="services"/> is <see langword="null"/>.
+    /// </exception>
+    public static IServiceCollection AddSqlLocalDB(this IServiceCollection services)
+        => services.AddSqlLocalDB((_) => { });
+
+    /// <summary>
+    /// Adds SQL Server LocalDB services.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+    /// <param name="configure">A delegate to a method to use to configure the SQL Server LocalDB options.</param>
+    /// <returns>
+    /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="services"/> or <paramref name="configure"/> is <see langword="null"/>.
+    /// </exception>
+    public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Action<SqlLocalDbOptions> configure)
     {
-        /// <summary>
-        /// Adds SQL Server LocalDB services.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
-        /// <returns>
-        /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="services"/> is <see langword="null"/>.
-        /// </exception>
-        public static IServiceCollection AddSqlLocalDB(this IServiceCollection services)
-            => services.AddSqlLocalDB((_) => { });
-
-        /// <summary>
-        /// Adds SQL Server LocalDB services.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
-        /// <param name="configure">A delegate to a method to use to configure the SQL Server LocalDB options.</param>
-        /// <returns>
-        /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="services"/> or <paramref name="configure"/> is <see langword="null"/>.
-        /// </exception>
-        public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Action<SqlLocalDbOptions> configure)
+        if (services == null)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (configure == null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
-            return services.AddSqlLocalDB(
-                (_) =>
-                {
-                    var options = new SqlLocalDbOptions();
-
-                    configure(options);
-
-                    return options;
-                });
+            throw new ArgumentNullException(nameof(services));
         }
 
-        /// <summary>
-        /// Adds SQL Server LocalDB services.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
-        /// <param name="configure">A delegate to a method to use to configure the SQL Server LocalDB options.</param>
-        /// <returns>
-        /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="services"/> or <paramref name="configure"/> is <see langword="null"/>.
-        /// </exception>
-        public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Func<IServiceProvider, SqlLocalDbOptions> configure)
+        if (configure == null)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (configure == null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
-            services.TryAddSingleton(configure);
-
-            services.TryAddSingleton<ISqlLocalDbApi>(
-                (p) =>
-                {
-                    var options = p.GetRequiredService<SqlLocalDbOptions>();
-                    var loggerFactory = p.GetRequiredService<ILoggerFactory>();
-
-                    return new SqlLocalDbApi(options, loggerFactory);
-                });
-
-            return services;
+            throw new ArgumentNullException(nameof(configure));
         }
 
-        /// <summary>
-        /// Adds SQL Server LocalDB services.
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
-        /// <param name="options">The SQL Server LocalDB options to use.</param>
-        /// <returns>
-        /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="services"/> or <paramref name="options"/> is <see langword="null"/>.
-        /// </exception>
-        public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, SqlLocalDbOptions options)
+        return services.AddSqlLocalDB(
+            (_) =>
+            {
+                var options = new SqlLocalDbOptions();
+
+                configure(options);
+
+                return options;
+            });
+    }
+
+    /// <summary>
+    /// Adds SQL Server LocalDB services.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+    /// <param name="configure">A delegate to a method to use to configure the SQL Server LocalDB options.</param>
+    /// <returns>
+    /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="services"/> or <paramref name="configure"/> is <see langword="null"/>.
+    /// </exception>
+    public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Func<IServiceProvider, SqlLocalDbOptions> configure)
+    {
+        if (services == null)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            return services.AddSqlLocalDB((_) => options);
+            throw new ArgumentNullException(nameof(services));
         }
+
+        if (configure == null)
+        {
+            throw new ArgumentNullException(nameof(configure));
+        }
+
+        services.TryAddSingleton(configure);
+
+        services.TryAddSingleton<ISqlLocalDbApi>(
+            (p) =>
+            {
+                var options = p.GetRequiredService<SqlLocalDbOptions>();
+                var loggerFactory = p.GetRequiredService<ILoggerFactory>();
+
+                return new SqlLocalDbApi(options, loggerFactory);
+            });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds SQL Server LocalDB services.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+    /// <param name="options">The SQL Server LocalDB options to use.</param>
+    /// <returns>
+    /// The <see cref="IServiceCollection"/> passed as the value of <paramref name="services"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="services"/> or <paramref name="options"/> is <see langword="null"/>.
+    /// </exception>
+    public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, SqlLocalDbOptions options)
+    {
+        if (services == null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
+
+        if (options == null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        return services.AddSqlLocalDB((_) => options);
     }
 }

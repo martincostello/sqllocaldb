@@ -3,26 +3,25 @@
 
 using Xunit.Sdk;
 
-namespace MartinCostello.SqlLocalDb
-{
-    /// <summary>
-    /// Attribute that is applied to a method to indicate that it is a fact that should be run by the
-    /// test runner if the current operating system is Windows. This class cannot be inherited.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    [XunitTestCaseDiscoverer("MartinCostello.SqlLocalDb.RetryFactDiscoverer", "MartinCostello.SqlLocalDb.Tests")]
-    public sealed class WindowsOnlyFactAttribute : FactAttribute
-    {
-        public WindowsOnlyFactAttribute()
-            : base()
-        {
-            Skip = OperatingSystem.IsWindows() ? string.Empty : "This test can only be run on Windows.";
-        }
+namespace MartinCostello.SqlLocalDb;
 
-        /// <summary>
-        /// Gets or sets the number of retries allowed for a failed test.
-        /// If unset (or set less than 1), will default to 3 attempts.
-        /// </summary>
-        public int MaxRetries { get; set; }
+/// <summary>
+/// Attribute that is applied to a method to indicate that it is a fact that should be run by the
+/// test runner if the current operating system is Windows. This class cannot be inherited.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+[XunitTestCaseDiscoverer("MartinCostello.SqlLocalDb.RetryFactDiscoverer", "MartinCostello.SqlLocalDb.Tests")]
+public sealed class WindowsOnlyFactAttribute : FactAttribute
+{
+    public WindowsOnlyFactAttribute()
+        : base()
+    {
+        Skip = OperatingSystem.IsWindows() ? string.Empty : "This test can only be run on Windows.";
     }
+
+    /// <summary>
+    /// Gets or sets the number of retries allowed for a failed test.
+    /// If unset (or set less than 1), will default to 3 attempts.
+    /// </summary>
+    public int MaxRetries { get; set; }
 }

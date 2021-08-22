@@ -3,36 +3,35 @@
 
 using Xunit.Sdk;
 
-namespace MartinCostello.SqlLocalDb
+namespace MartinCostello.SqlLocalDb;
+
+internal sealed class DelayedMessageBus : IMessageBus
 {
-    internal sealed class DelayedMessageBus : IMessageBus
+    private readonly IMessageBus _inner;
+    private readonly List<IMessageSinkMessage> _messages = new List<IMessageSinkMessage>();
+
+    internal DelayedMessageBus(IMessageBus inner)
     {
-        private readonly IMessageBus _inner;
-        private readonly List<IMessageSinkMessage> _messages = new List<IMessageSinkMessage>();
+        _inner = inner;
+    }
 
-        internal DelayedMessageBus(IMessageBus inner)
+    public bool QueueMessage(IMessageSinkMessage message)
+    {
+        lock (_messages)
         {
-            _inner = inner;
+            _messages.Add(message);
         }
 
-        public bool QueueMessage(IMessageSinkMessage message)
-        {
-            lock (_messages)
-            {
-                _messages.Add(message);
-            }
+        // No way to ask the inner bus if they want to cancel without sending them the message, so
+        // we just go ahead and continue always.
+        return true;
+    }
 
-            // No way to ask the inner bus if they want to cancel without sending them the message, so
-            // we just go ahead and continue always.
-            return true;
-        }
-
-        public void Dispose()
+    public void Dispose()
+    {
+        foreach (var message in _messages)
         {
-            foreach (var message in _messages)
-            {
-                _inner.QueueMessage(message);
-            }
+            _inner.QueueMessage(message);
         }
     }
 }

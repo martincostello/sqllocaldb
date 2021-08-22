@@ -3,50 +3,49 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace MartinCostello.SqlLocalDb
+namespace MartinCostello.SqlLocalDb;
+
+/// <summary>
+/// A class containing tests that perform global operations that may cause other tests to fail if run in parallel.
+/// </summary>
+[CollectionDefinition("NotInParallel", DisableParallelization = true)]
+public class NotInParallelTests
 {
-    /// <summary>
-    /// A class containing tests that perform global operations that may cause other tests to fail if run in parallel.
-    /// </summary>
-    [CollectionDefinition("NotInParallel", DisableParallelization = true)]
-    public class NotInParallelTests
+    private readonly ILoggerFactory _loggerFactory;
+
+    public NotInParallelTests(ITestOutputHelper outputHelper)
     {
-        private readonly ILoggerFactory _loggerFactory;
+        _loggerFactory = outputHelper.ToLoggerFactory();
+    }
 
-        public NotInParallelTests(ITestOutputHelper outputHelper)
+    [WindowsCIOnlyFact]
+    public void Can_Delete_User_Instances()
+    {
+        // Arrange
+        using (var actual = new SqlLocalDbApi(_loggerFactory))
         {
-            _loggerFactory = outputHelper.ToLoggerFactory();
-        }
+            actual.CreateInstance(Guid.NewGuid().ToString());
 
-        [WindowsCIOnlyFact]
-        public void Can_Delete_User_Instances()
-        {
-            // Arrange
-            using (var actual = new SqlLocalDbApi(_loggerFactory))
+            IReadOnlyList<string> namesBefore = actual.GetInstanceNames();
+
+            // Act
+            int deleted = actual.DeleteUserInstances(deleteFiles: true);
+
+            // Assert
+            deleted.ShouldBeGreaterThanOrEqualTo(1);
+            IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
+
+            int instancesDeleted = 0;
+
+            foreach (string name in namesBefore)
             {
-                actual.CreateInstance(Guid.NewGuid().ToString());
-
-                IReadOnlyList<string> namesBefore = actual.GetInstanceNames();
-
-                // Act
-                int deleted = actual.DeleteUserInstances(deleteFiles: true);
-
-                // Assert
-                deleted.ShouldBeGreaterThanOrEqualTo(1);
-                IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
-
-                int instancesDeleted = 0;
-
-                foreach (string name in namesBefore)
+                if (!namesAfter.Contains(name))
                 {
-                    if (!namesAfter.Contains(name))
-                    {
-                        instancesDeleted++;
-                    }
+                    instancesDeleted++;
                 }
-
-                instancesDeleted.ShouldBeGreaterThanOrEqualTo(1);
             }
+
+            instancesDeleted.ShouldBeGreaterThanOrEqualTo(1);
         }
     }
 }

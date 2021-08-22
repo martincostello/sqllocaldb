@@ -4,54 +4,53 @@
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace MartinCostello.SqlLocalDb.Interop
+namespace MartinCostello.SqlLocalDb.Interop;
+
+/// <summary>
+/// A class representing an implementation of <see cref="IRegistryKey"/> for a Windows registry key. This class cannot be inherited.
+/// </summary>
+internal sealed class WindowsRegistryKey : IRegistryKey
 {
     /// <summary>
-    /// A class representing an implementation of <see cref="IRegistryKey"/> for a Windows registry key. This class cannot be inherited.
+    /// The <see cref="RegistryKey"/> wrapped by the instance. This field is read-only.
     /// </summary>
-    internal sealed class WindowsRegistryKey : IRegistryKey
+    private readonly RegistryKey _key;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WindowsRegistryKey"/> class.
+    /// </summary>
+    /// <param name="key">The <see cref="RegistryKey"/> to wrap.</param>
+    internal WindowsRegistryKey(RegistryKey key)
     {
-        /// <summary>
-        /// The <see cref="RegistryKey"/> wrapped by the instance. This field is read-only.
-        /// </summary>
-        private readonly RegistryKey _key;
+        Debug.Assert(key != null, "key cannot be null.");
+        _key = key!;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WindowsRegistryKey"/> class.
-        /// </summary>
-        /// <param name="key">The <see cref="RegistryKey"/> to wrap.</param>
-        internal WindowsRegistryKey(RegistryKey key)
-        {
-            Debug.Assert(key != null, "key cannot be null.");
-            _key = key!;
-        }
-
-        /// <inheritdoc />
+    /// <inheritdoc />
 #if NET5_0_OR_GREATER
-        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
-        void IDisposable.Dispose() => _key.Dispose();
+    void IDisposable.Dispose() => _key.Dispose();
 
-        /// <inheritdoc />
+    /// <inheritdoc />
 #if NET5_0_OR_GREATER
-        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
-        public string[] GetSubKeyNames() => _key.GetSubKeyNames();
+    public string[] GetSubKeyNames() => _key.GetSubKeyNames();
 
-        /// <inheritdoc />
+    /// <inheritdoc />
 #if NET5_0_OR_GREATER
-        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
-        public string? GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
+    public string? GetValue(string name) => _key.GetValue(name, null, RegistryValueOptions.None) as string;
 
-        /// <inheritdoc />
+    /// <inheritdoc />
 #if NET5_0_OR_GREATER
-        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
-        public IRegistryKey? OpenSubKey(string keyName)
-        {
-            RegistryKey? key = _key.OpenSubKey(keyName);
-            return key == null ? null : new WindowsRegistryKey(key);
-        }
+    public IRegistryKey? OpenSubKey(string keyName)
+    {
+        RegistryKey? key = _key.OpenSubKey(keyName);
+        return key == null ? null : new WindowsRegistryKey(key);
     }
 }
