@@ -3,8 +3,6 @@
 
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using Shouldly;
-using Xunit;
 
 namespace MartinCostello.SqlLocalDb
 {

@@ -19,6 +19,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateGitMetadata Condition=" '$(CI)' != '' and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
+    <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -53,4 +54,12 @@
     <Threshold Condition=" '$(OS)' == 'Windows_NT' ">80</Threshold>
     <Threshold Condition=" '$(OS)' != 'Windows_NT' ">40</Threshold>
   </PropertyGroup>
+  <ItemGroup>
+    <Using Include="System.Globalization" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <Using Include="Shouldly" />
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Abstractions" />
+  </ItemGroup>
 </Project>
