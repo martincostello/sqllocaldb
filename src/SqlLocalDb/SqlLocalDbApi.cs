@@ -1297,7 +1297,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         {
             // Determine the offset of the element, and get the string from the array
             IntPtr offset = new IntPtr(ptr.ToInt64() + (length * i));
-            result[i] = Marshal.PtrToStringAuto(offset) !;
+            result[i] = Marshal.PtrToStringAuto(offset)!;
         }
 
         return result;
@@ -1314,7 +1314,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     private static T MarshalStruct<T>(IntPtr ptr)
         where T : struct
     {
-        return (T)Marshal.PtrToStructure(ptr, typeof(T)) !;
+        return (T)Marshal.PtrToStructure(ptr, typeof(T))!;
     }
 
     /// <summary>
