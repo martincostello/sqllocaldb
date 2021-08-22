@@ -22,42 +22,36 @@ public class Examples
     [WindowsOnlyFact]
     public async Task Create_A_Sql_LocalDB_Instance()
     {
-        using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
+        using var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory());
+
+        ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
+        ISqlLocalDbInstanceManager manager = instance.Manage();
+
+        if (!instance.IsRunning)
         {
-            ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
-            ISqlLocalDbInstanceManager manager = instance.Manage();
-
-            if (!instance.IsRunning)
-            {
-                manager.Start();
-            }
-
-            await using (SqlConnection connection = instance.CreateConnection())
-            {
-                connection.Open();
-
-                // Use the SQL connection...
-            }
-
-            manager.Stop();
+            manager.Start();
         }
+
+        await using (SqlConnection connection = instance.CreateConnection())
+        {
+            connection.Open();
+
+            // Use the SQL connection...
+        }
+
+        manager.Stop();
     }
 
     [WindowsOnlyFact]
     public async Task Create_A_Temporary_Sql_LocalDB_Instance()
     {
-        using (var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory()))
-        {
-            using (TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true))
-            {
-                await using (var connection = new SqlConnection(instance.ConnectionString))
-                {
-                    connection.Open();
+        using var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory());
+        using TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true);
 
-                    // Use the SQL connection...
-                }
-            }
-        }
+        await using var connection = new SqlConnection(instance.ConnectionString);
+        connection.Open();
+
+        // Use the SQL connection...
     }
 
     [WindowsOnlyFact]
@@ -70,23 +64,20 @@ public class Examples
 
         IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-        await using (AsyncServiceScope scope = serviceProvider.CreateAsyncScope())
+        await using AsyncServiceScope scope = serviceProvider.CreateAsyncScope();
+
+        ISqlLocalDbApi localDB = scope!.ServiceProvider!.GetRequiredService<ISqlLocalDbApi>();
+        ISqlLocalDbInstanceInfo instance = localDB!.GetDefaultInstance();
+        ISqlLocalDbInstanceManager manager = instance.Manage();
+
+        if (!instance.IsRunning)
         {
-            ISqlLocalDbApi localDB = scope!.ServiceProvider!.GetRequiredService<ISqlLocalDbApi>();
-            ISqlLocalDbInstanceInfo instance = localDB!.GetDefaultInstance();
-            ISqlLocalDbInstanceManager manager = instance.Manage();
-
-            if (!instance.IsRunning)
-            {
-                manager.Start();
-            }
-
-            await using (SqlConnection connection = instance.CreateConnection())
-            {
-                connection.Open();
-
-                // Use the SQL connection...
-            }
+            manager.Start();
         }
+
+        await using SqlConnection connection = instance.CreateConnection();
+        connection.Open();
+
+        // Use the SQL connection...
     }
 }

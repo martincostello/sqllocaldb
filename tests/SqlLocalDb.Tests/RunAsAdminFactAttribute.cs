@@ -51,10 +51,9 @@ public sealed class RunAsAdminFactAttribute : FactAttribute
             return false;
         }
 
-        using (var identity = WindowsIdentity.GetCurrent())
-        {
-            name = identity.Name;
-            return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
-        }
+        using var identity = WindowsIdentity.GetCurrent();
+        name = identity.Name;
+
+        return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
     }
 }

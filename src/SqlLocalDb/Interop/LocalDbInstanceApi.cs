@@ -41,12 +41,12 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>
-    private static readonly char[] _nullArray = new char[] { '\0' };
+    private static readonly char[] _nullArray = new[] { '\0' };
 
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
-    private readonly object _syncRoot = new object();
+    private readonly object _syncRoot = new();
 
     /// <summary>
     /// Whether the instance has been disposed of.

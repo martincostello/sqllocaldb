@@ -1270,7 +1270,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     private static byte[] GetOwnerSidAsByteArray(string ownerSid)
     {
         // Get the binary version of the SID from its string
-        SecurityIdentifier sid = new SecurityIdentifier(ownerSid);
+        SecurityIdentifier sid = new(ownerSid);
         byte[] binaryForm = new byte[SecurityIdentifier.MaxBinaryLength];
         sid.GetBinaryForm(binaryForm, 0);
         return binaryForm;
@@ -1296,7 +1296,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         for (int i = 0; i < result.Length; i++)
         {
             // Determine the offset of the element, and get the string from the array
-            IntPtr offset = new IntPtr(ptr.ToInt64() + (length * i));
+            IntPtr offset = new(ptr.ToInt64() + (length * i));
             result[i] = Marshal.PtrToStringAuto(offset)!;
         }
 

@@ -199,7 +199,7 @@ internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     /// <summary>
     /// Gets the LocalDB version for the instance.
     /// </summary>
-    Version ISqlLocalDbInstanceInfo.LocalDbVersion => new Version((int)Major, (int)Minor, (int)Build, (int)Revision);
+    Version ISqlLocalDbInstanceInfo.LocalDbVersion => new((int)Major, (int)Minor, (int)Build, (int)Revision);
 
     /// <summary>
     /// Gets the name of the instance.

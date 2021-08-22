@@ -131,7 +131,7 @@ internal static class Program
 
     private static async Task ExecuteCommandAsync(SqlConnection connection, Action<SqlCommand> configure)
     {
-        using SqlCommand command = new SqlCommand()
+        using SqlCommand command = new()
         {
             Connection = connection,
         };
@@ -156,8 +156,8 @@ internal static class Program
         }
 
         using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+        WindowsPrincipal principal = new(identity);
 
-        WindowsPrincipal principal = new WindowsPrincipal(identity);
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 

@@ -8,7 +8,7 @@ namespace MartinCostello.SqlLocalDb;
 internal sealed class DelayedMessageBus : IMessageBus
 {
     private readonly IMessageBus _inner;
-    private readonly List<IMessageSinkMessage> _messages = new List<IMessageSinkMessage>();
+    private readonly List<IMessageSinkMessage> _messages = new();
 
     internal DelayedMessageBus(IMessageBus inner)
     {

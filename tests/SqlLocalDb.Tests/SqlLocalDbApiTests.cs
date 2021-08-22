@@ -379,7 +379,7 @@ public class SqlLocalDbApiTests
     public void SqlLocalDbApi_Throws_Exception_For_Native_Errors()
     {
         // Arrange
-        string instanceName = new string('$', 10000);
+        string instanceName = new('$', 10000);
 
         using var actual = new SqlLocalDbApi(_loggerFactory);
 

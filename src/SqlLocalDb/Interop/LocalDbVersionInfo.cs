@@ -91,7 +91,7 @@ internal struct LocalDbVersionInfo : ISqlLocalDbVersionInfo
     /// <summary>
     /// Gets the version.
     /// </summary>
-    Version ISqlLocalDbVersionInfo.Version => new Version((int)Major, (int)Minor, (int)Build, (int)Revision);
+    Version ISqlLocalDbVersionInfo.Version => new((int)Major, (int)Minor, (int)Build, (int)Revision);
 
     /// <summary>
     /// Gets the name to display in the debugger.
