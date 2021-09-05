@@ -15,18 +15,13 @@ public class ISqlLocalDbApiExtensionsTests
         _loggerFactory = outputHelper.ToLoggerFactory();
     }
 
-    [Theory]
+    [SkippableTheory]
     [InlineData(unchecked((int)0x89c50112))]
     [InlineData(unchecked((int)0x89c50108))]
     public static void TemporaryInstance_Ignores_Exception_If_Delete_Fails(int errorCode)
     {
         // Arrange
-        if (!SqlLocalDbApi.IsWindows)
-        {
-            // HACK Theories dont seem to work correctly with subclasses now
-            // so cannot make a derived class for a "Windows-only" theory.
-            return;
-        }
+        Skip.IfNot(SqlLocalDbApi.IsWindows);
 
         // Arrange
         var mock = new Mock<ISqlLocalDbApi>();
