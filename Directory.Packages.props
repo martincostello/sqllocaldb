@@ -1,7 +1,7 @@
 <Project>
-  <ItemGroup>
+  <PropertyGroup>
     <NodaTimeVersion>3.0.6</NodaTimeVersion>
-  </ItemGroup>
+  </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.1.0" />
     <PackageVersion Include="Humanizer" Version="2.11.10" />
