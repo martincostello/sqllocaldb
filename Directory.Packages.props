@@ -1,5 +1,8 @@
 <Project>
   <ItemGroup>
+    <NodaTimeVersion>3.0.6</NodaTimeVersion>
+  </ItemGroup>
+  <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.1.0" />
     <PackageVersion Include="Humanizer" Version="2.11.10" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.1.2" />
@@ -8,8 +11,8 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.16.1" />
-    <PackageVersion Include="NodaTime" Version="3.0.6" />
-    <PackageVersion Include="NodaTime.Testing" Version="3.0.6" />
+    <PackageVersion Include="NodaTime" Version="$(NodaTimeVersion)" />
+    <PackageVersion Include="NodaTime.Testing" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="ReportGenerator" Version="4.8.12" />
     <PackageVersion Include="Shouldly" Version="4.0.3" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
