@@ -47,7 +47,7 @@ public class ISqlLocalDbInstanceManagerExtensionsTests
         actual.State.ShouldBe(ConnectionState.Closed);
 
         await actual.OpenAsync();
-        actual.Close();
+        await actual.CloseAsync();
     }
 
     [Fact]

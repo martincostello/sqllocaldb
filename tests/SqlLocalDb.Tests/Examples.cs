@@ -34,7 +34,7 @@ public class Examples
 
         await using (SqlConnection connection = instance.CreateConnection())
         {
-            connection.Open();
+            await connection.OpenAsync();
 
             // Use the SQL connection...
         }
@@ -49,7 +49,7 @@ public class Examples
         using TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true);
 
         await using var connection = new SqlConnection(instance.ConnectionString);
-        connection.Open();
+        await connection.OpenAsync();
 
         // Use the SQL connection...
     }
@@ -76,7 +76,7 @@ public class Examples
         }
 
         await using SqlConnection connection = instance.CreateConnection();
-        connection.Open();
+        await connection.OpenAsync();
 
         // Use the SQL connection...
     }
