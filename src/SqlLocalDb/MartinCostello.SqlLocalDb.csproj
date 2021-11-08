@@ -2,13 +2,15 @@
   <PropertyGroup>
     <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CA2235</NoWarn>
+    <NoWarn>$(NoWarn);CA2235;CA2254</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
+    <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <Summary>$(Description)</Summary>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
   </PropertyGroup>
   <ItemGroup>
@@ -19,6 +21,8 @@
     <PackageReference Include="Microsoft.Data.SqlClient" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="Microsoft.Win32.Registry" />
   </ItemGroup>
   <ItemGroup>

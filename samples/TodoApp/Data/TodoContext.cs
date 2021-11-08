@@ -3,25 +3,24 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace TodoApp.Data
+namespace TodoApp.Data;
+
+/// <summary>
+/// A class representing the database context for TodoApp.
+/// </summary>
+public class TodoContext : DbContext
 {
     /// <summary>
-    /// A class representing the database context for TodoApp.
+    /// Initializes a new instance of the <see cref="TodoContext"/> class.
     /// </summary>
-    public class TodoContext : DbContext
+    /// <param name="options">The options for this context.</param>
+    public TodoContext(DbContextOptions<TodoContext> options)
+        : base(options)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TodoContext"/> class.
-        /// </summary>
-        /// <param name="options">The options for this context.</param>
-        public TodoContext(DbContextOptions<TodoContext> options)
-            : base(options)
-        {
-        }
-
-        /// <summary>
-        /// Gets or sets the database set containing the Todo items.
-        /// </summary>
-        public DbSet<TodoItem>? Items { get; set; }
     }
+
+    /// <summary>
+    /// Gets or sets the database set containing the Todo items.
+    /// </summary>
+    public DbSet<TodoItem>? Items { get; set; }
 }

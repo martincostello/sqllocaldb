@@ -200,3 +200,8 @@ Added overloads to support specifying the name of the Initial Catalog using the 
   * Publish symbol packages to NuGet.org.
   * Use GitHub Actions for CI.
   * Prepare for .NET 6.
+
+# SqlLocalDb v3.1.0
+
+## Added
+  * Add `net6.0` Target Framework Moniker.
