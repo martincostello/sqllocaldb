@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="GitHubActionsTestLogger" />
     <PackageReference Include="MartinCostello.Logging.XUnit" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.Data.SqlClient" />
