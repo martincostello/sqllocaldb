@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SqlLocalDb Rules" Description="This rule set contains rules for the SqlLocalDb solution." ToolsVersion="16.0">
+<RuleSet Name="SqlLocalDb Rules" Description="This rule set contains rules for the SqlLocalDb solution." ToolsVersion="17.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="AD0001" Action="None" />
