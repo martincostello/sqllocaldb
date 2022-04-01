@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>3.2.0</VersionPrefix>
+    <VersionPrefix>3.2.1</VersionPrefix>
     <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(GITHUB_ACTIONS)' != '' ">beta$([System.Convert]::ToInt32(`$(GITHUB_RUN_NUMBER)`).ToString(`0000`))</VersionSuffix>
     <VersionPrefix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) ">$(GITHUB_REF.Replace('refs/tags/v', ''))</VersionPrefix>
     <VersionSuffix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) "></VersionSuffix>
