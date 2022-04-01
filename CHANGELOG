@@ -205,3 +205,8 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 
 ## Added
   * Add `net6.0` Target Framework Moniker.
+
+# SqlLocalDb v3.2.0
+
+## Added
+  * Fix incorrect minimum dependency versions when targeting `net6.0`.
