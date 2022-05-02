@@ -14,7 +14,7 @@
     <PackageVersion Include="Moq" Version="4.17.2" />
     <PackageVersion Include="NodaTime" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="NodaTime.Testing" Version="$(NodaTimeVersion)" />
-    <PackageVersion Include="ReportGenerator" Version="5.1.5" />
+    <PackageVersion Include="ReportGenerator" Version="5.1.6" />
     <PackageVersion Include="Shouldly" Version="4.0.3" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.406" />
     <PackageVersion Include="xunit" Version="2.4.1" />
