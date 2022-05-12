@@ -563,7 +563,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 EventIds.GettingInstanceInfoFailed,
                 instanceName);
 
-            info = MarshalStruct<LocalDbInstanceInfo>(ptrInfo);
+            info = (LocalDbInstanceInfo)Marshal.PtrToStructure(ptrInfo, typeof(LocalDbInstanceInfo))!;
         }
         finally
         {
@@ -675,7 +675,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 () => _api.GetVersionInfo(version, ptrInfo, size),
                 EventIds.GettingVersionInfoFailed);
 
-            info = MarshalStruct<LocalDbVersionInfo>(ptrInfo);
+            info = (LocalDbVersionInfo)Marshal.PtrToStructure(ptrInfo, typeof(LocalDbVersionInfo))!;
         }
         finally
         {
@@ -1301,20 +1301,6 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// Convenience method to marshal structures from unmanaged memory.
-    /// </summary>
-    /// <typeparam name="T">The type of structure to marshal from unmanaged memory.</typeparam>
-    /// <param name="ptr">A pointer to an unmanaged block of memory.</param>
-    /// <returns>
-    /// The instance of <typeparamref name="T"/> read from <paramref name="ptr"/>.
-    /// </returns>
-    private static T MarshalStruct<T>(IntPtr ptr)
-        where T : struct
-    {
-        return (T)Marshal.PtrToStructure(ptr, typeof(T))!;
     }
 
     /// <summary>
