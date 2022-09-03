@@ -610,8 +610,24 @@ internal sealed class LocalDbInstanceApi : IDisposable
                         return null;
                     }
 
-                    int dwFlags = 0;
-
+#if NET6_0_OR_GREATER
+                    if (!NativeLibrary.TryLoad(
+                            fileName,
+                            typeof(LocalDbInstanceApi).Assembly,
+                            DllImportSearchPath.UserDirectories,
+                            out IntPtr handle))
+                    {
+                        int error = Marshal.GetLastWin32Error();
+                        Logger.NativeApiLoadFailed(fileName, error);
+                        _handle = null;
+                    }
+                    else
+                    {
+                        _handle = new SafeLibraryHandle(handle);
+                        _libraryPath = fileName;
+                        Logger.NativeApiLoaded(fileName);
+                    }
+#else
                     // Check if the local machine has KB2533623 installed in order
                     // to use the more secure flags when calling LoadLibraryEx
                     bool hasKB2533623;
@@ -622,6 +638,8 @@ internal sealed class LocalDbInstanceApi : IDisposable
                         hasKB2533623 = NativeMethods.GetProcAddress(hModule, "AddDllDirectory") != IntPtr.Zero;
                     }
 
+                    int dwFlags = 0;
+
                     if (hasKB2533623)
                     {
                         // If KB2533623 is installed then specify the more secure LOAD_LIBRARY_SEARCH_DEFAULT_DIRS in dwFlags
@@ -630,7 +648,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
 
                     _handle = NativeMethods.LoadLibraryEx(fileName, IntPtr.Zero, dwFlags);
 
-                    if (_handle == null || _handle.IsInvalid)
+                    if (_handle.IsInvalid)
                     {
                         int error = Marshal.GetLastWin32Error();
                         Logger.NativeApiLoadFailed(fileName, error);
@@ -641,6 +659,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
                         Logger.NativeApiLoaded(fileName);
                         _libraryPath = fileName;
                     }
+#endif
                 }
             }
         }
@@ -670,15 +689,24 @@ internal sealed class LocalDbInstanceApi : IDisposable
             return null;
         }
 
-        IntPtr ptr = NativeMethods.GetProcAddress(handle, functionName!);
+#if NET6_0_OR_GREATER
+        if (!NativeLibrary.TryGetExport(handle.DangerousGetHandle(), functionName, out IntPtr address))
+        {
+            Logger.NativeApiFunctionNotFound(functionName);
+            return null;
+        }
+#else
 
-        if (ptr == IntPtr.Zero)
+        IntPtr address = NativeMethods.GetProcAddress(handle, functionName!);
+
+        if (address == IntPtr.Zero)
         {
             Logger.NativeApiFunctionNotFound(functionName!);
             return null;
         }
+#endif
 
-        return Marshal.GetDelegateForFunctionPointer<T>(ptr);
+        return Marshal.GetDelegateForFunctionPointer<T>(address);
     }
 
     /// <summary>

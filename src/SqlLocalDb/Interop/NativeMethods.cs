@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+#if !NET6_0_OR_GREATER
+
 using System.Runtime.InteropServices;
 
 namespace MartinCostello.SqlLocalDb.Interop;
@@ -27,12 +29,12 @@ internal static class NativeMethods
     /// <summary>
     /// Frees a specified library.
     /// </summary>
-    /// <param name="handle">The handle to the module to free.</param>
+    /// <param name="hModule">The handle to the module to free.</param>
     /// <returns>Whether the library was successfully unloaded.</returns>
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool FreeLibrary(IntPtr handle);
+    internal static extern bool FreeLibrary(IntPtr hModule);
 
     /// <summary>
     /// Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).
@@ -77,3 +79,4 @@ internal static class NativeMethods
         int dwFlags);
 #pragma warning restore CA2101
 }
+#endif
