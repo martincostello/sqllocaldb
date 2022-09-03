@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
 namespace MartinCostello.SqlLocalDb.Interop;
@@ -10,6 +11,17 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// </summary>
 internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
 {
+#if NET6_0_OR_GREATER
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.
+    /// </summary>
+    /// <param name="handle">The pre-existing handle to use.</param>
+    public SafeLibraryHandle(IntPtr handle)
+        : base(true)
+    {
+        SetHandle(handle);
+    }
+#else
     /// <summary>
     /// Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.
     /// </summary>
@@ -17,6 +29,7 @@ internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
         : base(true)
     {
     }
+#endif
 
     /// <summary>
     /// Executes the code required to free the handle.
@@ -27,5 +40,13 @@ internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     /// <see langword="false"/>. In this case, it generates a ReleaseHandleFailed
     /// Managed Debugging Assistant.
     /// </returns>
-    protected override bool ReleaseHandle() => NativeMethods.FreeLibrary(handle);
+    protected override bool ReleaseHandle()
+#if NET6_0_OR_GREATER
+    {
+        NativeLibrary.Free(handle);
+        return true;
+    }
+#else
+        => NativeMethods.FreeLibrary(handle);
+#endif
 }
