@@ -31,7 +31,7 @@ builder.Services.AddDbContext<TodoContext>((serviceProvider, options) =>
 
     // Get the configured SQL LocalDB instance to store the TODO items in, creating it if it does not exist
     IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
-    ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance(config["SqlLocalDbInstance"]);
+    ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance(config["SqlLocalDbInstance"] ?? string.Empty);
 
     // Ensure that the SQL LocalDB instance is running and start it if not already running
     if (!instance.IsRunning)
