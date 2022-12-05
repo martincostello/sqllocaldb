@@ -11,7 +11,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-    <PackageVersion Include="Moq" Version="4.18.2" />
+    <PackageVersion Include="Moq" Version="4.18.3" />
     <PackageVersion Include="NodaTime" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="NodaTime.Testing" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="ReportGenerator" Version="5.1.12" />
