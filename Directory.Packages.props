@@ -33,7 +33,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' != 'MartinCostello.SqlLocalDb' ">
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
