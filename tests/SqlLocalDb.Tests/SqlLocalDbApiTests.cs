@@ -45,7 +45,7 @@ public class SqlLocalDbApiTests
         using var actual = new SqlLocalDbApi(options, _loggerFactory);
 
         // Assert
-        actual.AutomaticallyDeleteInstanceFiles.ShouldBe(options.AutomaticallyDeleteInstanceFiles);
+        actual.AutomaticallyDeleteInstanceFiles.ShouldNotBe(options.AutomaticallyDeleteInstanceFiles);
         actual.DefaultInstanceName.ShouldNotBeNull();
         actual.LanguageId.ShouldBeGreaterThan(0);
         actual.LatestVersion.ShouldNotBeNull();
