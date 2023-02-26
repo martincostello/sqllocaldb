@@ -54,7 +54,7 @@ jobs:
         $tempPath = [System.IO.Path]::GetTempPath()
         $updatesPath = (Join-Path $tempPath "dotnet-outdated.json")
         
-        Write-Host "Checking for .NET NuGet package(s) to update..." -ForegroundColor Yellow
+        Write-Host "Checking for .NET NuGet package(s) to update..."
 
         dotnet outdated `
           --upgrade `
@@ -78,7 +78,7 @@ jobs:
         }
 
         if ($dependencies.Count -gt 0) {
-          Write-Host "Found $($dependencies.Count) .NET NuGet package(s) to update." -ForegroundColor Yellow
+          Write-Host "Found $($dependencies.Count) .NET NuGet package(s) to update." -ForegroundColor Green
 
           $commitMessageLines = @(
             "Update .NET NuGet packages",
