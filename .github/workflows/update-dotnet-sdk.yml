@@ -61,17 +61,21 @@ jobs:
           --version-lock Major `
           --output $updatesPath `
           --include "Microsoft.AspNetCore." `
-          --include "Microsoft.Extensions." `
+          --include "Microsoft.EntityFrameworkCore." `
           --include "Microsoft.NET.Test.Sdk" `
           --include "System."
 
-        $dependencies = `
-          Get-Content -Path $updatesPath | `
-          ConvertFrom-Json | `
-          Select-Object -ExpandProperty projects | `
-          Select-Object -ExpandProperty TargetFrameworks | `
-          Select-Object -ExpandProperty Dependencies | `
-          Sort-Object -Property Name -Unique
+        $dependencies = @()
+
+        if (Test-Path $updatesPath) {
+          $dependencies = `
+            Get-Content -Path $updatesPath | `
+            ConvertFrom-Json | `
+            Select-Object -ExpandProperty projects | `
+            Select-Object -ExpandProperty TargetFrameworks | `
+            Select-Object -ExpandProperty Dependencies | `
+            Sort-Object -Property Name -Unique
+        }
 
         if ($dependencies.Count -gt 0) {
           Write-Host "Found $($dependencies.Count) .NET NuGet package(s) to update." -ForegroundColor Yellow
