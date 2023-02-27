@@ -1,6 +1,6 @@
 # SQL LocalDB Wrapper
 
-SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0` and `net6.0`.
+SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0`, `net6.0` and `net8.0`.
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.SqlLocalDb?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 
@@ -82,7 +82,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `7.0.100` or later).
+Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `8.0.100` or later).
 
 For all of the tests to be functional you must also have at least one version of SQL LocalDB installed.
 
