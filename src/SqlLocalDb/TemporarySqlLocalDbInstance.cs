@@ -202,10 +202,14 @@ public sealed class TemporarySqlLocalDbInstance : IDisposable, ISqlLocalDbApiAda
     /// </exception>
     private void EnsureNotDisposed()
     {
+#if NET8_0_OR_GREATER
+        ObjectDisposedException.ThrowIf(_disposed, this);
+#else
         if (_disposed)
         {
             throw new ObjectDisposedException(GetType().FullName);
         }
+#endif
     }
 
     /// <summary>
