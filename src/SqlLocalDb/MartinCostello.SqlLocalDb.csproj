@@ -12,8 +12,14 @@
     <PackageValidationBaselineVersion>3.1.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <Summary>$(Description)</Summary>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
+  </PropertyGroup>
+  <!--
+    Avoid complexity from multi-targeting with conditional compilation.
+  -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <NoWarn>$(NoWarn);CA1510</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="SR.Designer.cs" AutoGen="True" DependentUpon="SR.resx" DesignTime="True" />
