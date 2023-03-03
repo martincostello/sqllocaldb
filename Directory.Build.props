@@ -24,10 +24,6 @@
     <NoWarn>$(NoWarn);CA1054;CA1848;CA2234</NoWarn>
     <NoWarn Condition=" '$(GenerateDocumentationFile)' != 'true' ">$(NoWarn);SA0001</NoWarn>
     <!--
-      HACK Workaround NU1603 error for missing NuGet package.
-    -->
-    <NoWarn>$(NoWarn);NU1603</NoWarn>
-    <!--
       TODO Remove NU5104 once .NET 8 reaches 8.0.0.
     -->
     <NoWarn>$(NoWarn);NU5104</NoWarn>
