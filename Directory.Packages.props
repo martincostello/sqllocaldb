@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <NodaTimeVersion>3.1.7</NodaTimeVersion>
+    <NodaTimeVersion>3.1.8</NodaTimeVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.2.0" />
