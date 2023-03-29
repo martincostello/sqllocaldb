@@ -22,13 +22,13 @@
     <PackageVersion Include="Xunit.SkippableFact" Version="1.4.13" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' != 'net6.0' ">
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="1.0.19249.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' == 'net6.0' ">
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="2.0.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
