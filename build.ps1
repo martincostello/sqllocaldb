@@ -15,7 +15,7 @@ $env:NUGET_XMLDOC_MODE = "skip"
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$solutionPath = Split-Path $MyInvocation.MyCommand.Definition
+$solutionPath = $PSScriptRoot
 $sdkFile = (Join-Path $solutionPath "global.json")
 
 $packageProjects = @(
@@ -135,3 +135,4 @@ Remove-Item -Path (Join-Path $OutputPath "coverage.*.json") -Force -ErrorAction 
 ForEach ($project in $testProjects) {
     DotNetTest $project
 }
+
