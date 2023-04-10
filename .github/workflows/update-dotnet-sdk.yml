@@ -1,8 +1,9 @@
 name: update-dotnet-sdk
 
 env:
-  GIT_COMMIT_USER_EMAIL: 102549341+costellobot@users.noreply.github.com
-  GIT_COMMIT_USER_NAME: costellobot
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
+  GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
   TERM: xterm
 
 on:
@@ -22,14 +23,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.ACCESS_TOKEN }}
+        token: ${{ env.ACCESS_TOKEN }}
 
     - name: Update .NET SDK
       id: update-dotnet-sdk
       uses: martincostello/update-dotnet-sdk@v2
       with:
         labels: "dependencies,.NET"
-        repo-token: ${{ secrets.ACCESS_TOKEN }}
+        repo-token: ${{ env.ACCESS_TOKEN }}
         user-email: ${{ env.GIT_COMMIT_USER_EMAIL }}
         user-name: ${{ env.GIT_COMMIT_USER_NAME }}
 
