@@ -9,6 +9,9 @@ on:
     - cron:  '00 19 * * TUE'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   update-dotnet-sdk:
     name: Update .NET SDK
