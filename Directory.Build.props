@@ -24,8 +24,10 @@
     <NoWarn>$(NoWarn);CA1054;CA1848;CA2234</NoWarn>
     <NoWarn Condition=" '$(GenerateDocumentationFile)' != 'true' ">$(NoWarn);SA0001</NoWarn>
     <Nullable>enable</Nullable>
+    <PackageIcon></PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martincostello/sqllocaldb</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>See $(PackageProjectUrl)/releases for details.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>sql;localdb</PackageTags>
@@ -52,6 +54,12 @@
     <Threshold Condition=" '$(OS)' == 'Windows_NT' ">80</Threshold>
     <Threshold Condition=" '$(OS)' != 'Windows_NT' ">40</Threshold>
   </PropertyGroup>
+  <ItemGroup Condition=" '$(PackageIcon)' != '' ">
+    <None Include="$(MSBuildThisFileDirectory)$(PackageIcon)" Pack="True" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(PackageReadmeFile)' != '' ">
+    <None Include="$(MSBuildThisFileDirectory)$(PackageReadmeFile)" Pack="True" PackagePath="" />
+  </ItemGroup>
   <ItemGroup>
     <Using Include="System.Globalization" />
   </ItemGroup>
