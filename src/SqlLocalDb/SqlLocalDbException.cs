@@ -97,6 +97,7 @@ public class SqlLocalDbException : DbException
         InstanceName = instanceName;
     }
 
+#pragma warning disable SYSLIB0051
     /// <summary>
     /// Initializes a new instance of the <see cref="SqlLocalDbException"/> class with
     /// the specified serialization information and context.
@@ -118,6 +119,7 @@ public class SqlLocalDbException : DbException
         _errorCode = (int?)info.GetValue(ErrorCodeKey, typeof(int?));
         InstanceName = info.GetString(InstanceNameKey);
     }
+#pragma warning restore SYSLIB0051
 
     /// <summary>
     /// Gets the HRESULT of the error.
@@ -130,6 +132,7 @@ public class SqlLocalDbException : DbException
     /// </summary>
     public string? InstanceName { get; protected set; }
 
+#pragma warning disable SYSLIB0051
     /// <summary>
     /// Sets the <see cref="SerializationInfo"/> with information about the exception.
     /// </summary>
@@ -150,4 +153,5 @@ public class SqlLocalDbException : DbException
         info.AddValue(ErrorCodeKey, _errorCode);
         info.AddValue(InstanceNameKey, InstanceName);
     }
+#pragma warning restore SYSLIB0051
 }
