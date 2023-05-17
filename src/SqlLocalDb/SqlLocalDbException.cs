@@ -141,6 +141,9 @@ public class SqlLocalDbException : DbException
     /// <exception cref="ArgumentNullException">
     /// The <paramref name="info"/> parameter is <see langword="null"/>.
     /// </exception>
+#if NET8_0
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.")]
+#endif
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         if (info == null)
