@@ -104,6 +104,7 @@ public static class SqlLocalDbExceptionTests
     }
 
     [Fact]
+    [Obsolete("Obsolete members are still tested.")]
     public static void SqlLocalDbException_GetObjectData_Throws_If_Info_Is_Null()
     {
         // Arrange
