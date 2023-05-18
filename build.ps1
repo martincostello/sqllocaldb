@@ -125,7 +125,7 @@ function DotNetTest {
     }
 }
 
-Write-Host "Building $($packageProjects.Count) NuGet package(s)..." -ForegroundColor Green
+Write-Host "Packaging $($packageProjects.Count) NuGet package(s)..." -ForegroundColor Green
 ForEach ($project in $packageProjects) {
     DotNetPack $project
 }
@@ -135,4 +135,3 @@ Remove-Item -Path (Join-Path $OutputPath "coverage.*.json") -Force -ErrorAction 
 ForEach ($project in $testProjects) {
     DotNetTest $project
 }
-
