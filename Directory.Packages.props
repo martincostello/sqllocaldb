@@ -21,7 +21,7 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
     <PackageVersion Include="Xunit.SkippableFact" Version="1.4.13" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' != 'net6.0' ">
+  <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="1.0.19249.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
