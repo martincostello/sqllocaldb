@@ -6,7 +6,7 @@ SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL 
 
 [![Build status](https://github.com/martincostello/sqllocaldb/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/sqllocaldb/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
 [![codecov](https://codecov.io/gh/martincostello/sqllocaldb/branch/main/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/martincostello/sqllocaldb/badge)](https://api.securityscorecards.dev/projects/github.com/martincostello/sqllocaldb)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/martincostello/sqllocaldb/badge)](https://securityscorecards.dev/viewer/?uri=github.com/martincostello/sqllocaldb)
 
 ## Introduction
 
