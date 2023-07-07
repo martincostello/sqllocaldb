@@ -82,8 +82,7 @@ public class TodoRepositoryTests
 
         // Assert
         Assert.NotNull(items);
-        Assert.NotEmpty(items);
-        Assert.Equal(1, items.Count);
+        Assert.Single(items);
 
         item = items[0];
         Assert.NotNull(item);
