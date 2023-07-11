@@ -36,14 +36,14 @@
       TODO Bump to LTS version of Microsoft.Data.SqlClient when available.
     -->
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.5.23280.8" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-preview.5.23280.8" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.6.23329.7" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-preview.6.23329.7" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' != 'MartinCostello.SqlLocalDb' ">
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.5.23280.8" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0-preview.5.23280.8" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0-preview.5.23280.8" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.6.23329.7" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0-preview.6.23329.7" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0-preview.6.23329.7" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
