@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -11,7 +11,7 @@ public static class SqlLocalDbInstanceInfoTests
     public static void Update_Copies_State_From_Other_Instance()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         var other = new SqlLocalDbInstanceInfo(api)
         {
@@ -64,7 +64,7 @@ public static class SqlLocalDbInstanceInfoTests
     public static void Update_Does_Not_Copy_State_If_Other_Is_Null()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         var actual = new SqlLocalDbInstanceInfo(api)
         {
@@ -89,7 +89,7 @@ public static class SqlLocalDbInstanceInfoTests
     public static void Update_Does_Not_Copy_State_If_Other_Is_Self()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         var actual = new SqlLocalDbInstanceInfo(api)
         {
@@ -114,7 +114,7 @@ public static class SqlLocalDbInstanceInfoTests
     public static void ToString_Returns_The_Name()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         var info = new SqlLocalDbInstanceInfo(api)
         {

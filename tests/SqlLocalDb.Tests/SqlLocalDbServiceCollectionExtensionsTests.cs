@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -12,7 +12,7 @@ public static class SqlLocalDbServiceCollectionExtensionsTests
     public static void AddSqlLocalDB_Validates_Parameters()
     {
         // Arrange
-        IServiceCollection? services = Mock.Of<IServiceCollection>();
+        IServiceCollection? services = Substitute.For<IServiceCollection>();
 
         SqlLocalDbOptions? options = null;
         Action<SqlLocalDbOptions>? configureAction = null;
@@ -126,7 +126,7 @@ public static class SqlLocalDbServiceCollectionExtensionsTests
         IServiceCollection services = CreateServiceCollection();
 
         var existingOptions = new SqlLocalDbOptions();
-        var existingLocalDB = Mock.Of<ISqlLocalDbApi>();
+        var existingLocalDB = Substitute.For<ISqlLocalDbApi>();
 
         services.AddTransient((_) => existingOptions);
         services.AddTransient((_) => existingLocalDB);
