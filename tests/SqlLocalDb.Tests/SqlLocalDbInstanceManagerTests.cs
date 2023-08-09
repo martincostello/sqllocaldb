@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -21,9 +21,8 @@ public class SqlLocalDbInstanceManagerTests
         // Act
         string sharedName = Guid.NewGuid().ToString();
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -31,7 +30,7 @@ public class SqlLocalDbInstanceManagerTests
         target.Share(sharedName);
 
         // Assert
-        mock.Verify((p) => p.ShareInstance(It.IsNotNull<string>(), "Name", sharedName), Times.Once());
+        api.Received(1).ShareInstance(Arg.Is<string>((p) => p != null), "Name", sharedName);
     }
 
     [WindowsOnlyFact]
@@ -43,13 +42,12 @@ public class SqlLocalDbInstanceManagerTests
             123,
             "Name");
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.ShareInstance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            .Throws(innerException);
+        api.When((p) => p.ShareInstance(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()))
+            .Do((_) => throw innerException);
 
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -66,7 +64,7 @@ public class SqlLocalDbInstanceManagerTests
     {
         // Act
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act and Assert
         Assert.Throws<ArgumentNullException>("instance", () => new SqlLocalDbInstanceManager(null!, api));
@@ -78,7 +76,7 @@ public class SqlLocalDbInstanceManagerTests
     {
         // Act
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act
         var actual = new SqlLocalDbInstanceManager(instance, api);
@@ -93,7 +91,7 @@ public class SqlLocalDbInstanceManagerTests
     {
         // Act
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
         var target = new SqlLocalDbInstanceManager(instance, api);
 
         Assert.Throws<ArgumentNullException>("sharedName", () => target.Share(null!));
@@ -103,9 +101,8 @@ public class SqlLocalDbInstanceManagerTests
     public void Start_Starts_Instance()
     {
         // Act
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -113,7 +110,7 @@ public class SqlLocalDbInstanceManagerTests
         target.Start();
 
         // Assert
-        mock.Verify((p) => p.StartInstance("Name"), Times.Once());
+        api.Received(1).StartInstance("Name");
     }
 
     [Fact]
@@ -125,13 +122,12 @@ public class SqlLocalDbInstanceManagerTests
             123,
             "Name");
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
-            .Throws(innerException);
+        api.When((p) => p.StartInstance(Arg.Any<string>()))
+           .Do((_) => throw innerException);
 
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -147,9 +143,8 @@ public class SqlLocalDbInstanceManagerTests
     public void Stop_Stops_Instance()
     {
         // Act
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -157,7 +152,7 @@ public class SqlLocalDbInstanceManagerTests
         target.Stop();
 
         // Assert
-        mock.Verify((p) => p.StopInstance("Name", null), Times.Once());
+        api.Received(1).StopInstance("Name", null);
     }
 
     [Fact]
@@ -169,17 +164,16 @@ public class SqlLocalDbInstanceManagerTests
             123,
             "Name");
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.StopInstance(It.IsAny<string>(), It.IsAny<TimeSpan?>()))
-            .Throws(innerException);
+        api.When((p) => p.StopInstance(Arg.Any<string>(), Arg.Any<TimeSpan?>()))
+           .Do((_) => throw innerException);
 
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
-        var exception = Assert.Throws<SqlLocalDbException>(() => target.Stop());
+        var exception = Assert.Throws<SqlLocalDbException>(target.Stop);
 
         exception.ErrorCode.ShouldBe(123);
         exception.InstanceName.ShouldBe("Name");
@@ -191,9 +185,8 @@ public class SqlLocalDbInstanceManagerTests
     public void Unshare_Unshares_Instance()
     {
         // Act
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
@@ -201,7 +194,7 @@ public class SqlLocalDbInstanceManagerTests
         target.Unshare();
 
         // Assert
-        mock.Verify((p) => p.UnshareInstance("Name"), Times.Once());
+        api.Received(1).UnshareInstance("Name");
     }
 
     [Fact]
@@ -213,17 +206,16 @@ public class SqlLocalDbInstanceManagerTests
             123,
             "Name");
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.UnshareInstance(It.IsAny<string>()))
-            .Throws(innerException);
+        api.When((p) => p.UnshareInstance(Arg.Any<string>()))
+           .Do((_) => throw innerException);
 
         ISqlLocalDbInstanceInfo instance = CreateInstance();
-        ISqlLocalDbApi api = mock.Object;
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
-        var exception = Assert.Throws<SqlLocalDbException>(() => target.Unshare());
+        var exception = Assert.Throws<SqlLocalDbException>(target.Unshare);
 
         exception.ErrorCode.ShouldBe(123);
         exception.InstanceName.ShouldBe("Name");
@@ -278,11 +270,11 @@ public class SqlLocalDbInstanceManagerTests
 
     private static ISqlLocalDbInstanceInfo CreateInstance()
     {
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
-        mock.Setup((p) => p.Name).Returns("Name");
-        mock.Setup((p) => p.NamedPipe).Returns("NamedPipe");
+        instance.Name.Returns("Name");
+        instance.NamedPipe.Returns("NamedPipe");
 
-        return mock.Object;
+        return instance;
     }
 }

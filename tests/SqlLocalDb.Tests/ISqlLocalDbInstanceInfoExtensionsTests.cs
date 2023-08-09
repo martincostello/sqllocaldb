@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Data.SqlClient;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -32,13 +32,11 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
     public static void CreateConnectionStringBuilder_Throws_If_The_Instance_Is_Not_Running()
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
-        mock.Setup((p) => p.IsRunning).Returns(false);
-        mock.Setup((p) => p.Name).Returns("MyInstance");
-        mock.Setup((p) => p.NamedPipe).Returns("MyNamedPipe");
-
-        ISqlLocalDbInstanceInfo instance = mock.Object;
+        instance.IsRunning.Returns(false);
+        instance.Name.Returns("MyInstance");
+        instance.NamedPipe.Returns("MyNamedPipe");
 
         // Act and Assert
         var exception = Assert.Throws<InvalidOperationException>(() => instance.CreateConnectionStringBuilder());
@@ -49,12 +47,10 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
     public static void CreateConnectionStringBuilder_Initializes_Connection_String_Builder()
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
-        mock.Setup((p) => p.IsRunning).Returns(true);
-        mock.Setup((p) => p.NamedPipe).Returns("MyNamedPipe");
-
-        ISqlLocalDbInstanceInfo instance = mock.Object;
+        instance.IsRunning.Returns(true);
+        instance.NamedPipe.Returns("MyNamedPipe");
 
         // Act
         SqlConnectionStringBuilder actual = instance.CreateConnectionStringBuilder();
@@ -68,12 +64,10 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
     public static void GetConnectionString_Returns_Sql_Connection_String()
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
-        mock.Setup((p) => p.IsRunning).Returns(true);
-        mock.Setup((p) => p.NamedPipe).Returns("MyNamedPipe");
-
-        ISqlLocalDbInstanceInfo instance = mock.Object;
+        instance.IsRunning.Returns(true);
+        instance.NamedPipe.Returns("MyNamedPipe");
 
         // Act
         string actual = instance.GetConnectionString();
@@ -96,7 +90,7 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
     public static void Manage_Throws_If_Instance_Does_Not_Implement_ISqlLocalDbApiAdapter()
     {
         // Arrange
-        var instance = Mock.Of<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
         // Act and Assert
         Assert.Throws<ArgumentException>("instance", () => instance.Manage()).Message.ShouldStartWith("The specified instance of ISqlLocalDbInstanceInfo does not implement the ISqlLocalDbApiAdapter interface.");
@@ -106,13 +100,10 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
     public static void Manage_Returns_An_ISqlLocalDbInstanceManager()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var api = Substitute.For<ISqlLocalDbApi>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo, ISqlLocalDbApiAdapter>();
 
-        mock.As<ISqlLocalDbApiAdapter>()
-            .Setup((p) => p.LocalDb).Returns(api);
-
-        ISqlLocalDbInstanceInfo instance = mock.Object;
+        ((ISqlLocalDbApiAdapter)instance).LocalDb.Returns(api);
 
         // Act
         ISqlLocalDbInstanceManager actual = instance.Manage();

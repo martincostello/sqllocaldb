@@ -3,7 +3,7 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -174,7 +174,7 @@ public class SqlLocalDbApiTests
     {
         // Arrange
         var options = new SqlLocalDbOptions();
-        var registry = Mock.Of<Interop.IRegistry>();
+        var registry = Substitute.For<Interop.IRegistry>();
 
         using var actual = new SqlLocalDbApi(options, registry, _loggerFactory);
 

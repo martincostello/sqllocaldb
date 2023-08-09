@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -24,34 +24,22 @@ public class ISqlLocalDbApiExtensionsTests
         Skip.IfNot(SqlLocalDbApi.IsWindows);
 
         // Arrange
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.LatestVersion)
-            .Returns("v99.9");
+        api.LatestVersion.Returns("v99.9");
+        api.CreateInstance(Arg.Any<string>(), "v99.9");
+        api.StartInstance(Arg.Any<string>());
+        api.StopInstance(Arg.Any<string>(), null);
 
-        mock.Setup((p) => p.CreateInstance(It.IsAny<string>(), "v99.9"))
-            .Verifiable();
+        api.When((p) => p.DeleteInstance(Arg.Any<string>()))
+           .Do((_) => throw new SqlLocalDbException("Error", errorCode));
 
-        mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
-            .Verifiable();
-
-        mock.Setup((p) => p.StopInstance(It.IsAny<string>(), null))
-            .Verifiable();
-
-        mock.Setup((p) => p.DeleteInstance(It.IsAny<string>()))
-            .Throws(new SqlLocalDbException("Error", errorCode))
-            .Verifiable();
-
-        ISqlLocalDbApi api = mock.Object;
-
-        // Act
-        using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance())
+        // Act and Assert
+        Should.NotThrow(() =>
         {
+            using var target = api.CreateTemporaryInstance();
             target.GetInstanceInfo();
-        }
-
-        // Assert
-        mock.Verify();
+        });
     }
 
     [WindowsOnlyFact]
@@ -61,18 +49,13 @@ public class ISqlLocalDbApiExtensionsTests
         string instanceName = "SomeName";
         string sharedInstanceName = "SomeSharedName";
 
-        var mock = new Mock<ISqlLocalDbApi>();
-
-        mock.Setup((p) => p.ShareInstance(It.IsNotNull<string>(), instanceName, sharedInstanceName))
-            .Verifiable();
-
-        ISqlLocalDbApi api = mock.Object;
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act
         api.ShareInstance(instanceName, sharedInstanceName);
 
         // Assert
-        mock.Verify();
+        api.Received(1).ShareInstance(Arg.Is<string>((p) => p != null), instanceName, sharedInstanceName);
     }
 
     [Fact]
@@ -89,7 +72,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void TemporaryInstance_Throws_If_Used_After_Disposal()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
 
@@ -105,7 +88,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void TemporaryInstance_Disposes_Cleanly_If_Not_Used()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act and Assert
         using TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
@@ -116,7 +99,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void TemporaryInstance_Is_ISqlLocalDbApiAdapter()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         using TemporarySqlLocalDbInstance instance = api.CreateTemporaryInstance();
 
@@ -131,29 +114,22 @@ public class ISqlLocalDbApiExtensionsTests
     public void TemporaryInstance_Deletes_Instance_If_Start_Fails()
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.LatestVersion)
-            .Returns("v99.9");
+        api.LatestVersion.Returns("v99.9");
 
-        mock.Setup((p) => p.CreateInstance(It.IsAny<string>(), "v99.9"))
-            .Verifiable();
-
-        mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
-            .Throws<PlatformNotSupportedException>();
-
-        mock.Setup((p) => p.DeleteInstance(It.IsAny<string>()))
-            .Verifiable();
-
-        ISqlLocalDbApi api = mock.Object;
+        api.When((p) => p.StartInstance(Arg.Any<string>()))
+           .Do((_) => throw new PlatformNotSupportedException());
 
         using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance())
         {
             // Act and Assert
-            Assert.Throws<PlatformNotSupportedException>(() => target.GetInstanceInfo());
+            Assert.Throws<PlatformNotSupportedException>(target.GetInstanceInfo);
         }
 
-        mock.Verify();
+        // Assert
+        api.Received(1).CreateInstance(Arg.Any<string>(), "v99.9");
+        api.Received(1).DeleteInstance(Arg.Any<string>());
     }
 
     [Theory]
@@ -162,34 +138,23 @@ public class ISqlLocalDbApiExtensionsTests
     public void TemporaryInstance_Ignores_Exception_If_Stop_Fails(int errorCode)
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.LatestVersion)
-            .Returns("v99.9");
+        api.LatestVersion.Returns("v99.9");
 
-        mock.Setup((p) => p.CreateInstance(It.IsAny<string>(), "v99.9"))
-            .Verifiable();
-
-        mock.Setup((p) => p.StartInstance(It.IsAny<string>()))
-            .Verifiable();
-
-        mock.Setup((p) => p.StopInstance(It.IsAny<string>(), null))
-            .Throws(new SqlLocalDbException("Error", errorCode))
-            .Verifiable();
-
-        mock.Setup((p) => p.DeleteInstance(It.IsAny<string>()))
-            .Verifiable();
-
-        ISqlLocalDbApi api = mock.Object;
+        api.When((p) => p.StopInstance(Arg.Any<string>(), null))
+           .Do((_) => throw new SqlLocalDbException("Error", errorCode));
 
         // Act
-        using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance())
+        using (var target = api.CreateTemporaryInstance())
         {
             target.GetInstanceInfo();
         }
 
         // Assert
-        mock.Verify();
+        api.Received(1).CreateInstance(Arg.Any<string>(), "v99.9");
+        api.Received(1).StartInstance(Arg.Any<string>());
+        api.Received(1).DeleteInstance(Arg.Any<string>());
     }
 
     [Fact]
@@ -249,7 +214,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void GetInstances_Returns_Empty_If_No_Instances()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act
         IReadOnlyList<ISqlLocalDbInstanceInfo> actual = api.GetInstances();
@@ -290,7 +255,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void GetVersions_Returns_Empty_If_No_Versions()
     {
         // Arrange
-        var api = Mock.Of<ISqlLocalDbApi>();
+        var api = Substitute.For<ISqlLocalDbApi>();
 
         // Act
         IReadOnlyList<ISqlLocalDbVersionInfo> actual = api.GetVersions();
@@ -315,7 +280,7 @@ public class ISqlLocalDbApiExtensionsTests
     public void GetOrCreateInstance_Throws_If_InstanceName_Is_Null()
     {
         // Arrange
-        ISqlLocalDbApi api = Mock.Of<ISqlLocalDbApi>();
+        ISqlLocalDbApi api = Substitute.For<ISqlLocalDbApi>();
         string? instanceName = null;
 
         // Act and Assert
@@ -328,15 +293,14 @@ public class ISqlLocalDbApiExtensionsTests
         // Arrange
         string instanceName = "Default";
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var instance = CreateInstanceInfo(exists: true);
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.DefaultInstanceName)
-            .Returns(instanceName);
+        api.DefaultInstanceName
+           .Returns(instanceName);
 
-        mock.Setup((p) => p.GetInstanceInfo(instanceName))
-            .Returns(CreateInstanceInfo(exists: true));
-
-        ISqlLocalDbApi api = mock.Object;
+        api.GetInstanceInfo(instanceName)
+           .Returns(instance);
 
         // Act
         ISqlLocalDbInstanceInfo actual = api.GetOrCreateInstance(instanceName);
@@ -352,15 +316,14 @@ public class ISqlLocalDbApiExtensionsTests
     public void GetOrCreateInstance_Returns_The_Default_Instance_If_It_Exists(string instanceName)
     {
         // Arrange
-        var mock = new Mock<ISqlLocalDbApi>();
+        var instance = CreateInstanceInfo(exists: true);
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.DefaultInstanceName)
-            .Returns("Blah");
+        api.DefaultInstanceName
+           .Returns("Blah");
 
-        mock.Setup((p) => p.GetInstanceInfo(instanceName))
-            .Returns(CreateInstanceInfo(exists: true));
-
-        ISqlLocalDbApi api = mock.Object;
+        api.GetInstanceInfo(instanceName)
+           .Returns(instance);
 
         // Act
         ISqlLocalDbInstanceInfo actual = api.GetOrCreateInstance(instanceName);
@@ -376,18 +339,17 @@ public class ISqlLocalDbApiExtensionsTests
         // Arrange
         string instanceName = "MyInstance";
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var instance = CreateInstanceInfo(exists: true);
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.DefaultInstanceName)
-            .Returns("Blah");
+        api.DefaultInstanceName
+           .Returns("Blah");
 
-        mock.Setup((p) => p.InstanceExists(instanceName))
-            .Returns(true);
+        api.InstanceExists(instanceName)
+           .Returns(true);
 
-        mock.Setup((p) => p.GetInstanceInfo(instanceName))
-            .Returns(CreateInstanceInfo(exists: true));
-
-        ISqlLocalDbApi api = mock.Object;
+        api.GetInstanceInfo(instanceName)
+           .Returns(instance);
 
         // Act
         ISqlLocalDbInstanceInfo actual = api.GetOrCreateInstance(instanceName);
@@ -402,18 +364,17 @@ public class ISqlLocalDbApiExtensionsTests
         // Arrange
         string instanceName = "MyInstance";
 
-        var mock = new Mock<ISqlLocalDbApi>();
+        var instance = CreateInstanceInfo(exists: false);
+        var api = Substitute.For<ISqlLocalDbApi>();
 
-        mock.Setup((p) => p.DefaultInstanceName)
-            .Returns("Blah");
+        api.DefaultInstanceName
+           .Returns("Blah");
 
-        mock.Setup((p) => p.LatestVersion)
-            .Returns("v99.0");
+        api.LatestVersion
+           .Returns("v99.0");
 
-        mock.Setup((p) => p.CreateInstance(instanceName, "v99.0"))
-            .Returns(CreateInstanceInfo(exists: false));
-
-        ISqlLocalDbApi api = mock.Object;
+        api.CreateInstance(instanceName, "v99.0")
+           .Returns(instance);
 
         // Act
         ISqlLocalDbInstanceInfo actual = api.GetOrCreateInstance(instanceName);
@@ -464,11 +425,11 @@ public class ISqlLocalDbApiExtensionsTests
 
     private static ISqlLocalDbInstanceInfo CreateInstanceInfo(bool exists)
     {
-        var mock = new Mock<ISqlLocalDbInstanceInfo>();
+        var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
-        mock.Setup((p) => p.Exists).Returns(exists);
+        instance.Exists.Returns(exists);
 
-        return mock.Object;
+        return instance;
     }
 
     private void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
