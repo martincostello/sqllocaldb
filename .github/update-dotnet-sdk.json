@@ -1,0 +1,3 @@
+{
+  "include-nuget-packages": "Microsoft.AspNetCore.,Microsoft.EntityFrameworkCore.,System.Text.Json"
+}
