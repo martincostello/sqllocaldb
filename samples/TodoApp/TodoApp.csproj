@@ -4,12 +4,11 @@
     <IsPackable>false</IsPackable>
     <NoWarn>$(NoWarn);CA1062;CA1303;CA1822;CA2007;CA2227;SA1516;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <PackageReference Include="NodaTime" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj" />
