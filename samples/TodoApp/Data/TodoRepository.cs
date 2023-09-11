@@ -2,7 +2,6 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.EntityFrameworkCore;
-using NodaTime;
 
 namespace TodoApp.Data;
 
@@ -11,17 +10,17 @@ namespace TodoApp.Data;
 /// </summary>
 public sealed class TodoRepository : ITodoRepository
 {
-    private readonly IClock _clock;
+    private readonly TimeProvider _timeProvider;
     private readonly TodoContext _context;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TodoRepository"/> class.
     /// </summary>
-    /// <param name="clock">The <see cref="IClock"/> to use.</param>
+    /// <param name="clock">The <see cref="TimeProvider"/> to use.</param>
     /// <param name="context">The <see cref="TodoContext"/> to use.</param>
-    public TodoRepository(IClock clock, TodoContext context)
+    public TodoRepository(TimeProvider timeProvider, TodoContext context)
     {
-        _clock = clock;
+        _timeProvider = timeProvider;
         _context = context;
     }
 
@@ -97,5 +96,5 @@ public sealed class TodoRepository : ITodoRepository
     /// <returns>
     /// The <see cref="DateTimeOffset"/> for the current date and time.
     /// </returns>
-    private DateTimeOffset Now() => _clock.GetCurrentInstant().ToDateTimeOffset();
+    private DateTimeOffset Now() => _timeProvider.GetUtcNow();
 }

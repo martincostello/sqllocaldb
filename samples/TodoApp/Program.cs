@@ -5,7 +5,6 @@
 
 using MartinCostello.SqlLocalDb;
 using Microsoft.EntityFrameworkCore;
-using NodaTime;
 using TodoApp.Data;
 using TodoApp.Services;
 
@@ -13,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSqlLocalDB();
 
-builder.Services.AddSingleton<IClock>((_) => SystemClock.Instance);
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 

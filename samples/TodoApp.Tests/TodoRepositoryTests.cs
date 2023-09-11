@@ -4,8 +4,7 @@
 using MartinCostello.SqlLocalDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NodaTime;
-using NodaTime.Testing;
+using Microsoft.Extensions.Time.Testing;
 using TodoApp.Data;
 
 namespace TodoApp.Tests;
@@ -28,7 +27,7 @@ public class TodoRepositoryTests
             "This test can only be run on Windows.");
 
         var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
-        var clock = new FakeClock(Instant.FromDateTimeOffset(now));
+        var clock = new FakeTimeProvider(now);
 
         var options = new SqlLocalDbOptions()
         {
