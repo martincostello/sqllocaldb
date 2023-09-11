@@ -1,19 +1,14 @@
 <Project>
-  <PropertyGroup>
-    <NodaTimeVersion>3.1.9</NodaTimeVersion>
-  </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="6.0.0" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.3.3" />
     <PackageVersion Include="Humanizer" Version="2.14.1" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-preview.7.23375.4" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.0.0-preview.7.23407.5" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
-    <PackageVersion Include="NodaTime" Version="$(NodaTimeVersion)" />
-    <PackageVersion Include="NodaTime.Testing" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="ReportGenerator" Version="5.1.26" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
@@ -32,14 +27,21 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' == 'net8.0' ">
+    <!--
+      TODO Bump to LTS version of Microsoft.Data.SqlClient when available.
+    -->
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-preview.7.23375.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-preview.7.23375.6" />
+  </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' != 'MartinCostello.SqlLocalDb' ">
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.2" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.7.23375.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0-preview.7.23375.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0-preview.7.23375.6" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
