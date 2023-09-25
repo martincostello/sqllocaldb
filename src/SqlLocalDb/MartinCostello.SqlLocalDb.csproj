@@ -3,9 +3,7 @@
     <AssemblyTitle>SQL LocalDB Wrapper</AssemblyTitle>
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <IsTrimmable>true</IsTrimmable>
     <NoWarn>$(NoWarn);CA2235;CA2254</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
@@ -14,6 +12,10 @@
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <!--
     Avoid complexity from multi-targeting with conditional compilation.
