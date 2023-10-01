@@ -81,22 +81,22 @@ internal struct LocalDbVersionInfo : ISqlLocalDbVersionInfo
     /// <summary>
     /// Gets a value indicating whether the instance files exist on disk.
     /// </summary>
-    bool ISqlLocalDbVersionInfo.Exists => Exists;
+    readonly bool ISqlLocalDbVersionInfo.Exists => Exists;
 
     /// <summary>
     /// Gets the version name.
     /// </summary>
-    string ISqlLocalDbVersionInfo.Name => LocalDbInstanceApi.MarshalString(Name);
+    readonly string ISqlLocalDbVersionInfo.Name => LocalDbInstanceApi.MarshalString(Name);
 
     /// <summary>
     /// Gets the version.
     /// </summary>
-    Version ISqlLocalDbVersionInfo.Version => new((int)Major, (int)Minor, (int)Build, (int)Revision);
+    readonly Version ISqlLocalDbVersionInfo.Version => new((int)Major, (int)Minor, (int)Build, (int)Revision);
 
     /// <summary>
     /// Gets the name to display in the debugger.
     /// </summary>
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    private string DebuggerDisplayName => ((ISqlLocalDbVersionInfo)this).Name;
+    private readonly string DebuggerDisplayName => ((ISqlLocalDbVersionInfo)this).Name;
 }

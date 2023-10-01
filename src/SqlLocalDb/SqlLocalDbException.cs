@@ -132,7 +132,6 @@ public class SqlLocalDbException : DbException
     /// </summary>
     public string? InstanceName { get; protected set; }
 
-#pragma warning disable SYSLIB0051
     /// <summary>
     /// Sets the <see cref="SerializationInfo"/> with information about the exception.
     /// </summary>
@@ -156,5 +155,4 @@ public class SqlLocalDbException : DbException
         info.AddValue(ErrorCodeKey, _errorCode);
         info.AddValue(InstanceNameKey, InstanceName);
     }
-#pragma warning restore SYSLIB0051
 }

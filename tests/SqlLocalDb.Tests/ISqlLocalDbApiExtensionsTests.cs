@@ -6,14 +6,9 @@ using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
-public class ISqlLocalDbApiExtensionsTests
+public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
-    {
-        _loggerFactory = outputHelper.ToLoggerFactory();
-    }
+    private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
     [SkippableTheory]
     [InlineData(unchecked((int)0x89c50112))]

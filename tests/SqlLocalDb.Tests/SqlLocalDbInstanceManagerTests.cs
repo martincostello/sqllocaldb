@@ -6,14 +6,9 @@ using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
-public class SqlLocalDbInstanceManagerTests
+public class SqlLocalDbInstanceManagerTests(ITestOutputHelper outputHelper)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public SqlLocalDbInstanceManagerTests(ITestOutputHelper outputHelper)
-    {
-        _loggerFactory = outputHelper.ToLoggerFactory();
-    }
+    private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
     [WindowsOnlyFact]
     public static void Share_Shares_Instance()
@@ -34,7 +29,7 @@ public class SqlLocalDbInstanceManagerTests
     }
 
     [WindowsOnlyFact]
-    public static void Share_Throws_If_SqlLocalDbEception_Is_Thrown()
+    public static void Share_Throws_If_SqlLocalDbException_Is_Thrown()
     {
         // Act
         var innerException = new SqlLocalDbException(
@@ -114,7 +109,7 @@ public class SqlLocalDbInstanceManagerTests
     }
 
     [Fact]
-    public void Start_Throws_If_SqlLocalDbEception_Is_Thrown()
+    public void Start_Throws_If_SqlLocalDbException_Is_Thrown()
     {
         // Act
         var innerException = new SqlLocalDbException(
@@ -156,7 +151,7 @@ public class SqlLocalDbInstanceManagerTests
     }
 
     [Fact]
-    public void Stop_Throws_If_SqlLocalDbEception_Is_Thrown()
+    public void Stop_Throws_If_SqlLocalDbException_Is_Thrown()
     {
         // Act
         var innerException = new SqlLocalDbException(
@@ -198,7 +193,7 @@ public class SqlLocalDbInstanceManagerTests
     }
 
     [Fact]
-    public void Unshare_Throws_If_SqlLocalDbEception_Is_Thrown()
+    public void Unshare_Throws_If_SqlLocalDbException_Is_Thrown()
     {
         // Act
         var innerException = new SqlLocalDbException(

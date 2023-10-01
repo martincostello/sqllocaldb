@@ -8,19 +8,12 @@ using TodoApp.Services;
 
 namespace TodoApp.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ITodoService service) : Controller
 {
-    private readonly ITodoService _service;
-
-    public HomeController(ITodoService service)
-    {
-        _service = service;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
     {
-        TodoListViewModel model = await _service.GetListAsync(cancellationToken);
+        TodoListViewModel model = await service.GetListAsync(cancellationToken);
         return View(model);
     }
 
@@ -33,7 +26,7 @@ public class HomeController : Controller
             return BadRequest();
         }
 
-        await _service.AddItemAsync(text, cancellationToken);
+        await service.AddItemAsync(text, cancellationToken);
 
         return RedirectToAction(nameof(Index));
     }
@@ -47,7 +40,7 @@ public class HomeController : Controller
             return BadRequest();
         }
 
-        bool? result = await _service.CompleteItemAsync(id, cancellationToken);
+        bool? result = await service.CompleteItemAsync(id, cancellationToken);
 
         if (result == null)
         {
@@ -71,7 +64,7 @@ public class HomeController : Controller
             return BadRequest();
         }
 
-        if (!await _service.DeleteItemAsync(id, cancellationToken))
+        if (!await service.DeleteItemAsync(id, cancellationToken))
         {
             return NotFound();
         }
@@ -82,7 +75,5 @@ public class HomeController : Controller
     [HttpGet]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+        => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 }

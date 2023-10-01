@@ -24,7 +24,7 @@ public static class ISqlLocalDbApiExtensions
     /// <paramref name="api"/> is <see langword="null"/>.
     /// </exception>
     public static TemporarySqlLocalDbInstance CreateTemporaryInstance(this ISqlLocalDbApi api, bool deleteFiles = false)
-        => new TemporarySqlLocalDbInstance(api, deleteFiles);
+        => new(api, deleteFiles);
 
     /// <summary>
     /// Gets the default SQL Local DB instance.

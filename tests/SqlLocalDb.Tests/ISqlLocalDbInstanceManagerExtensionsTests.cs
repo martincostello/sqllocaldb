@@ -7,14 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.SqlLocalDb;
 
-public class ISqlLocalDbInstanceManagerExtensionsTests
+public class ISqlLocalDbInstanceManagerExtensionsTests(ITestOutputHelper outputHelper)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public ISqlLocalDbInstanceManagerExtensionsTests(ITestOutputHelper outputHelper)
-    {
-        _loggerFactory = outputHelper.ToLoggerFactory();
-    }
+    private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
     [Fact]
     public void CreateConnection_Throws_If_Manager_Is_Null()

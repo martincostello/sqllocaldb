@@ -8,22 +8,13 @@ namespace TodoApp.Data;
 /// <summary>
 /// A class representing a repository of TODO items. This class cannot be inherited.
 /// </summary>
-public sealed class TodoRepository : ITodoRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="TodoRepository"/> class.
+/// </remarks>
+/// <param name="timeProvider">The <see cref="TimeProvider"/> to use.</param>
+/// <param name="context">The <see cref="TodoContext"/> to use.</param>
+public sealed class TodoRepository(TimeProvider timeProvider, TodoContext context) : ITodoRepository
 {
-    private readonly TimeProvider _timeProvider;
-    private readonly TodoContext _context;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TodoRepository"/> class.
-    /// </summary>
-    /// <param name="clock">The <see cref="TimeProvider"/> to use.</param>
-    /// <param name="context">The <see cref="TodoContext"/> to use.</param>
-    public TodoRepository(TimeProvider timeProvider, TodoContext context)
-    {
-        _timeProvider = timeProvider;
-        _context = context;
-    }
-
     /// <inheritdoc />
     public async Task<TodoItem> AddItemAsync(string text, CancellationToken cancellationToken = default)
     {
@@ -33,9 +24,9 @@ public sealed class TodoRepository : ITodoRepository
             Text = text,
         };
 
-        _context.Add(item);
+        context.Add(item);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return item;
     }
@@ -43,7 +34,7 @@ public sealed class TodoRepository : ITodoRepository
     /// <inheritdoc />
     public async Task<bool?> CompleteItemAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        TodoItem? item = await _context.Items!.FindAsync(new object[] { id }, cancellationToken);
+        TodoItem? item = await context.Items!.FindAsync(new object[] { id }, cancellationToken);
 
         if (item is null)
         {
@@ -57,9 +48,9 @@ public sealed class TodoRepository : ITodoRepository
 
         item.CompletedAt = Now();
 
-        _context.Items.Update(item);
+        context.Items.Update(item);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return true;
     }
@@ -67,16 +58,16 @@ public sealed class TodoRepository : ITodoRepository
     /// <inheritdoc />
     public async Task<bool> DeleteItemAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        TodoItem? item = await _context.Items!.FindAsync(new object[] { id }, cancellationToken);
+        TodoItem? item = await context.Items!.FindAsync([id], cancellationToken);
 
         if (item is null)
         {
             return false;
         }
 
-        _context.Items.Remove(item);
+        context.Items.Remove(item);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return true;
     }
@@ -84,7 +75,7 @@ public sealed class TodoRepository : ITodoRepository
     /// <inheritdoc />
     public async Task<IList<TodoItem>> GetItemsAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Items!
+        return await context.Items!
             .OrderBy((p) => p.CompletedAt.HasValue)
             .ThenBy((p) => p.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -96,5 +87,5 @@ public sealed class TodoRepository : ITodoRepository
     /// <returns>
     /// The <see cref="DateTimeOffset"/> for the current date and time.
     /// </returns>
-    private DateTimeOffset Now() => _timeProvider.GetUtcNow();
+    private DateTimeOffset Now() => timeProvider.GetUtcNow();
 }
