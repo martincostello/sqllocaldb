@@ -16,7 +16,7 @@ public static class TodoInitializer
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> to use.</param>
     public static void Initialize(IServiceProvider serviceProvider)
     {
-        using IServiceScope scope = serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
 
         var context = scope!.ServiceProvider!.GetService<TodoContext>();
         context!.Database.Migrate();

@@ -43,7 +43,7 @@ internal sealed class SqlLocalDbInstanceInfo : ISqlLocalDbInstanceInfo, ISqlLoca
     public DateTime LastStartTimeUtc { get; internal set; }
 
     /// <inheritdoc />
-    public Version LocalDbVersion { get; internal set; } = new Version();
+    public Version LocalDbVersion { get; internal set; } = new();
 
     /// <inheritdoc />
     public string Name { get; internal set; } = string.Empty;

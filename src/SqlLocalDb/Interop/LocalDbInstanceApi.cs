@@ -41,7 +41,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>
-    private static readonly char[] _nullArray = new[] { '\0' };
+    private static readonly char[] _nullArray = ['\0'];
 
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.

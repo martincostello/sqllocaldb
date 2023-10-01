@@ -9,14 +9,9 @@ using TodoApp.Data;
 
 namespace TodoApp.Tests;
 
-public class TodoRepositoryTests
+public class TodoRepositoryTests(ITestOutputHelper outputHelper)
 {
-    public TodoRepositoryTests(ITestOutputHelper outputHelper)
-    {
-        LoggerFactory = outputHelper.ToLoggerFactory();
-    }
-
-    private ILoggerFactory LoggerFactory { get; }
+    private ILoggerFactory LoggerFactory { get; } = outputHelper.ToLoggerFactory();
 
     [SkippableFact]
     public async Task Can_Create_Update_And_Delete_Todo_Items()

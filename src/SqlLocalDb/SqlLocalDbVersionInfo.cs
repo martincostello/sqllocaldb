@@ -25,7 +25,7 @@ internal sealed class SqlLocalDbVersionInfo : ISqlLocalDbVersionInfo
     public string Name { get; internal set; } = string.Empty;
 
     /// <inheritdoc />
-    public Version Version { get; internal set; } = new Version();
+    public Version Version { get; internal set; } = new();
 
     /// <inheritdoc />
     public override string ToString() => Name;
@@ -36,7 +36,7 @@ internal sealed class SqlLocalDbVersionInfo : ISqlLocalDbVersionInfo
     /// <param name="other">The other value to use to update the instance's state.</param>
     internal void Update(ISqlLocalDbVersionInfo other)
     {
-        if (other == null || ReferenceEquals(other, this))
+        if (other is null || ReferenceEquals(other, this))
         {
             return;
         }

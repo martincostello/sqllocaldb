@@ -9,14 +9,9 @@ namespace MartinCostello.SqlLocalDb;
 /// A class containing tests that perform global operations that may cause other tests to fail if run in parallel.
 /// </summary>
 [CollectionDefinition("NotInParallel", DisableParallelization = true)]
-public class NotInParallelTests
+public class NotInParallelTests(ITestOutputHelper outputHelper)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public NotInParallelTests(ITestOutputHelper outputHelper)
-    {
-        _loggerFactory = outputHelper.ToLoggerFactory();
-    }
+    private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
     [WindowsCIOnlyFact]
     public void Can_Delete_User_Instances()

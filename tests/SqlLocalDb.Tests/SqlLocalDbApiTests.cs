@@ -7,14 +7,9 @@ using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
-public class SqlLocalDbApiTests
+public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public SqlLocalDbApiTests(ITestOutputHelper outputHelper)
-    {
-        _loggerFactory = outputHelper.ToLoggerFactory();
-    }
+    private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
     [Fact]
     public void Constructor_Validates_Parameters()

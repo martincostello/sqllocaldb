@@ -8,23 +8,19 @@ namespace MartinCostello.SqlLocalDb;
 /// <summary>
 /// A class that can be used to manage instances of SQL LocalDB. This class cannot be inherited.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="SqlLocalDbInstanceManager"/> class.
+/// </remarks>
+/// <param name="instance">The SQL Server LocalDB instance to manage.</param>
+/// <param name="api">The <see cref="ISqlLocalDbApi"/> instance to use.</param>
+/// <exception cref="ArgumentNullException">
+/// <paramref name="instance"/> or <paramref name="api"/> is <see langword="null"/>.
+/// </exception>
 [DebuggerDisplay("{Name}")]
-public sealed class SqlLocalDbInstanceManager : ISqlLocalDbInstanceManager, ISqlLocalDbApiAdapter
+public sealed class SqlLocalDbInstanceManager(
+    ISqlLocalDbInstanceInfo instance,
+    ISqlLocalDbApi api) : ISqlLocalDbInstanceManager, ISqlLocalDbApiAdapter
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SqlLocalDbInstanceManager"/> class.
-    /// </summary>
-    /// <param name="instance">The SQL Server LocalDB instance to manage.</param>
-    /// <param name="api">The <see cref="ISqlLocalDbApi"/> instance to use.</param>
-    /// <exception cref="ArgumentNullException">
-    /// <paramref name="instance"/> or <paramref name="api"/> is <see langword="null"/>.
-    /// </exception>
-    public SqlLocalDbInstanceManager(ISqlLocalDbInstanceInfo instance, ISqlLocalDbApi api)
-    {
-        Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-        Api = api ?? throw new ArgumentNullException(nameof(api));
-    }
-
     /// <inheritdoc />
     public string Name => Instance.Name;
 
@@ -37,12 +33,12 @@ public sealed class SqlLocalDbInstanceManager : ISqlLocalDbInstanceManager, ISql
     /// <summary>
     /// Gets the <see cref="ISqlLocalDbApi"/> to use.
     /// </summary>
-    private ISqlLocalDbApi Api { get; }
+    private ISqlLocalDbApi Api { get; } = api ?? throw new ArgumentNullException(nameof(api));
 
     /// <summary>
     /// Gets the <see cref="ISqlLocalDbInstanceInfo"/> in use.
     /// </summary>
-    private ISqlLocalDbInstanceInfo Instance { get; }
+    private ISqlLocalDbInstanceInfo Instance { get; } = instance ?? throw new ArgumentNullException(nameof(instance));
 
     /// <summary>
     /// Gets the current state of the instance.

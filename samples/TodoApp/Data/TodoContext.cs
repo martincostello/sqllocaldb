@@ -8,17 +8,12 @@ namespace TodoApp.Data;
 /// <summary>
 /// A class representing the database context for TodoApp.
 /// </summary>
-public class TodoContext : DbContext
+/// <remarks>
+/// Initializes a new instance of the <see cref="TodoContext"/> class.
+/// </remarks>
+/// <param name="options">The options for this context.</param>
+public class TodoContext(DbContextOptions<TodoContext> options) : DbContext(options)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TodoContext"/> class.
-    /// </summary>
-    /// <param name="options">The options for this context.</param>
-    public TodoContext(DbContextOptions<TodoContext> options)
-        : base(options)
-    {
-    }
-
     /// <summary>
     /// Gets or sets the database set containing the Todo items.
     /// </summary>

@@ -156,32 +156,32 @@ internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     /// <summary>
     /// Gets a value indicating whether the Registry configuration is corrupt.
     /// </summary>
-    bool ISqlLocalDbInstanceInfo.ConfigurationCorrupt => ConfigurationCorrupted;
+    readonly bool ISqlLocalDbInstanceInfo.ConfigurationCorrupt => ConfigurationCorrupted;
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="ISqlLocalDbInstanceInfo"/> is exists.
     /// </summary>
-    bool ISqlLocalDbInstanceInfo.Exists => Exists;
+    readonly bool ISqlLocalDbInstanceInfo.Exists => Exists;
 
     /// <summary>
     /// Gets a value indicating whether the instance is automatic.
     /// </summary>
-    bool ISqlLocalDbInstanceInfo.IsAutomatic => IsAutomatic;
+    readonly bool ISqlLocalDbInstanceInfo.IsAutomatic => IsAutomatic;
 
     /// <summary>
     /// Gets a value indicating whether the instance is currently running.
     /// </summary>
-    bool ISqlLocalDbInstanceInfo.IsRunning => IsRunning;
+    readonly bool ISqlLocalDbInstanceInfo.IsRunning => IsRunning;
 
     /// <summary>
     /// Gets a value indicating whether the instance is shared.
     /// </summary>
-    bool ISqlLocalDbInstanceInfo.IsShared => IsShared;
+    readonly bool ISqlLocalDbInstanceInfo.IsShared => IsShared;
 
     /// <summary>
     /// Gets the UTC date and time the instance was last started.
     /// </summary>
-    DateTime ISqlLocalDbInstanceInfo.LastStartTimeUtc
+    readonly DateTime ISqlLocalDbInstanceInfo.LastStartTimeUtc
     {
         get
         {
@@ -189,7 +189,7 @@ internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
             if (LastStartUtc.dwHighDateTime == 0 &&
                 LastStartUtc.dwLowDateTime == 0)
             {
-                return new DateTime(0, DateTimeKind.Utc);
+                return new(0, DateTimeKind.Utc);
             }
 
             return DateTime.FromFileTimeUtc(((long)LastStartUtc.dwHighDateTime << 32) | (uint)LastStartUtc.dwLowDateTime);
@@ -199,32 +199,32 @@ internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     /// <summary>
     /// Gets the LocalDB version for the instance.
     /// </summary>
-    Version ISqlLocalDbInstanceInfo.LocalDbVersion => new((int)Major, (int)Minor, (int)Build, (int)Revision);
+    readonly Version ISqlLocalDbInstanceInfo.LocalDbVersion => new((int)Major, (int)Minor, (int)Build, (int)Revision);
 
     /// <summary>
     /// Gets the name of the instance.
     /// </summary>
-    string ISqlLocalDbInstanceInfo.Name => LocalDbInstanceApi.MarshalString(InstanceName);
+    readonly string ISqlLocalDbInstanceInfo.Name => LocalDbInstanceApi.MarshalString(InstanceName);
 
     /// <summary>
     /// Gets the named pipe that should be used to communicate with the instance.
     /// </summary>
-    string ISqlLocalDbInstanceInfo.NamedPipe => LocalDbInstanceApi.MarshalString(Connection);
+    readonly string ISqlLocalDbInstanceInfo.NamedPipe => LocalDbInstanceApi.MarshalString(Connection);
 
     /// <summary>
     /// Gets the SID of the LocalDB instance owner if the instance is shared.
     /// </summary>
-    string ISqlLocalDbInstanceInfo.OwnerSid => LocalDbInstanceApi.MarshalString(OwnerSID);
+    readonly string ISqlLocalDbInstanceInfo.OwnerSid => LocalDbInstanceApi.MarshalString(OwnerSID);
 
     /// <summary>
     /// Gets the shared name of the LocalDB instance if the instance is shared.
     /// </summary>
-    string ISqlLocalDbInstanceInfo.SharedName => LocalDbInstanceApi.MarshalString(SharedInstanceName);
+    readonly string ISqlLocalDbInstanceInfo.SharedName => LocalDbInstanceApi.MarshalString(SharedInstanceName);
 
     /// <summary>
     /// Gets the name to display in the debugger.
     /// </summary>
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    private string DebuggerDisplayName => ((ISqlLocalDbInstanceInfo)this).Name;
+    private readonly string DebuggerDisplayName => ((ISqlLocalDbInstanceInfo)this).Name;
 }

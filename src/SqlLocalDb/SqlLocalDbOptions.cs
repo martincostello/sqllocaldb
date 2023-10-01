@@ -59,7 +59,7 @@ public class SqlLocalDbOptions
         {
             CultureInfo? culture = Language;
 
-            if (culture == null)
+            if (culture is null)
             {
                 // Zero is used by SQL LocalDB to mean to defer to the OS configuration
                 return 0;

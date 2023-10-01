@@ -5,10 +5,6 @@
       <_Parameter1>false</_Parameter1>
       <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
     </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.InteropServices.ComVisible">
-      <_Parameter1>false</_Parameter1>
-      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
-    </AssemblyAttribute>
   </ItemGroup>
   <PropertyGroup>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -37,6 +33,10 @@
       TODO Remove NU5104 once .NET 8 reaches 8.0.0.
     -->
     <NoWarn>$(NoWarn);NU5104</NoWarn>
+    <!--
+      HACK Workaround for https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3687
+    -->
+    <NoWarn>$(NoWarn);SA1010</NoWarn>
     <Nullable>enable</Nullable>
     <PackageIcon></PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

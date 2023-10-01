@@ -25,7 +25,7 @@ public static class SqlLocalDbServiceCollectionExtensions
     /// <paramref name="services"/> is <see langword="null"/>.
     /// </exception>
     public static IServiceCollection AddSqlLocalDB(this IServiceCollection services)
-        => services.AddSqlLocalDB((_) => { });
+        => services.AddSqlLocalDB(static (_) => { });
 
     /// <summary>
     /// Adds SQL Server LocalDB services.

@@ -5,15 +5,8 @@ using Xunit.Sdk;
 
 namespace MartinCostello.SqlLocalDb;
 
-public sealed class RetryFactDiscoverer : IXunitTestCaseDiscoverer
+public sealed class RetryFactDiscoverer(IMessageSink diagnosticMessageSink) : IXunitTestCaseDiscoverer
 {
-    private readonly IMessageSink _sink;
-
-    public RetryFactDiscoverer(IMessageSink diagnosticMessageSink)
-    {
-        _sink = diagnosticMessageSink;
-    }
-
     public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
     {
         int maxRetries = factAttribute.GetNamedArgument<int>("MaxRetries");
@@ -24,7 +17,7 @@ public sealed class RetryFactDiscoverer : IXunitTestCaseDiscoverer
         }
 
         yield return new RetryTestCase(
-            _sink,
+            diagnosticMessageSink,
             discoveryOptions.MethodDisplayOrDefault(),
             discoveryOptions.MethodDisplayOptionsOrDefault(),
             testMethod,
