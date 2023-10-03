@@ -39,6 +39,11 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private const int LocalDbTruncateErrorMessage = 1;
 
     /// <summary>
+    /// An array containing the null character. This field is read-only.
+    /// </summary>
+    private static readonly char[] _nullArray = ['\0'];
+
+    /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
     private readonly object _syncRoot = new();
@@ -184,7 +189,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
 #if NET6_0_OR_GREATER
         return Encoding.Unicode.GetString(bytes).TrimEnd('\0');
 #else
-        return Encoding.Unicode.GetString(bytes).TrimEnd(['\0']);
+        return Encoding.Unicode.GetString(bytes).TrimEnd(_nullArray);
 #endif
     }
 
