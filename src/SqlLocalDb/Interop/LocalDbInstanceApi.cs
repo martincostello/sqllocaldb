@@ -38,10 +38,12 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// </summary>
     private const int LocalDbTruncateErrorMessage = 1;
 
+#if NETSTANDARD2_0
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>
     private static readonly char[] _nullArray = ['\0'];
+#endif
 
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
