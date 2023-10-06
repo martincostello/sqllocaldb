@@ -14,7 +14,7 @@
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="NodaTime" Version="$(NodaTimeVersion)" />
     <PackageVersion Include="NodaTime.Testing" Version="$(NodaTimeVersion)" />
-    <PackageVersion Include="ReportGenerator" Version="5.1.25" />
+    <PackageVersion Include="ReportGenerator" Version="5.1.26" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
     <PackageVersion Include="xunit" Version="2.5.1" />
