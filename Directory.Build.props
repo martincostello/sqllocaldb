@@ -8,6 +8,7 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
     <Authors>martin_costello</Authors>
+    <ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Company>https://github.com/martincostello/sqllocaldb</Company>
     <ContinuousIntegrationBuild Condition=" '$(CI)' != '' ">true</ContinuousIntegrationBuild>
