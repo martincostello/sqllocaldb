@@ -5,7 +5,7 @@
     <PackageVersion Include="Humanizer" Version="2.14.1" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.3.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-rc.1.23419.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-rc.2.23480.1" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.0.0-rc.1.23453.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
