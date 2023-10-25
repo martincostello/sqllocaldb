@@ -19,4 +19,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
+      <_Parameter1>b6649785-36c9-46d4-8f86-85bb6ee60c7e</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>
