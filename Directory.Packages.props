@@ -28,10 +28,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' == 'net8.0' ">
-    <!--
-      TODO Bump to LTS version of Microsoft.Data.SqlClient when available.
-    -->
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
   </ItemGroup>
