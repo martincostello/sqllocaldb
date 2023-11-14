@@ -4,20 +4,14 @@
 using MartinCostello.SqlLocalDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NodaTime;
-using NodaTime.Testing;
+using Microsoft.Extensions.Time.Testing;
 using TodoApp.Data;
 
 namespace TodoApp.Tests;
 
-public class TodoRepositoryTests
+public class TodoRepositoryTests(ITestOutputHelper outputHelper)
 {
-    public TodoRepositoryTests(ITestOutputHelper outputHelper)
-    {
-        LoggerFactory = outputHelper.ToLoggerFactory();
-    }
-
-    private ILoggerFactory LoggerFactory { get; }
+    private ILoggerFactory LoggerFactory { get; } = outputHelper.ToLoggerFactory();
 
     [SkippableFact]
     public async Task Can_Create_Update_And_Delete_Todo_Items()
@@ -28,7 +22,7 @@ public class TodoRepositoryTests
             "This test can only be run on Windows.");
 
         var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
-        var clock = new FakeClock(Instant.FromDateTimeOffset(now));
+        var clock = new FakeTimeProvider(now);
 
         var options = new SqlLocalDbOptions()
         {

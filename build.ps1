@@ -3,10 +3,7 @@
 #Requires -PSEdition Core
 #Requires -Version 7
 
-param(
-    [Parameter(Mandatory = $false)][string] $Configuration = "Release",
-    [Parameter(Mandatory = $false)][string] $OutputPath = ""
-)
+param()
 
 $env:DOTNET_MULTILEVEL_LOOKUP = "0"
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
@@ -28,10 +25,6 @@ $testProjects = @(
 )
 
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
-
-if ($OutputPath -eq "") {
-    $OutputPath = (Join-Path $solutionPath "artifacts")
-}
 
 $installDotNetSdk = $false;
 
@@ -90,14 +83,7 @@ if ($installDotNetSdk -eq $true) {
 function DotNetPack {
     param([string]$Project)
 
-    $PackageOutputPath = (Join-Path $OutputPath "packages")
-
-    & $dotnet pack `
-        $Project `
-        --output $PackageOutputPath `
-        --configuration $Configuration `
-        --include-source `
-        --include-symbols
+    & $dotnet pack $Project --include-source --include-symbols --tl
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
@@ -114,11 +100,7 @@ function DotNetTest {
         $additionalArgs += "GitHubActions;report-warnings=false"
     }
 
-    & $dotnet test `
-        $Project `
-        --output $OutputPath `
-        --configuration $Configuration `
-        $additionalArgs
+    & $dotnet test $Project --configuration "Release" --tl $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
@@ -131,7 +113,6 @@ ForEach ($project in $packageProjects) {
 }
 
 Write-Host "Testing $($testProjects.Count) project(s)..." -ForegroundColor Green
-Remove-Item -Path (Join-Path $OutputPath "coverage.*.json") -Force -ErrorAction SilentlyContinue | Out-Null
 ForEach ($project in $testProjects) {
     DotNetTest $project
 }

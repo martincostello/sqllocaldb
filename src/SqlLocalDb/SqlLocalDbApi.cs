@@ -54,9 +54,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// <summary>
     /// The available versions of SQL Server LocalDB installed on the local machine.
     /// </summary>
-#pragma warning disable SA1011 // See https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2989
     private string[]? _versions;
-#pragma warning restore SA1011
 
     /// <summary>
     /// The timeout for stopping an instance of LocalDB.
@@ -271,12 +269,9 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 return Array.Empty<string>();
             }
 
-            if (_versions == null)
-            {
-                // Use lazy initialization to allow some functionality to be
-                // accessed regardless of whether LocalDB is installed
-                _versions = GetLocalDbVersions();
-            }
+            // Use lazy initialization to allow some functionality to be
+            // accessed regardless of whether LocalDB is installed
+            _versions ??= GetLocalDbVersions();
 
             return (string[])_versions.Clone();
         }

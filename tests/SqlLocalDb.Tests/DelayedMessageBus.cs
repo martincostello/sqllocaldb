@@ -5,15 +5,9 @@ using Xunit.Sdk;
 
 namespace MartinCostello.SqlLocalDb;
 
-internal sealed class DelayedMessageBus : IMessageBus
+internal sealed class DelayedMessageBus(IMessageBus inner) : IMessageBus
 {
-    private readonly IMessageBus _inner;
     private readonly List<IMessageSinkMessage> _messages = new();
-
-    internal DelayedMessageBus(IMessageBus inner)
-    {
-        _inner = inner;
-    }
 
     public bool QueueMessage(IMessageSinkMessage message)
     {
@@ -31,7 +25,7 @@ internal sealed class DelayedMessageBus : IMessageBus
     {
         foreach (var message in _messages)
         {
-            _inner.QueueMessage(message);
+            inner.QueueMessage(message);
         }
     }
 }

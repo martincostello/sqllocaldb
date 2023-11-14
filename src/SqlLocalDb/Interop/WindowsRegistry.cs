@@ -17,6 +17,6 @@ internal sealed class WindowsRegistry : IRegistry
     public IRegistryKey? OpenSubKey(string keyName)
     {
         RegistryKey? key = Registry.LocalMachine.OpenSubKey(keyName, writable: false);
-        return key == null ? null : new WindowsRegistryKey(key);
+        return key is null ? null : new WindowsRegistryKey(key);
     }
 }

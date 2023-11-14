@@ -10,41 +10,28 @@ namespace TodoApp.Services;
 /// <summary>
 /// A class representing the class for managing TODO items. This class cannot be inherited.
 /// </summary>
-public sealed class TodoService : ITodoService
+/// <remarks>
+/// Initializes a new instance of the <see cref="TodoService"/> class.
+/// </remarks>
+/// <param name="repository">The <see cref="ITodoRepository"/> to use.</param>
+public sealed class TodoService(ITodoRepository repository) : ITodoService
 {
-    private readonly ITodoRepository _repository;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TodoService"/> class.
-    /// </summary>
-    /// <param name="repository">The <see cref="ITodoRepository"/> to use.</param>
-    public TodoService(ITodoRepository repository)
-    {
-        _repository = repository;
-    }
-
     /// <inheritdoc />
     public Task AddItemAsync(string text, CancellationToken cancellationToken)
-    {
-        return _repository.AddItemAsync(text, cancellationToken);
-    }
+        => repository.AddItemAsync(text, cancellationToken);
 
     /// <inheritdoc />
     public Task<bool?> CompleteItemAsync(string id, CancellationToken cancellationToken)
-    {
-        return _repository.CompleteItemAsync(new Guid(id), cancellationToken);
-    }
+        => repository.CompleteItemAsync(new Guid(id), cancellationToken);
 
     /// <inheritdoc />
     public Task<bool> DeleteItemAsync(string id, CancellationToken cancellationToken)
-    {
-        return _repository.DeleteItemAsync(new Guid(id), cancellationToken);
-    }
+        => repository.DeleteItemAsync(new Guid(id), cancellationToken);
 
     /// <inheritdoc />
     public async Task<TodoListViewModel> GetListAsync(CancellationToken cancellationToken)
     {
-        IList<TodoItem> items = await _repository.GetItemsAsync(cancellationToken);
+        IList<TodoItem> items = await repository.GetItemsAsync(cancellationToken);
 
         var result = new TodoListViewModel();
 
@@ -58,7 +45,7 @@ public sealed class TodoService : ITodoService
 
     private static TodoItemModel MapItem(TodoItem item)
     {
-        return new TodoItemModel()
+        return new()
         {
             Id = item.Id.ToString(),
             IsCompleted = item.CompletedAt.HasValue,

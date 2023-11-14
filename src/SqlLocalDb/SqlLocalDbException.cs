@@ -97,6 +97,7 @@ public class SqlLocalDbException : DbException
         InstanceName = instanceName;
     }
 
+#pragma warning disable SYSLIB0051
     /// <summary>
     /// Initializes a new instance of the <see cref="SqlLocalDbException"/> class with
     /// the specified serialization information and context.
@@ -118,6 +119,7 @@ public class SqlLocalDbException : DbException
         _errorCode = (int?)info.GetValue(ErrorCodeKey, typeof(int?));
         InstanceName = info.GetString(InstanceNameKey);
     }
+#pragma warning restore SYSLIB0051
 
     /// <summary>
     /// Gets the HRESULT of the error.
@@ -138,6 +140,9 @@ public class SqlLocalDbException : DbException
     /// <exception cref="ArgumentNullException">
     /// The <paramref name="info"/> parameter is <see langword="null"/>.
     /// </exception>
+#if NET8_0
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.")]
+#endif
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         if (info == null)

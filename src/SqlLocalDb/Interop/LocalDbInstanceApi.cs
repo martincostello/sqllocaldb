@@ -38,10 +38,12 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// </summary>
     private const int LocalDbTruncateErrorMessage = 1;
 
+#if NETSTANDARD2_0
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>
-    private static readonly char[] _nullArray = new[] { '\0' };
+    private static readonly char[] _nullArray = ['\0'];
+#endif
 
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
@@ -186,7 +188,11 @@ internal sealed class LocalDbInstanceApi : IDisposable
     internal static string MarshalString(byte[] bytes)
     {
         Debug.Assert(bytes != null, "bytes cannot be null.");
+#if NET6_0_OR_GREATER
+        return Encoding.Unicode.GetString(bytes).TrimEnd('\0');
+#else
         return Encoding.Unicode.GetString(bytes).TrimEnd(_nullArray);
+#endif
     }
 
     /// <summary>

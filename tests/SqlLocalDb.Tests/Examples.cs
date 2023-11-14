@@ -10,19 +10,12 @@ namespace MartinCostello.SqlLocalDb;
 /// <summary>
 /// A class that contains examples for using <c>MartinCostello.SqlLocalDb</c>.
 /// </summary>
-public class Examples
+public class Examples(ITestOutputHelper outputHelper)
 {
-    public Examples(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
-    private ITestOutputHelper OutputHelper { get; }
-
     [WindowsOnlyFact]
     public async Task Create_A_Sql_LocalDB_Instance()
     {
-        using var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory());
+        using var localDB = new SqlLocalDbApi(outputHelper.ToLoggerFactory());
 
         ISqlLocalDbInstanceInfo instance = localDB.GetOrCreateInstance("MyInstance");
         ISqlLocalDbInstanceManager manager = instance.Manage();
@@ -45,7 +38,7 @@ public class Examples
     [WindowsOnlyFact]
     public async Task Create_A_Temporary_Sql_LocalDB_Instance()
     {
-        using var localDB = new SqlLocalDbApi(OutputHelper.ToLoggerFactory());
+        using var localDB = new SqlLocalDbApi(outputHelper.ToLoggerFactory());
         using TemporarySqlLocalDbInstance instance = localDB.CreateTemporaryInstance(deleteFiles: true);
 
         await using var connection = new SqlConnection(instance.ConnectionString);
@@ -59,10 +52,10 @@ public class Examples
     {
         // Register with SQL LocalDB services
         var services = new ServiceCollection()
-            .AddLogging((builder) => builder.AddXUnit(OutputHelper))
+            .AddLogging((builder) => builder.AddXUnit(outputHelper))
             .AddSqlLocalDB();
 
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
+        var serviceProvider = services.BuildServiceProvider();
 
         await using AsyncServiceScope scope = serviceProvider.CreateAsyncScope();
 
