@@ -12,8 +12,8 @@
     <PackageVersion Include="ReportGenerator" Version="5.2.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
-    <PackageVersion Include="xunit" Version="2.6.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageVersion Include="xunit" Version="2.6.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.4" />
     <PackageVersion Include="Xunit.SkippableFact" Version="1.4.13" />
   </ItemGroup>
   <ItemGroup Condition=" '$(AssemblyName)' == 'MartinCostello.SqlLocalDb' and '$(TargetFramework)' == 'netstandard2.0' ">
