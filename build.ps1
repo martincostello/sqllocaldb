@@ -9,6 +9,10 @@ $env:DOTNET_MULTILEVEL_LOOKUP = "0"
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
 $env:NUGET_XMLDOC_MODE = "skip"
 
+if ($null -eq $env:MSBUILDTERMINALLOGGER) {
+    $env:MSBUILDTERMINALLOGGER = "auto"
+}
+
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
@@ -83,7 +87,7 @@ if ($installDotNetSdk -eq $true) {
 function DotNetPack {
     param([string]$Project)
 
-    & $dotnet pack $Project --include-source --include-symbols --tl
+    & $dotnet pack $Project --include-source --include-symbols
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
@@ -100,7 +104,7 @@ function DotNetTest {
         $additionalArgs += "GitHubActions;report-warnings=false"
     }
 
-    & $dotnet test $Project --configuration "Release" --tl $additionalArgs
+    & $dotnet test $Project --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
