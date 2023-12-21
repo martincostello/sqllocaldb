@@ -31,10 +31,6 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <NoWarn>$(NoWarn);CA1054;CA1848;CA2234</NoWarn>
     <NoWarn Condition=" '$(GenerateDocumentationFile)' != 'true' ">$(NoWarn);SA0001</NoWarn>
-    <!--
-      HACK Workaround for https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/3687
-    -->
-    <NoWarn>$(NoWarn);SA1010</NoWarn>
     <Nullable>enable</Nullable>
     <PackageIcon></PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
