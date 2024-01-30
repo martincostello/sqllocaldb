@@ -28,7 +28,7 @@
     <EmbeddedResource Update="SR.resx" Generator="ResXFileCodeGenerator" LastGenOutput="SR.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="2.1.7" />
+    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="5.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="2.0.0" />
   </ItemGroup>
