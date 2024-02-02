@@ -19,7 +19,7 @@ internal struct LocalDbVersionInfo : ISqlLocalDbVersionInfo
     /// <summary>
     /// The size of an unmanaged type in bytes.  This field is read-only.
     /// </summary>
-    internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDbVersionInfo));
+    internal static readonly int MarshalSize = Marshal.SizeOf<LocalDbVersionInfo>();
 
     /// <summary>
     /// The size of the <see cref="LocalDbVersionInfo"/> structure.

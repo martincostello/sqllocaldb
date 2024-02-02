@@ -14,7 +14,13 @@
     <Title>SQL LocalDB Wrapper</Title>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <!-- Mark as AoT compatible when Microsoft.Data.SqlClient and its dependencies are -->
+    <!--
+    <IsAotCompatible>true</IsAotCompatible>
+    -->
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <!--
@@ -40,7 +46,7 @@
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-    <PackageReference Update="Microsoft.Data.SqlClient" VersionOverride="5.1.3" />
+    <PackageReference Update="Microsoft.Data.SqlClient" VersionOverride="5.1.5" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="8.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="8.0.0" />
   </ItemGroup>
