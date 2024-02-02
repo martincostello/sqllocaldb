@@ -19,7 +19,7 @@ internal struct LocalDbInstanceInfo : ISqlLocalDbInstanceInfo
     /// <summary>
     /// The size of an unmanaged type in bytes.  This field is read-only.
     /// </summary>
-    internal static readonly int MarshalSize = Marshal.SizeOf(typeof(LocalDbInstanceInfo));
+    internal static readonly int MarshalSize = Marshal.SizeOf<LocalDbInstanceInfo>();
 
     /// <summary>
     /// Contains the size of the <see cref="LocalDbInstanceInfo"/> struct.

@@ -558,7 +558,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 EventIds.GettingInstanceInfoFailed,
                 instanceName);
 
-            info = (LocalDbInstanceInfo)Marshal.PtrToStructure(ptrInfo, typeof(LocalDbInstanceInfo))!;
+            info = Marshal.PtrToStructure<LocalDbInstanceInfo>(ptrInfo);
         }
         finally
         {
@@ -670,7 +670,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 () => _api.GetVersionInfo(version, ptrInfo, size),
                 EventIds.GettingVersionInfoFailed);
 
-            info = (LocalDbVersionInfo)Marshal.PtrToStructure(ptrInfo, typeof(LocalDbVersionInfo))!;
+            info = Marshal.PtrToStructure<LocalDbVersionInfo>(ptrInfo);
         }
         finally
         {
