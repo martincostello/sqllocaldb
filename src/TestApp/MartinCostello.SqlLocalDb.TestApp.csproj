@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Description>Test application for MartinCostello.SqlLocalDb.</Description>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1031;CA2007;SA1600</NoWarn>
+    <NoWarn>$(NoWarn);CA1031;CA2007;RS0016;RS0037;SA1600</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFramework>net8.0</TargetFramework>
