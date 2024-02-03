@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1303;CA1707;CA2007;EXTEXP0004;SA1600</NoWarn>
+    <NoWarn>$(NoWarn);CA1303;CA1707;CA2007;RS0016;RS0037;SA1600</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
     <TargetFrameworks>net8.0</TargetFrameworks>
     <IsPackable>false</IsPackable>

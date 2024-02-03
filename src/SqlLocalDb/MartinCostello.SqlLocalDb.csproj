@@ -7,7 +7,7 @@
     <NoWarn>$(NoWarn);CA2235;CA2254</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
-    <PackageValidationBaselineVersion>3.1.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>3.4.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
@@ -51,7 +51,9 @@
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="PublicAPI.txt" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" />
+    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
