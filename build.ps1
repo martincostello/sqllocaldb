@@ -7,10 +7,6 @@ param()
 
 $env:NUGET_XMLDOC_MODE = "skip"
 
-if ($null -eq $env:MSBUILDTERMINALLOGGER) {
-    $env:MSBUILDTERMINALLOGGER = "auto"
-}
-
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
