@@ -10,7 +10,7 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// A structure representing version about a SQL Server LocalDB version.
 /// </summary>
 /// <remarks>
-/// See <c>http://msdn.microsoft.com/en-us/library/hh234365.aspx</c>.
+/// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetversioninfo-function</c>.
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplayName}")]
 [StructLayout(LayoutKind.Sequential)]

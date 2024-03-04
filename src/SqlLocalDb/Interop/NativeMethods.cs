@@ -46,7 +46,7 @@ internal static class NativeMethods
     /// If the function fails, the return value is <see cref="IntPtr.Zero"/>.
     /// </returns>
     /// <remarks>
-    /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
+    /// See <c>https://learn.microsoft.com/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress</c>.
     /// </remarks>
 #pragma warning disable CA2101
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
