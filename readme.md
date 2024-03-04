@@ -78,7 +78,7 @@ The repository is hosted in [GitHub](https://github.com/martincostello/sqllocald
 
 ## License
 
-This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license") license.
+This project is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license") license.
 
 ## Building and Testing
 
