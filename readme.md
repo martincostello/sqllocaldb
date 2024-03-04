@@ -88,8 +88,6 @@ For all of the tests to be functional you must also have at least one version of
 
 To build and test the library locally from a terminal/command-line, run the following set of commands:
 
-**Windows**
-
 ```powershell
 git clone https://github.com/martincostello/sqllocaldb.git
 cd sqllocaldb
@@ -102,6 +100,6 @@ cd sqllocaldb
 
 ## Copyright and Trademarks
 
-This library is copyright (©) Martin Costello 2012-2022.
+This library is copyright (©) Martin Costello 2012-2024.
 
 [Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/) is a trademark and copyright of the Microsoft Corporation.
