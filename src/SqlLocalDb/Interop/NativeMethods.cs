@@ -17,7 +17,7 @@ internal static class NativeMethods
     /// </summary>
     /// <remarks>
     /// Only supported on Windows Vista, 7, Server 2008 and Server 2008 R2 with KB2533623.
-    /// See <c>https://docs.microsoft.com/en-gb/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
+    /// See <c>https://learn.microsoft.com/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
     /// </remarks>
     internal const int LOAD_LIBRARY_SEARCH_DEFAULT_DIRS = 0x00001000;
 
@@ -46,7 +46,7 @@ internal static class NativeMethods
     /// If the function fails, the return value is <see cref="IntPtr.Zero"/>.
     /// </returns>
     /// <remarks>
-    /// See <c>http://msdn.microsoft.com/en-us/library/windows/desktop/ms683212%28v=vs.85%29.aspx</c>.
+    /// See <c>https://learn.microsoft.com/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress</c>.
     /// </remarks>
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
@@ -66,7 +66,7 @@ internal static class NativeMethods
     /// If the function fails, the return value is <see langword="null"/>.
     /// </returns>
     /// <remarks>
-    /// See <c>https://docs.microsoft.com/en-gb/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
+    /// See <c>https://docs.microsoft.com/windows/desktop/api/libloaderapi/nf-libloaderapi-loadlibraryexa</c>.
     /// </remarks>
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]

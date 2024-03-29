@@ -4,7 +4,7 @@ This folder contains a sample application for showing usage of `MartinCostello.S
 
 ## TodoApp
 
-_TodoApp_ is an [ASP.NET](https://docs.microsoft.com/en-us/aspnet/core/ "Introduction to ASP.NET") MVC application that uses [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/ "Entity Framework Core") to manage a simple Todo list.
+_TodoApp_ is an [ASP.NET](https://learn.microsoft.com/aspnet/core/ "Introduction to ASP.NET") MVC application that uses [Entity Framework Core](https://learn.microsoft.com/ef/core/ "Entity Framework Core") to manage a simple Todo list.
 
 The list is stored in a SQL Server database backed by a SQL Server LocalDB Instance on the local machine.
 

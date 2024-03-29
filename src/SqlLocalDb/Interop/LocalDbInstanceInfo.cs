@@ -10,7 +10,7 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// A structure representing information about a SQL Server LocalDB instance.
 /// </summary>
 /// <remarks>
-/// See <c>http://msdn.microsoft.com/en-us/library/hh245734.aspx</c>.
+/// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetinstanceinfo-function</c>.
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplayName}")]
 [StructLayout(LayoutKind.Sequential)]

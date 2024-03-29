@@ -78,7 +78,7 @@ The repository is hosted in [GitHub](https://github.com/martincostello/sqllocald
 
 ## License
 
-This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license") license.
+This project is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license") license.
 
 ## Building and Testing
 
@@ -102,6 +102,6 @@ cd sqllocaldb
 
 ## Copyright and Trademarks
 
-This library is copyright (©) Martin Costello 2012-2022.
+This library is copyright (©) Martin Costello 2012-2024.
 
-[Microsoft SQL Server](https://www.microsoft.com/en-gb/sql-server/) is a trademark and copyright of the Microsoft Corporation.
+[Microsoft SQL Server](https://www.microsoft.com/sql-server/) is a trademark and copyright of the Microsoft Corporation.
