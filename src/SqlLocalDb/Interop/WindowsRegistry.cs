@@ -10,7 +10,6 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// </summary>
 internal sealed class WindowsRegistry : IRegistry
 {
-    /// <inheritdoc />
 #if NET5_0_OR_GREATER
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif

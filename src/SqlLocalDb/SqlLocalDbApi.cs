@@ -1252,13 +1252,6 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         return new SqlLocalDbException(message, hr, instanceName);
     }
 
-    /// <summary>
-    /// Converts a <see cref="string"/> representation of a SID to an array of bytes.
-    /// </summary>
-    /// <param name="ownerSid">The SID to convert to a byte array.</param>
-    /// <returns>
-    /// An <see cref="Array"/> of <see cref="byte"/> containing a representation of <paramref name="ownerSid"/>.
-    /// </returns>
 #if NET5_0_OR_GREATER
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
