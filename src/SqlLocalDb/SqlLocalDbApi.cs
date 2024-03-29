@@ -266,7 +266,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         {
             if (!IsWindows)
             {
-                return Array.Empty<string>();
+                return [];
             }
 
             // Use lazy initialization to allow some functionality to be
@@ -1178,7 +1178,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
                 Logger.DeletedInstanceFiles(instanceName!, instancePath);
             }
         }
-        catch (Exception ex) when (ex is ArgumentException || ex is IOException || ex is UnauthorizedAccessException)
+        catch (Exception ex) when (ex is ArgumentException or IOException or UnauthorizedAccessException)
         {
             Logger.DeletingInstanceFilesFailed(instanceName!, instancePath);
         }

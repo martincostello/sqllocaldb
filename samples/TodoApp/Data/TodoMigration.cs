@@ -46,8 +46,8 @@ public sealed class TodoMigration : Migration
             .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
         modelBuilder.Entity(
-            typeof(TodoItem).Name,
-            b =>
+            nameof(TodoItem),
+            (b) =>
             {
                 b.Property<Guid>(nameof(TodoItem.Id)).ValueGeneratedOnAdd();
                 b.Property<string>(nameof(TodoItem.Text));
