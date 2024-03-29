@@ -76,7 +76,7 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
 
         // Assert
         Assert.Throws<ObjectDisposedException>(() => instance.Name);
-        Assert.Throws<ObjectDisposedException>(() => instance.GetInstanceInfo());
+        Assert.Throws<ObjectDisposedException>(instance.GetInstanceInfo);
     }
 
     [Fact]

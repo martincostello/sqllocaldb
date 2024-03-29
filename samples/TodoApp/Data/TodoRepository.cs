@@ -34,7 +34,7 @@ public sealed class TodoRepository(TimeProvider timeProvider, TodoContext contex
     /// <inheritdoc />
     public async Task<bool?> CompleteItemAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        TodoItem? item = await context.Items!.FindAsync(new object[] { id }, cancellationToken);
+        TodoItem? item = await context.Items!.FindAsync([id], cancellationToken);
 
         if (item is null)
         {

@@ -136,10 +136,10 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         Assert.Throws<PlatformNotSupportedException>(() => actual.CreateInstance("name"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteInstance("name"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.DeleteUserInstances());
-        Assert.Throws<PlatformNotSupportedException>(() => actual.GetDefaultInstance());
+        Assert.Throws<PlatformNotSupportedException>(actual.GetDefaultInstance);
         Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstanceInfo("name"));
-        Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstanceNames());
-        Assert.Throws<PlatformNotSupportedException>(() => actual.GetInstances());
+        Assert.Throws<PlatformNotSupportedException>(actual.GetInstanceNames);
+        Assert.Throws<PlatformNotSupportedException>(actual.GetInstances);
         Assert.Throws<PlatformNotSupportedException>(() => actual.GetOrCreateInstance("name"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.GetVersionInfo("name"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.InstanceExists("name"));
@@ -147,9 +147,9 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         Assert.Throws<PlatformNotSupportedException>(() => actual.ShareInstance("name", "sharedName"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.ShareInstance("sid", "name", "sharedName"));
         Assert.Throws<PlatformNotSupportedException>(() => actual.StartInstance("name"));
-        Assert.Throws<PlatformNotSupportedException>(() => actual.StartTracing());
+        Assert.Throws<PlatformNotSupportedException>(actual.StartTracing);
         Assert.Throws<PlatformNotSupportedException>(() => actual.StopInstance("name"));
-        Assert.Throws<PlatformNotSupportedException>(() => actual.StopTracing());
+        Assert.Throws<PlatformNotSupportedException>(actual.StopTracing);
         Assert.Throws<PlatformNotSupportedException>(() => actual.UnshareInstance("name"));
     }
 
@@ -177,19 +177,19 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         Assert.Throws<InvalidOperationException>(() => actual.CreateInstance("name"));
         Assert.Throws<InvalidOperationException>(() => actual.DeleteInstance("name"));
         Assert.Throws<InvalidOperationException>(() => actual.DeleteUserInstances());
-        Assert.Throws<InvalidOperationException>(() => actual.GetDefaultInstance());
+        Assert.Throws<InvalidOperationException>(actual.GetDefaultInstance);
         Assert.Throws<InvalidOperationException>(() => actual.GetInstanceInfo("name"));
-        Assert.Throws<InvalidOperationException>(() => actual.GetInstanceNames());
-        Assert.Throws<InvalidOperationException>(() => actual.GetInstances());
+        Assert.Throws<InvalidOperationException>(actual.GetInstanceNames);
+        Assert.Throws<InvalidOperationException>(actual.GetInstances);
         Assert.Throws<InvalidOperationException>(() => actual.GetOrCreateInstance("name"));
         Assert.Throws<InvalidOperationException>(() => actual.GetVersionInfo("name"));
         Assert.Throws<InvalidOperationException>(() => actual.InstanceExists("name"));
         Assert.Throws<InvalidOperationException>(() => actual.LatestVersion);
         Assert.Throws<InvalidOperationException>(() => actual.ShareInstance("name", "sharedName"));
         Assert.Throws<InvalidOperationException>(() => actual.StartInstance("name"));
-        Assert.Throws<InvalidOperationException>(() => actual.StartTracing());
+        Assert.Throws<InvalidOperationException>(actual.StartTracing);
         Assert.Throws<InvalidOperationException>(() => actual.StopInstance("name"));
-        Assert.Throws<InvalidOperationException>(() => actual.StopTracing());
+        Assert.Throws<InvalidOperationException>(actual.StopTracing);
         Assert.Throws<InvalidOperationException>(() => actual.UnshareInstance("name"));
     }
 

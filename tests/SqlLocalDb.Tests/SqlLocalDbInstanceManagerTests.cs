@@ -126,7 +126,7 @@ public class SqlLocalDbInstanceManagerTests(ITestOutputHelper outputHelper)
 
         var target = new SqlLocalDbInstanceManager(instance, api);
 
-        var exception = Assert.Throws<SqlLocalDbException>(() => target.Start());
+        var exception = Assert.Throws<SqlLocalDbException>(target.Start);
 
         exception.ErrorCode.ShouldBe(123);
         exception.InstanceName.ShouldBe("Name");

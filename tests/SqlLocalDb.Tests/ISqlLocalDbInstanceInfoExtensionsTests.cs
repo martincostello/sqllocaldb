@@ -39,7 +39,7 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
         instance.NamedPipe.Returns("MyNamedPipe");
 
         // Act and Assert
-        var exception = Assert.Throws<InvalidOperationException>(() => instance.CreateConnectionStringBuilder());
+        var exception = Assert.Throws<InvalidOperationException>(instance.CreateConnectionStringBuilder);
         exception.Message.ShouldBe("The SQL LocalDB instance 'MyInstance' is not running.");
     }
 
@@ -93,7 +93,7 @@ public static class ISqlLocalDbInstanceInfoExtensionsTests
         var instance = Substitute.For<ISqlLocalDbInstanceInfo>();
 
         // Act and Assert
-        Assert.Throws<ArgumentException>("instance", () => instance.Manage()).Message.ShouldStartWith("The specified instance of ISqlLocalDbInstanceInfo does not implement the ISqlLocalDbApiAdapter interface.");
+        Assert.Throws<ArgumentException>("instance", instance.Manage).Message.ShouldStartWith("The specified instance of ISqlLocalDbInstanceInfo does not implement the ISqlLocalDbApiAdapter interface.");
     }
 
     [Fact]
