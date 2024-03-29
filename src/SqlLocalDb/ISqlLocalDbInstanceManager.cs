@@ -37,10 +37,10 @@ public interface ISqlLocalDbInstanceManager
     /// </summary>
     void Start();
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
     /// <summary>
     /// Stops the LocalDB instance.
     /// </summary>
-#pragma warning disable CA1716 // Identifiers should not match keywords
     void Stop();
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
