@@ -8,7 +8,7 @@ First release.
 
 ## SqlLocalDb v1.1.0.0
 
-Adds logging, improvements to help use with [EntityFramework](http://entityframework.codeplex.com/) and new interfaces to help with mocking/abstractions.
+Adds logging, improvements to help use with EntityFramework and new interfaces to help with mocking/abstractions.
 
 ## SqlLocalDb v1.2.0.0
 
@@ -30,7 +30,7 @@ Added overloads to support specifying the name of the Initial Catalog using the 
   * `SqlConnectionStringBuilder ISqlLocalDbInstance.CreateConnectionStringBuilder()`
   * `ISqlLocalDbInstance ISqlLocalDbProvider.GetOrCreateInstance(string)`
 * Fixed `SqlLocalDbProvider.GetInstances()` only ever returning the default instance.
-* Added sample application that shows use of the assembly with [EntityFramework](http://entityframework.codeplex.com/).
+* Added sample application that shows use of the assembly with EntityFramework.
 
 ## SqlLocalDb v1.5.0.0
 
@@ -43,7 +43,7 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 * Changes to have the managed code automatically use the native library with the appropriate bitness for the executing processor architecture.
 * Fixed typo in XML documentation.
 * Improvements to build automation.
-* Updated to the latest versions of [EntityFramework](http://entityframework.codeplex.com/) and [Moq](https://github.com/Moq/moq4).
+* Updated to the latest versions of EntityFramework and Moq.
 * The non-core projects now target .NET Framework 4.5.1.
 
 ## SqlLocalDb v1.7.0.0

@@ -758,7 +758,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh214784.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbcreateinstance-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBCreateInstance(
@@ -773,7 +773,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh214724.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbdeleteinstance-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBDeleteInstance(
@@ -795,7 +795,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh214483.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbformatmessage-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBFormatMessage(
@@ -815,7 +815,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwInstanceInfoSize">Holds the size of the InstanceInfo buffer.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh245734.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetinstanceinfo-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetInstanceInfo(
@@ -837,7 +837,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh234622.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetinstances-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetInstances(IntPtr pInstanceNames, ref int lpdwNumberOfInstances);
@@ -852,7 +852,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwVersionInfoSize">Holds the size of the VersionInfo buffer.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh234365.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetversioninfo-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetVersionInfo(
@@ -870,7 +870,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh231031.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetversions-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetVersions(IntPtr pVersion, ref int lpdwNumberOfVersions);
@@ -885,7 +885,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh245693.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbshareinstance-functionN</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBShareInstance(
@@ -907,7 +907,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh217143.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbstartinstance-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBStartInstance(
@@ -922,7 +922,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </summary>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh247594.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbstarttracing-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBStartTracing();
@@ -938,7 +938,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh215035.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbstopinstance-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBStopInstance(
@@ -952,7 +952,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </summary>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh214120.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbstoptracing-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBStopTracing();
@@ -964,7 +964,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
         /// <returns>The HRESULT returned by the LocalDB API.</returns>
         /// <remarks>
-        /// See <c>http://technet.microsoft.com/en-us/library/hh215383.aspx</c>.
+        /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbunshareinstance-function</c>.
         /// </remarks>
         internal delegate int LocalDBUnshareInstance(
             [MarshalAs(UnmanagedType.LPWStr)] string pInstanceName,
