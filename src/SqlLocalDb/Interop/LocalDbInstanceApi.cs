@@ -461,54 +461,47 @@ internal sealed class LocalDbInstanceApi : IDisposable
         Version? overrideVersion = null;
         string? path = null;
 
-        try
+        // Is there a setting overriding the version to load?
+        string overrideVersionString = ApiVersion;
+
+        foreach (string versionString in key.GetSubKeyNames())
         {
-            // Is there a setting overriding the version to load?
-            string overrideVersionString = ApiVersion;
-
-            foreach (string versionString in key.GetSubKeyNames())
+            if (!Version.TryParse(versionString, out Version? version))
             {
-                if (!Version.TryParse(versionString, out Version? version))
-                {
-                    Logger.InvalidRegistryKey(versionString);
-                    continue;
-                }
-
-                if (!string.IsNullOrEmpty(overrideVersionString) &&
-                    overrideVersion == null &&
-                    string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
-                {
-                    Logger.NativeApiVersionOverriddenByUser(version);
-                    overrideVersion = version;
-                }
-
-                if (latestVersion == null ||
-                    latestVersion < version)
-                {
-                    latestVersion = version;
-                }
+                Logger.InvalidRegistryKey(versionString);
+                continue;
             }
 
-            if (!string.IsNullOrEmpty(overrideVersionString) && overrideVersion == null)
+            if (!string.IsNullOrEmpty(overrideVersionString) &&
+                overrideVersion == null &&
+                string.Equals(versionString, overrideVersionString, StringComparison.OrdinalIgnoreCase))
             {
-                Logger.NativeApiVersionOverrideNotFound(overrideVersionString);
+                Logger.NativeApiVersionOverriddenByUser(version);
+                overrideVersion = version;
             }
 
-            Version? versionToUse = overrideVersion ?? latestVersion;
-
-            if (versionToUse != null)
+            if (latestVersion == null ||
+                latestVersion < version)
             {
-                using (IRegistryKey? subkey = key.OpenSubKey(versionToUse.ToString()))
-                {
-                    path = subkey?.GetValue("InstanceAPIPath");
-                }
-
-                NativeApiVersion = versionToUse;
+                latestVersion = version;
             }
         }
-        finally
+
+        if (!string.IsNullOrEmpty(overrideVersionString) && overrideVersion == null)
         {
-            key.Dispose();
+            Logger.NativeApiVersionOverrideNotFound(overrideVersionString);
+        }
+
+        Version? versionToUse = overrideVersion ?? latestVersion;
+
+        if (versionToUse != null)
+        {
+            using (IRegistryKey? subkey = key.OpenSubKey(versionToUse.ToString()))
+            {
+                path = subkey?.GetValue("InstanceAPIPath");
+            }
+
+            NativeApiVersion = versionToUse;
         }
 
         if (string.IsNullOrEmpty(path))
