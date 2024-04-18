@@ -30,15 +30,7 @@ public class NotInParallelTests(ITestOutputHelper outputHelper)
 
         IReadOnlyList<string> namesAfter = actual.GetInstanceNames();
 
-        int instancesDeleted = 0;
-
-        foreach (string name in namesBefore)
-        {
-            if (!namesAfter.Contains(name))
-            {
-                instancesDeleted++;
-            }
-        }
+        int instancesDeleted = namesBefore.Count((p) => !namesAfter.Contains(p));
 
         instancesDeleted.ShouldBeGreaterThanOrEqualTo(1);
     }
