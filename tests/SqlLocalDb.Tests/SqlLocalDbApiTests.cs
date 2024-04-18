@@ -260,7 +260,7 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         actual.InstanceExists(instanceName).ShouldBeFalse();
 
         // Act
-        instance = actual.CreateInstance(instanceName);
+        _ = actual.CreateInstance(instanceName);
 
         // Assert
         instance = actual.GetInstanceInfo(instanceName);

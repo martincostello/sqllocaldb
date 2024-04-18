@@ -63,7 +63,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// The handle to the native SQL LocalDB API.
     /// </summary>
-    private SafeLibraryHandle? _handle;
+    private volatile SafeLibraryHandle? _handle;
 
     /// <summary>
     /// The delegate to the <c>LocalDBCreateInstance</c> LocalDB API function.
@@ -148,7 +148,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// </summary>
     ~LocalDbInstanceApi()
     {
-        Dispose(false);
+        DisposeInternal();
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
-        Dispose(true);
+        DisposeInternal();
         GC.SuppressFinalize(this);
     }
 
@@ -449,7 +449,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         fileName = null;
 
         string keyName = DeriveLocalDbRegistryKey();
-        IRegistryKey? key = Registry.OpenSubKey(keyName);
+        using var key = Registry.OpenSubKey(keyName);
 
         if (key == null)
         {
@@ -718,20 +718,10 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
     /// </summary>
-    /// <param name="disposing">
-    /// <see langword="true" /> to release both managed and unmanaged resources;
-    /// <see langword="false" /> to release only unmanaged resources.
-    /// </param>
-    private void Dispose(bool disposing)
+    private void DisposeInternal()
     {
         if (!_disposed)
         {
-            if (disposing)
-            {
-                // Dispose of managed resources
-            }
-
-            // Dispose of unmanaged resources
             if (_handle != null)
             {
                 _handle.Dispose();

@@ -144,25 +144,17 @@ public static class ISqlLocalDbApiExtensions
             // so need to query that separately to verify whether to get or create.
             ISqlLocalDbInstanceInfo info = api.GetInstanceInfo(instanceName);
 
-            if (info != null)
+            // If it exists (or it's a default instance), we can't create
+            // it so just return the information about it immediately.
+            if (info is not null && (info.Exists || info.IsAutomatic))
             {
-                // If it exists (or it's a default instance), we can't create
-                // it so just return the information about it immediately.
-                if (info.Exists || info.IsAutomatic)
-                {
-                    return info;
-                }
+                return info;
             }
         }
 
-        if (api.InstanceExists(instanceName))
-        {
-            return api.GetInstanceInfo(instanceName);
-        }
-        else
-        {
-            return api.CreateInstance(instanceName, api.LatestVersion);
-        }
+        return api.InstanceExists(instanceName) ?
+            api.GetInstanceInfo(instanceName) :
+            api.CreateInstance(instanceName, api.LatestVersion);
     }
 
     /// <summary>
