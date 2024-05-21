@@ -16,7 +16,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0-preview.4.24266.19" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.4.24266.19" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.0-preview.4.24266.19" />
-    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0-preview.3.24209.3" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.0.0-preview.4.24271.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="4.7.0" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
