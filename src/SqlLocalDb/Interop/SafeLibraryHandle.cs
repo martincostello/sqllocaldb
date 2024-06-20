@@ -11,7 +11,7 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// </summary>
 internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
 {
-#if NET6_0_OR_GREATER
+#if NET
     /// <summary>
     /// Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.
     /// </summary>
@@ -41,7 +41,7 @@ internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     /// Managed Debugging Assistant.
     /// </returns>
     protected override bool ReleaseHandle()
-#if NET6_0_OR_GREATER
+#if NET
     {
         NativeLibrary.Free(handle);
         return true;

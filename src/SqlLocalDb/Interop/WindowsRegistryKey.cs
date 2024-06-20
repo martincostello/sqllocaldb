@@ -10,22 +10,22 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// </summary>
 internal sealed class WindowsRegistryKey(RegistryKey key) : IRegistryKey
 {
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     void IDisposable.Dispose() => key.Dispose();
 
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     public string[] GetSubKeyNames() => key.GetSubKeyNames();
 
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     public string? GetValue(string name) => key.GetValue(name, null, RegistryValueOptions.None) as string;
 
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     public IRegistryKey? OpenSubKey(string keyName)

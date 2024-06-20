@@ -1252,7 +1252,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         return new SqlLocalDbException(message, hr, instanceName);
     }
 
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     private static byte[] GetOwnerSidAsByteArray(string ownerSid)
