@@ -38,7 +38,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// </summary>
     private const int LocalDbTruncateErrorMessage = 1;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>
@@ -188,7 +188,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     internal static string MarshalString(byte[] bytes)
     {
         Debug.Assert(bytes != null, "bytes cannot be null.");
-#if NET6_0_OR_GREATER
+#if NET
         return Encoding.Unicode.GetString(bytes).TrimEnd('\0');
 #else
         return Encoding.Unicode.GetString(bytes).TrimEnd(_nullArray);
@@ -609,7 +609,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
                         return null;
                     }
 
-#if NET6_0_OR_GREATER
+#if NET
                     if (!NativeLibrary.TryLoad(
                             fileName,
                             typeof(LocalDbInstanceApi).Assembly,
@@ -688,7 +688,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
             return null;
         }
 
-#if NET6_0_OR_GREATER
+#if NET
         if (!NativeLibrary.TryGetExport(handle.DangerousGetHandle(), functionName, out IntPtr address))
         {
             Logger.NativeApiFunctionNotFound(functionName);

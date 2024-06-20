@@ -10,7 +10,7 @@ namespace MartinCostello.SqlLocalDb.Interop;
 /// </summary>
 internal sealed class WindowsRegistry : IRegistry
 {
-#if NET5_0_OR_GREATER
+#if NET
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 #endif
     public IRegistryKey? OpenSubKey(string keyName)
