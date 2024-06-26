@@ -30,7 +30,6 @@
     <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <NoWarn>$(NoWarn);CA1054;CA1848;CA2234</NoWarn>
     <Nullable>enable</Nullable>
     <PackageIcon></PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
