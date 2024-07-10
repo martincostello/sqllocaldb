@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
 using TodoApp.Data;
 
-namespace TodoApp.Tests;
+namespace TodoApp;
 
 public class TodoRepositoryTests(ITestOutputHelper outputHelper)
 {
