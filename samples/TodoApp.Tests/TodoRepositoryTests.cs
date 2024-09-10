@@ -38,6 +38,8 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
             .UseSqlServer(instance.ConnectionString);
 
         using var context = new TodoContext(builder.Options);
+        await context.Database.EnsureCreatedAsync();
+
         var target = new TodoRepository(clock, context);
 
         // Act - Verify the repository is empty
