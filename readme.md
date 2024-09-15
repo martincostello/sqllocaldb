@@ -2,7 +2,8 @@
 
 SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0`, `net6.0` and `net8.0`.
 
-[![NuGet](https://img.shields.io/nuget/v/MartinCostello.SqlLocalDb?logo=nuget&label=NuGet&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
+[![NuGet](https://img.shields.io/nuget/v/MartinCostello.SqlLocalDb?logo=nuget&label=Latest&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
+[![NuGet Downloads](https://img.shields.io/nuget/dt/MartinCostello.SqlLocalDb?logo=nuget&label=Latest&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 
 [![Build status](https://github.com/martincostello/sqllocaldb/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/sqllocaldb/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
 [![codecov](https://codecov.io/gh/martincostello/sqllocaldb/branch/main/graph/badge.svg)](https://codecov.io/gh/martincostello/sqllocaldb)
