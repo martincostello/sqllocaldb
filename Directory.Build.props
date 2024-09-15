@@ -35,7 +35,7 @@
     <PackageIcon></PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martincostello/sqllocaldb</PackageProjectUrl>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>package-readme.md</PackageReadmeFile>
     <PackageReleaseNotes>See $(PackageProjectUrl)/releases for details.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>sql;localdb</PackageTags>
