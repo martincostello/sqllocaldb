@@ -4,7 +4,6 @@ about: Create a bug report to help us improve the library
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
 <!--
@@ -32,8 +31,9 @@ assignees: ''
 <!-- If applicable, add screenshots to help explain your problem. -->
 
 ## System information
-- OS: [e.g. Windows 10]
-- Library Version [e.g. 2.0.0]
+
+- OS: [e.g. Windows 11]
+- Library Version [e.g. 3.4.0]
 - SQL LocalDB version [e.g. 13.0]
 - .NET version (e.g. output from `dotnet --info`)
 
