@@ -89,8 +89,6 @@ For all of the tests to be functional you must also have at least one version of
 
 To build and test the library locally from a terminal/command-line, run the following set of commands:
 
-**Windows**
-
 ```powershell
 git clone https://github.com/martincostello/sqllocaldb.git
 cd sqllocaldb
