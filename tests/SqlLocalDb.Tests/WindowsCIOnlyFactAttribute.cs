@@ -17,6 +17,6 @@ public sealed class WindowsCIOnlyFactAttribute : FactAttribute
             OperatingSystem.IsWindows() &&
             !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI"));
 
-        Skip = isWindowsCI ? string.Empty : "This test can only be run on Windows CI.";
+        Skip = isWindowsCI ? null : "This test can only be run on Windows CI.";
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System.Security.Principal;
-using Xunit.Sdk;
 
 namespace MartinCostello.SqlLocalDb;
 
@@ -11,13 +10,12 @@ namespace MartinCostello.SqlLocalDb;
 /// if the user account running the test has administrative privileges. This class cannot be inherited.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-[XunitTestCaseDiscoverer("MartinCostello.SqlLocalDb.RetryFactDiscoverer", "MartinCostello.SqlLocalDb.Tests")]
 public sealed class RunAsAdminFactAttribute : FactAttribute
 {
     public RunAsAdminFactAttribute()
         : base()
     {
-        Skip = IsCurrentUserAdmin(out string name) ? string.Empty : $"The current user '{name}' does not have administrative privileges.";
+        Skip = IsCurrentUserAdmin(out string name) ? null : $"The current user '{name}' does not have administrative privileges.";
     }
 
     /// <summary>

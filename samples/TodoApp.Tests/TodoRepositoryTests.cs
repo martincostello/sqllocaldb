@@ -13,14 +13,13 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
 {
     private ILoggerFactory LoggerFactory { get; } = outputHelper.ToLoggerFactory();
 
-    [SkippableFact]
+    [Fact]
     public async Task Can_Create_Update_And_Delete_Todo_Items()
     {
         // Arrange
-        Skip.IfNot(
-            OperatingSystem.IsWindows(),
-            "This test can only be run on Windows.");
+        Assert.SkipUnless(OperatingSystem.IsWindows(), "This test can only be run on Windows.");
 
+        var cancellationToken = TestContext.Current.CancellationToken;
         var now = new DateTimeOffset(2018, 08, 12, 10, 41, 0, TimeSpan.Zero);
         var clock = new FakeTimeProvider(now);
 
@@ -38,12 +37,12 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
             .UseSqlServer(instance.ConnectionString);
 
         using var context = new TodoContext(builder.Options);
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.EnsureCreatedAsync(cancellationToken);
 
         var target = new TodoRepository(clock, context);
 
         // Act - Verify the repository is empty
-        IList<TodoItem> items = await target.GetItemsAsync();
+        IList<TodoItem> items = await target.GetItemsAsync(cancellationToken);
 
         // Assert
         Assert.NotNull(items);
@@ -53,7 +52,7 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
         string text = "Buy cheese";
 
         // Act
-        TodoItem item = await target.AddItemAsync(text);
+        TodoItem item = await target.AddItemAsync(text, cancellationToken);
 
         // Assert
         Assert.NotNull(item);
@@ -66,13 +65,13 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
         Guid id = item.Id;
 
         // Act
-        bool? completeResult = await target.CompleteItemAsync(id);
+        bool? completeResult = await target.CompleteItemAsync(id, cancellationToken);
 
         // Assert
         Assert.True(completeResult);
 
         // Act - Verify the repository has one item that is completed
-        items = await target.GetItemsAsync();
+        items = await target.GetItemsAsync(cancellationToken);
 
         // Assert
         Assert.NotNull(items);
@@ -86,13 +85,13 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
         Assert.Equal(now, item.CompletedAt);
 
         // Act - Delete the item
-        bool deleteResult = await target.DeleteItemAsync(id);
+        bool deleteResult = await target.DeleteItemAsync(id, cancellationToken);
 
         // Assert
         Assert.True(deleteResult);
 
         // Act - Verify the repository is empty again
-        items = await target.GetItemsAsync();
+        items = await target.GetItemsAsync(cancellationToken);
 
         // Assert
         Assert.NotNull(items);
