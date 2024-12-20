@@ -10,13 +10,13 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
 {
     private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
-    [SkippableTheory]
+    [Theory]
     [InlineData(unchecked((int)0x89c50112))]
     [InlineData(unchecked((int)0x89c50108))]
     public static void TemporaryInstance_Ignores_Exception_If_Delete_Fails(int errorCode)
     {
         // Arrange
-        Skip.IfNot(SqlLocalDbApi.IsWindows);
+        Assert.SkipWhen(SqlLocalDbApi.IsWindows, "Not expected to fail on Windows.");
 
         // Arrange
         var api = Substitute.For<ISqlLocalDbApi>();

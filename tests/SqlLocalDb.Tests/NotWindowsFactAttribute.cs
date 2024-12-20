@@ -13,6 +13,6 @@ public sealed class NotWindowsFactAttribute : FactAttribute
     public NotWindowsFactAttribute()
         : base()
     {
-        Skip = !OperatingSystem.IsWindows() ? string.Empty : "This test can only be run on Windows.";
+        Skip = !OperatingSystem.IsWindows() ? null : "This test cannot be run on Windows.";
     }
 }
