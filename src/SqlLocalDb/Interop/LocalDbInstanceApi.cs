@@ -48,7 +48,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
-    private readonly object _syncRoot = new();
+    private readonly Lock _syncRoot = new();
 
     /// <summary>
     /// Whether the instance has been disposed of.
