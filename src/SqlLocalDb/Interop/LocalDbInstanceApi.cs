@@ -51,10 +51,12 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private static readonly char[] _nullArray = ['\0'];
 #endif
 
+#pragma warning disable SA1121
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
     private readonly Lock _syncRoot = new();
+#pragma warning restore SA1121
 
     /// <summary>
     /// Whether the instance has been disposed of.
