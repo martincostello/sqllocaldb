@@ -1,10 +1,16 @@
-﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
+// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Extensions.Logging;
+
+#if NET10_0_OR_GREATER
+using Lock = System.Threading.Lock;
+#else
+using Lock = object;
+#endif
 
 namespace MartinCostello.SqlLocalDb.Interop;
 
@@ -45,10 +51,12 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private static readonly char[] _nullArray = ['\0'];
 #endif
 
+#pragma warning disable SA1121
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
-    private readonly object _syncRoot = new();
+    private readonly Lock _syncRoot = new();
+#pragma warning restore SA1121
 
     /// <summary>
     /// Whether the instance has been disposed of.
