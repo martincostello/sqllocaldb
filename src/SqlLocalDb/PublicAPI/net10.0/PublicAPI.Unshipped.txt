@@ -1,5 +1,4 @@
-#nullable enable
-MartinCostello.SqlLocalDb.ISqlLocalDbApi
+﻿MartinCostello.SqlLocalDb.ISqlLocalDbApi
 MartinCostello.SqlLocalDb.ISqlLocalDbApi.CreateInstance(string! instanceName, string! version) -> MartinCostello.SqlLocalDb.ISqlLocalDbInstanceInfo!
 MartinCostello.SqlLocalDb.ISqlLocalDbApi.DefaultInstanceName.get -> string!
 MartinCostello.SqlLocalDb.ISqlLocalDbApi.DeleteInstance(string! instanceName) -> void
