@@ -1,6 +1,5 @@
 <Project>
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
     <AssemblyAttribute Include="System.CLSCompliant">
       <_Parameter1>false</_Parameter1>
       <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
@@ -11,75 +10,18 @@
     </AssemblyAttribute>
   </ItemGroup>
   <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <AnalysisMode>All</AnalysisMode>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
-    <Authors>martin_costello</Authors>
-    <ChecksumAlgorithm>SHA256</ChecksumAlgorithm>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
-    <Company>https://github.com/martincostello/sqllocaldb</Company>
-    <ContinuousIntegrationBuild Condition=" '$(CI)' != '' ">true</ContinuousIntegrationBuild>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
-    <Deterministic>true</Deterministic>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <GenerateGitMetadata Condition=" '$(CI)' != '' and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <NeutralLanguage>en-US</NeutralLanguage>
     <NuGetAuditMode>direct</NuGetAuditMode>
-    <Nullable>enable</Nullable>
-    <PackageIcon>package-icon.png</PackageIcon>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/martincostello/sqllocaldb</PackageProjectUrl>
-    <PackageReadmeFile>package-readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>See $(PackageProjectUrl)/releases for details.</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>sql;localdb</PackageTags>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-    <SignAssembly>true</SignAssembly>
-    <StrongNamePublicKey Condition=" '$(SignAssembly)' == 'true'">00240000048000009400000006020000002400005253413100040000010001004b0b2efbada897147aa03d2076278890aefe2f8023562336d206ec8a719b06e89461c31b43abec615918d509158629f93385930c030494509e418bf396d69ce7dbe0b5b2db1a81543ab42777cb98210677fed69dbeb3237492a7ad69e87a1911ed20eb2d7c300238dc6f6403e3d04a1351c5cb369de4e022b18fbec70f7d21ed</StrongNamePublicKey>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseArtifactsOutput>true</UseArtifactsOutput>
+    <PackageValidationBaselineVersion>3.4.0</PackageValidationBaselineVersion>
     <VersionPrefix>3.4.1</VersionPrefix>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' != '' AND '$(DEPENDABOT_JOB_ID)' == '' ">
-    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(GITHUB_HEAD_REF)' == '' ">beta.$(GITHUB_RUN_NUMBER)</VersionSuffix>
-    <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(GITHUB_HEAD_REF)' != '' ">pr.$(GITHUB_REF_NAME.Replace('/merge', '')).$(GITHUB_RUN_NUMBER)</VersionSuffix>
-    <VersionPrefix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) ">$(GITHUB_REF.Replace('refs/tags/v', ''))</VersionPrefix>
-    <VersionSuffix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) "></VersionSuffix>
-    <FileVersion Condition=" '$(GITHUB_RUN_NUMBER)' != '' ">$(VersionPrefix).$(GITHUB_RUN_NUMBER)</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(EnableReferenceTrimmer)' != 'false' and '$(GenerateDocumentationFile)' != 'true' ">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);419;1570;1573;1574;1584;1591;SA0001;SA1602</NoWarn>
   </PropertyGroup>
-  <PropertyGroup>
-    <CollectCoverage>true</CollectCoverage>
-    <CoverletOutputFormat>cobertura,json</CoverletOutputFormat>
-    <Exclude>[Humanizer*]*,[System.*]*,[*.Test*]*,[TodoApp*]*,[xunit.*]*</Exclude>
-    <MergeWith>$(CoverletOutput)coverage.$(TargetFramework).json</MergeWith>
-    <Threshold Condition=" '$(OS)' == 'Windows_NT' ">80</Threshold>
-    <Threshold Condition=" '$(OS)' != 'Windows_NT' ">40</Threshold>
-  </PropertyGroup>
-  <ItemGroup Condition=" '$(PackageIcon)' != '' ">
-    <None Include="$(MSBuildThisFileDirectory)$(PackageIcon)" Pack="True" PackagePath="" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(PackageReadmeFile)' != '' ">
-    <None Include="$(MSBuildThisFileDirectory)$(PackageReadmeFile)" Pack="True" PackagePath="" />
-  </ItemGroup>
-  <ItemGroup>
-    <Using Include="System.Globalization" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
-    <Using Include="Shouldly" />
-    <Using Include="Xunit" />
-  </ItemGroup>
 </Project>

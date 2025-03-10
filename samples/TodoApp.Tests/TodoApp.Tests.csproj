@@ -1,10 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1303;CA1707;CA2007;SA1600</NoWarn>
+    <NoWarn>$(NoWarn);CA1303</NoWarn>
     <RootNamespace>TodoApp</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
