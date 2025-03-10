@@ -4,12 +4,11 @@
     <Description>A .NET assembly providing interop with the SQL LocalDB native API from managed code using .NET APIs.</Description>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
     <NoWarn>$(NoWarn);CA2235;CA2254</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
-    <PackageValidationBaselineVersion>3.4.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
   </PropertyGroup>
@@ -18,9 +17,7 @@
     <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <!-- Mark as AoT compatible when Microsoft.Data.SqlClient and its dependencies are -->
-    <!--
-    <IsAotCompatible>true</IsAotCompatible>
-    -->
+    <IsAotCompatible>false</IsAotCompatible>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <!--
@@ -34,6 +31,7 @@
     <EmbeddedResource Update="SR.resx" Generator="ResXFileCodeGenerator" LastGenOutput="SR.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="2.1.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="2.0.0" />
@@ -49,11 +47,6 @@
     <PackageReference Update="Microsoft.Data.SqlClient" VersionOverride="5.1.5" />
     <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="8.0.0" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="8.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Shipped.txt" />
-    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">

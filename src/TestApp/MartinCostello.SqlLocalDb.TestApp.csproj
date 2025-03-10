@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Test application for MartinCostello.SqlLocalDb.</Description>
-    <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1031;CA2007;SA1600</NoWarn>
+    <NoWarn>$(NoWarn);CA1031</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
