@@ -32,21 +32,21 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="2.1.7" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="2.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="5.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="2.0.0" />
   </ItemGroup>
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
     <PackageReference Include="Microsoft.Win32.Registry" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
-    <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="6.0.0" />
+    <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="9.0.3" />
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="6.0.0" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
     <PackageReference Update="Microsoft.Data.SqlClient" VersionOverride="5.1.5" />
-    <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="8.0.0" />
-    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="8.0.0" />
+    <PackageReference Update="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="9.0.3" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="9.0.3" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
