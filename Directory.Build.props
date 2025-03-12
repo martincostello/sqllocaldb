@@ -1,22 +1,19 @@
 <Project>
   <ItemGroup>
-    <AssemblyAttribute Include="System.CLSCompliant">
-      <_Parameter1>false</_Parameter1>
-      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
-    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.InteropServices.ComVisible">
       <_Parameter1>false</_Parameter1>
       <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
     </AssemblyAttribute>
   </ItemGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)SqlLocalDb.snk</AssemblyOriginatorKeyFile>
+    <AssemblyIsCLSCompliant>false</AssemblyIsCLSCompliant>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>sql;localdb</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
+    <UseDefaultAssemblyOriginatorKeyFile>true</UseDefaultAssemblyOriginatorKeyFile>
     <PackageValidationBaselineVersion>3.4.0</PackageValidationBaselineVersion>
     <VersionPrefix>3.4.1</VersionPrefix>
   </PropertyGroup>
