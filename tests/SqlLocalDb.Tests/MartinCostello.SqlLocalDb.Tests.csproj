@@ -4,7 +4,7 @@
     <NoWarn>$(NoWarn);CA2234;CA1303</NoWarn>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
