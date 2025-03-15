@@ -1,6 +1,6 @@
 # SQL LocalDB Wrapper
 
-SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0`, `net6.0` and `net8.0`.
+SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0`, `net8.0` and `net10.0`.
 
 [![NuGet](https://img.shields.io/nuget/v/MartinCostello.SqlLocalDb?logo=nuget&label=Latest&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 [![NuGet Downloads](https://img.shields.io/nuget/dt/MartinCostello.SqlLocalDb?logo=nuget&label=Downloads&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
