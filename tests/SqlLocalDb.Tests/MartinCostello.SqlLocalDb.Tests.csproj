@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Description>Tests for MartinCostello.SqlLocalDb.</Description>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
