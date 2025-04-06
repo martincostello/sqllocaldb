@@ -18,11 +18,6 @@ $packageProjects = @(
     (Join-Path $solutionPath "src" "SqlLocalDb" "MartinCostello.SqlLocalDb.csproj")
 )
 
-$testProjects = @(
-    (Join-Path $solutionPath "tests" "SqlLocalDb.Tests" "MartinCostello.SqlLocalDb.Tests.csproj"),
-    (Join-Path $solutionPath "samples" "TodoApp.Tests" "TodoApp.Tests.csproj")
-)
-
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
 
 $installDotNetSdk = $false;
@@ -85,7 +80,7 @@ function DotNetPack {
 }
 
 function DotNetTest {
-    param([string]$Project)
+    param()
 
     $additionalArgs = @()
 
@@ -94,7 +89,7 @@ function DotNetTest {
         $additionalArgs += "GitHubActions;report-warnings=false"
     }
 
-    & $dotnet test $Project --configuration "Release" $additionalArgs
+    & $dotnet test --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
@@ -106,7 +101,5 @@ ForEach ($project in $packageProjects) {
     DotNetPack $project
 }
 
-Write-Information "Testing $($testProjects.Count) project(s)..."
-ForEach ($project in $testProjects) {
-    DotNetTest $project
-}
+Write-Information "Testing solution..."
+DotNetTest
