@@ -1,0 +1,51 @@
+<Solution>
+  <Folder Name="/samples/">
+    <File Path="samples/README.md" />
+    <Project Path="samples/TodoApp.Tests/TodoApp.Tests.csproj" />
+    <Project Path="samples/TodoApp/TodoApp.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path=".vsconfig" />
+    <File Path="build.ps1" />
+    <File Path="CHANGELOG.md" />
+    <File Path="CODE_OF_CONDUCT.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="NuGet.config" />
+    <File Path="readme.md" />
+    <File Path="SqlLocalDb.ruleset" />
+    <File Path="stylecop.json" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github/CONTRIBUTING.md" />
+    <File Path=".github/ISSUE_TEMPLATE.md" />
+    <File Path=".github/PULL_REQUEST_TEMPLATE.md" />
+    <File Path=".github/stale.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/bump-version.yml" />
+    <File Path=".github/workflows/codeql.yml" />
+    <File Path=".github/workflows/dependency-review.yml" />
+    <File Path=".github/workflows/lint.yml" />
+    <File Path=".github/workflows/ossf-scorecard.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/.vscode/">
+    <File Path=".vscode/extensions.json" />
+    <File Path=".vscode/launch.json" />
+    <File Path=".vscode/tasks.json" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/SqlLocalDb/MartinCostello.SqlLocalDb.csproj" />
+    <Project Path="src/TestApp/MartinCostello.SqlLocalDb.TestApp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj" />
+  </Folder>
+</Solution>
