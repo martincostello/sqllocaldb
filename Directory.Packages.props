@@ -24,6 +24,6 @@
     <PackageVersion Include="ReportGenerator" Version="5.4.5" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
-    <PackageVersion Include="xunit.v3" Version="2.0.0" />
+    <PackageVersion Include="xunit.v3" Version="2.0.1" />
   </ItemGroup>
 </Project>
