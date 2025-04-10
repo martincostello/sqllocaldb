@@ -14,9 +14,9 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.4.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="4.7.0" />
