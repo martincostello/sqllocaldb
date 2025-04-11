@@ -10,8 +10,6 @@
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <!-- HACK TODO Disable as direct does not seem to be working in .NET 10 preview 3 -->
-    <NuGetAudit>false</NuGetAudit>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>sql;localdb</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
