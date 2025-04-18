@@ -305,7 +305,7 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         // Act
         actual.StopInstance(instanceName);
 
-        await Task.Delay(TimeSpan.FromSeconds(1));
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Assert
         instance = actual.GetInstanceInfo(instanceName);
@@ -317,7 +317,7 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         // Act
         actual.DeleteInstance(instanceName);
 
-        await Task.Delay(TimeSpan.FromSeconds(1));
+        await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Assert
         instance = actual.GetInstanceInfo(instanceName);
