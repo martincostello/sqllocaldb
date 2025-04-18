@@ -21,7 +21,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// The maximum size of SQL Server LocalDB instance names.
     /// </summary>
-    internal const int MaximumInstanceNameLength = 256;
+    internal const int MaximumInstanceNameLength = 128;
 
     /// <summary>
     /// The maximum size of a SQL Server LocalDB version string.
