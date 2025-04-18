@@ -52,6 +52,22 @@ jobs:
 
     steps:
 
+    - name: Update agent configuration
+      shell: pwsh
+      run: |
+        if ($IsWindows) {
+          "DOTNET_INSTALL_DIR=D:\tools\dotnet" >> ${env:GITHUB_ENV}
+          "DOTNET_ROOT=D:\tools\dotnet" >> ${env:GITHUB_ENV}
+          "NUGET_PACKAGES=D:\.nuget\packages" >> ${env:GITHUB_ENV}
+        } else {
+          $nugetHome = "~/.nuget/packages"
+          if (-Not (Test-Path $nugetHome)) {
+            New-Item -Path $nugetHome -Type Directory -Force | Out-Null
+          }
+          $nugetHome = Resolve-Path $nugetHome
+          "NUGET_PACKAGES=$nugetHome" >> ${env:GITHUB_ENV}
+        }
+
     - name: Checkout code
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       with:
