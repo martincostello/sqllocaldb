@@ -116,4 +116,56 @@ public static class SqlLocalDbExceptionTests
         // Act and Assert
         Assert.Throws<ArgumentNullException>("info", () => target.GetObjectData(info!, context));
     }
+
+#if NETFRAMEWORK
+    [Fact]
+    [Obsolete("Obsolete members are still tested.")]
+    public static void SqlLocalDbException_Can_Be_Roundtrip_Serialized()
+    {
+        // Arrange
+        var expected = new SqlLocalDbException("Some exception.", 123, "my-instance", new SqlLocalDbException());
+
+        SqlLocalDbException actual;
+
+        // Act
+        using (var stream = Serialize(expected))
+        {
+            actual = Deserialize(stream);
+        }
+
+        // Assert
+        actual.ShouldNotBeNull();
+        actual.Message.ShouldBe(expected.Message);
+        actual.ErrorCode.ShouldBe(expected.ErrorCode);
+        actual.InstanceName.ShouldBe(expected.InstanceName);
+        actual.InnerException.ShouldNotBeNull();
+        actual.InnerException.ShouldBeOfType<SqlLocalDbException>();
+
+        static Stream Serialize(object graph)
+        {
+            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            var stream = new MemoryStream();
+
+            try
+            {
+                formatter.Serialize(stream, graph);
+
+                stream.Seek(0L, SeekOrigin.Begin);
+
+                return stream;
+            }
+            catch (Exception)
+            {
+                stream?.Dispose();
+                throw;
+            }
+        }
+
+        static SqlLocalDbException Deserialize(Stream stream)
+        {
+            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            return (SqlLocalDbException)formatter.Deserialize(stream);
+        }
+    }
+#endif
 }

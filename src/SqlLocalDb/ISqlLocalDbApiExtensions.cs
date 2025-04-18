@@ -66,7 +66,7 @@ public static class ISqlLocalDbApiExtensions
 
         IReadOnlyList<string> instanceNames = api.GetInstanceNames();
 
-        var instances = new List<ISqlLocalDbInstanceInfo>(instanceNames?.Count ?? 0);
+        var instances = new List<ISqlLocalDbInstanceInfo>();
 
         if (instanceNames != null)
         {
@@ -99,7 +99,7 @@ public static class ISqlLocalDbApiExtensions
         }
 
         IReadOnlyList<string> versionNames = api.Versions;
-        var versions = new List<ISqlLocalDbVersionInfo>(versionNames?.Count ?? 0);
+        var versions = new List<ISqlLocalDbVersionInfo>();
 
         if (versionNames != null)
         {

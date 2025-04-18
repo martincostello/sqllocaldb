@@ -277,10 +277,17 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
 
         var builder = new SqlConnectionStringBuilder() { DataSource = namedPipe };
 
+#if NET
         await using (var connection = new SqlConnection(builder.ConnectionString))
         {
             await connection.OpenAsync();
         }
+#else
+        using (var connection = new SqlConnection(builder.ConnectionString))
+        {
+            await connection.OpenAsync();
+        }
+#endif
 
         // Act
         instance = actual.GetInstanceInfo(instanceName);

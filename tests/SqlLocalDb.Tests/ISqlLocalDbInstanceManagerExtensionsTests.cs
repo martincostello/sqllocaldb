@@ -42,7 +42,12 @@ public class ISqlLocalDbInstanceManagerExtensionsTests(ITestOutputHelper outputH
         actual.State.ShouldBe(ConnectionState.Closed);
 
         await actual.OpenAsync();
+
+#if NET
         await actual.CloseAsync();
+#else
+        actual.Close();
+#endif
     }
 
     [Fact]

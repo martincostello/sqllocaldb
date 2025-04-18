@@ -43,11 +43,13 @@ public sealed class RunAsAdminFactAttribute : FactAttribute
     /// </returns>
     private static bool IsCurrentUserAdmin(out string name)
     {
+#if NET
         if (!OperatingSystem.IsWindows())
         {
             name = Environment.UserName;
             return false;
         }
+#endif
 
         using var identity = WindowsIdentity.GetCurrent();
         name = identity.Name;
