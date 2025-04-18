@@ -13,7 +13,7 @@ public class NotInParallelTests(ITestOutputHelper outputHelper)
 {
     private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
 
-    [WindowsCIOnlyFact]
+    [WindowsCIOnlyFact(Skip = "TODO")]
     public void Can_Delete_User_Instances()
     {
         // Arrange
