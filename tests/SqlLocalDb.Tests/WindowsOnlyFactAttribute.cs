@@ -20,10 +20,4 @@ public sealed class WindowsOnlyFactAttribute : FactAttribute
 #endif
             null;
     }
-
-    /// <summary>
-    /// Gets or sets the number of retries allowed for a failed test.
-    /// If unset (or set less than 1), will default to 3 attempts.
-    /// </summary>
-    public int MaxRetries { get; set; }
 }

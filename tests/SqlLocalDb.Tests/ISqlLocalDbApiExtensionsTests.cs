@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -391,16 +392,12 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
     }
 
     [WindowsOnlyFact]
-    public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Not_Deleted()
-    {
-        CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: false);
-    }
+    public async Task CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Not_Deleted()
+        => await CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: false);
 
     [WindowsOnlyFact]
-    public void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Deleted()
-    {
-        CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: true);
-    }
+    public async Task CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance_If_Files_Deleted()
+        => await CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(deleteFiles: true);
 
     [RunAsAdminFact]
     public void ShareInstance_Shares_Instance_For_Current_User()
@@ -427,7 +424,7 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
         return instance;
     }
 
-    private void CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
+    private async Task CreateTemporaryInstance_Creates_Starts_And_Deletes_An_Instance(bool deleteFiles)
     {
         // Arrange
         using var api = new SqlLocalDbApi(_loggerFactory);
@@ -438,6 +435,8 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
         // Act
         using (TemporarySqlLocalDbInstance target = api.CreateTemporaryInstance(deleteFiles))
         {
+            await Task.Delay(TimeSpan.FromSeconds(1));
+
             // Assert
             target.ShouldNotBeNull();
             target.Name.ShouldNotBeNull();
