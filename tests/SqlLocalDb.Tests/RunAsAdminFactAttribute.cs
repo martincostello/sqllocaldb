@@ -19,12 +19,6 @@ public sealed class RunAsAdminFactAttribute : FactAttribute
     }
 
     /// <summary>
-    /// Gets or sets the number of retries allowed for a failed test.
-    /// If unset (or set less than 1), will default to 3 attempts.
-    /// </summary>
-    public int MaxRetries { get; set; }
-
-    /// <summary>
     /// Returns whether the current user has Administrative privileges.
     /// </summary>
     /// <returns>
