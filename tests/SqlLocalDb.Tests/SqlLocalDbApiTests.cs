@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -305,8 +304,6 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         // Act
         actual.StopInstance(instanceName);
 
-        await Task.Delay(TimeSpan.FromSeconds(2));
-
         // Assert
         instance = actual.GetInstanceInfo(instanceName);
         instance.ShouldNotBeNull();
@@ -316,8 +313,6 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
 
         // Act
         actual.DeleteInstance(instanceName);
-
-        await Task.Delay(TimeSpan.FromSeconds(2));
 
         // Assert
         instance = actual.GetInstanceInfo(instanceName);
@@ -334,7 +329,7 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
     }
 
     [WindowsOnlyFact]
-    public async Task Can_Create_SqlLocalDB_Instances_With_Different_Versions()
+    public void Can_Create_SqlLocalDB_Instances_With_Different_Versions()
     {
         // Arrange
         using var actual = new SqlLocalDbApi(_loggerFactory);
@@ -355,8 +350,6 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
 
             // Act
             ISqlLocalDbInstanceInfo instanceInfo = actual.CreateInstance(instanceName, version);
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
 
             // Assert
             instanceInfo.ShouldNotBeNull();

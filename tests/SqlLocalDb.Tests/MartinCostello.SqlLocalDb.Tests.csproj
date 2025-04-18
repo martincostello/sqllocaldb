@@ -5,7 +5,6 @@
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net481</TargetFrameworks>
-    <TestTfmsInParallel>false</TestTfmsInParallel>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
