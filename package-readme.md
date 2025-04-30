@@ -1,6 +1,6 @@
 # SQL LocalDB Wrapper
 
-SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `netstandard2.0`, `net6.0` and `net8.0`.
+SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis?view=sql-server-2017 "SQL Server Express LocalDB Reference - Instance APIs") Instance API from managed code using .NET APIs. The library targets `net8.0` and `net472`.
 
 [![NuGet](https://img.shields.io/nuget/v/MartinCostello.SqlLocalDb?logo=nuget&label=Latest&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
 [![NuGet Downloads](https://img.shields.io/nuget/dt/MartinCostello.SqlLocalDb?logo=nuget&label=Downloads&color=blue)](https://www.nuget.org/packages/MartinCostello.SqlLocalDb "Download MartinCostello.SqlLocalDb from NuGet")
@@ -12,7 +12,7 @@ SQL LocalDB Wrapper is a .NET library providing interop with the [Microsoft SQL 
 
 This library exposes types that wrap the native SQL LocalDB Instance API to perform operations on SQL LocalDB such as for managing instances (create, delete, start, stop) and obtaining SQL connection strings for existing instances.
 
-Microsoft SQL Server LocalDB 2012 and later is supported for both x86 and x64 on Microsoft Windows and the library targets `netstandard2.0`.
+Microsoft SQL Server LocalDB 2012 and later is supported for both x86 and x64 on Microsoft Windows.
 
 While the library can be compiled and referenced in .NET applications on non-Windows Operating Systems, SQL LocalDB is only supported on Windows. Non-Windows Operating Systems can query to determine that the SQL LocalDB Instance API is not installed, but other usage will cause a `PlatformNotSupportedException` to be thrown.
 
