@@ -67,7 +67,7 @@ Further examples of using the library can be found by following the links below:
 ## Migrating from System.Data.SqlLocalDb 1.x
 
 Version `1.x.x` of this library was previously published as [`System.Data.SqlLocalDb`][legacy-package].
-Subsequent versions (`3.x.x` and later) have been renamed and is a breaking change to the previous
+Subsequent versions (`2.x.x` and later) have been renamed and is a breaking change to the previous
 versions, with various changes to namespaces and types.
 
 ## Migrating from MartinCostello.SqlLocalDb 2.x

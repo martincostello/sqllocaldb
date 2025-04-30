@@ -9,7 +9,7 @@ SQL LocalDB Wrapper is a .NET library providing interop with the
 [![Build status][build-badge]][build-status]
 [![codecov][coverage-badge]][coverage-report]
 
-## IntroductionW
+## Introduction
 
 This library exposes types that wrap the native SQL LocalDB Instance API to perform operations on
 SQL LocalDB such as for managing instances (create, delete, start, stop) and obtaining SQL
