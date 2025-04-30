@@ -256,5 +256,5 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 * Update Microsoft.Data.SqlClient dependency to
   [6.0.2](https://github.com/dotnet/SqlClient/releases/tag/v6.0.2).
 * Drop support for `netstandard2.0` and `net6.0`.
-* Add support for `net472`.
+* Add support for `net462`.
 * Set `IsAotCompatible=true` for `net8.0`.

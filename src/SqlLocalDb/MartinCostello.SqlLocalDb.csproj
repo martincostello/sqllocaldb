@@ -10,7 +10,7 @@
     <PackageId>MartinCostello.SqlLocalDb</PackageId>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFrameworks>net8.0</TargetFrameworks>
-    <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net472</TargetFrameworks>
+    <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net462</TargetFrameworks>
     <Title>SQL LocalDB Wrapper</Title>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
