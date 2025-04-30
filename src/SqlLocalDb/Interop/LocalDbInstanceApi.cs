@@ -3,7 +3,6 @@
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.SqlLocalDb.Interop;
@@ -38,7 +37,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// </summary>
     private const int LocalDbTruncateErrorMessage = 1;
 
-#if NETSTANDARD
+#if NETFRAMEWORK
     /// <summary>
     /// An array containing the null character. This field is read-only.
     /// </summary>

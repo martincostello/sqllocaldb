@@ -141,7 +141,7 @@ public class SqlLocalDbException : DbException
     /// The <paramref name="info"/> parameter is <see langword="null"/>.
     /// </exception>
 #pragma warning disable IDE0055
-#if NET8_0_OR_GREATER
+#if NET
     [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.")]
 #endif
 #pragma warning restore IDE0055

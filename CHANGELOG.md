@@ -248,3 +248,13 @@ Added overloads to support specifying the name of the Initial Catalog using the 
   `netstandard2.0`/`net6.0` and `5.1.5` for `net8.0` to include fixes for
   [CVE-2024-0056](https://github.com/advisories/GHSA-98g6-xh36-x2p7).
 * Use interop methods that are compatible with .NET native AoT.
+
+## SqlLocalDb v4.0.0
+
+### Changes
+
+* Update Microsoft.Data.SqlClient dependency to
+  [6.0.2](https://github.com/dotnet/SqlClient/releases/tag/v6.0.2).
+* Drop support for `netstandard2.0` and `net6.0`.
+* Add support for `net462`.
+* Set `IsAotCompatible=true` for `net8.0`.
