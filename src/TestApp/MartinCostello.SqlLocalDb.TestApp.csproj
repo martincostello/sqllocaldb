@@ -4,7 +4,7 @@
     <NoWarn>$(NoWarn);CA1031;CA2007</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Strings.Designer.cs" AutoGen="True" DependentUpon="Strings.resx" DesignTime="True" />
