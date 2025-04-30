@@ -1,42 +1,51 @@
 ---
 name: Bug report
 about: Create a bug report to help us improve the library
-title: ''
+title: '[bug] '
 labels: bug
-assignees: ''
 ---
 
+### Describe the bug
+
 <!--
-  This is a template. Feel free to delete any sections that are not relevant.
- -->
+A clear and concise description of what the bug is.
+-->
 
-## Describe the bug
+### Steps To reproduce
 
-<!-- A clear and concise description of what the bug is. -->
+<!--
+A concise, repeatable, example of how to reproduce the issue.
+-->
 
-## Steps To reproduce
+### Expected behaviour
 
-<!-- A concise, repeatable, example of how to reproduce the issue. -->
+<!--
+A clear and concise description of what you expected to happen.
+-->
 
-## Expected behaviour
+### Actual behaviour
 
-<!-- A clear and concise description of what you expected to happen. -->
+<!--
+A clear and concise description of what actually happened. If an exception occurred, please include a stack trace if available.
+-->
 
-## Actual behaviour
+### Screenshots
 
-<!-- A clear and concise description of what actually happened. If an exception occurred, please include a stack trace if available. -->
+<!--
+If applicable, add screenshots to help explain your problem.
+-->
 
-## Screenshots
+### System information
 
-<!-- If applicable, add screenshots to help explain your problem. -->
+<!--
+ - OS: [e.g. Windows 11]
+ - Library Version [e.g. 4.0.0]
+ - SQL LocalDB version [e.g. Microsoft SQL Server 2019 (15.0.4382.1)]
+ - .NET version (e.g. output from `dotnet --info`)
+-->
 
-## System information
+### Additional context
 
-- OS: [e.g. Windows 11]
-- Library Version [e.g. 3.4.0]
-- SQL LocalDB version [e.g. 13.0]
-- .NET version (e.g. output from `dotnet --info`)
-
-## Additional context
-
-<!-- Add any other context about the problem here. -->
+<!--
+Add any other context about the problem here.
+-->
