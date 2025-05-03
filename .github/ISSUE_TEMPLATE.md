@@ -1,5 +1,5 @@
 ---
-title: '[bug] :'
+title: ''
 ---
 
 ### Expected behaviour
