@@ -119,7 +119,7 @@ Added overloads to support specifying the name of the Initial Catalog using the 
 
 ### New Features
 
-* Added new `system.data.sqlLocalDb` custom configuration section. The settings are documented [here](https://github.com/martincostello/sqllocaldb/wiki/Configuration).
+* Added new `system.data.sqlLocalDb` custom configuration section. The settings are documented [in the wiki](https://github.com/martincostello/sqllocaldb/wiki/Configuration).
 * Added static `DefaultInstanceName` property to the `SqlLocalDbApi` class.
 * Added `GetDefaultInstance()` extension method for the `ISqlLocalDbProvider` interface.
 * All references to [CodePlex](https://sqllocaldb.codeplex.com/) in the source code have been updated to [GitHub](https://github.com/martincostello/sqllocaldb).
