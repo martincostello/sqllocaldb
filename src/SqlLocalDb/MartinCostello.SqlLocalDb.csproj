@@ -29,10 +29,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="9.0.5" />
   </ItemGroup>
   <ItemGroup Condition=" '$([MSBuild]::GetTargetFrameworkIdentifier(`$(TargetFramework)`))' == '.NETFramework' ">
-    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="9.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="9.0.5" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
