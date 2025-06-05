@@ -19,3 +19,4 @@ updates:
   open-pull-requests-limit: 99
   ignore:
     - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
+    - dependency-name: "Microsoft.Extensions.Logging.Abstractions"
