@@ -3,7 +3,7 @@
     <Description>Tests for MartinCostello.SqlLocalDb.</Description>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net481</TargetFrameworks>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
