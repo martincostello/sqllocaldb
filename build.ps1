@@ -3,7 +3,9 @@
 #Requires -PSEdition Core
 #Requires -Version 7
 
-param()
+param(
+    [Parameter(Mandatory = $false)][switch] $SkipTests
+)
 
 $env:NUGET_XMLDOC_MODE = "skip"
 
@@ -101,5 +103,7 @@ ForEach ($project in $packageProjects) {
     DotNetPack $project
 }
 
-Write-Information "Testing solution..."
-DotNetTest
+if (-Not $SkipTests) {
+    Write-Information "Testing solution..."
+    DotNetTest
+}
