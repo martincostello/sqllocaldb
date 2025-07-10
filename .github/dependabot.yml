@@ -1,10 +1,7 @@
 version: 2
 updates:
-- package-ecosystem: nuget
+- package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: yearly
     timezone: Europe/London
-  ignore:
-    - dependency-name: "Microsoft.Extensions.DependencyInjection.Abstractions"
-    - dependency-name: "Microsoft.Extensions.Logging.Abstractions"
