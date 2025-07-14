@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 
 namespace MartinCostello.SqlLocalDb;
@@ -12,8 +13,8 @@ namespace MartinCostello.SqlLocalDb;
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public sealed class RunAsAdminFactAttribute : FactAttribute
 {
-    public RunAsAdminFactAttribute()
-        : base()
+    public RunAsAdminFactAttribute([CallerFilePath] string? sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = -1)
+        : base(sourceFilePath, sourceLineNumber)
     {
         Skip = IsCurrentUserAdmin(out string name) ? null : $"The current user '{name}' does not have administrative privileges.";
     }
