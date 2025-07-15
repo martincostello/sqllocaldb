@@ -10,6 +10,8 @@
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- TODO Remove when .NET 10 is stable -->
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>sql;localdb</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
