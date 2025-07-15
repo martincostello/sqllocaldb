@@ -32,7 +32,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="[8.0.2,)" />
   </ItemGroup>
   <ItemGroup Condition=" '$([MSBuild]::GetTargetFrameworkIdentifier(`$(TargetFramework)`))' == '.NETFramework' ">
-    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="[10.0.0-preview.5.25277.114,)" />
+    <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="[10.0.0-preview.6.25358.103,)" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
