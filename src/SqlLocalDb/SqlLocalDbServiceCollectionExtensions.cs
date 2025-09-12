@@ -41,15 +41,8 @@ public static class SqlLocalDbServiceCollectionExtensions
     /// </exception>
     public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Action<SqlLocalDbOptions> configure)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configure);
 
         return services.AddSqlLocalDB(
             (_) =>
@@ -75,15 +68,8 @@ public static class SqlLocalDbServiceCollectionExtensions
     /// </exception>
     public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, Func<IServiceProvider, SqlLocalDbOptions> configure)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configure);
 
         services.TryAddSingleton(configure);
 
@@ -112,15 +98,8 @@ public static class SqlLocalDbServiceCollectionExtensions
     /// </exception>
     public static IServiceCollection AddSqlLocalDB(this IServiceCollection services, SqlLocalDbOptions options)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
-
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(options);
 
         return services.AddSqlLocalDB((_) => options);
     }
