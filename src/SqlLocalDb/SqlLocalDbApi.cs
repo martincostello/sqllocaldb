@@ -1199,10 +1199,13 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         }
         else
         {
-            Logger.LogError(
-                eventId,
-                SR.SqlLocalDbApi_LogGenericFailureFormat,
-                hr2.ToString("X", CultureInfo.InvariantCulture));
+            if (Logger.IsEnabled(LogLevel.Error))
+            {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+            }
 
             // Use a generic message if getting the message from the API failed.
             // N.B. That if this occurs, then the original error is masked (although it is logged).
