@@ -16,12 +16,6 @@
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
-  <!--
-    Avoid complexity from multi-targeting with conditional compilation.
-  -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
-    <NoWarn>$(NoWarn);CA1510</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Update="SR.Designer.cs" AutoGen="True" DependentUpon="SR.resx" DesignTime="True" />
     <EmbeddedResource Update="SR.resx" Generator="ResXFileCodeGenerator" LastGenOutput="SR.Designer.cs" />

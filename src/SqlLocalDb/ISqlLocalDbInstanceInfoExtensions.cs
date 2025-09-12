@@ -48,10 +48,7 @@ public static class ISqlLocalDbInstanceInfoExtensions
     /// </exception>
     public static SqlConnectionStringBuilder CreateConnectionStringBuilder(this ISqlLocalDbInstanceInfo instance)
     {
-        if (instance == null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         if (!instance.IsRunning)
         {
@@ -96,10 +93,7 @@ public static class ISqlLocalDbInstanceInfoExtensions
     /// </exception>
     public static ISqlLocalDbInstanceManager Manage(this ISqlLocalDbInstanceInfo instance)
     {
-        if (instance == null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         if (instance is ISqlLocalDbApiAdapter adapter)
         {
