@@ -3,7 +3,7 @@
     <Description>Tests for MartinCostello.SqlLocalDb.</Description>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net481</TargetFrameworks>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
@@ -26,8 +26,8 @@
   </ItemGroup>
   <PropertyGroup>
     <CollectCoverage>true</CollectCoverage>
-    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">80</Threshold>
-    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">40</Threshold>
+    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">90,80,90</Threshold>
+    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">55,30,55</Threshold>
   </PropertyGroup>
   <ItemGroup>
     <CoverletExclude Include="$([MSBuild]::Escape('[Humanizer*]*'))" />
