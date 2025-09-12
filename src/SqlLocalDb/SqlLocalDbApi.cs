@@ -1153,7 +1153,10 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     {
         string message;
 
-        Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
+        if (Logger.IsEnabled(LogLevel.Error))
+        {
+            Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
+        }
 
         if (hr == SqlLocalDbErrors.NotInstalled)
         {
@@ -1178,10 +1181,13 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         }
         else if (hr2 == SqlLocalDbErrors.UnknownLanguageId)
         {
-            Logger.LogError(
-                eventId,
-                SR.SqlLocalDbApi_LogGenericFailureFormat,
-                hr2.ToString("X", CultureInfo.InvariantCulture));
+            if (Logger.IsEnabled(LogLevel.Error))
+            {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+            }
 
             // If the value of DefaultLanguageId was not understood by the API,
             // then log an error informing the user. Do not throw an exception in
