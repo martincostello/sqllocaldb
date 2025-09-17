@@ -206,7 +206,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBCreateInstance",
             ref _localDBCreateInstance,
-            (function) => function!(wszVersion, pInstanceName, dwFlags));
+            (function) => function(wszVersion, pInstanceName, dwFlags));
     }
 
     /// <summary>
@@ -220,7 +220,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBDeleteInstance",
             ref _localDBDeleteInstance,
-            (function) => function!(pInstanceName, dwFlags));
+            (function) => function(pInstanceName, dwFlags));
     }
 
     /// <summary>
@@ -237,7 +237,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBGetInstanceInfo",
             ref _localDBGetInstanceInfo,
-            (function) => function!(wszInstanceName, pInstanceInfo, dwInstanceInfoSize));
+            (function) => function(wszInstanceName, pInstanceInfo, dwInstanceInfoSize));
     }
 
     /// <summary>
@@ -304,7 +304,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBGetVersionInfo",
             ref _localDBGetVersionInfo,
-            (function) => function!(wszVersionName, pVersionInfo, dwVersionInfoSize));
+            (function) => function(wszVersionName, pVersionInfo, dwVersionInfoSize));
     }
 
     /// <summary>
@@ -342,7 +342,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBShareInstance",
             ref _localDBShareInstance,
-            (function) => function!(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags));
+            (function) => function(pOwnerSID, pInstancePrivateName, pInstanceSharedName, dwFlags));
     }
 
     /// <summary>
@@ -379,7 +379,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBStartTracing",
             ref _localDBStartTracing,
-            (function) => function!());
+            static (function) => function());
     }
 
     /// <summary>
@@ -397,7 +397,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBStopInstance",
             ref _localDBStopInstance,
-            (function) => function!(pInstanceName, (int)options, ulTimeout));
+            (function) => function(pInstanceName, (int)options, ulTimeout));
     }
 
     /// <summary>
@@ -410,7 +410,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBStopTracing",
             ref _localDBStopTracing,
-            (function) => function!());
+            static (function) => function());
     }
 
     /// <summary>
@@ -428,7 +428,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         return EnsureFunctionAndInvoke(
             "LocalDBUnshareInstance",
             ref _localDBUnshareInstance,
-            (function) => function!(pInstanceName, dwFlags));
+            (function) => function(pInstanceName, dwFlags));
     }
 
     /// <summary>
@@ -549,18 +549,13 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private T? EnsureFunction<T>(string functionName, ref T? function)
         where T : class, Delegate?
     {
-        Debug.Assert(functionName != null, "functionName cannot be null.");
-
         if (function == null)
         {
             lock (_syncRoot)
             {
 #pragma warning disable CA1508
-                if (function == null)
+                function ??= GetDelegate<T>(functionName);
 #pragma warning restore CA1508
-                {
-                    function = GetDelegate<T>(functionName!);
-                }
             }
         }
 
@@ -581,11 +576,8 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private int EnsureFunctionAndInvoke<T>(string functionName, ref T? function, Func<T, int> callback)
         where T : class, Delegate?
     {
-        Debug.Assert(callback != null, "callback cannot be null.");
-
         function = EnsureFunction(functionName, ref function);
-
-        return function == null ? SqlLocalDbErrors.NotInstalled : callback!(function);
+        return function == null ? SqlLocalDbErrors.NotInstalled : callback(function);
     }
 
     /// <summary>
@@ -677,8 +669,6 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private T? GetDelegate<T>(string functionName)
         where T : class, Delegate?
     {
-        Debug.Assert(functionName != null, "functionName cannot be null.");
-
         SafeLibraryHandle? handle = EnsureLocalDBLoaded();
 
         if (handle == null)
@@ -695,11 +685,11 @@ internal sealed class LocalDbInstanceApi : IDisposable
         }
 #else
 
-        IntPtr address = NativeMethods.GetProcAddress(handle, functionName!);
+        IntPtr address = NativeMethods.GetProcAddress(handle, functionName);
 
         if (address == IntPtr.Zero)
         {
-            Logger.NativeApiFunctionNotFound(functionName!);
+            Logger.NativeApiFunctionNotFound(functionName);
             return null;
         }
 #endif
