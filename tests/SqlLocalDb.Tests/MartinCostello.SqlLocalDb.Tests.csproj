@@ -26,8 +26,8 @@
   </ItemGroup>
   <PropertyGroup>
     <CollectCoverage>true</CollectCoverage>
-    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">80</Threshold>
-    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">40</Threshold>
+    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">90,80,90</Threshold>
+    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">55,30,55</Threshold>
   </PropertyGroup>
   <ItemGroup>
     <CoverletExclude Include="$([MSBuild]::Escape('[Humanizer*]*'))" />
