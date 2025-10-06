@@ -2,7 +2,10 @@
   <PropertyGroup>
     <Description>Tests for MartinCostello.SqlLocalDb.</Description>
     <OutputType>Exe</OutputType>
+    <PublicSign>false</PublicSign>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
+    <SignAssembly>false</SignAssembly>
+    <StrongNamePublicKey></StrongNamePublicKey>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">$(TargetFrameworks);net481</TargetFrameworks>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
