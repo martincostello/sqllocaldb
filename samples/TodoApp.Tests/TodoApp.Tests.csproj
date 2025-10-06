@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="GitHubActionsTestLogger" NoWarn="RT0003" />
-    <PackageReference Include="JunitXml.TestLogger" NoWarn="RT0003" />
+    <PackageReference Include="GitHubActionsTestLogger" NoWarn="RT0003" PrivateAssets="All" />
+    <PackageReference Include="JunitXml.TestLogger" NoWarn="RT0003" PrivateAssets="All" />
     <PackageReference Include="MartinCostello.Logging.XUnit.v3" />
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
