@@ -9,7 +9,7 @@
       ],
       "rollForward": false
     },
-     "meziantou.framework.nugetpackagevalidation.tool": {
+    "meziantou.framework.nugetpackagevalidation.tool": {
       "version": "1.0.31",
       "commands": [
         "meziantou.validate-nuget-package"
