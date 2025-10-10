@@ -7,7 +7,7 @@ param(
     [Parameter(Mandatory = $false)][switch] $SkipTests
 )
 
-$env:NUGET_XMLDOC_MODE = "skip"
+${env:NUGET_XMLDOC_MODE} = "skip"
 
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
@@ -86,7 +86,7 @@ function DotNetTest {
 
     $additionalArgs = @()
 
-    if (-Not [string]::IsNullOrEmpty($env:GITHUB_SHA)) {
+    if (-Not [string]::IsNullOrEmpty(${env:GITHUB_SHA})) {
         $additionalArgs += "--logger:GitHubActions;report-warnings=false"
         $additionalArgs += "--logger:junit;LogFilePath=junit.xml"
     }
