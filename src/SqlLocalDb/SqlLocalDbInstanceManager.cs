@@ -60,10 +60,7 @@ public sealed class SqlLocalDbInstanceManager(
     /// </exception>
     public void Share(string sharedName)
     {
-        if (sharedName == null)
-        {
-            throw new ArgumentNullException(nameof(sharedName));
-        }
+        ArgumentNullException.ThrowIfNull(sharedName);
 
         try
         {

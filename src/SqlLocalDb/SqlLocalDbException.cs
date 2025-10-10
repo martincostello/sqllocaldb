@@ -147,10 +147,7 @@ public class SqlLocalDbException : DbException
 #pragma warning restore IDE0055
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-        if (info == null)
-        {
-            throw new ArgumentNullException(nameof(info));
-        }
+        ArgumentNullException.ThrowIfNull(info);
 
         base.GetObjectData(info, context);
 
