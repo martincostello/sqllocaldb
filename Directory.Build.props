@@ -25,4 +25,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);419;1570;1573;1574;1584;1591;SA0001;SA1602</NoWarn>
   </PropertyGroup>
+  <!-- HACK Workaround for https://github.com/dotnet/sdk/issues/51265 -->
+  <PropertyGroup>
+    <RestoreEnablePackagePruning>false</RestoreEnablePackagePruning>
+  </PropertyGroup>
 </Project>
