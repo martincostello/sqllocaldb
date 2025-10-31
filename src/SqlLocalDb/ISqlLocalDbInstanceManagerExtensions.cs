@@ -24,10 +24,7 @@ public static class ISqlLocalDbInstanceManagerExtensions
     /// </exception>
     public static SqlConnection CreateConnection(this ISqlLocalDbInstanceManager manager)
     {
-        if (manager == null)
-        {
-            throw new ArgumentNullException(nameof(manager));
-        }
+        ArgumentNullException.ThrowIfNull(manager);
 
         return manager.GetInstanceInfo().CreateConnection();
     }
@@ -41,10 +38,7 @@ public static class ISqlLocalDbInstanceManagerExtensions
     /// </exception>
     public static void Restart(this ISqlLocalDbInstanceManager manager)
     {
-        if (manager == null)
-        {
-            throw new ArgumentNullException(nameof(manager));
-        }
+        ArgumentNullException.ThrowIfNull(manager);
 
         manager.Stop();
         manager.Start();
