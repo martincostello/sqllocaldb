@@ -44,10 +44,10 @@ internal sealed class LocalDbInstanceApi : IDisposable
     private static readonly char[] _nullArray = ['\0'];
 #endif
 
+#if NET10_0_OR_GREATER
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
-#if NET10_0_OR_GREATER
     private readonly Lock _syncRoot = new();
 #else
     private readonly object _syncRoot = new();
