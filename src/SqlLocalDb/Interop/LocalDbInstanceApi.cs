@@ -47,7 +47,11 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <summary>
     /// Synchronization object to protect loading the native library and its functions. This field is read-only.
     /// </summary>
+#if NET10_0_OR_GREATER
+    private readonly Lock _syncRoot = new();
+#else
     private readonly object _syncRoot = new();
+#endif
 
     /// <summary>
     /// Whether the instance has been disposed of.
@@ -593,7 +597,9 @@ internal sealed class LocalDbInstanceApi : IDisposable
         {
             lock (_syncRoot)
             {
+#pragma warning disable CA1508
                 if (_handle == null)
+#pragma warning restore CA1508
                 {
                     if (!TryGetLocalDbApiPath(out string? fileName) || fileName == null)
                     {
