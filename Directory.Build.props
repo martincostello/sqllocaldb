@@ -10,8 +10,6 @@
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)SqlLocalDb.ruleset</CodeAnalysisRuleSet>
     <Copyright>Martin Costello (c) 2012-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <!-- TODO Remove when .NET 10 is stable -->
-    <NoWarn>$(NoWarn);NU5104</NoWarn>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>sql;localdb</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
@@ -24,9 +22,5 @@
   <PropertyGroup Condition=" '$(EnableReferenceTrimmer)' != 'false' and '$(GenerateDocumentationFile)' != 'true' ">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);419;1570;1573;1574;1584;1591;SA0001;SA1602</NoWarn>
-  </PropertyGroup>
-  <!-- HACK Workaround for https://github.com/dotnet/sdk/issues/51265 -->
-  <PropertyGroup>
-    <RestoreEnablePackagePruning>false</RestoreEnablePackagePruning>
   </PropertyGroup>
 </Project>
