@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Text;
 using MartinCostello.SqlLocalDb.Interop;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -114,15 +113,8 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     internal SqlLocalDbApi(SqlLocalDbOptions options, IRegistry registry, ILoggerFactory loggerFactory)
     {
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
-
-        if (registry == null)
-        {
-            throw new ArgumentNullException(nameof(registry));
-        }
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(registry);
 
         LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
@@ -364,15 +356,8 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     public ISqlLocalDbInstanceInfo CreateInstance(string instanceName, string version)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
-
-        if (version == null)
-        {
-            throw new ArgumentNullException(nameof(version));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
+        ArgumentNullException.ThrowIfNull(version);
 
         Logger.CreatingInstance(instanceName, version);
 
@@ -539,10 +524,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     public ISqlLocalDbInstanceInfo GetInstanceInfo(string instanceName)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         Logger.GettingInstanceInfo(instanceName);
 
@@ -652,10 +634,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     public ISqlLocalDbVersionInfo GetVersionInfo(string version)
     {
-        if (version == null)
-        {
-            throw new ArgumentNullException(nameof(version));
-        }
+        ArgumentNullException.ThrowIfNull(version);
 
         Logger.GettingVersionInfo(version);
 
@@ -765,20 +744,9 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         string instanceName,
         string sharedInstanceName)
     {
-        if (ownerSid == null)
-        {
-            throw new ArgumentNullException(nameof(ownerSid));
-        }
-
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
-
-        if (sharedInstanceName == null)
-        {
-            throw new ArgumentNullException(nameof(sharedInstanceName));
-        }
+        ArgumentNullException.ThrowIfNull(ownerSid);
+        ArgumentNullException.ThrowIfNull(instanceName);
+        ArgumentNullException.ThrowIfNull(sharedInstanceName);
 
         EnsurePlatformSupported();
 
@@ -840,10 +808,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     public string StartInstance(string instanceName)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         Logger.StartingInstance(instanceName);
 
@@ -978,10 +943,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </remarks>
     public void StopInstance(string instanceName, StopInstanceOptions options, TimeSpan? timeout)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         TimeSpan theTimeout = timeout ?? StopTimeout;
 
@@ -1046,10 +1008,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     public void UnshareInstance(string instanceName)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         Logger.UnsharingInstance(instanceName);
 
@@ -1122,10 +1081,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// </exception>
     internal bool DeleteInstanceInternal(string instanceName, bool throwIfNotFound, bool deleteFiles = false)
     {
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         EnsurePlatformSupported();
 
@@ -1197,7 +1153,10 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     {
         string message;
 
-        Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
+        if (Logger.IsEnabled(LogLevel.Error))
+        {
+            Logger.LogError(eventId, SR.SqlLocalDbApi_NativeResultFormat, hr.ToString("X", CultureInfo.InvariantCulture));
+        }
 
         if (hr == SqlLocalDbErrors.NotInstalled)
         {
@@ -1222,10 +1181,13 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         }
         else if (hr2 == SqlLocalDbErrors.UnknownLanguageId)
         {
-            Logger.LogError(
-                eventId,
-                SR.SqlLocalDbApi_LogGenericFailureFormat,
-                hr2.ToString("X", CultureInfo.InvariantCulture));
+            if (Logger.IsEnabled(LogLevel.Error))
+            {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+            }
 
             // If the value of DefaultLanguageId was not understood by the API,
             // then log an error informing the user. Do not throw an exception in
@@ -1237,10 +1199,13 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         }
         else
         {
-            Logger.LogError(
-                eventId,
-                SR.SqlLocalDbApi_LogGenericFailureFormat,
-                hr2.ToString("X", CultureInfo.InvariantCulture));
+            if (Logger.IsEnabled(LogLevel.Error))
+            {
+                Logger.LogError(
+                    eventId,
+                    SR.SqlLocalDbApi_LogGenericFailureFormat,
+                    hr2.ToString("X", CultureInfo.InvariantCulture));
+            }
 
             // Use a generic message if getting the message from the API failed.
             // N.B. That if this occurs, then the original error is masked (although it is logged).

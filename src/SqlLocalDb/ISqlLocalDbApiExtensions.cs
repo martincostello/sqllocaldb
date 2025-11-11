@@ -38,10 +38,7 @@ public static class ISqlLocalDbApiExtensions
     /// </exception>
     public static ISqlLocalDbInstanceInfo GetDefaultInstance(this ISqlLocalDbApi api)
     {
-        if (api == null)
-        {
-            throw new ArgumentNullException(nameof(api));
-        }
+        ArgumentNullException.ThrowIfNull(api);
 
         return api.GetOrCreateInstance(api.DefaultInstanceName);
     }
@@ -59,10 +56,7 @@ public static class ISqlLocalDbApiExtensions
     /// </exception>
     public static IReadOnlyList<ISqlLocalDbInstanceInfo> GetInstances(this ISqlLocalDbApi api)
     {
-        if (api == null)
-        {
-            throw new ArgumentNullException(nameof(api));
-        }
+        ArgumentNullException.ThrowIfNull(api);
 
         IReadOnlyList<string> instanceNames = api.GetInstanceNames();
 
@@ -93,10 +87,7 @@ public static class ISqlLocalDbApiExtensions
     /// </exception>
     public static IReadOnlyList<ISqlLocalDbVersionInfo> GetVersions(this ISqlLocalDbApi api)
     {
-        if (api == null)
-        {
-            throw new ArgumentNullException(nameof(api));
-        }
+        ArgumentNullException.ThrowIfNull(api);
 
         IReadOnlyList<string> versionNames = api.Versions;
         var versions = new List<ISqlLocalDbVersionInfo>();
@@ -126,15 +117,8 @@ public static class ISqlLocalDbApiExtensions
     /// </exception>
     public static ISqlLocalDbInstanceInfo GetOrCreateInstance(this ISqlLocalDbApi api, string instanceName)
     {
-        if (api == null)
-        {
-            throw new ArgumentNullException(nameof(api));
-        }
-
-        if (instanceName == null)
-        {
-            throw new ArgumentNullException(nameof(instanceName));
-        }
+        ArgumentNullException.ThrowIfNull(api);
+        ArgumentNullException.ThrowIfNull(instanceName);
 
         // Instance names in SQL Local DB are case-insensitive
         if (string.Equals(api.DefaultInstanceName, instanceName, StringComparison.OrdinalIgnoreCase) ||
@@ -172,10 +156,7 @@ public static class ISqlLocalDbApiExtensions
     /// </exception>
     public static void ShareInstance(this ISqlLocalDbApi api, string instanceName, string sharedInstanceName)
     {
-        if (api == null)
-        {
-            throw new ArgumentNullException(nameof(api));
-        }
+        ArgumentNullException.ThrowIfNull(api);
 
         SqlLocalDbApi.EnsurePlatformSupported();
 
