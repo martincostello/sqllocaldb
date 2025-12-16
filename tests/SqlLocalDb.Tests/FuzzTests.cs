@@ -97,7 +97,7 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetVersionInfoHandlesArbitraryStrings(NonNull<string> versionName)
+    public static void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings(NonNull<string> versionName)
     {
         // Arrange
         using var target = CreateLocalDbApi();
@@ -163,7 +163,7 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetLocalDbError_HandlesArbitrary_Error_Codes(int errorCode, int languageId)
+    public static void LocalDbInstanceApi_GetLocalDbError_Handles_Arbitrary_Error_Codes(int errorCode, int languageId)
     {
         // Arrange
         using var target = CreateLocalDbApi();
