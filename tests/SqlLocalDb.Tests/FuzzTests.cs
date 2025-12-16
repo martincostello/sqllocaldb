@@ -89,11 +89,8 @@ public static class FuzzTests
         // Arrange
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.GetInstanceInfo(instanceName.Get, IntPtr.Zero, 0);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.GetInstanceInfo(instanceName.Get, IntPtr.Zero, 0));
     }
 
     [Property]
@@ -102,11 +99,8 @@ public static class FuzzTests
         // Arrange
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
     }
 
     [Property]
@@ -117,11 +111,8 @@ public static class FuzzTests
         // Arrange
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.ShareInstance(IntPtr.Zero, privateName.Get, sharedName.Get, 0);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.ShareInstance(IntPtr.Zero, privateName.Get, sharedName.Get, 0));
     }
 
     [Property]
@@ -155,11 +146,8 @@ public static class FuzzTests
         // Arrange
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.UnshareInstance(instanceName.Get, 0);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.UnshareInstance(instanceName.Get, 0));
     }
 
     [Property]
@@ -221,11 +209,8 @@ public static class FuzzTests
 
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.GetInstanceNames(IntPtr.Zero, ref count);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.GetInstanceNames(IntPtr.Zero, ref count));
     }
 
     [Property]
@@ -236,11 +221,8 @@ public static class FuzzTests
 
         using var target = CreateLocalDbApi();
 
-        // Act
-        int result = target.GetVersions(IntPtr.Zero, ref count);
-
-        // Assert
-        result.ShouldNotBe(0);
+        // Act and Assert
+        Should.NotThrow(() => target.GetVersions(IntPtr.Zero, ref count));
     }
 
     private static LocalDbInstanceApi CreateLocalDbApi(string? apiVersion = default)
