@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" />
+    <PackageReference Include="FsCheck.Xunit.v3" />
     <PackageReference Include="GitHubActionsTestLogger" NoWarn="RT0003" />
     <PackageReference Include="JunitXml.TestLogger" NoWarn="RT0003" />
     <PackageReference Include="MartinCostello.Logging.XUnit.v3" />
