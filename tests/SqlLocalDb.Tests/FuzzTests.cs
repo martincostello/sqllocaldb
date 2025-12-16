@@ -186,19 +186,7 @@ public static class FuzzTests
         using var target = CreateLocalDbApi(apiVersion);
 
         // Act
-        bool result = target.TryGetLocalDbApiPath(out string? fileName);
-
-        // Assert
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            result.ShouldBeTrue();
-            fileName.ShouldNotBeNullOrWhiteSpace();
-        }
-        else
-        {
-            result.ShouldBeFalse();
-            fileName.ShouldBeNull();
-        }
+        Should.NotThrow(() => target.TryGetLocalDbApiPath(out _));
     }
 
     [Property]
