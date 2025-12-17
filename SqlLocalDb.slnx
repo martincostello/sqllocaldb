@@ -46,6 +46,7 @@
     <Project Path="src/TestApp/MartinCostello.SqlLocalDb.TestApp.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/SqlLocalDb.FuzzTests/MartinCostello.SqlLocalDb.FuzzTests.csproj" />
     <Project Path="tests/SqlLocalDb.Tests/MartinCostello.SqlLocalDb.Tests.csproj" />
   </Folder>
 </Solution>

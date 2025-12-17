@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Tests for MartinCostello.SqlLocalDb.</Description>
+    <Description>Fuzz tests for MartinCostello.SqlLocalDb.</Description>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.SqlLocalDb</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
@@ -11,27 +11,16 @@
     <ProjectReference Include="..\..\src\SqlLocalDb\MartinCostello.SqlLocalDb.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" />
+    <PackageReference Include="FsCheck.Xunit.v3" />
     <PackageReference Include="GitHubActionsTestLogger" NoWarn="RT0003" />
     <PackageReference Include="JunitXml.TestLogger" NoWarn="RT0003" />
-    <PackageReference Include="MartinCostello.Logging.XUnit.v3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="Microsoft.Data.SqlClient" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="NSubstitute" />
-    <PackageReference Include="ReportGenerator" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.v3.mtp-off" />
   </ItemGroup>
   <PropertyGroup>
-    <CollectCoverage>true</CollectCoverage>
-    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">90,80,90</Threshold>
-    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">55,30,55</Threshold>
+    <CollectCoverage>false</CollectCoverage>
   </PropertyGroup>
-  <ItemGroup>
-    <CoverletExclude Include="$([MSBuild]::Escape('[Humanizer*]*'))" />
-    <CoverletExclude Include="$([MSBuild]::Escape('[System.*]*'))" />
-    <CoverletExclude Include="$([MSBuild]::Escape('[TodoApp*]*'))" />
-  </ItemGroup>
 </Project>
