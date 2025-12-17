@@ -74,6 +74,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
             .. Path.GetInvalidPathChars(),
             '\'',
             '$',
+            '&',
         ];
 
         if (instanceNameValue.Any(invalid.Contains))
