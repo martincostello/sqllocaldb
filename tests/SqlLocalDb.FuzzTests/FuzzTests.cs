@@ -82,6 +82,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             '[',
             ']',
             '.',
+            ' ',
         ];
 
         if (instanceNameValue.Any(invalid.Contains))
