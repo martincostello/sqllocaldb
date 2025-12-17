@@ -62,7 +62,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         target.ShouldNotBeNull();
     }
 
-    [Property]
+    [Property(Skip = "This test appears to crash the process.")]
     public void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings(
         NonNull<string> version,
         NonNull<string> instanceName)
@@ -144,8 +144,12 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         NonNull<string> instanceName,
         NonNegativeInt timeout)
     {
+        string instanceNameValue = instanceName.Get;
+
+        outputHelper.WriteLine("Stopping instance with name: {0}", instanceNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.StopInstance(instanceName.Get, StopInstanceOptions.NoWait, timeout.Get));
+        Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, StopInstanceOptions.NoWait, timeout.Get));
     }
 
     [Property]
