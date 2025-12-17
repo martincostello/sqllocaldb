@@ -64,6 +64,19 @@ public class FuzzTests(LocalDbFixture fixture)
         NonNull<string> version,
         NonNull<string> instanceName)
     {
+        string instanceNameValue = instanceName.Get;
+
+#if NETFRAMEWORK
+        if (instanceNameValue.Contains('$'))
+#else
+        if (instanceNameValue.Contains('$', StringComparison.Ordinal))
+#endif
+        {
+            // The API will create instances with '$' in the name, but trying to get an
+            // instance with such a name enumerated by getting all names will fail with an invalid name.
+            return;
+        }
+
         // Act and Assert
         Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceName.Get, 0));
     }
