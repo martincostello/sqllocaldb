@@ -13,7 +13,7 @@ namespace MartinCostello.SqlLocalDb;
 #else
 [Collection<FuzzCollection>]
 #endif
-public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
+public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) : IAsyncLifetime
 {
     private readonly ConcurrentBag<string> _createdInstances = [];
 
@@ -86,6 +86,8 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         _createdInstances.Add(instanceNameValue);
+
+        outputHelper.WriteLine("Creating instance with name: {0}", instanceNameValue);
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceNameValue, 0));
