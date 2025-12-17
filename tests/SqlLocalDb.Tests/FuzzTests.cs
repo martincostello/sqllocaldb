@@ -10,10 +10,35 @@ using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
-public static class FuzzTests
+public class FuzzTests : IAsyncLifetime
 {
+    private LocalDbInstanceApi? _target;
+
+    public ValueTask InitializeAsync()
+    {
+        _target = CreateLocalDbApi();
+
+#if NETFRAMEWORK
+        return default;
+#else
+        return ValueTask.CompletedTask;
+#endif
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _target?.Dispose();
+        GC.SuppressFinalize(this);
+
+#if NETFRAMEWORK
+        return default;
+#else
+        return ValueTask.CompletedTask;
+#endif
+    }
+
     [Property]
-    public static void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
+    public void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
     {
         // Arrange
         if (bytes == null || bytes.Length > 10000)
@@ -29,7 +54,7 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void MarshalString_Handles_Unicode_Strings(string input)
+    public void MarshalString_Handles_Unicode_Strings(string input)
     {
         // Arrange
         if (input == null)
@@ -48,123 +73,94 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void LocalDbInstanceApi_Constructor_Handles_Arbitrary_Version_Strings(string apiVersion)
+    public void LocalDbInstanceApi_Constructor_Handles_Arbitrary_Version_Strings(string apiVersion)
     {
-        // Arrange
-        var registry = Substitute.For<IRegistry>();
-        var logger = NullLogger<LocalDbInstanceApi>.Instance;
-
         // Act
-        using var target = new LocalDbInstanceApi(apiVersion ?? string.Empty, registry, logger);
+        using var target = CreateLocalDbApi(apiVersion);
 
         // Assert
         target.ShouldNotBeNull();
     }
 
     [Property]
-    public static void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings(
+    public void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings(
         NonNull<string> version,
         NonNull<string> instanceName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.CreateInstance(version.Get, instanceName.Get, 0));
+        Should.NotThrow(() => _target!.CreateInstance(version.Get, instanceName.Get, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.DeleteInstance(instanceName.Get, 0));
+        Should.NotThrow(() => _target!.DeleteInstance(instanceName.Get, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetInstanceInfo_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    public void LocalDbInstanceApi_GetInstanceInfo_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.GetInstanceInfo(instanceName.Get, IntPtr.Zero, 0));
+        Should.NotThrow(() => _target!.GetInstanceInfo(instanceName.Get, IntPtr.Zero, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings(NonNull<string> versionName)
+    public void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings(NonNull<string> versionName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
+        Should.NotThrow(() => _target!.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_ShareInstance_Handles_Arbitrary_Strings(
+    public void LocalDbInstanceApi_ShareInstance_Handles_Arbitrary_Strings(
         NonNull<string> privateName,
         NonNull<string> sharedName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.ShareInstance(IntPtr.Zero, privateName.Get, sharedName.Get, 0));
+        Should.NotThrow(() => _target!.ShareInstance(IntPtr.Zero, privateName.Get, sharedName.Get, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_StartInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    public void LocalDbInstanceApi_StartInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
         // Arrange
-        using var target = CreateLocalDbApi();
-
         var buffer = new StringBuilder(261);
         int size = buffer.Capacity;
 
         // Act and Assert
-        Should.NotThrow(() => target.StartInstance(instanceName.Get, 0, buffer, ref size));
+        Should.NotThrow(() => _target!.StartInstance(instanceName.Get, 0, buffer, ref size));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
+    public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
         NonNull<string> instanceName,
         NonNegativeInt timeout)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.StopInstance(instanceName.Get, StopInstanceOptions.None, timeout.Get));
+        Should.NotThrow(() => _target!.StopInstance(instanceName.Get, StopInstanceOptions.None, timeout.Get));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_UnshareInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    public void LocalDbInstanceApi_UnshareInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
-        // Arrange
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.UnshareInstance(instanceName.Get, 0));
+        Should.NotThrow(() => _target!.UnshareInstance(instanceName.Get, 0));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetLocalDbError_Handles_Arbitrary_Error_Codes(int errorCode, int languageId)
+    public void LocalDbInstanceApi_GetLocalDbError_Handles_Arbitrary_Error_Codes(int errorCode, int languageId)
     {
         // Arrange
-        using var target = CreateLocalDbApi();
-
         var buffer = new StringBuilder(261);
         int size = buffer.Capacity;
 
         // Act and Assert
-        Should.NotThrow(() => target.GetLocalDbError(errorCode, languageId, buffer, ref size));
+        Should.NotThrow(() => _target!.GetLocalDbError(errorCode, languageId, buffer, ref size));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_Disposal_Is_Idempotent(PositiveInt callCount)
+    public void LocalDbInstanceApi_Disposal_Is_Idempotent(PositiveInt callCount)
     {
         // Arrange
         using var target = CreateLocalDbApi();
@@ -180,7 +176,7 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void LocalDbInstanceApi_TryGetLocalDbApiPath_Handles_Arbitrary_Version_Strings(string apiVersion)
+    public void LocalDbInstanceApi_TryGetLocalDbApiPath_Handles_Arbitrary_Version_Strings(string apiVersion)
     {
         // Arrange
         using var target = CreateLocalDbApi(apiVersion);
@@ -190,27 +186,23 @@ public static class FuzzTests
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts()
+    public void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts()
     {
         // Arrange
         int count = 0;
 
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.GetInstanceNames(IntPtr.Zero, ref count));
+        Should.NotThrow(() => _target!.GetInstanceNames(IntPtr.Zero, ref count));
     }
 
     [Property]
-    public static void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts()
+    public void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts()
     {
         // Arrange
         int count = 0;
 
-        using var target = CreateLocalDbApi();
-
         // Act and Assert
-        Should.NotThrow(() => target.GetVersions(IntPtr.Zero, ref count));
+        Should.NotThrow(() => _target!.GetVersions(IntPtr.Zero, ref count));
     }
 
     private static LocalDbInstanceApi CreateLocalDbApi(string? apiVersion = default)
