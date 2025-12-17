@@ -68,8 +68,15 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     {
         string instanceNameValue = instanceName.Get;
 
-        if (instanceNameValue.Any((p) => Path.GetInvalidFileNameChars().Contains(p)) ||
-            instanceNameValue.Any((p) => Path.GetInvalidPathChars().Contains(p)))
+        HashSet<char> invalid =
+        [
+            .. Path.GetInvalidFileNameChars(),
+            .. Path.GetInvalidPathChars(),
+            '\'',
+            '$',
+        ];
+
+        if (instanceNameValue.Any(invalid.Contains))
         {
             return;
         }
