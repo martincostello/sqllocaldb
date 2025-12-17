@@ -115,7 +115,7 @@ public class FuzzTests(LocalDbFixture fixture)
         NonNegativeInt timeout)
     {
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.StopInstance(instanceName.Get, StopInstanceOptions.None, timeout.Get));
+        Should.NotThrow(() => fixture.Target.StopInstance(instanceName.Get, StopInstanceOptions.NoWait, timeout.Get));
     }
 
     [Property]
