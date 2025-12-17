@@ -68,14 +68,9 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     {
         string instanceNameValue = instanceName.Get;
 
-#if NETFRAMEWORK
-        if (instanceNameValue.Contains('$'))
-#else
-        if (instanceNameValue.Contains('$', StringComparison.Ordinal))
-#endif
+        if (instanceNameValue.Any((p) => Path.GetInvalidFileNameChars().Contains(p)) ||
+            instanceNameValue.Any((p) => Path.GetInvalidPathChars().Contains(p)))
         {
-            // The API will create instances with '$' in the name, but trying to get an
-            // instance with such a name enumerated by getting all names will fail with an invalid name.
             return;
         }
 
