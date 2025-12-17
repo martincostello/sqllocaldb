@@ -12,8 +12,10 @@ namespace MartinCostello.SqlLocalDb;
 #else
 [Collection<FuzzCollection>]
 #endif
-public class FuzzTests(LocalDbFixture fixture)
+public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 {
+    private readonly HashSet<string> _createdInstances = [];
+
     [Property]
     public void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
     {
@@ -77,8 +79,10 @@ public class FuzzTests(LocalDbFixture fixture)
             return;
         }
 
+        _createdInstances.Add(instanceNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceName.Get, 0));
+        Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceNameValue, 0));
     }
 
     [Property]
@@ -193,5 +197,37 @@ public class FuzzTests(LocalDbFixture fixture)
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.GetVersions(IntPtr.Zero, ref count));
+    }
+
+    public ValueTask InitializeAsync()
+    {
+#if NETFRAMEWORK
+        return default;
+#else
+        return ValueTask.CompletedTask;
+#endif
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        foreach (var name in _createdInstances)
+        {
+            try
+            {
+                _ = fixture.Target.DeleteInstance(name, 0);
+            }
+            catch (Exception)
+            {
+                // Ignore
+            }
+        }
+
+        GC.SuppressFinalize(this);
+
+#if NETFRAMEWORK
+        return default;
+#else
+        return ValueTask.CompletedTask;
+#endif
     }
 }
