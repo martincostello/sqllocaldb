@@ -77,6 +77,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             .. Path.GetInvalidPathChars(),
             '\'',
             '$',
+            '%',
             '&',
             '[',
             ']',
