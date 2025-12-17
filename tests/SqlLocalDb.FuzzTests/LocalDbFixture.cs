@@ -8,7 +8,7 @@ using NSubstitute;
 
 namespace MartinCostello.SqlLocalDb;
 
-public sealed class LocalDbFixture : ICollectionFixture<LocalDbFixture>, IDisposable
+public sealed class LocalDbFixture : IDisposable
 {
     private readonly LocalDbInstanceApi _target = CreateLocalDbApi();
 
