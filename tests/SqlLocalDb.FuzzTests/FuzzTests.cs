@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2012-2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Collections.Concurrent;
 using FsCheck;
 using FsCheck.Xunit;
 using MartinCostello.SqlLocalDb.Interop;
@@ -14,7 +15,7 @@ namespace MartinCostello.SqlLocalDb;
 #endif
 public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 {
-    private readonly HashSet<string> _createdInstances = [];
+    private readonly ConcurrentBag<string> _createdInstances = [];
 
     [Property]
     public void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
@@ -68,6 +69,8 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     {
         string instanceNameValue = instanceName.Get;
 
+        // Avoid invalid instance names that pass through validation for
+        // creation but cause an exception when getting them back later.
         HashSet<char> invalid =
         [
             .. Path.GetInvalidFileNameChars(),
