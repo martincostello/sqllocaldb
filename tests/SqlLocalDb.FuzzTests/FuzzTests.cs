@@ -135,7 +135,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, privateNameValue, 0));
+        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedNameValue, 0));
     }
 
     [Property]
