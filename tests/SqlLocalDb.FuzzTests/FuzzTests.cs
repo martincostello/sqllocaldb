@@ -8,20 +8,16 @@ using MartinCostello.SqlLocalDb.Interop;
 
 namespace MartinCostello.SqlLocalDb;
 
-#if NETFRAMEWORK
 [Collection(FuzzCollection.Name)]
-#else
-[Collection<FuzzCollection>]
-#endif
 public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) : IAsyncLifetime
 {
-    private readonly ConcurrentBag<string> _createdInstances = [];
+    private readonly ConcurrentBag<string> _instanceNames = [];
 
     [Property]
     public void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
     {
         // Arrange
-        if (bytes == null || bytes.Length > 10000)
+        if (bytes is null || bytes.Length > 10_000)
         {
             return;
         }
@@ -62,35 +58,15 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         target.ShouldNotBeNull();
     }
 
-    [Property(Skip = "This test appears to crash the process.")]
+    [Property]
     public void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings(
         NonNull<string> version,
         NonNull<string> instanceName)
     {
-        string instanceNameValue = instanceName.Get;
-
-        // Avoid invalid instance names that pass through validation for
-        // creation but cause an exception when getting them back later.
-        HashSet<char> invalid =
-        [
-            .. Path.GetInvalidFileNameChars(),
-            .. Path.GetInvalidPathChars(),
-            '\'',
-            '$',
-            '%',
-            '&',
-            '[',
-            ']',
-            '.',
-            ' ',
-        ];
-
-        if (instanceNameValue.Any(invalid.Contains))
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
         {
             return;
         }
-
-        _createdInstances.Add(instanceNameValue);
 
         outputHelper.WriteLine("Creating instance with name: {0}", instanceNameValue);
 
@@ -101,15 +77,29 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
     [Property]
     public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        {
+            return;
+        }
+
+        outputHelper.WriteLine("Deleting instance with name: {0}", instanceNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.DeleteInstance(instanceName.Get, 0));
+        Should.NotThrow(() => fixture.Target.DeleteInstance(instanceNameValue, 0));
     }
 
     [Property]
     public void LocalDbInstanceApi_GetInstanceInfo_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        {
+            return;
+        }
+
+        outputHelper.WriteLine("Getting instance with name: {0}", instanceNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceName.Get, IntPtr.Zero, 0));
+        Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, IntPtr.Zero, 0));
     }
 
     [Property]
@@ -124,27 +114,44 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         NonNull<string> privateName,
         NonNull<string> sharedName)
     {
+        if (!SanitizeInstanceName(privateName, out string privateNameValue))
+        {
+            return;
+        }
+
+        outputHelper.WriteLine("Sharing instance with name: {0}", privateNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateName.Get, sharedName.Get, 0));
+        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedName.Get, 0));
     }
 
     [Property]
     public void LocalDbInstanceApi_StartInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        {
+            return;
+        }
+
+        outputHelper.WriteLine("Starting instance with name: {0}", instanceNameValue);
+
         // Arrange
         var buffer = new StringBuilder(261);
         int size = buffer.Capacity;
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.StartInstance(instanceName.Get, 0, buffer, ref size));
+        Should.NotThrow(() => fixture.Target.StartInstance(instanceNameValue, 0, buffer, ref size));
     }
 
-    [Property(Skip = "This test appears to crash the process.")]
+    [Property(MaxTest = 100)] // Otherwise it seems to crash
     public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
         NonNull<string> instanceName,
         NonNegativeInt timeout)
     {
-        string instanceNameValue = instanceName.Get;
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        {
+            return;
+        }
 
         outputHelper.WriteLine("Stopping instance with name: {0}", instanceNameValue);
 
@@ -155,8 +162,15 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
     [Property]
     public void LocalDbInstanceApi_UnshareInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
     {
+        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        {
+            return;
+        }
+
+        outputHelper.WriteLine("Unsharing instance with name: {0}", instanceNameValue);
+
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.UnshareInstance(instanceName.Get, 0));
+        Should.NotThrow(() => fixture.Target.UnshareInstance(instanceNameValue, 0));
     }
 
     [Property]
@@ -197,20 +211,20 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
     }
 
     [Property]
-    public void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts()
+    public void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts(NonNegativeInt value)
     {
         // Arrange
-        int count = 0;
+        int count = value.Get;
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.GetInstanceNames(IntPtr.Zero, ref count));
     }
 
     [Property]
-    public void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts()
+    public void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts(NonNegativeInt value)
     {
         // Arrange
-        int count = 0;
+        int count = value.Get;
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.GetVersions(IntPtr.Zero, ref count));
@@ -227,7 +241,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
 
     public ValueTask DisposeAsync()
     {
-        foreach (var name in _createdInstances)
+        foreach (var name in _instanceNames)
         {
             try
             {
@@ -246,5 +260,34 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
 #else
         return ValueTask.CompletedTask;
 #endif
+    }
+
+    private bool SanitizeInstanceName(NonNull<string> instanceName, out string value)
+    {
+        value = instanceName.Get;
+
+        // See https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis#named-instance-naming-rules
+        HashSet<char> invalid =
+        [
+            .. Path.GetInvalidFileNameChars(),
+            .. Path.GetInvalidPathChars(),
+            '\'',
+            '$',
+            '%',
+            '&',
+            '[',
+            ']',
+            '.',
+            ' ',
+        ];
+
+        bool isValid = value.Any(invalid.Contains);
+
+        if (isValid)
+        {
+            _instanceNames.Add(value);
+        }
+
+        return isValid;
     }
 }
