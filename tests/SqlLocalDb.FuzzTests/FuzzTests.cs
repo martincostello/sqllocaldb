@@ -14,7 +14,6 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     // See https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis#named-instance-naming-rules
     private static readonly HashSet<char> InvalidNameChars =
     [
-        /*
         .. Path.GetInvalidFileNameChars(),
         .. Path.GetInvalidPathChars(),
         '\'',
@@ -26,7 +25,6 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         '.',
         ' ',
         '_',
-        */
     ];
 
     private readonly ConcurrentBag<string> _instanceNames = [];
