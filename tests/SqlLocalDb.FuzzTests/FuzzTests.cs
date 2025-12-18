@@ -279,6 +279,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             ']',
             '.',
             ' ',
+            '_',
         ];
 
         bool isValid = value.Any(invalid.Contains);
