@@ -9,8 +9,26 @@ using MartinCostello.SqlLocalDb.Interop;
 namespace MartinCostello.SqlLocalDb;
 
 [Collection(FuzzCollection.Name)]
-public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) : IAsyncLifetime
+public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 {
+    // See https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis#named-instance-naming-rules
+    private static readonly HashSet<char> InvalidNameChars =
+    [
+        /*
+        .. Path.GetInvalidFileNameChars(),
+        .. Path.GetInvalidPathChars(),
+        '\'',
+        '$',
+        '%',
+        '&',
+        '[',
+        ']',
+        '.',
+        ' ',
+        '_',
+        */
+    ];
+
     private readonly ConcurrentBag<string> _instanceNames = [];
 
     [Property]
@@ -68,8 +86,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             return;
         }
 
-        outputHelper.WriteLine("Creating instance with name: {0}", instanceNameValue);
-
         // Act and Assert
         Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceNameValue, 0));
     }
@@ -82,8 +98,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             return;
         }
 
-        outputHelper.WriteLine("Deleting instance with name: {0}", instanceNameValue);
-
         // Act and Assert
         Should.NotThrow(() => fixture.Target.DeleteInstance(instanceNameValue, 0));
     }
@@ -95,8 +109,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         {
             return;
         }
-
-        outputHelper.WriteLine("Getting instance with name: {0}", instanceNameValue);
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, IntPtr.Zero, 0));
@@ -119,10 +131,13 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             return;
         }
 
-        outputHelper.WriteLine("Sharing instance with name: {0}", privateNameValue);
+        if (!SanitizeInstanceName(sharedName, out string sharedNameValue))
+        {
+            return;
+        }
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedName.Get, 0));
+        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, privateNameValue, 0));
     }
 
     [Property]
@@ -133,8 +148,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
             return;
         }
 
-        outputHelper.WriteLine("Starting instance with name: {0}", instanceNameValue);
-
         // Arrange
         var buffer = new StringBuilder(261);
         int size = buffer.Capacity;
@@ -143,7 +156,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         Should.NotThrow(() => fixture.Target.StartInstance(instanceNameValue, 0, buffer, ref size));
     }
 
-    [Property(MaxTest = 100)] // Otherwise it seems to crash
+    [Property]
     public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
         NonNull<string> instanceName,
         NonNegativeInt timeout)
@@ -152,8 +165,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         {
             return;
         }
-
-        outputHelper.WriteLine("Stopping instance with name: {0}", instanceNameValue);
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, StopInstanceOptions.NoWait, timeout.Get));
@@ -166,8 +177,6 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
         {
             return;
         }
-
-        outputHelper.WriteLine("Unsharing instance with name: {0}", instanceNameValue);
 
         // Act and Assert
         Should.NotThrow(() => fixture.Target.UnshareInstance(instanceNameValue, 0));
@@ -266,23 +275,7 @@ public class FuzzTests(LocalDbFixture fixture, ITestOutputHelper outputHelper) :
     {
         value = instanceName.Get;
 
-        // See https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis#named-instance-naming-rules
-        HashSet<char> invalid =
-        [
-            .. Path.GetInvalidFileNameChars(),
-            .. Path.GetInvalidPathChars(),
-            '\'',
-            '$',
-            '%',
-            '&',
-            '[',
-            ']',
-            '.',
-            ' ',
-            '_',
-        ];
-
-        bool isValid = !value.Any(invalid.Contains);
+        bool isValid = !value.Any(InvalidNameChars.Contains);
 
         if (isValid)
         {
