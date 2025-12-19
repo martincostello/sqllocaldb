@@ -193,8 +193,21 @@ public class ISqlLocalDbApiExtensionsTests(ITestOutputHelper outputHelper)
         // Arrange
         using var api = new SqlLocalDbApi(_loggerFactory);
 
+        IReadOnlyList<ISqlLocalDbInstanceInfo> actual = [];
+
         // Act
-        IReadOnlyList<ISqlLocalDbInstanceInfo> actual = api.GetInstances();
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                actual = api.GetInstances();
+                break;
+            }
+            catch (SqlLocalDbException ex) when (ex.ErrorCode == SqlLocalDbErrors.InsufficientBuffer)
+            {
+                // Retry
+            }
+        }
 
         // Assert
         actual.ShouldNotBeNull();

@@ -58,7 +58,22 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         // Arrange
         using var api = new SqlLocalDbApi(_loggerFactory);
 
-        IReadOnlyList<string> names = api.GetInstanceNames();
+        IReadOnlyList<string> names = [];
+
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                names = api.GetInstanceNames();
+                break;
+            }
+            catch (SqlLocalDbException ex) when (ex.ErrorCode == SqlLocalDbErrors.InsufficientBuffer)
+            {
+                // Retry
+            }
+        }
+
+        names.ShouldNotBeEmpty();
 
         foreach (string name in names)
         {
