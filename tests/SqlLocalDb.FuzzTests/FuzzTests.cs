@@ -159,6 +159,23 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         NonNull<string> instanceName,
         NonNegativeInt timeout)
     {
+        if (instanceName.Get.Length == 0)
+        {
+            // An empty name causes the SQL LocalDB Instance API to internally use the
+            // default "MSSQLLocalDB" instance, which then may cause the test process
+            // to crash if the right (unknown) sequence of events occurs. Stack trace:
+            //
+            // ucrtbase.dll!_invoke_watson()
+            // ucrtbase.dll!_invalid_parameter()
+            // ucrtbase.dll!_invalid_parameter_noinfo()
+            // ucrtbase.dll!_ultow_s()
+            // SqlUserInstance.dll!LocalDBLogWinError(unsigned long,wchar_t const *,unsigned short,unsigned long,wchar_t const *)
+            // SqlUserInstance.dll!CSqlUserInstance::ShutdownUserInstance(wchar_t const *,unsigned long,int)
+            // SqlUserInstance.dll!LocalDBStopInstance()
+            // MartinCostello.SqlLocalDb.dll!MartinCostello.SqlLocalDb.Interop.LocalDbInstanceApi.StopInstance(...)
+            return;
+        }
+
         if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
         {
             return;
