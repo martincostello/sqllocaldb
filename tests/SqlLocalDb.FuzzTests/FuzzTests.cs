@@ -157,6 +157,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     [Property]
     public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
         NonNull<string> instanceName,
+        NonNegativeInt options,
         NonNegativeInt timeout)
     {
         if (instanceName.Get.Length == 0)
@@ -182,7 +183,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, StopInstanceOptions.NoWait, timeout.Get));
+        Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, (StopInstanceOptions)options.Get, timeout.Get));
     }
 
     [Property]
