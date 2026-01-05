@@ -89,15 +89,8 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     }
 
     [Property]
-    public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonEmptyString instanceName)
     {
-        if (instanceName.Get.Length == 0)
-        {
-            // An empty name causes the SQL LocalDB Instance API to internally use the
-            // default "MSSQLLocalDB" instance, and we do not want to delete that.
-            return;
-        }
-
         if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
         {
             return;
@@ -163,7 +156,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 
     [Property]
     public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
-        NonNull<string> instanceName,
+        NonEmptyString instanceName,
         NonNegativeInt options,
         NonNegativeInt timeout)
     {
@@ -294,15 +287,22 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 #endif
     }
 
-    private bool SanitizeInstanceName(NonNull<string> instanceName, out string value)
-    {
-        value = instanceName.Get;
+    private bool SanitizeInstanceName(NonEmptyString instanceName, out string value)
+        => SanitizeInstanceName(instanceName.Get, out value);
 
-        bool isValid = !value.Any(InvalidNameChars.Contains);
+    private bool SanitizeInstanceName(NonNull<string> instanceName, out string value)
+        => SanitizeInstanceName(instanceName.Get, out value);
+
+    private bool SanitizeInstanceName(string instanceName, out string value)
+    {
+        value = string.Empty;
+
+        bool isValid = !instanceName.Any(InvalidNameChars.Contains);
 
         if (isValid)
         {
-            _instanceNames.Add(value);
+            _instanceNames.Add(instanceName);
+            value = instanceName;
         }
 
         return isValid;
