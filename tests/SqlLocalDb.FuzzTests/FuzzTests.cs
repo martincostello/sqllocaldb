@@ -91,6 +91,13 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     [Property]
     public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonEmptyString instanceName)
     {
+        if (string.IsNullOrWhiteSpace(instanceName.Get))
+        {
+            // An empty name causes the SQL LocalDB Instance API to internally use the
+            // default "MSSQLLocalDB" instance, which we do not want to delete.
+            return;
+        }
+
         if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
         {
             return;
@@ -160,7 +167,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         NonNegativeInt options,
         NonNegativeInt timeout)
     {
-        if (instanceName.Get.Length == 0)
+        if (string.IsNullOrWhiteSpace(instanceName.Get))
         {
             // An empty name causes the SQL LocalDB Instance API to internally use the
             // default "MSSQLLocalDB" instance, which then may cause the test process
