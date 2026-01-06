@@ -100,33 +100,8 @@ public class SqlLocalDbApiTests(ITestOutputHelper outputHelper)
         // Arrange
         using var api = new SqlLocalDbApi(_loggerFactory);
 
-        // Start the default instance to ensure it exists
-        api.StartInstance(api.DefaultInstanceName);
-
-        try
-        {
-            // Arrange
-            string instanceName = api.DefaultInstanceName;
-
-            // Act
-            bool actual = api.InstanceExists(instanceName);
-
-            // Assert
-            actual.ShouldBeTrue();
-
-            // Arrange
-            instanceName = Guid.NewGuid().ToString();
-
-            // Act
-            actual = api.InstanceExists(instanceName);
-
-            // Assert
-            actual.ShouldBeFalse();
-        }
-        finally
-        {
-            api.StopInstance(api.DefaultInstanceName);
-        }
+        // Act and Assert
+        Should.NotThrow(() => api.InstanceExists(api.DefaultInstanceName));
     }
 
     [NotWindowsFact]

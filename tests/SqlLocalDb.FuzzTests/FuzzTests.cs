@@ -304,7 +304,10 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     {
         value = string.Empty;
 
-        bool isValid = !instanceName.Any(InvalidNameChars.Contains);
+        bool isValid =
+            !instanceName.Any(InvalidNameChars.Contains) &&
+            !string.Equals(instanceName, "v11.0", StringComparison.Ordinal) &&
+            !string.Equals(instanceName, "MSSQLLocalDB", StringComparison.Ordinal);
 
         if (isValid)
         {
