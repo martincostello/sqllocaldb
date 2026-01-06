@@ -11,22 +11,6 @@ namespace MartinCostello.SqlLocalDb;
 [Collection(FuzzCollection.Name)]
 public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 {
-    // See https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/sql-server-express-localdb-reference-instance-apis#named-instance-naming-rules
-    private static readonly HashSet<char> InvalidNameChars =
-    [
-        .. Path.GetInvalidFileNameChars(),
-        .. Path.GetInvalidPathChars(),
-        '\'',
-        '$',
-        '%',
-        '&',
-        '[',
-        ']',
-        '.',
-        ' ',
-        '_',
-    ];
-
     private readonly ConcurrentBag<string> _instanceNames = [];
 
     [Property]
@@ -304,7 +288,9 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
     {
         value = string.Empty;
 
-        bool isValid = !instanceName.Any(InvalidNameChars.Contains);
+        bool isValid =
+            !string.Equals(instanceName, "v11.0", StringComparison.Ordinal) &&
+            !string.Equals(instanceName, "MSSQLLocalDB", StringComparison.Ordinal);
 
         if (isValid)
         {
