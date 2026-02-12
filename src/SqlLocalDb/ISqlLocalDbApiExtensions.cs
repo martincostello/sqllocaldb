@@ -165,7 +165,11 @@ public static class ISqlLocalDbApiExtensions
 #pragma warning disable CA1416
         using (var identity = WindowsIdentity.GetCurrent())
         {
+#if NETFRAMEWORK
+            ownerSid = identity.User.Value;
+#else
             ownerSid = identity.User!.Value;
+#endif
         }
 #pragma warning restore CA1416
 

@@ -1127,16 +1127,28 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         {
             if (Directory.Exists(instancePath))
             {
+#if NETFRAMEWORK
+                Logger.DeletingInstanceFiles(instanceName!, instancePath);
+#else
                 Logger.DeletingInstanceFiles(instanceName, instancePath);
+#endif
 
                 Directory.Delete(instancePath, recursive: true);
 
+#if NETFRAMEWORK
+                Logger.DeletedInstanceFiles(instanceName!, instancePath);
+#else
                 Logger.DeletedInstanceFiles(instanceName, instancePath);
+#endif
             }
         }
         catch (Exception ex) when (ex is ArgumentException or IOException or UnauthorizedAccessException)
         {
+#if NETFRAMEWORK
+            Logger.DeletingInstanceFilesFailed(instanceName!, instancePath);
+#else
             Logger.DeletingInstanceFilesFailed(instanceName, instancePath);
+#endif
         }
     }
 
@@ -1250,7 +1262,12 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         {
             // Determine the offset of the element, and get the string from the array
             IntPtr offset = new(ptr.ToInt64() + (length * i));
+
+#if NETFRAMEWORK
+            result[i] = Marshal.PtrToStringAuto(offset);
+#else
             result[i] = Marshal.PtrToStringAuto(offset)!;
+#endif
         }
 
         return result;
