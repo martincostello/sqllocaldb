@@ -1127,16 +1127,16 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         {
             if (Directory.Exists(instancePath))
             {
-                Logger.DeletingInstanceFiles(instanceName!, instancePath);
+                Logger.DeletingInstanceFiles(instanceName, instancePath);
 
                 Directory.Delete(instancePath, recursive: true);
 
-                Logger.DeletedInstanceFiles(instanceName!, instancePath);
+                Logger.DeletedInstanceFiles(instanceName, instancePath);
             }
         }
         catch (Exception ex) when (ex is ArgumentException or IOException or UnauthorizedAccessException)
         {
-            Logger.DeletingInstanceFilesFailed(instanceName!, instancePath);
+            Logger.DeletingInstanceFilesFailed(instanceName, instancePath);
         }
     }
 
