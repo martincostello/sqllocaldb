@@ -9,7 +9,7 @@
     <PackageVersion Include="FsCheck.Xunit.v3" Version="3.3.2" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="3.0.1" />
     <PackageVersion Include="JunitXml.TestLogger" Version="8.0.0" />
-    <PackageVersion Include="Humanizer" Version="3.0.8" />
+    <PackageVersion Include="Humanizer" Version="3.0.10" />
     <PackageVersion Include="MartinCostello.Logging.XUnit.v3" Version="0.7.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="4.14.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.4" />
