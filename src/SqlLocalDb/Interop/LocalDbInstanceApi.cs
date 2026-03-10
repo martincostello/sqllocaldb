@@ -515,7 +515,11 @@ internal sealed class LocalDbInstanceApi : IDisposable
 
         if (!File.Exists(path))
         {
+#if NETFRAMEWORK
             Logger.NativeApiLibraryNotFound(path!);
+#else
+            Logger.NativeApiLibraryNotFound(path);
+#endif
             return false;
         }
 
