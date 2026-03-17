@@ -22,7 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="[7.0.0-preview4.26064.3,)" />
+    <PackageReference Include="Microsoft.Data.SqlClient" VersionOverride="[7.0.0,)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="[8.0.2,)" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">

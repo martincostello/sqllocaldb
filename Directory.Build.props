@@ -23,8 +23,4 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);419;1570;1573;1574;1584;1591;SA0001;SA1602</NoWarn>
   </PropertyGroup>
-  <!-- TODO Remove before merge -->
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);NU5104</NoWarn>
-  </PropertyGroup>
 </Project>
