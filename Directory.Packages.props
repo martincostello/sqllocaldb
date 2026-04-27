@@ -6,7 +6,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="10.0.0" />
-    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.3.2" />
+    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.3.3" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="3.0.3" />
     <PackageVersion Include="JunitXml.TestLogger" Version="8.0.0" />
     <PackageVersion Include="Humanizer" Version="3.0.10" />
