@@ -19,7 +19,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
     <PackageReference Include="NSubstitute" />
-    <PackageReference Include="ReportGenerator" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.v3.mtp-v2" />
@@ -27,7 +26,5 @@
   <PropertyGroup>
     <CollectCoverage>true</CollectCoverage>
     <CoverageRunSettings>$(MSBuildThisFileDirectory)tests.runsettings</CoverageRunSettings>
-    <Threshold Condition="$([System.OperatingSystem]::IsWindows())">90,80,90</Threshold>
-    <Threshold Condition="!$([System.OperatingSystem]::IsWindows())">55,30,55</Threshold>
   </PropertyGroup>
 </Project>

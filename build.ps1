@@ -85,17 +85,89 @@ function DotNetTest {
     param([string]$Project)
 
     $additionalArgs = @()
+    $projectName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
+    $coverageOutputPath = Join-Path $solutionPath "artifacts" "coverage" $projectName
 
     if (-Not [string]::IsNullOrEmpty(${env:GITHUB_SHA})) {
         $additionalArgs += "--report-junit"
         $additionalArgs += "--report-junit-filename"
-        $additionalArgs += "$([System.IO.Path]::GetFileNameWithoutExtension($Project)).junit.xml"
+        $additionalArgs += "$projectName.junit.xml"
     }
 
     & $dotnet test $Project --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
+    }
+
+    $coverageReports = @(
+        Get-ChildItem -Path $coverageOutputPath -File -Filter "coverage.xml" -ErrorAction SilentlyContinue
+        Get-ChildItem -Path $coverageOutputPath -File -Filter "coverage.*.xml" -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -ne "coverage.xml" }
+    ) | Select-Object -ExpandProperty FullName -Unique
+
+    if ($coverageReports.Count -eq 0) {
+        return
+    }
+
+    $coverageGitHubSummary = Join-Path $coverageOutputPath "SummaryGithub.md"
+    $reportTypes = @(
+        "Html"
+        "MarkdownSummaryGithub"
+    ) -join ";"
+
+    $reportGeneratorArgs = @(
+        "-reports:$($coverageReports -join ';')"
+        "-targetdir:$coverageOutputPath"
+        "-reporttypes:$reportTypes"
+        "-title:$projectName"
+        "-verbosity:Warning"
+    )
+
+    & $dotnet tool run reportgenerator @reportGeneratorArgs
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "reportgenerator failed with exit code $LASTEXITCODE"
+    }
+
+    if (-Not [string]::IsNullOrEmpty(${env:GITHUB_STEP_SUMMARY}) -and (Test-Path -LiteralPath $coverageGitHubSummary)) {
+        $targetFramework = $null
+
+        $tfmMatch = $coverageReports |
+            ForEach-Object {
+                [System.Text.RegularExpressions.Regex]::Match(
+                    [System.IO.Path]::GetFileName($_),
+                    "^coverage\.(.+)\.xml$"
+                )
+            } |
+            Where-Object Success |
+            Select-Object -First 1
+
+        if ($null -ne $tfmMatch) {
+            $targetFramework = $tfmMatch.Groups[1].Value
+        }
+
+        $frameworkSuffix = if ([string]::IsNullOrWhiteSpace($targetFramework)) {
+            ""
+        }
+        else {
+            " ($targetFramework)"
+        }
+
+        $summaryContent = @(
+            "<details><summary>:chart_with_upwards_trend: <b>$projectName Code Coverage report</b>$frameworkSuffix</summary>"
+            ""
+            (Get-Content -LiteralPath $coverageGitHubSummary -Raw)
+            ""
+            "</details>"
+        ) -join [System.Environment]::NewLine
+
+        try {
+            Add-Content -LiteralPath ${env:GITHUB_STEP_SUMMARY} -Value $summaryContent
+        }
+        catch {
+            Write-Warning "Failed to write GitHub step summary for ${Project}: $_"
+        }
     }
 }
 
