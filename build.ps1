@@ -91,7 +91,7 @@ function DotNetTest {
         $additionalArgs += "--logger:junit;LogFilePath=junit.xml"
     }
 
-    & $dotnet test --configuration "Release" $additionalArgs
+    & $dotnet test --configuration "Release" --collect:"Code Coverage" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
