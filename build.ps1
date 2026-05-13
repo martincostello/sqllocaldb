@@ -87,11 +87,12 @@ function DotNetTest {
     $additionalArgs = @()
 
     if (-Not [string]::IsNullOrEmpty(${env:GITHUB_SHA})) {
-        $additionalArgs += "--logger:GitHubActions;report-warnings=false"
-        $additionalArgs += "--logger:junit;LogFilePath=junit.xml"
+        $additionalArgs += "--report-junit"
+        $additionalArgs += "--report-junit-filename"
+        $additionalArgs += "$([System.IO.Path]::GetFileNameWithoutExtension($Project)).junit.xml"
     }
 
-    & $dotnet test --configuration "Release" --collect:"Code Coverage" $additionalArgs
+    & $dotnet test --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"

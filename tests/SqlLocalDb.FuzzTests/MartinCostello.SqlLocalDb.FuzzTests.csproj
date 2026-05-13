@@ -13,13 +13,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsCheck.Xunit.v3" />
-    <PackageReference Include="GitHubActionsTestLogger" NoWarn="RT0003" />
-    <PackageReference Include="JunitXml.TestLogger" NoWarn="RT0003" />
+    <PackageReference Include="GitHubActionsTestLogger" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit.runner.visualstudio" />
-    <PackageReference Include="xunit.v3.mtp-off" />
+    <PackageReference Include="xunit.v3.mtp-v2" />
   </ItemGroup>
   <PropertyGroup>
     <CollectCoverage>false</CollectCoverage>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <CodeCoverage>
+    <Attributes>
+      <Exclude>
+        <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+        <Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+        <Attribute>^System\.Diagnostics\.DebuggerNonUserCodeAttribute$</Attribute>
+      </Exclude>
+    </Attributes>
+    <ModulePaths>
+      <Exclude>
+        <ModulePath>.*\\obj\\.*</ModulePath>
+        <ModulePath>.*\/obj\/.*</ModulePath>
+        <ModulePath>.*Humanizer.dll</ModulePath>
+        <ModulePath>.*TodoApp.dll</ModulePath>
+      </Exclude>
+    </ModulePaths>
+  </CodeCoverage>
+</Configuration>
