@@ -6,4 +6,4 @@ coverage:
     project:
       default:
         if_not_found: failure
-        threshold: 80%
+        threshold: 5%
