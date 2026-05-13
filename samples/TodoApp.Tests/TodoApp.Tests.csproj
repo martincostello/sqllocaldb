@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1303;CA1707</NoWarn>
+    <OutputType>Exe</OutputType>
     <RootNamespace>TodoApp</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>

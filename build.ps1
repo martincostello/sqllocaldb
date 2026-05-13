@@ -82,7 +82,7 @@ function DotNetPack {
 }
 
 function DotNetTest {
-    param()
+    param([string]$Project)
 
     $additionalArgs = @()
 
@@ -92,7 +92,7 @@ function DotNetTest {
         $additionalArgs += "$([System.IO.Path]::GetFileNameWithoutExtension($Project)).junit.xml"
     }
 
-    & $dotnet test --configuration "Release" $additionalArgs
+    & $dotnet test $Project --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
@@ -105,6 +105,14 @@ ForEach ($project in $packageProjects) {
 }
 
 if (-Not $SkipTests) {
-    Write-Information "Testing solution..."
-    DotNetTest
+    $testProjects = @(
+        (Join-Path $solutionPath "tests" "SqlLocalDb.Tests" "MartinCostello.SqlLocalDb.Tests.csproj"),
+        (Join-Path $solutionPath "tests" "SqlLocalDb.FuzzTests" "MartinCostello.SqlLocalDb.FuzzTests.csproj"),
+        (Join-Path $solutionPath "samples" "TodoApp.Tests" "TodoApp.Tests.csproj")
+    )
+
+    Write-Information "Testing $($testProjects.Count) project(s)..."
+    ForEach ($project in $testProjects) {
+        DotNetTest $project
+    }
 }
