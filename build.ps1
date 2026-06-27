@@ -84,17 +84,10 @@ function DotNetPack {
 function DotNetTest {
     param([string]$Project)
 
-    $additionalArgs = @()
     $projectName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
     $coverageOutputPath = Join-Path $solutionPath "artifacts" "coverage" $projectName
 
-    if (-Not [string]::IsNullOrEmpty(${env:GITHUB_SHA})) {
-        $additionalArgs += "--report-junit"
-        $additionalArgs += "--report-junit-filename"
-        $additionalArgs += "$projectName.junit.xml"
-    }
-
-    & $dotnet test $Project --configuration "Release" $additionalArgs
+    & $dotnet test $Project --configuration "Release"
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
