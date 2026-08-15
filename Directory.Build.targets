@@ -1,8 +1,0 @@
-<Project>
-  <Target Name="FixXunitMtpReportArguments" AfterTargets="_UpdateTestPlatformProperties" BeforeTargets="_MTPAddArguments;InvokeTestingPlatform">
-    <PropertyGroup Condition=" '$(TestingPlatformCommandLineArguments)' != '' ">
-      <!-- Replace the filename switch first because it contains the shorter switch name as a substring. -->
-      <TestingPlatformCommandLineArguments>$([System.String]::Copy('$(TestingPlatformCommandLineArguments)').Replace('--report-junit-filename', '--report-xunit-junit-filename').Replace('--report-junit', '--report-xunit-junit'))</TestingPlatformCommandLineArguments>
-    </PropertyGroup>
-  </Target>
-</Project>
