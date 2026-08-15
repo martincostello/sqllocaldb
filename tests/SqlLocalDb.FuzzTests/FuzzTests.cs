@@ -3,7 +3,7 @@
 
 using System.Collections.Concurrent;
 using FsCheck;
-using FsCheck.Xunit;
+using FsCheck.Fluent;
 using MartinCostello.SqlLocalDb.Interop;
 
 namespace MartinCostello.SqlLocalDb;
@@ -29,237 +29,294 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
 
     private readonly ConcurrentBag<string> _instanceNames = [];
 
-    [Property]
-    public void MarshalString_Handles_Arbitrary_Byte_Arrays(byte[] bytes)
+    [Fact]
+    public void MarshalString_Handles_Arbitrary_Byte_Arrays()
     {
-        // Arrange
-        if (bytes is null || bytes.Length > 10_000)
+        PropertyCheck.Run<byte[]>((bytes) =>
         {
-            return;
-        }
+            // Arrange
+            if (bytes is null || bytes.Length > 10_000)
+            {
+                return true;
+            }
 
-        // Act
-        string result = LocalDbInstanceApi.MarshalString(bytes);
+            // Act
+            string result = LocalDbInstanceApi.MarshalString(bytes);
 
-        // Assert
-        result.ShouldNotBeNull();
+            // Assert
+            result.ShouldNotBeNull();
+            return true;
+        });
     }
 
-    [Property]
-    public void MarshalString_Handles_Unicode_Strings(string input)
+    [Fact]
+    public void MarshalString_Handles_Unicode_Strings()
     {
-        // Arrange
-        if (input == null)
+        PropertyCheck.Run<string>((input) =>
         {
-            return;
-        }
+            // Arrange
+            if (input == null)
+            {
+                return true;
+            }
 
-        byte[] bytes = Encoding.Unicode.GetBytes(input);
+            byte[] bytes = Encoding.Unicode.GetBytes(input);
 
-        // Act
-        string result = LocalDbInstanceApi.MarshalString(bytes);
+            // Act
+            string result = LocalDbInstanceApi.MarshalString(bytes);
 
-        // Assert
-        result.ShouldNotBeNull();
-        result.ShouldNotEndWith("\0");
+            // Assert
+            result.ShouldNotBeNull();
+            result.ShouldNotEndWith("\0");
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_Constructor_Handles_Arbitrary_Version_Strings(string apiVersion)
+    [Fact]
+    public void LocalDbInstanceApi_Constructor_Handles_Arbitrary_Version_Strings()
     {
-        // Act
-        using var target = LocalDbFixture.CreateLocalDbApi(apiVersion);
-
-        // Assert
-        target.ShouldNotBeNull();
-    }
-
-    [Property]
-    public void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings(
-        NonNull<string> version,
-        NonNull<string> instanceName)
-    {
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        PropertyCheck.Run<string>((apiVersion) =>
         {
-            return;
-        }
+            // Act
+            using var target = LocalDbFixture.CreateLocalDbApi(apiVersion);
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceNameValue, 0));
+            // Assert
+            target.ShouldNotBeNull();
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings(NonEmptyString instanceName)
+    [Fact]
+    public void LocalDbInstanceApi_CreateInstance_Handles_Arbitrary_Strings()
     {
-        if (string.IsNullOrWhiteSpace(instanceName.Get))
+        PropertyCheck.Run<NonNull<string>, NonNull<string>>((version, instanceName) =>
         {
-            // An empty name causes the SQL LocalDB Instance API to internally use the
-            // default "MSSQLLocalDB" instance, which we do not want to delete.
-            return;
-        }
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
 
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.CreateInstance(version.Get, instanceNameValue, 0));
+            return true;
+        });
+    }
+
+    [Fact]
+    public void LocalDbInstanceApi_DeleteInstance_Handles_Arbitrary_Strings()
+    {
+        PropertyCheck.Run<NonEmptyString>((instanceName) =>
         {
-            return;
-        }
+            if (string.IsNullOrWhiteSpace(instanceName.Get))
+            {
+                // An empty name causes the SQL LocalDB Instance API to internally use the
+                // default "MSSQLLocalDB" instance, which we do not want to delete.
+                return true;
+            }
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.DeleteInstance(instanceNameValue, 0));
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
+
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.DeleteInstance(instanceNameValue, 0));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_GetInstanceInfo_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    [Fact]
+    public void LocalDbInstanceApi_GetInstanceInfo_Handles_Arbitrary_Strings()
     {
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        PropertyCheck.Run<NonNull<string>>((instanceName) =>
         {
-            return;
-        }
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, IntPtr.Zero, 0));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, IntPtr.Zero, 0));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings(NonNull<string> versionName)
+    [Fact]
+    public void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings()
     {
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
-    }
-
-    [Property]
-    public void LocalDbInstanceApi_ShareInstance_Handles_Arbitrary_Strings(
-        NonNull<string> privateName,
-        NonNull<string> sharedName)
-    {
-        if (!SanitizeInstanceName(privateName, out string privateNameValue))
+        PropertyCheck.Run<NonNull<string>>((versionName) =>
         {
-            return;
-        }
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
+            return true;
+        });
+    }
 
-        if (!SanitizeInstanceName(sharedName, out string sharedNameValue))
+    [Fact]
+    public void LocalDbInstanceApi_ShareInstance_Handles_Arbitrary_Strings()
+    {
+        PropertyCheck.Run<NonNull<string>, NonNull<string>>((privateName, sharedName) =>
         {
-            return;
-        }
+            if (!SanitizeInstanceName(privateName, out string privateNameValue))
+            {
+                return true;
+            }
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedNameValue, 0));
+            if (!SanitizeInstanceName(sharedName, out string sharedNameValue))
+            {
+                return true;
+            }
+
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedNameValue, 0));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_StartInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    [Fact]
+    public void LocalDbInstanceApi_StartInstance_Handles_Arbitrary_Strings()
     {
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        PropertyCheck.Run<NonNull<string>>((instanceName) =>
         {
-            return;
-        }
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
 
-        // Arrange
-        var buffer = new StringBuilder(261);
-        int size = buffer.Capacity;
+            // Arrange
+            var buffer = new StringBuilder(261);
+            int size = buffer.Capacity;
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.StartInstance(instanceNameValue, 0, buffer, ref size));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.StartInstance(instanceNameValue, 0, buffer, ref size));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings(
-        NonEmptyString instanceName,
-        NonNegativeInt options,
-        NonNegativeInt timeout)
+    [Fact]
+    public void LocalDbInstanceApi_StopInstance_Handles_Arbitrary_Strings()
     {
-        if (string.IsNullOrWhiteSpace(instanceName.Get))
+        PropertyCheck.Run<NonEmptyString, NonNegativeInt, NonNegativeInt>((instanceName, options, timeout) =>
         {
-            // An empty name causes the SQL LocalDB Instance API to internally use the
-            // default "MSSQLLocalDB" instance, which then may cause the test process
-            // to crash if the right (unknown) sequence of events occurs. Stack trace:
-            //
-            // ucrtbase.dll!_invoke_watson()
-            // ucrtbase.dll!_invalid_parameter()
-            // ucrtbase.dll!_invalid_parameter_noinfo()
-            // ucrtbase.dll!_ultow_s()
-            // SqlUserInstance.dll!LocalDBLogWinError(unsigned long,wchar_t const *,unsigned short,unsigned long,wchar_t const *)
-            // SqlUserInstance.dll!CSqlUserInstance::ShutdownUserInstance(wchar_t const *,unsigned long,int)
-            // SqlUserInstance.dll!LocalDBStopInstance()
-            // MartinCostello.SqlLocalDb.dll!MartinCostello.SqlLocalDb.Interop.LocalDbInstanceApi.StopInstance(...)
-            return;
-        }
+            if (string.IsNullOrWhiteSpace(instanceName.Get))
+            {
+                // An empty name causes the SQL LocalDB Instance API to internally use the
+                // default "MSSQLLocalDB" instance, which then may cause the test process
+                // to crash if the right (unknown) sequence of events occurs. Stack trace:
+                //
+                // ucrtbase.dll!_invoke_watson()
+                // ucrtbase.dll!_invalid_parameter()
+                // ucrtbase.dll!_invalid_parameter_noinfo()
+                // ucrtbase.dll!_ultow_s()
+                // SqlUserInstance.dll!LocalDBLogWinError(unsigned long,wchar_t const *,unsigned short,unsigned long,wchar_t const *)
+                // SqlUserInstance.dll!CSqlUserInstance::ShutdownUserInstance(wchar_t const *,unsigned long,int)
+                // SqlUserInstance.dll!LocalDBStopInstance()
+                // MartinCostello.SqlLocalDb.dll!MartinCostello.SqlLocalDb.Interop.LocalDbInstanceApi.StopInstance(...)
+                return true;
+            }
 
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
+
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, (StopInstanceOptions)options.Get, timeout.Get));
+            return true;
+        });
+    }
+
+    [Fact]
+    public void LocalDbInstanceApi_UnshareInstance_Handles_Arbitrary_Strings()
+    {
+        PropertyCheck.Run<NonNull<string>>((instanceName) =>
         {
-            return;
-        }
+            if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+            {
+                return true;
+            }
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.StopInstance(instanceNameValue, (StopInstanceOptions)options.Get, timeout.Get));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.UnshareInstance(instanceNameValue, 0));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_UnshareInstance_Handles_Arbitrary_Strings(NonNull<string> instanceName)
+    [Fact]
+    public void LocalDbInstanceApi_GetLocalDbError_Handles_Arbitrary_Error_Codes()
     {
-        if (!SanitizeInstanceName(instanceName, out string instanceNameValue))
+        PropertyCheck.Run<int, int>((errorCode, languageId) =>
         {
-            return;
-        }
+            // Arrange
+            var buffer = new StringBuilder(261);
+            int size = buffer.Capacity;
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.UnshareInstance(instanceNameValue, 0));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.GetLocalDbError(errorCode, languageId, buffer, ref size));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_GetLocalDbError_Handles_Arbitrary_Error_Codes(int errorCode, int languageId)
+    [Fact]
+    public void LocalDbInstanceApi_Disposal_Is_Idempotent()
     {
-        // Arrange
-        var buffer = new StringBuilder(261);
-        int size = buffer.Capacity;
-
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetLocalDbError(errorCode, languageId, buffer, ref size));
-    }
-
-    [Property]
-    public void LocalDbInstanceApi_Disposal_Is_Idempotent(PositiveInt callCount)
-    {
-        // Arrange
-        using var target = LocalDbFixture.CreateLocalDbApi();
-
-        // Act
-        for (int i = 0; i < Math.Min(callCount.Get, 100); i++)
+        PropertyCheck.Run<PositiveInt>((callCount) =>
         {
-            target.Dispose();
-        }
+            // Arrange
+            using var target = LocalDbFixture.CreateLocalDbApi();
 
-        // Assert
-        target.ShouldNotBeNull();
+            // Act
+            for (int i = 0; i < Math.Min(callCount.Get, 100); i++)
+            {
+                target.Dispose();
+            }
+
+            // Assert
+            target.ShouldNotBeNull();
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_TryGetLocalDbApiPath_Handles_Arbitrary_Version_Strings(string apiVersion)
+    [Fact]
+    public void LocalDbInstanceApi_TryGetLocalDbApiPath_Handles_Arbitrary_Version_Strings()
     {
-        // Arrange
-        using var target = LocalDbFixture.CreateLocalDbApi(apiVersion);
+        PropertyCheck.Run<string>((apiVersion) =>
+        {
+            // Arrange
+            using var target = LocalDbFixture.CreateLocalDbApi(apiVersion);
 
-        // Act
-        Should.NotThrow(() => target.TryGetLocalDbApiPath(out _));
+            // Act
+            Should.NotThrow(() => target.TryGetLocalDbApiPath(out _));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts(NonNegativeInt value)
+    [Fact]
+    public void LocalDbInstanceApi_GetInstanceNames_Handles_Arbitrary_Counts()
     {
-        // Arrange
-        int count = value.Get;
+        PropertyCheck.Run<NonNegativeInt>((value) =>
+        {
+            // Arrange
+            int count = value.Get;
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetInstanceNames(IntPtr.Zero, ref count));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.GetInstanceNames(IntPtr.Zero, ref count));
+            return true;
+        });
     }
 
-    [Property]
-    public void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts(NonNegativeInt value)
+    [Fact]
+    public void LocalDbInstanceApi_GetVersions_Handles_Arbitrary_Counts()
     {
-        // Arrange
-        int count = value.Get;
+        PropertyCheck.Run<NonNegativeInt>((value) =>
+        {
+            // Arrange
+            int count = value.Get;
 
-        // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetVersions(IntPtr.Zero, ref count));
+            // Act and Assert
+            Should.NotThrow(() => fixture.Target.GetVersions(IntPtr.Zero, ref count));
+            return true;
+        });
     }
 
     public ValueTask InitializeAsync()
@@ -316,5 +373,17 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         return isValid;
+    }
+
+    private static class PropertyCheck
+    {
+        public static void Run<T>(Func<T, bool> property)
+            => Check.QuickThrowOnFailure(Prop.ForAll(property));
+
+        public static void Run<T1, T2>(Func<T1, T2, bool> property)
+            => Check.QuickThrowOnFailure(Prop.ForAll(property));
+
+        public static void Run<T1, T2, T3>(Func<T1, T2, T3, bool> property)
+            => Check.QuickThrowOnFailure(Prop.ForAll(property));
     }
 }
