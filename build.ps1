@@ -87,20 +87,7 @@ function DotNetTest {
     $projectName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
     $coverageOutputPath = Join-Path $solutionPath "artifacts" "coverage" $projectName
 
-    $gitHubActions = ${env:GITHUB_ACTIONS}
-
-    try {
-        ${env:GITHUB_ACTIONS} = "false"
-        & $dotnet test $Project --configuration "Release"
-    }
-    finally {
-        if ($null -eq $gitHubActions) {
-            Remove-Item Env:GITHUB_ACTIONS -ErrorAction SilentlyContinue
-        }
-        else {
-            ${env:GITHUB_ACTIONS} = $gitHubActions
-        }
-    }
+    & $dotnet test $Project --configuration "Release"
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
