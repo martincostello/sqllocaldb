@@ -16,6 +16,12 @@ public class TodoRepositoryTests(ITestOutputHelper outputHelper)
     [Fact]
     public async Task Can_Create_Update_And_Delete_Todo_Items()
     {
+        // HACK Workaround for https://github.com/microsoft/testfx/issues/11145
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
         // Arrange
         Assert.SkipUnless(OperatingSystem.IsWindows(), "This test can only be run on Windows.");
 
