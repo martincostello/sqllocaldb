@@ -1,0 +1,6 @@
+allow-dependencies-licenses:
+  - 'pkg:nuget/Microsoft.Data.SqlClient.SNI.runtime@7.1.0'
+allow-licenses:
+  - 'Apache-2.0'
+  - 'BSD-3-Clause'
+  - 'MIT'
