@@ -22,10 +22,9 @@ public sealed class LocalDbFixture : IDisposable
 
     internal static LocalDbInstanceApi CreateLocalDbApi(string? apiVersion = default)
     {
-        IRegistry registry =
-            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
-            new WindowsRegistry() :
-            Substitute.For<IRegistry>();
+        IRegistry registry = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            ? new WindowsRegistry()
+            : Substitute.For<IRegistry>();
 
         var logger = NullLogger<LocalDbInstanceApi>.Instance;
 

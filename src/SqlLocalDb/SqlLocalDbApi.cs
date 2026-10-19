@@ -531,7 +531,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         LocalDbInstanceInfo info;
 
         int size = LocalDbInstanceInfo.MarshalSize;
-        IntPtr ptrInfo = Marshal.AllocHGlobal(size);
+        nint ptrInfo = Marshal.AllocHGlobal(size);
 
         try
         {
@@ -579,7 +579,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
 
         // Query the LocalDB API to get the number of instances
         int count = 0;
-        int hr = _api.GetInstanceNames(IntPtr.Zero, ref count);
+        int hr = _api.GetInstanceNames(0, ref count);
 
         if (hr != 0 &&
             hr != SqlLocalDbErrors.InsufficientBuffer)
@@ -591,7 +591,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
 
         // Allocate enough memory to receive the instance name array
         int nameLength = MaxInstanceNameLength;
-        IntPtr ptrNames = Marshal.AllocHGlobal(nameLength * count);
+        nint ptrNames = Marshal.AllocHGlobal(nameLength * count);
 
         try
         {
@@ -641,7 +641,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         LocalDbVersionInfo info;
 
         int size = LocalDbVersionInfo.MarshalSize;
-        IntPtr ptrInfo = Marshal.AllocHGlobal(size);
+        nint ptrInfo = Marshal.AllocHGlobal(size);
 
         try
         {
@@ -716,7 +716,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         // If LocalDB is installed, it will return a "buffer too small" HRESULT,
         // otherwise it will return the "not installed" HRESULT.
         int notUsed = 0;
-        int hr = _api.GetVersions(IntPtr.Zero, ref notUsed);
+        int hr = _api.GetVersions(0, ref notUsed);
         return hr != SqlLocalDbErrors.NotInstalled;
     }
 
@@ -767,7 +767,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         byte[] binaryForm = GetOwnerSidAsByteArray(ownerSid);
 #pragma warning restore CA1416
 
-        IntPtr ptrSid = Marshal.AllocHGlobal(binaryForm.Length);
+        nint ptrSid = Marshal.AllocHGlobal(binaryForm.Length);
 
         try
         {
@@ -1250,9 +1250,9 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
     /// <returns>
     /// An <see cref="Array"/> of strings read from <paramref name="ptr"/>.
     /// </returns>
-    private static string[] MarshalStringArray(IntPtr ptr, int length, int count)
+    private static string[] MarshalStringArray(nint ptr, int length, int count)
     {
-        Debug.Assert(ptr != IntPtr.Zero, "The unmanaged memory pointer is invalid.");
+        Debug.Assert(ptr != 0, "The unmanaged memory pointer is invalid.");
         Debug.Assert(length > 0, "The length of the elements cannot be less than one.");
         Debug.Assert(count > -1, "The number of elements in the array cannot be negative.");
 
@@ -1261,7 +1261,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
         for (int i = 0; i < result.Length; i++)
         {
             // Determine the offset of the element, and get the string from the array
-            IntPtr offset = new(ptr.ToInt64() + (length * i));
+            nint offset = ptr + (length * i);
 
 #if NETFRAMEWORK
             result[i] = Marshal.PtrToStringAuto(offset);
@@ -1300,7 +1300,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
 
             // Query the LocalDB API to get the number of instances
             int count = 0;
-            int hr = _api.GetVersions(IntPtr.Zero, ref count);
+            int hr = _api.GetVersions(0, ref count);
 
             if (hr != 0 &&
                 hr != SqlLocalDbErrors.InsufficientBuffer)
@@ -1310,7 +1310,7 @@ public sealed class SqlLocalDbApi : ISqlLocalDbApi, ISqlLocalDbApiAdapter, IDisp
 
             // Allocate enough memory to receive the version name array
             int versionLength = MaxVersionLength;
-            IntPtr ptrVersions = Marshal.AllocHGlobal(versionLength * count);
+            nint ptrVersions = Marshal.AllocHGlobal(versionLength * count);
 
             try
             {

@@ -15,7 +15,7 @@ internal sealed class SafeLibraryHandle : SafeHandleZeroOrMinusOneIsInvalid
     /// Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.
     /// </summary>
     /// <param name="handle">The pre-existing handle to use.</param>
-    public SafeLibraryHandle(IntPtr handle)
+    public SafeLibraryHandle(nint handle)
         : base(true)
     {
         SetHandle(handle);

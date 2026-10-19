@@ -116,14 +116,14 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, IntPtr.Zero, 0));
+        Should.NotThrow(() => fixture.Target.GetInstanceInfo(instanceNameValue, 0, 0));
     }
 
     [Property]
     public void LocalDbInstanceApi_GetVersionInfo_Handles_Arbitrary_Strings(NonNull<string> versionName)
     {
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetVersionInfo(versionName.Get, IntPtr.Zero, 0));
+        Should.NotThrow(() => fixture.Target.GetVersionInfo(versionName.Get, 0, 0));
     }
 
     [Property]
@@ -142,7 +142,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         }
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.ShareInstance(IntPtr.Zero, privateNameValue, sharedNameValue, 0));
+        Should.NotThrow(() => fixture.Target.ShareInstance(0, privateNameValue, sharedNameValue, 0));
     }
 
     [Property]
@@ -249,7 +249,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         int count = value.Get;
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetInstanceNames(IntPtr.Zero, ref count));
+        Should.NotThrow(() => fixture.Target.GetInstanceNames(0, ref count));
     }
 
     [Property]
@@ -259,7 +259,7 @@ public class FuzzTests(LocalDbFixture fixture) : IAsyncLifetime
         int count = value.Get;
 
         // Act and Assert
-        Should.NotThrow(() => fixture.Target.GetVersions(IntPtr.Zero, ref count));
+        Should.NotThrow(() => fixture.Target.GetVersions(0, ref count));
     }
 
     public ValueTask InitializeAsync()

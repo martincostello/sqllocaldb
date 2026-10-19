@@ -15,11 +15,10 @@ public sealed class NotWindowsFactAttribute : FactAttribute
     public NotWindowsFactAttribute([CallerFilePath] string? sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = -1)
         : base(sourceFilePath, sourceLineNumber)
     {
-        Skip =
 #if NET
-            !OperatingSystem.IsWindows() ?
-            null :
+        Skip = OperatingSystem.IsWindows() ? "This test cannot be run on Windows." : null;
+#else
+        Skip = "This test cannot be run on Windows.";
 #endif
-            "This test cannot be run on Windows.";
     }
 }

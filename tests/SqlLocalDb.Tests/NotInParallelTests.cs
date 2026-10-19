@@ -8,6 +8,7 @@ namespace MartinCostello.SqlLocalDb;
 /// <summary>
 /// A class containing tests that perform global operations that may cause other tests to fail if run in parallel.
 /// </summary>
+/// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
 [CollectionDefinition("NotInParallel", DisableParallelization = true)]
 public class NotInParallelTests(ITestOutputHelper outputHelper)
 {
