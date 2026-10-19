@@ -30,7 +30,7 @@
   </ItemGroup>
   <ItemGroup Condition=" '$([MSBuild]::GetTargetFrameworkIdentifier(`$(TargetFramework)`))' == '.NETFramework' ">
     <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" VersionOverride="[10.0.0,)" />
-    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" VersionOverride="[10.0.13,)" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
