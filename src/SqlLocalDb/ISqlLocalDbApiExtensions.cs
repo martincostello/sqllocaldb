@@ -136,9 +136,9 @@ public static class ISqlLocalDbApiExtensions
             }
         }
 
-        return api.InstanceExists(instanceName) ?
-            api.GetInstanceInfo(instanceName) :
-            api.CreateInstance(instanceName, api.LatestVersion);
+        return api.InstanceExists(instanceName)
+            ? api.GetInstanceInfo(instanceName)
+            : api.CreateInstance(instanceName, api.LatestVersion);
     }
 
     /// <summary>

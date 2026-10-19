@@ -15,11 +15,10 @@ public sealed class WindowsOnlyFactAttribute : FactAttribute
     public WindowsOnlyFactAttribute([CallerFilePath] string? sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = -1)
         : base(sourceFilePath, sourceLineNumber)
     {
-        Skip =
 #if NET
-            !OperatingSystem.IsWindows() ?
-            "This test can only be run on Windows." :
+        Skip = OperatingSystem.IsWindows() ? null : "This test can only be run on Windows.";
+#else
+        Skip = null;
 #endif
-            null;
     }
 }

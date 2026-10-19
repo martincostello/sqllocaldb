@@ -236,7 +236,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <param name="pInstanceInfo">The buffer to store the information about the LocalDB instance.</param>
     /// <param name="dwInstanceInfoSize">Holds the size of the InstanceInfo buffer.</param>
     /// <returns>The HRESULT returned by the LocalDB API.</returns>
-    internal int GetInstanceInfo(string wszInstanceName, IntPtr pInstanceInfo, int dwInstanceInfoSize)
+    internal int GetInstanceInfo(string wszInstanceName, nint pInstanceInfo, int dwInstanceInfoSize)
     {
         return EnsureFunctionAndInvoke(
             "LocalDBGetInstanceInfo",
@@ -257,7 +257,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// of LocalDB instances found on the user’s workstation.
     /// </param>
     /// <returns>The HRESULT returned by the LocalDB API.</returns>
-    internal int GetInstanceNames(IntPtr pInstanceNames, ref int lpdwNumberOfInstances)
+    internal int GetInstanceNames(nint pInstanceNames, ref int lpdwNumberOfInstances)
     {
         var function = EnsureFunction("LocalDBGetInstances", ref _localDBGetInstances);
 
@@ -303,7 +303,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <param name="pVersionInfo">The buffer to store the information about the LocalDB version.</param>
     /// <param name="dwVersionInfoSize">Holds the size of the VersionInfo buffer.</param>
     /// <returns>The HRESULT returned by the LocalDB API.</returns>
-    internal int GetVersionInfo(string wszVersionName, IntPtr pVersionInfo, int dwVersionInfoSize)
+    internal int GetVersionInfo(string wszVersionName, nint pVersionInfo, int dwVersionInfoSize)
     {
         return EnsureFunctionAndInvoke(
             "LocalDBGetVersionInfo",
@@ -320,7 +320,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// buffer. On output, holds the number of existing LocalDB versions.
     /// </param>
     /// <returns>The HRESULT returned by the LocalDB API.</returns>
-    internal int GetVersions(IntPtr pVersion, ref int lpdwNumberOfVersions)
+    internal int GetVersions(nint pVersion, ref int lpdwNumberOfVersions)
     {
         var function = EnsureFunction("LocalDBGetVersions", ref _localDBGetVersions);
 
@@ -341,7 +341,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
     /// <param name="pInstanceSharedName">The shared name for the LocalDB instance to share.</param>
     /// <param name="dwFlags">Reserved for future use. Currently should be set to 0.</param>
     /// <returns>The HRESULT returned by the LocalDB API.</returns>
-    internal int ShareInstance(IntPtr pOwnerSID, string pInstancePrivateName, string pInstanceSharedName, int dwFlags)
+    internal int ShareInstance(nint pOwnerSID, string pInstancePrivateName, string pInstanceSharedName, int dwFlags)
     {
         return EnsureFunctionAndInvoke(
             "LocalDBShareInstance",
@@ -615,7 +615,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
                             fileName,
                             typeof(LocalDbInstanceApi).Assembly,
                             DllImportSearchPath.UserDirectories,
-                            out IntPtr handle))
+                            out nint handle))
                     {
                         int error = Marshal.GetLastWin32Error();
                         Logger.NativeApiLoadFailed(fileName, error);
@@ -688,7 +688,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         }
 
 #if NET
-        if (!NativeLibrary.TryGetExport(handle.DangerousGetHandle(), functionName, out IntPtr address))
+        if (!NativeLibrary.TryGetExport(handle.DangerousGetHandle(), functionName, out nint address))
         {
             Logger.NativeApiFunctionNotFound(functionName);
             return null;
@@ -802,7 +802,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetInstanceInfo(
             [MarshalAs(UnmanagedType.LPWStr)] string wszInstanceName,
-            IntPtr pInstanceInfo,
+            nint pInstanceInfo,
             int dwInstanceInfoSize);
 
         /// <summary>
@@ -822,7 +822,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetinstances-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate int LocalDBGetInstances(IntPtr pInstanceNames, ref int lpdwNumberOfInstances);
+        internal delegate int LocalDBGetInstances(nint pInstanceNames, ref int lpdwNumberOfInstances);
 
         /// <summary>
         /// Returns information for the specified SQL Server Express LocalDB version,
@@ -839,7 +839,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBGetVersionInfo(
             [MarshalAs(UnmanagedType.LPWStr)] string wszVersionName,
-            IntPtr pVersionInfo,
+            nint pVersionInfo,
             int dwVersionInfoSize);
 
         /// <summary>
@@ -855,7 +855,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// See <c>https://learn.microsoft.com/sql/relational-databases/express-localdb-instance-apis/localdbgetversions-function</c>.
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate int LocalDBGetVersions(IntPtr pVersion, ref int lpdwNumberOfVersions);
+        internal delegate int LocalDBGetVersions(nint pVersion, ref int lpdwNumberOfVersions);
 
         /// <summary>
         /// Shares the specified SQL Server Express LocalDB instance with other
@@ -871,7 +871,7 @@ internal sealed class LocalDbInstanceApi : IDisposable
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int LocalDBShareInstance(
-            IntPtr pOwnerSID,
+            nint pOwnerSID,
             [MarshalAs(UnmanagedType.LPWStr)] string pInstancePrivateName,
             [MarshalAs(UnmanagedType.LPWStr)] string pInstanceSharedName,
             int dwFlags);

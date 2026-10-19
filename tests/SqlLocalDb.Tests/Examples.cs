@@ -12,6 +12,7 @@ namespace MartinCostello.SqlLocalDb;
 /// <summary>
 /// A class that contains examples for using <c>MartinCostello.SqlLocalDb</c>.
 /// </summary>
+/// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
 public class Examples(ITestOutputHelper outputHelper)
 {
     [WindowsOnlyFact]
