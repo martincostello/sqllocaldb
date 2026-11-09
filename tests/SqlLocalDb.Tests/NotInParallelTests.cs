@@ -10,6 +10,7 @@ namespace MartinCostello.SqlLocalDb;
 /// </summary>
 /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
 [CollectionDefinition("NotInParallel", DisableParallelization = true)]
+[Collection("NotInParallel")]
 public class NotInParallelTests(ITestOutputHelper outputHelper)
 {
     private readonly ILoggerFactory _loggerFactory = outputHelper.ToLoggerFactory();
