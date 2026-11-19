@@ -34,6 +34,7 @@ internal static class NativeMethods
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName)]
     [return: MarshalAs(UnmanagedType.Bool)]
+#pragma warning disable IDE0036
     internal static safe extern bool FreeLibrary(IntPtr hModule);
 
     /// <summary>
@@ -74,5 +75,6 @@ internal static class NativeMethods
         [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
         IntPtr hFile,
         int dwFlags);
+#pragma warning restore IDE0036
 }
 #endif
