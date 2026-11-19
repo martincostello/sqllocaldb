@@ -24,6 +24,7 @@
     <NoWarn>$(NoWarn);419;1570;1573;1574;1584;1591;SA0001;SA1602</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
+    <Features>$(Features);updated-memory-safety-rules</Features>
     <LangVersion>preview</LangVersion>
     <MemorySafetyRulesVersion>2</MemorySafetyRulesVersion>
   </PropertyGroup>
