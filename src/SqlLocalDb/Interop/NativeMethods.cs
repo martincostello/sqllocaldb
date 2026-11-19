@@ -34,7 +34,7 @@ internal static class NativeMethods
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool FreeLibrary(IntPtr hModule);
+    internal static safe extern bool FreeLibrary(IntPtr hModule);
 
     /// <summary>
     /// Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).
@@ -50,7 +50,7 @@ internal static class NativeMethods
     /// </remarks>
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, ThrowOnUnmappableChar = true)]
-    internal static extern IntPtr GetProcAddress(
+    internal static safe extern IntPtr GetProcAddress(
         SafeLibraryHandle hModule,
         [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
 
@@ -70,7 +70,7 @@ internal static class NativeMethods
     /// </remarks>
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [DllImport(KernelLibName, BestFitMapping = false, CharSet = CharSet.Ansi, SetLastError = true, ThrowOnUnmappableChar = true)]
-    internal static extern SafeLibraryHandle LoadLibraryEx(
+    internal static safe extern SafeLibraryHandle LoadLibraryEx(
         [MarshalAs(UnmanagedType.LPStr)] string lpFileName,
         IntPtr hFile,
         int dwFlags);
